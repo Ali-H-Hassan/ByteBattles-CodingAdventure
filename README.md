@@ -1,9 +1,9 @@
-<img src="./readme/title1.svg"/>
+<img src="./Readme/title1.svg"/>
 
 <br><br>
 
 <!-- project philosophy -->
-<img src="./readme/title2.svg"/>
+<img src="./Readme/title2.svg"/>
 
 > An RPG game that teaches people how to program + companies can make a trial on it for entrance exams to be more interactive.
 >
@@ -19,7 +19,7 @@
 <br><br>
 
 <!-- Prototyping -->
-<img src="./readme/title3.svg"/>
+<img src="./Readme/title3.svg"/>
 
 > We designed "ByteBattles: The Coding Adventure" using wireframes and mockups, iterating on the design until we achieved the ideal layout for an immersive and educational gaming experience.
 
@@ -38,7 +38,7 @@
 <br><br>
 
 <!-- Implementation -->
-<img src="./readme/title4.svg"/>
+<img src="./Readme/title4.svg"/>
 
 > Bringing the vision to life, we implemented "ByteBattles: The Coding Adventure" with the following features:
 
@@ -57,7 +57,7 @@
 <br><br>
 
 <!-- Tech stack -->
-<img src="./readme/title5.svg"/>
+<img src="./Readme/title5.svg"/>
 
 ### "ByteBattles: The Coding Adventure" is built using the following technologies:
 
@@ -71,7 +71,7 @@
 <br><br>
 
 <!-- How to run -->
-<img src="./readme/title6.svg"/>
+<img src="./Readme/title6.svg"/>
 
 > To set up "ByteBattles: The Coding Adventure" locally, follow these steps:
 
