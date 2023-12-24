@@ -19,7 +19,11 @@ router.get("/:id", getUser, (req, res) => {
 
 //Create
 router.post("/", async (req, res) => {
-  const user = new User({});
+  const user = new User({
+    username: req.body.username,
+    email: req.body.email,
+    password: req.body.password,
+  });
 
   try {
     const newUser = await user.save();
@@ -30,7 +34,17 @@ router.post("/", async (req, res) => {
 });
 
 //Update
-router.patch("/:id", getUser, async (req, res) => {
+router.put("/:id", getUser, async (req, res) => {
+  if (req.body.username != null) {
+    res.user.username = req.body.username;
+  }
+  if (req.body.email != null) {
+    res.user.email = req.body.email;
+  }
+  if (req.body.password != null) {
+    res.user.password = req.body.password;
+  }
+
   try {
     const updatedUser = await res.user.save();
     res.json(updatedUser);
@@ -40,9 +54,12 @@ router.patch("/:id", getUser, async (req, res) => {
 });
 
 // DELETE
-router.delete("/:id", getUser, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
-    await res.user.remove();
+    const deletedUser = await User.findByIdAndDelete(req.params.id);
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
     res.json({ message: "Deleted User" });
   } catch (err) {
     res.status(500).json({ message: err.message });
