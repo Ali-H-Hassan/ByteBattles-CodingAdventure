@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Challenge = require("../models/challenge");
 
+//Read all
 router.get("/", async (req, res) => {
   try {
     const challenges = await Challenge.find();
@@ -11,10 +12,12 @@ router.get("/", async (req, res) => {
   }
 });
 
+//Read by ID
 router.get("/:id", getChallenge, (req, res) => {
   res.json(res.challenge);
 });
 
+//Create
 router.post("/", async (req, res) => {
   const challenge = new Challenge({});
 
@@ -26,6 +29,7 @@ router.post("/", async (req, res) => {
   }
 });
 
+//Update
 router.patch("/:id", getChallenge, async (req, res) => {
   try {
     const updatedChallenge = await res.challenge.save();
@@ -35,6 +39,7 @@ router.patch("/:id", getChallenge, async (req, res) => {
   }
 });
 
+//Delete
 router.delete("/:id", getChallenge, async (req, res) => {
   try {
     await res.challenge.remove();
