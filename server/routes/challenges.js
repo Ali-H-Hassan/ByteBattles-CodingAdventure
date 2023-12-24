@@ -19,7 +19,13 @@ router.get("/:id", getChallenge, (req, res) => {
 
 //Create
 router.post("/", async (req, res) => {
-  const challenge = new Challenge({});
+  const challenge = new Challenge({
+    title: req.body.title,
+    description: req.body.description,
+    difficultyLevel: req.body.difficultyLevel,
+    type: req.body.type,
+    relatedConcepts: req.body.relatedConcepts,
+  });
 
   try {
     const newChallenge = await challenge.save();
@@ -31,6 +37,22 @@ router.post("/", async (req, res) => {
 
 //Update
 router.patch("/:id", getChallenge, async (req, res) => {
+  if (req.body.title != null) {
+    res.challenge.title = req.body.title;
+  }
+  if (req.body.description != null) {
+    res.challenge.description = req.body.description;
+  }
+  if (req.body.difficultyLevel != null) {
+    res.challenge.difficultyLevel = req.body.difficultyLevel;
+  }
+  if (req.body.type != null) {
+    res.challenge.type = req.body.type;
+  }
+  if (req.body.relatedConcepts != null) {
+    res.challenge.relatedConcepts = req.body.relatedConcepts;
+  }
+
   try {
     const updatedChallenge = await res.challenge.save();
     res.json(updatedChallenge);
@@ -40,9 +62,12 @@ router.patch("/:id", getChallenge, async (req, res) => {
 });
 
 //Delete
-router.delete("/:id", getChallenge, async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
-    await res.challenge.remove();
+    const result = await Challenge.findByIdAndDelete(req.params.id);
+    if (!result) {
+      return res.status(404).json({ message: "Challenge not found" });
+    }
     res.json({ message: "Deleted Challenge" });
   } catch (err) {
     res.status(500).json({ message: err.message });
