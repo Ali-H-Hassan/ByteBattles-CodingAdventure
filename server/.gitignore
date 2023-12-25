@@ -1,0 +1,16 @@
+# Environment variables
+.env
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+build/
+
+# Logs
+*.log
+
+# Other common files to ignore
+.DS_Store
+Thumbs.db
