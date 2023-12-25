@@ -12,9 +12,11 @@
 ### User Stories
 
 - As a learner, I want to choose my coding path and progress through chapters to build my programming skills.
-- As a coder, I want an AI mentor to guide me in real-time, providing tips and challenges to enhance my learning.
+- As a coder, I want an AI mentor to guide me in real time, providing tips and challenges to enhance my learning.
 - As a competitor, I want to engage in coding battles with fellow learners, testing my skills and speed.
 - As a job seeker, I want to use the platform to prepare for coding interviews and showcase my skills to potential employers.
+- As a recruiter, I want to create and publish coding challenges specific to my company’s needs so that I can identify and attract talented developers who have the skills we require.
+- As a hiring manager, I want to access a dashboard where I can review candidates’ performances in coding challenges and their progress through courses, to evaluate their skills and suitability for our open positions.
 
 <br><br>
 
