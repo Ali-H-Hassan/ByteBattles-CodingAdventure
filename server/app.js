@@ -20,7 +20,7 @@ app.use("/api/auth", authRoutes);
 
 app.use(
   session({
-    secret: "your_secret_key", // Replace with a real secret in .env
+    secret: "your_jwt_secret", // Replace with a real secret in .env
     resave: false,
     saveUninitialized: true,
   })

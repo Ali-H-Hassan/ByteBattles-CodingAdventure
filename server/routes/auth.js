@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
+const passport = require("../middlewares/googleStrategy");
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
 
@@ -49,5 +50,18 @@ router.post("/login", async (req, res) => {
     res.status(500).send(error);
   }
 });
+router.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);
+
+router.get(
+  "/google/callback",
+  passport.authenticate("google", { failureRedirect: "/login" }),
+  (req, res) => {
+    // Successful authentication, redirect home.
+    res.redirect("/"); // You may want to redirect to a different route
+  }
+);
 
 module.exports = router;
