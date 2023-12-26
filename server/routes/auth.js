@@ -56,11 +56,11 @@ router.get(
 );
 
 router.get(
-  "/google/callback",
+  "/oauth2callback",
   passport.authenticate("google", { failureRedirect: "/login" }),
-  (req, res) => {
+  function (req, res) {
     // Successful authentication, redirect home.
-    res.redirect("/"); // You may want to redirect to a different route
+    res.redirect("/");
   }
 );
 
