@@ -28,7 +28,7 @@ app.use(passport.session());
 app.use("/users", userRoutes);
 app.use("/challenges", challengeRoutes);
 app.use("/api/auth", authRoutes); // If you want to keep this endpoint
-app.use("/auth", authRoutes); // This should match the callback URL base path
+app.use("/api/auth", authRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
