@@ -12,9 +12,6 @@ const Header = () => {
         <a href="/explore" className="nav-link">
           Explore
         </a>
-        <a href="/login" className="nav-link">
-          LogIn
-        </a>
         {/* Add an onClick handler if using react-router */}
         <button className="nav-link signup">Sign Up</button>
       </nav>
