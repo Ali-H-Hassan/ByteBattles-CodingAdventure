@@ -11,8 +11,8 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-section">
         <div className="footer-logo-contact">
-          <div className="footer-logo1">
-            <img src={logo} alt="Byte Battles logo" className="footer-logo1" />
+          <div className="footer-logo">
+            <img src={logo} alt="Byte Battles logo" className="footer-logo" />
             <h2 className="footer-brand-name">Byte Battles</h2>
           </div>
 

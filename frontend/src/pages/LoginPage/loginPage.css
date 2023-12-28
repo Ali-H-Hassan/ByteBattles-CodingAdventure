@@ -75,6 +75,10 @@ input[type="password"] {
   align-items: center;
   width: 100%;
 }
+/* .login-image-logo {
+  width: 100px;
+  height: auto;
+} */
 
 .forgot-password,
 .signup-link {

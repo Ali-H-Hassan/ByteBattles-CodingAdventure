@@ -5,6 +5,7 @@ import Login from "../../assets/LoginImg.png";
 import FbCard from "../../assets/FacebookCard.png";
 import GithCard from "../../assets/GithubCard.png";
 import GgCard from "../../assets/GoogleCard.png";
+import logo from "../../assets/Logo.png";
 
 const LoginPage = () => {
   return (
@@ -16,8 +17,20 @@ const LoginPage = () => {
         </div>
         <div className="login-form-section">
           <div className="login-container">
-            <h2 className="login-title">Byte Battle</h2>
-            <input type="email" id="email" name="email" placeholder="Mail Id" />
+            <h2 className="login-title">
+              {/* <img
+                src={logo}
+                alt="Byte Battles logo"
+                className="login-image-logo"
+              /> */}
+              Byte Battle
+            </h2>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              placeholder="Example@example.com"
+            />
             <input
               type="password"
               id="password"
@@ -36,7 +49,7 @@ const LoginPage = () => {
               </a>
             </div>
             <div className="social-login">
-              <p>Or you can Signup with</p>
+              <p>Or you can Login with</p>
               <div className="social-icons">
                 <img src={GgCard} className="social-icon google" />
                 <img src={GithCard} className="social-icon github" />
