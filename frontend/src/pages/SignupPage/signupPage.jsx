@@ -1,39 +1,44 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Header from "../../components/Header/Header";
-import { registerUser } from "../../services/authService"; // Adjust the import path as needed
-import "./signupPage.css"; // Adjust the import path as needed
-import SignUpImg from "../../assets/SignUpImg.png"; // Adjust the import path as needed
-import FbCard from "../../assets/FacebookCard.png"; // Adjust the import path as needed
-import GithCard from "../../assets/GithubCard.png"; // Adjust the import path as needed
-import GgCard from "../../assets/GoogleCard.png"; // Adjust the import path as needed
+import { registerUser } from "../../services/authService"; // Import the registerUser function
+import { AuthContext } from "../../context/AuthContext"; // Import AuthContext
+import "./signupPage.css";
+import SignUpImg from "../../assets/SignUpImg.png";
+import FbCard from "../../assets/FacebookCard.png";
+import GithCard from "../../assets/GithubCard.png";
+import GgCard from "../../assets/GoogleCard.png";
 
 const SignupPage = () => {
-  const [user, setUser] = useState({
+  // Use AuthContext
+  const { setAuthState } = useContext(AuthContext);
+  // State for the new user data
+  const [newUser, setNewUser] = useState({
     email: "",
     username: "",
     password: "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUser({
-      ...user,
-      [name]: value,
-    });
+  // Handle changes in form inputs
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setNewUser({ ...newUser, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Handle form submission
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     try {
-      const response = await registerUser(user);
-      // Assuming the response contains the user and token
-      // Save the token in localStorage and update the user state
-      localStorage.setItem("token", response.token);
-      // Redirect to homepage or dashboard after successful signup
-      // This could be done with useHistory from react-router-dom or a state update
+      const data = await registerUser(newUser);
+      // Handle successful registration:
+      // Update auth state, save the token, and redirect as necessary
+      setAuthState({
+        isAuthenticated: true,
+        user: data.user,
+        token: data.token,
+      });
+      // Redirect to the home page or dashboard after successful signup
     } catch (error) {
-      // Handle signup errors, e.g., display error messages
-      console.error("Signup error:", error);
+      // Handle registration errors, such as displaying an error message to the user
     }
   };
 
@@ -52,35 +57,32 @@ const SignupPage = () => {
                 type="email"
                 id="email"
                 name="email"
-                placeholder="Email"
-                value={user.email}
+                placeholder="Mail Id"
+                value={newUser.email}
                 onChange={handleChange}
-                required
               />
               <input
                 type="text"
                 id="username"
                 name="username"
                 placeholder="Username"
-                value={user.username}
+                value={newUser.username}
                 onChange={handleChange}
-                required
               />
               <input
                 type="password"
                 id="password"
                 name="password"
                 placeholder="Password"
-                value={user.password}
+                value={newUser.password}
                 onChange={handleChange}
-                required
               />
               <button type="submit" className="signup-button">
                 Register
               </button>
             </form>
             <div className="signup-options">
-              <a href="/login" className="login-link">
+              <a href="#" className="login-link">
                 Have an Account? Log In
               </a>
             </div>
