@@ -6,12 +6,13 @@ const userRoutes = require("./routes/users");
 const challengeRoutes = require("./routes/challenges");
 const authRoutes = require("./routes/auth");
 require("./db");
+const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-
+app.use(cors());
 // Session and Passport middleware should be initialized before defining any routes
 app.use(
   session({
