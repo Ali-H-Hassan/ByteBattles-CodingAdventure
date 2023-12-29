@@ -75,7 +75,28 @@ const LoginPage = () => {
                 Sign Up
               </a>
             </div>
+
             {/* Social login and other components */}
+            <div className="social-signup">
+              <p>Or you can Signup with</p>
+              <div className="social-icons">
+                <img src={GgCard} alt="Google" className="social-icon google" />
+                <img
+                  src={GithCard}
+                  alt="GitHub"
+                  className="social-icon github"
+                />
+                <img
+                  src={FbCard}
+                  alt="Facebook"
+                  className="social-icon facebook"
+                />
+              </div>
+              <p className="recaptcha-text">
+                This site is protected by reCAPTCHA and the Google Privacy
+                Policy and Terms of Service apply.
+              </p>
+            </div>
           </form>
         </div>
       </div>
