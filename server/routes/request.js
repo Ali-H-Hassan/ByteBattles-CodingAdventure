@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 const dotenv = require("dotenv");
 dotenv.config();
-const { OAuth2Client, OAuth2Client } = require("google-auth-library");
+const { OAuth2Client } = require("google-auth-library");
 
 router.post("/", async function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "http://localhost:3001");
