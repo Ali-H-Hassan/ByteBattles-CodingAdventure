@@ -7,18 +7,18 @@ const userController = require("../controllers/userController");
 router.post("/register", userController.register);
 router.post("/login", userController.login);
 
-// Google OAuth routes remain here
-router.get(
-  "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
-router.get(
-  "/oauth2callback",
-  passport.authenticate("google", { failureRedirect: "/login" }),
-  (req, res) => {
-    // Successful authentication, redirect home.
-    res.redirect("/");
-  }
-);
+// // Google OAuth routes remain here
+// router.get(
+//   "/google",
+//   passport.authenticate("google", { scope: ["profile", "email"] })
+// );
+// router.get(
+//   "/oauth2callback",
+//   passport.authenticate("google", { failureRedirect: "/login" }),
+//   (req, res) => {
+//     // Successful authentication, redirect home.
+//     res.redirect("/");
+//   }
+// );
 
 module.exports = router;

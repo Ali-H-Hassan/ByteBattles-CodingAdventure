@@ -5,10 +5,10 @@ const session = require("express-session");
 const userRoutes = require("./routes/users");
 const challengeRoutes = require("./routes/challenges");
 const authRoutes = require("./routes/auth");
+const oauthRouter = require("./routes/oauth"); // Renamed for clarity
+const requestRouter = require("./routes/request");
 require("./db");
 const cors = require("cors");
-const authRouter = require("./routes/oauth");
-const requestRouter = require("./routes/request");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -30,8 +30,8 @@ app.use(cors());
 app.use("/users", userRoutes);
 app.use("/challenges", challengeRoutes);
 app.use("/api/auth", authRoutes); // If you want to keep this endpoint
-app.use("/oauth", authRouter);
-app.use("/request", requestRouter);
+app.use("/auth/google", oauthRouter); // OAuth Google callback route
+app.use("/request", requestRouter); // Request route for Google Auth URL
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
