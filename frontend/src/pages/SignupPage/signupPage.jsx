@@ -1,7 +1,10 @@
 import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 import Header from "../../components/Header/Header";
-import { registerUser } from "../../services/authService"; // Import the registerUser function
-import { AuthContext } from "../../context/AuthContext"; // Import AuthContext
+import { registerUser } from "../../services/authService";
+import { AuthContext } from "../../context/AuthContext";
 import "./signupPage.css";
 import SignUpImg from "../../assets/SignUpImg.png";
 import FbCard from "../../assets/FacebookCard.png";
@@ -9,14 +12,24 @@ import GithCard from "../../assets/GithubCard.png";
 import GgCard from "../../assets/GoogleCard.png";
 
 const SignupPage = () => {
-  // Use AuthContext
   const { setAuthState } = useContext(AuthContext);
-  // State for the new user data
   const [newUser, setNewUser] = useState({
     email: "",
     username: "",
     password: "",
   });
+  const navigate = useNavigate();
+
+  // Function to fetch Google Auth URL
+  const fetchGoogleAuthUrl = async () => {
+    try {
+      const response = await axios.post("http://localhost:3000/request");
+      const googleAuthUrl = response.data.url;
+      window.location.href = googleAuthUrl; // Redirect to Google Auth URL
+    } catch (error) {
+      console.error("Error fetching Google Auth URL:", error);
+    }
+  };
 
   // Handle changes in form inputs
   const handleChange = (event) => {
@@ -29,17 +42,20 @@ const SignupPage = () => {
     event.preventDefault();
     try {
       const data = await registerUser(newUser);
-      // Handle successful registration:
-      // Update auth state, save the token, and redirect as necessary
       setAuthState({
         isAuthenticated: true,
         user: data.user,
         token: data.token,
       });
-      // Redirect to the home page or dashboard after successful signup
+      navigate("/"); // Navigate to home or dashboard after successful registration
     } catch (error) {
-      // Handle registration errors, such as displaying an error message to the user
+      console.error("Registration error:", error);
     }
+  };
+
+  // Handle click on Google logo
+  const handleGoogleSignIn = () => {
+    fetchGoogleAuthUrl();
   };
 
   return (
@@ -89,7 +105,12 @@ const SignupPage = () => {
             <div className="social-signup">
               <p>Or you can Signup with</p>
               <div className="social-icons">
-                <img src={GgCard} alt="Google" className="social-icon google" />
+                <img
+                  src={GgCard}
+                  alt="Google"
+                  className="social-icon google"
+                  onClick={handleGoogleSignIn}
+                />
                 <img
                   src={GithCard}
                   alt="GitHub"
