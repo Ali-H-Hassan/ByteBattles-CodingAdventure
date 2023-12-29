@@ -2,10 +2,12 @@ import React from "react";
 import OnlineTestIllustration from "../../assets/illustration.png";
 import ProgrammerIllustration from "../../assets/SignUpImg.png";
 import TestIllustration from "../../assets/LoginImg.png";
+import Header from "../../components/Header/Header";
 import "./WelcomePage.css";
 const WelcomeSectionOne = () => {
   return (
     <div>
+      <Header />
       <section className="welcome-section-one">
         <div className="content-container">
           <div className="text-content">
@@ -50,9 +52,9 @@ const WelcomeSectionOne = () => {
         <div className="content-container">
           <div className="text-content">
             <h1>
-              <span className="green-text">A</span>
-              <span className="white-text"> New Way </span>
-              <span className="green-text">To Learn</span>
+              <span className="green-text">Questions</span>
+              <span className="white-text"> & </span>
+              <span className="green-text">Contests</span>
             </h1>
             <p>
               Over 2800 questions for you to practice. Come and join one of the
