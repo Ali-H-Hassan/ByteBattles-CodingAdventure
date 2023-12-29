@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema({
   googleId: {
@@ -62,13 +62,12 @@ const userSchema = new mongoose.Schema({
   lastLogin: Date,
 });
 
-userSchema.pre("save", async function (next) {
-  // Only hash the password if it has been modified (or is new) and is not empty
-  if (this.isModified("password") && this.password) {
-    this.password = await bcrypt.hash(this.password, 8);
-  }
-  next();
-});
+// userSchema.pre("save", async function (next) {
+//   if (this.isModified("password")) {
+//     this.password = await bcrypt.hash(this.password, 8);
+//   }
+//   next();
+// });
 
 // Modify the comparePassword method to ensure it doesn't get called if there's no password
 userSchema.methods.comparePassword = async function (candidatePassword) {

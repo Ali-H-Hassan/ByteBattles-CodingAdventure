@@ -13,7 +13,7 @@ function App() {
       {" "}
       {/* Wrap your components with AuthProvider */}
       <div className="App">
-        <Signup />
+        <Login />
         {/* The rest of your components will go here. 
             For example, if you're using react-router-dom, 
             your route definitions would be here. */}

@@ -1,10 +1,9 @@
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 const JWT_SECRET = process.env.JWT_SECRET || "your_jwt_secret";
-
-// Register User
+const bcryptSaltRounds = 8;
 const register = async (req, res) => {
   try {
     let user = await User.findOne({ email: req.body.email });
@@ -15,14 +14,14 @@ const register = async (req, res) => {
     user = new User({
       username: req.body.username,
       email: req.body.email,
-      password: await bcrypt.hash(req.body.password, 8),
+      password: req.body.password, // Directly using the password without hashing
     });
 
     await user.save();
     const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: "24h" });
     res.status(201).send({ user, token });
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send("Error during registration: " + error.message);
   }
 };
 
@@ -30,11 +29,15 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
+    console.log("User found:", user); // Debug log
+
     if (!user) {
       return res.status(400).send("Invalid email or password.");
     }
 
-    const isMatch = await bcrypt.compare(req.body.password, user.password);
+    const isMatch = req.body.password === user.password; // Direct comparison without bcrypt
+    console.log("Password match:", isMatch); // Debug log
+
     if (!isMatch) {
       return res.status(400).send("Invalid email or password.");
     }
@@ -42,7 +45,7 @@ const login = async (req, res) => {
     const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: "24h" });
     res.send({ user, token });
   } catch (error) {
-    res.status(500).send(error);
+    res.status(500).send("Error during login: " + error.message);
   }
 };
 

@@ -14,10 +14,15 @@ export const registerUser = async (userData) => {
 };
 
 export const loginUser = async (credentials) => {
+  console.log("Logging in with credentials:", credentials); // Add this line
+
   try {
-    const response = await apiClient.post("/login", credentials);
-    return response.data; // Handle the response data in the component
+    const response = await apiClient.post(
+      "http://localhost:3000/api/auth/login",
+      credentials
+    );
+    return response.data;
   } catch (error) {
-    throw error.response.data; // Handle error in the component
+    throw error.response.data;
   }
 };
