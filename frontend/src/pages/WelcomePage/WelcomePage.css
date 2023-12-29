@@ -68,3 +68,63 @@
 .white-text {
   color: grey;
 }
+/* WelcomeSectionTwo.css */
+.welcome-section-two {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa; /* Adjust the color to match your design */
+}
+
+.section-two-content-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 100px 180px; /* Adjust margins to fit your design */
+  padding: 50px 100px; /* Adjust padding to fit your design */
+}
+
+.section-two-text-content h2 {
+  font-size: 48px; /* Adjust font-size as needed */
+  color: #2c3e50; /* Adjust color as needed */
+  margin-bottom: 20px;
+}
+
+.section-two-text-content p {
+  font-size: 18px; /* Adjust font-size as needed */
+  color: #34495e; /* Adjust color as needed */
+  margin-bottom: 30px;
+}
+
+.section-two-cta-button {
+  background-color: #4caf50; /* Adjust background color as needed */
+  color: white; /* Adjust text color as needed */
+  border: none;
+  padding: 15px 30px;
+  font-size: 18px; /* Adjust font-size as needed */
+  cursor: pointer;
+  border-radius: 25px; /* Adjust border-radius as needed */
+  text-transform: uppercase; /* Optional style */
+  transition: all 0.3s ease; /* Optional style */
+}
+
+.section-two-cta-button:hover {
+  background-color: #43a047; /* Slightly darker green on hover */
+}
+
+.section-two-image-content img {
+  max-width: 600px; /* Adjust width as needed */
+  height: auto;
+}
+
+/* Responsive styles if needed */
+@media (max-width: 768px) {
+  .section-two-content-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .section-two-image-content img {
+    margin-top: 30px;
+  }
+}
