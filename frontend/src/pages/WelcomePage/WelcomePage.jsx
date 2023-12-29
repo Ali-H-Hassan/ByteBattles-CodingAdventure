@@ -1,6 +1,7 @@
 import React from "react";
 import OnlineTestIllustration from "../../assets/illustration.png";
 import ProgrammerIllustration from "../../assets/SignUpImg.png";
+import TestIllustration from "../../assets/LoginImg.png";
 import "./WelcomePage.css";
 const WelcomeSectionOne = () => {
   return (
@@ -42,6 +43,27 @@ const WelcomeSectionOne = () => {
           </div>
           <div className="section-two-image-content">
             <img src={ProgrammerIllustration} alt="Programmer" />
+          </div>
+        </div>
+      </section>
+      <section className="welcome-section-one">
+        <div className="content-container">
+          <div className="text-content">
+            <h1>
+              <span className="green-text">A</span>
+              <span className="white-text"> New Way </span>
+              <span className="green-text">To Learn</span>
+            </h1>
+            <p>
+              Over 2800 questions for you to practice. Come and join one of the
+              largest tech communities with hundreds of thousands of active
+              users and participate in our contests to challenge yourself and
+              earn rewards.
+            </p>
+            <button className="cta-button">View Tests</button>
+          </div>
+          <div className="image-content">
+            <img src={TestIllustration} alt="Online Test" />
           </div>
         </div>
       </section>

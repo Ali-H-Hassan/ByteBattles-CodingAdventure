@@ -68,56 +68,60 @@
 .white-text {
   color: grey;
 }
-/* WelcomeSectionTwo.css */
+
 .welcome-section-two {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #f8f9fa; /* Adjust the color to match your design */
+  background-color: #f8f9fa;
 }
 
 .section-two-content-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 100px 180px; /* Adjust margins to fit your design */
-  padding: 50px 100px; /* Adjust padding to fit your design */
+  margin: 100px 180px;
+  padding: 50px 100px;
+  flex-direction: row-reverse;
 }
 
 .section-two-text-content h2 {
-  font-size: 48px; /* Adjust font-size as needed */
-  color: #2c3e50; /* Adjust color as needed */
+  font-size: 48px;
+  color: #2c3e50;
   margin-bottom: 20px;
+  font-size: 73px;
+  color: grey;
 }
 
 .section-two-text-content p {
-  font-size: 18px; /* Adjust font-size as needed */
-  color: #34495e; /* Adjust color as needed */
+  font-size: 24px;
+  color: #34495e;
   margin-bottom: 30px;
 }
-
+.section-two-text-content {
+  text-align: left;
+  padding-left: 100px;
+}
 .section-two-cta-button {
-  background-color: #4caf50; /* Adjust background color as needed */
-  color: white; /* Adjust text color as needed */
+  background-color: #4caf50;
+  color: white;
   border: none;
   padding: 15px 30px;
-  font-size: 18px; /* Adjust font-size as needed */
+  font-size: 28px;
   cursor: pointer;
-  border-radius: 25px; /* Adjust border-radius as needed */
-  text-transform: uppercase; /* Optional style */
-  transition: all 0.3s ease; /* Optional style */
+  border-radius: 25px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
 }
-
 .section-two-cta-button:hover {
-  background-color: #43a047; /* Slightly darker green on hover */
+  background-color: #43a047;
 }
 
 .section-two-image-content img {
-  max-width: 600px; /* Adjust width as needed */
+  max-width: 600px;
   height: auto;
 }
 
-/* Responsive styles if needed */
 @media (max-width: 768px) {
   .section-two-content-container {
     flex-direction: column;
