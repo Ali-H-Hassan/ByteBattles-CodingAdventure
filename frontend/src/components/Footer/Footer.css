@@ -8,6 +8,7 @@
   font-family: "Syne", sans-serif;
   background-color: #fff;
   margin-top: 10px;
+  font-size: 20px;
 }
 
 .footer-section {
@@ -66,7 +67,7 @@ img.footer-logo1 {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 14px;
+  font-size: 16px;
   margin-top: 20px;
 }
 

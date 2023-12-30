@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import OnlineTestIllustration from "../../assets/illustration.png";
 import ProgrammerIllustration from "../../assets/SignUpImg.png";
 import TestIllustration from "../../assets/LoginImg.png";
@@ -6,6 +7,10 @@ import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import "./WelcomePage.css";
 const WelcomeSectionOne = () => {
+  const navigate = useNavigate();
+  const handleCreateAccountClick = () => {
+    navigate("/signup");
+  };
   return (
     <div className="welcome-page">
       <Header />
@@ -23,7 +28,9 @@ const WelcomeSectionOne = () => {
               levels, master the basics, and gear up for epic coding challenges.
               The journey to coding mastery starts here!
             </p>
-            <button className="cta-button">Create Account</button>
+            <button className="cta-button" onClick={handleCreateAccountClick}>
+              Create Account
+            </button>
           </div>
           <div className="image-content">
             <img src={OnlineTestIllustration} alt="Online Test" />
