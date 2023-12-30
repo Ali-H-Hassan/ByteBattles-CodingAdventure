@@ -7,6 +7,7 @@ import WelcomePage from "../src/pages/WelcomePage/WelcomePage";
 import GoogleAuthHandler from "./pages/GoogleAuthHandler";
 import "./App.css";
 import GoogleCallbackHandler from "./pages/GoogleCallbackHandler";
+import Dashboard from "../src/pages/Dashboard/Dashboard";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<WelcomePage />} />{" "}
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
+            {/* <Route path="/Dashboard" element={<Dashboard />} /> */}
             <Route
               path="/auth/google/callback"
               element={<GoogleAuthHandler />}

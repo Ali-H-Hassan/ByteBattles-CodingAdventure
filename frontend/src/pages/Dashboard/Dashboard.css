@@ -1,0 +1,113 @@
+/* Dashboard.css */
+.dashboard {
+  display: flex;
+  min-height: 100vh;
+  font-family: "Arial", sans-serif; /* Use your preferred font */
+}
+
+/* Sidebar styles */
+.sidebar {
+  width: 250px; /* Adjust the width as needed */
+  background-color: #2c3e50; /* Adjust the background color as needed */
+  color: #ffffff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 24px;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.logo a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.nav {
+  display: flex;
+  flex-direction: column;
+}
+
+.nav-item {
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: #ffffff;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.nav-item:hover,
+.nav-item.active {
+  background-color: #1a1a1a;
+}
+
+/* Dark mode button could be a toggle in a real application */
+.nav-item.button {
+  text-align: left;
+  cursor: pointer;
+}
+
+/* Main content styles */
+.dashboard-main {
+  flex-grow: 1;
+  background-color: #f0f0f0; /* Light grey background for the main area */
+  padding: 40px;
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 40px;
+}
+
+.dashboard-header h2 {
+  color: #333;
+  font-size: 28px; /* Adjust as per design */
+}
+
+.search-bar {
+  display: flex;
+  position: relative;
+  align-items: center;
+}
+
+.search-bar input[type="text"] {
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 300px; /* Adjust as per design */
+}
+
+.search-button {
+  background: none;
+  border: none;
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+}
+
+/* Add additional responsive design as needed */
+@media (max-width: 768px) {
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    height: auto;
+    padding: 15px;
+  }
+
+  .dashboard-main {
+    padding: 20px;
+  }
+}
+
+/* Continue adding specific styles for other dashboard components below... */
