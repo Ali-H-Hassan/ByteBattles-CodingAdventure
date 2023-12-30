@@ -3,10 +3,11 @@ import OnlineTestIllustration from "../../assets/illustration.png";
 import ProgrammerIllustration from "../../assets/SignUpImg.png";
 import TestIllustration from "../../assets/LoginImg.png";
 import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
 import "./WelcomePage.css";
 const WelcomeSectionOne = () => {
   return (
-    <div>
+    <div className="welcome-page">
       <Header />
       <section className="welcome-section-one">
         <div className="content-container">
@@ -69,6 +70,7 @@ const WelcomeSectionOne = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

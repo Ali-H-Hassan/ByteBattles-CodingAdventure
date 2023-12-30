@@ -11,11 +11,6 @@ const Footer = () => {
     <footer className="footer">
       <div className="footer-section">
         <div className="footer-logo-contact">
-          <div className="footer-logo">
-            <img src={logo} alt="Byte Battles logo" className="footer-logo" />
-            <h2 className="footer-brand-name">Byte Battles</h2>
-          </div>
-
           <p className="footer-address">
             <strong>Address:</strong>
             <br />
@@ -29,7 +24,6 @@ const Footer = () => {
             info@ByteBattles.io
           </p>
           <div className="social-icons">
-            {/* Placeholders for social icons */}
             <div className="icon facebook">
               <img
                 src={Facebook}

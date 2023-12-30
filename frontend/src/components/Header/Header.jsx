@@ -13,7 +13,7 @@ const Header = () => {
           Explore
         </a>
         {/* Add an onClick handler if using react-router */}
-        <button className="nav-link signup">Sign Up</button>
+        <button className="nav-link signup">Log In</button>
       </nav>
     </header>
   );

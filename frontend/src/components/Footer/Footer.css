@@ -7,6 +7,7 @@
   align-items: center;
   font-family: "Syne", sans-serif;
   background-color: #fff;
+  margin-top: 10px;
 }
 
 .footer-section {
@@ -80,7 +81,7 @@ img.footer-logo1 {
 }
 .social-icons {
   display: flex;
-  gap: 20px;
+  gap: 5px;
   margin-top: 1em;
 }
 img.footer-logo {
