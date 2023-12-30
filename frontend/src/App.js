@@ -15,14 +15,12 @@ function App() {
         <div className="App">
           <Routes>
             <Route path="/" element={<WelcomePage />} />{" "}
-            {/* Add WelcomePage as the root route */}
             <Route path="/signup" element={<Signup />} />
             <Route path="/login" element={<Login />} />
             <Route
               path="/auth/google/callback"
               element={<GoogleAuthHandler />}
             />
-            {/* Define other routes as needed */}
           </Routes>
         </div>
       </Router>

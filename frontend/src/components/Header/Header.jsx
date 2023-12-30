@@ -6,9 +6,14 @@ const Header = () => {
   const handleCreateAccountClick = () => {
     navigate("/login");
   };
+  const handleLogoClick = () => {
+    navigate("/");
+  };
   return (
     <header className="header">
-      <h1 className="logo">Byte Battle</h1>
+      <h1 className="logo" onClick={handleLogoClick}>
+        Byte Battle
+      </h1>
       <nav className="navigation">
         <a href="/practice" className="nav-link">
           Practice
@@ -16,7 +21,6 @@ const Header = () => {
         <a href="/explore" className="nav-link">
           Explore
         </a>
-        {/* Add an onClick handler if using react-router */}
         <button className="nav-link signup" onClick={handleCreateAccountClick}>
           Log In
         </button>

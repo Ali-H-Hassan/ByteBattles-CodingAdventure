@@ -40,7 +40,11 @@ const WelcomeSectionOne = () => {
       <section className="welcome-section-two">
         <div className="section-two-content-container">
           <div className="section-two-text-content">
-            <h2>Companies & Candidates</h2>
+            <h1>
+              <span className="white-text">Companies</span>
+              <span className="green-text"> & </span>
+              <span className="white-text">Candidates</span>
+            </h1>
             <p>
               Not only does ByteBattle prepare candidates for technical
               interviews, we also help companies identify top technical talent.

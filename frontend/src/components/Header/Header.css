@@ -12,6 +12,7 @@
   font-weight: 700;
   text-transform: capitalize;
   word-wrap: break-word;
+  cursor: pointer;
 }
 
 .navigation {
