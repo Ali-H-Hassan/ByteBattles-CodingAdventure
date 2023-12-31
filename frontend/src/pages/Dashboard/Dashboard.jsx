@@ -10,6 +10,7 @@ import Leaderboard from "../../assets/Award 5.png";
 import LogOut from "../../assets/Unlock 2.png";
 import UserAvatar from "../../assets/Profile (1).png";
 import Search from "../../assets/search-icon.png";
+import TestCard from "../../assets/Test1.png";
 
 function Dashboard() {
   return (
@@ -91,37 +92,62 @@ function Dashboard() {
         </header>
         <div className="content-grid">
           <section className="recent-tests">
-            <h2>Recent Tests</h2>
+            <div className="section-header">
+              <img src={Tests} alt="Test Icon" className="section-icon" />
+              <h2 className="section-title">Recent Tests</h2>
+            </div>
             <div className="test-cards-container">
-              {/* Replace with dynamic content if needed */}
+              {/* Repeated Test Card structure for each test */}
               <div className="test-card">
-                <div className="test-card-info">
-                  <h3>C Programming</h3>
-                  <button className="resume-button">Resume</button>
-                </div>
-                <div className="test-progress">
-                  <span className="progress-indicator green">75%</span>
+                <img
+                  src={TestCard}
+                  alt="C Programming"
+                  className="test-card-image"
+                />
+                <div className="test-card-content">
+                  <div className="test-details">
+                    <h3>C Programming</h3>
+                    <button className="resume-button">Resume</button>
+                  </div>
+                  <div className="test-progress green">
+                    <span>75%</span>
+                  </div>
                 </div>
               </div>
               <div className="test-card">
-                <div className="test-card-info">
-                  <h3>Python Programming</h3>
-                  <button className="resume-button">Resume</button>
-                </div>
-                <div className="test-progress">
-                  <span className="progress-indicator red">25%</span>
+                <img
+                  src={TestCard}
+                  alt="C Programming"
+                  className="test-card-image"
+                />
+                <div className="test-card-content">
+                  <div className="test-details">
+                    <h3>C Programming</h3>
+                    <button className="resume-button">Resume</button>
+                  </div>
+                  <div className="test-progress green">
+                    <span>75%</span>
+                  </div>
                 </div>
               </div>
-              {/* Add more test cards as needed */}
+              {/* ... More test cards */}
             </div>
           </section>
 
-          {/* Placeholder for the other 3 parts of the grid */}
-          <section className="grid-section"></section>
-          <section className="grid-section"></section>
-          <section className="grid-section"></section>
+          {/* Other sections */}
+          <section className="grid-section">
+            {" "}
+            {/* Content for other sections */}{" "}
+          </section>
+          <section className="grid-section">
+            {" "}
+            {/* Content for other sections */}{" "}
+          </section>
+          <section className="grid-section">
+            {" "}
+            {/* Content for other sections */}{" "}
+          </section>
         </div>
-        {/* Rest of the main content goes here */}
       </div>
     </div>
   );
