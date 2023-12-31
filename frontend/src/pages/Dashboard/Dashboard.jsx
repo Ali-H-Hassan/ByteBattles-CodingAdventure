@@ -185,12 +185,21 @@ function Dashboard() {
                   <p>Neo Programming League_NPL</p>
                 </div>
               </li>
-              {/* Add more entries as needed */}
             </ul>
           </section>
-          <section className="grid-section">
-            {" "}
-            {/* Content for other sections */}{" "}
+          <section className="upcoming-quiz">
+            <div className="section-header">
+              <img
+                src={CalendarIcon}
+                alt="Calendar"
+                className="calendar-icon"
+              />
+              <h2 className="section-title">Upcoming Quiz Competition</h2>
+            </div>
+            <div className="quiz-details">
+              <p className="quiz-date">12th Aug, 2023</p>
+              <button className="register-button">Register Now</button>
+            </div>
           </section>
           <section className="grid-section">
             {" "}
