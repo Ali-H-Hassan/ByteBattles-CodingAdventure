@@ -189,19 +189,20 @@ function Dashboard() {
             </ul>
           </section>
           <section className="upcoming-quiz">
-            <div className="section-header">
+            <div className="upcoming-header">
+              <h2 className="section-title">Upcoming Quiz Competition</h2>
               <img
                 src={CalendarIcon}
                 alt="Calendar"
                 className="calendar-icon"
               />
-              <h2 className="section-title">Upcoming Quiz Competition</h2>
             </div>
             <div className="quiz-details">
               <p className="quiz-date">12th Aug, 2023</p>
               <button className="register-button">Register Now</button>
             </div>
           </section>
+
           <section className="grid-section">
             {" "}
             {/* Content for other sections */}{" "}
