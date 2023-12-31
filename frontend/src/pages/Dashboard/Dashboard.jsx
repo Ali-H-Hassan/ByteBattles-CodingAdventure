@@ -93,7 +93,7 @@ function Dashboard() {
         <div className="content-grid">
           <section className="recent-tests">
             <div className="section-header">
-              <img src={Tests} alt="Test Icon" className="section-icon" />
+              <img src={Courses} alt="Test Icon" className="section-icon" />
               <h2 className="section-title">Recent Tests</h2>
             </div>
             <div className="test-cards-container">
@@ -130,14 +130,34 @@ function Dashboard() {
                   </div>
                 </div>
               </div>
-              {/* ... More test cards */}
             </div>
           </section>
 
-          {/* Other sections */}
-          <section className="grid-section">
-            {" "}
-            {/* Content for other sections */}{" "}
+          <section className="leaderboard">
+            <div className="section-header">
+              <img
+                src={Leaderboard}
+                alt="Leaderboard Icon"
+                className="section-icon"
+              />
+              <h2 className="section-title">Leader Board</h2>
+            </div>
+            <ul className="leaderboard-list">
+              {/* Leaderboard Entry */}
+              <li className="leaderboard-entry">
+                <div className="leaderboard-rank gold">1</div>
+                <img
+                  src={UserAvatar}
+                  alt="John Leboo"
+                  className="leaderboard-avatar"
+                />
+                <div className="leaderboard-info">
+                  <h3>John Leboo</h3>
+                  <p>Neo Programming League_NPL</p>
+                </div>
+              </li>
+              {/* Repeat for other entries */}
+            </ul>
           </section>
           <section className="grid-section">
             {" "}
