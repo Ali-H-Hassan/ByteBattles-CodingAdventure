@@ -11,6 +11,9 @@ import LogOut from "../../assets/Unlock 2.png";
 import UserAvatar from "../../assets/Profile (1).png";
 import Search from "../../assets/search-icon.png";
 import TestCard from "../../assets/Test1.png";
+import GoldMedal from "../../assets/gold-medal.png";
+import SilverMedal from "../../assets/silver-medal.png";
+import BronzeMedal from "../../assets/bronze-medal.png";
 
 function Dashboard() {
   return (
@@ -143,9 +146,9 @@ function Dashboard() {
               <h2 className="section-title">Leader Board</h2>
             </div>
             <ul className="leaderboard-list">
-              {/* Leaderboard Entry */}
+              {/* First Place Entry */}
               <li className="leaderboard-entry">
-                <div className="leaderboard-rank gold">1</div>
+                <img src={GoldMedal} alt="Gold Medal" className="medal" />
                 <img
                   src={UserAvatar}
                   alt="John Leboo"
@@ -156,7 +159,33 @@ function Dashboard() {
                   <p>Neo Programming League_NPL</p>
                 </div>
               </li>
-              {/* Repeat for other entries */}
+              {/* Second Place Entry */}
+              <li className="leaderboard-entry">
+                <img src={SilverMedal} alt="Silver Medal" className="medal" />
+                <img
+                  src={UserAvatar}
+                  alt="Samuel Kingasunye"
+                  className="leaderboard-avatar"
+                />
+                <div className="leaderboard-info">
+                  <h3>Samuel Kingasunye</h3>
+                  <p>Neo Programming League_NPL</p>
+                </div>
+              </li>
+              {/* Third Place Entry */}
+              <li className="leaderboard-entry">
+                <img src={BronzeMedal} alt="Bronze Medal" className="medal" />
+                <img
+                  src={UserAvatar}
+                  alt="Stephen Kerubo"
+                  className="leaderboard-avatar"
+                />
+                <div className="leaderboard-info">
+                  <h3>Stephen Kerubo</h3>
+                  <p>Neo Programming League_NPL</p>
+                </div>
+              </li>
+              {/* Add more entries as needed */}
             </ul>
           </section>
           <section className="grid-section">

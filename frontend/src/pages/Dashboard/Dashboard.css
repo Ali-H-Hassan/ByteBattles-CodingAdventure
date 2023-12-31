@@ -129,6 +129,7 @@
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  height: 260px;
 }
 
 .test-card-image {
@@ -198,17 +199,21 @@ h3 {
   list-style: none;
   padding: 0;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
 }
 
 .leaderboard-entry {
   display: flex;
   align-items: center;
   margin-bottom: 15px; /* Space between entries */
+  gap: 50px;
 }
 
 .leaderboard-avatar {
-  width: 50px; /* Adjust as needed */
-  height: 50px;
+  width: 60px; /* Adjust as needed */
+  height: auto;
   border-radius: 50%;
   margin-right: 10px;
 }
@@ -245,7 +250,7 @@ h3 {
 
 /* Additional styles for medals or ranks if you have icons/images for them */
 .medal {
-  width: 24px; /* Adjust as needed */
-  height: 24px; /* Adjust as needed */
-  /* You might need to add specific positioning if it's not a simple text rank */
+  width: 60px; /* Adjust as needed */
+  height: auto; /* Adjust as needed */
+  margin-right: 10px; /* Space between the medal and the avatar */
 }
