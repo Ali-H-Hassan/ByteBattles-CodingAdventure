@@ -89,6 +89,38 @@ function Dashboard() {
             <img src={UserAvatar} alt="User Profile" />
           </div>
         </header>
+        <div className="content-grid">
+          <section className="recent-tests">
+            <h2>Recent Tests</h2>
+            <div className="test-cards-container">
+              {/* Replace with dynamic content if needed */}
+              <div className="test-card">
+                <div className="test-card-info">
+                  <h3>C Programming</h3>
+                  <button className="resume-button">Resume</button>
+                </div>
+                <div className="test-progress">
+                  <span className="progress-indicator green">75%</span>
+                </div>
+              </div>
+              <div className="test-card">
+                <div className="test-card-info">
+                  <h3>Python Programming</h3>
+                  <button className="resume-button">Resume</button>
+                </div>
+                <div className="test-progress">
+                  <span className="progress-indicator red">25%</span>
+                </div>
+              </div>
+              {/* Add more test cards as needed */}
+            </div>
+          </section>
+
+          {/* Placeholder for the other 3 parts of the grid */}
+          <section className="grid-section"></section>
+          <section className="grid-section"></section>
+          <section className="grid-section"></section>
+        </div>
         {/* Rest of the main content goes here */}
       </div>
     </div>
