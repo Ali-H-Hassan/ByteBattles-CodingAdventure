@@ -14,6 +14,7 @@ import TestCard from "../../assets/Test1.png";
 import GoldMedal from "../../assets/gold-medal.png";
 import SilverMedal from "../../assets/silver-medal.png";
 import BronzeMedal from "../../assets/bronze-medal.png";
+import CalendarIcon from "../../assets/CalendarIcon.png";
 
 function Dashboard() {
   return (
