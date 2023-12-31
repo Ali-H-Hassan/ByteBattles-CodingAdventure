@@ -15,7 +15,6 @@ import GoldMedal from "../../assets/gold-medal.png";
 import SilverMedal from "../../assets/silver-medal.png";
 import BronzeMedal from "../../assets/bronze-medal.png";
 import CalendarIcon from "../../assets/CalendarIcon.png";
-import Participants from "../../assets/Work.png";
 import Average from "../../assets/%.png";
 import Passed from "../../assets/Like.png";
 import Failed from "../../assets/Dislike.png";
@@ -216,28 +215,17 @@ function Dashboard() {
               </div>
             </div>
             <div className="statistic-card">
-              <img src={Tests} alt="Passed" className="statistic-icon" />
+              <img src={Passed} alt="Passed" className="statistic-icon" />
               <div className="statistic-info">
                 <span className="statistic-number">12</span>
                 <span className="statistic-text">Passed</span>
               </div>
             </div>
             <div className="statistic-card">
-              <img src={Tests} alt="Failed" className="statistic-icon" />
+              <img src={Failed} alt="Failed" className="statistic-icon" />
               <div className="statistic-info">
                 <span className="statistic-number">19</span>
                 <span className="statistic-text">Failed</span>
-              </div>
-            </div>
-            <div className="statistic-card">
-              <img
-                src={Tests}
-                alt="Waiting for Result"
-                className="statistic-icon"
-              />
-              <div className="statistic-info">
-                <span className="statistic-number">1</span>
-                <span className="statistic-text">Waiting for Result</span>
               </div>
             </div>
             <div className="statistic-card">
