@@ -1,113 +1,97 @@
-/* Dashboard.css */
+* {
+  box-sizing: border-box;
+}
+
 .dashboard {
-  display: flex;
-  min-height: 100vh;
-  font-family: "Arial", sans-serif; /* Use your preferred font */
+  display: flex; /* Align sidebar and main content horizontally */
+  height: 100vh; /* Full view height */
 }
 
 /* Sidebar styles */
-.sidebar {
-  width: 250px; /* Adjust the width as needed */
-  background-color: #2c3e50; /* Adjust the background color as needed */
-  color: #ffffff;
-  padding: 20px;
+.logo-section img {
+  display: block; /* Center logo image in its container */
+  margin: 0 auto;
+  padding: 20px; /* Add padding around logo */
+}
+
+.menu {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex-direction: column; /* Stack menu items vertically */
+  align-items: flex-start; /* Align menu items to the start */
+  gap: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-.logo {
-  font-size: 24px;
-  margin-bottom: 30px;
-  text-align: center;
-}
-
-.logo a {
-  color: #ffffff;
-  text-decoration: none;
-}
-
-.nav {
+.menu-item {
+  width: 100%; /* Full width of the sidebar */
   display: flex;
-  flex-direction: column;
+  align-items: center; /* Center items vertically */
+  padding: 10px 20px; /* Padding inside each menu item */
 }
 
-.nav-item {
-  padding: 10px 15px;
-  margin-bottom: 10px;
-  text-decoration: none;
-  color: #ffffff;
-  border-radius: 4px;
-  transition: background-color 0.3s ease;
+.icon-bg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px; /* Space between icon and text */
 }
 
-.nav-item:hover,
-.nav-item.active {
-  background-color: #1a1a1a;
-}
-
-/* Dark mode button could be a toggle in a real application */
-.nav-item.button {
-  text-align: left;
-  cursor: pointer;
+.icon-green,
+.icon-black,
+.icon-dark {
+  display: flex;
 }
 
 /* Main content styles */
-.dashboard-main {
-  flex-grow: 1;
-  background-color: #f0f0f0; /* Light grey background for the main area */
-  padding: 40px;
+.main-content {
+  flex-grow: 1; /* Take the remaining width */
+  padding: 20px; /* Padding inside the main content */
+  padding-left: 50px;
+  padding-right: 50px;
 }
 
-.dashboard-header {
+.main-header {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 40px;
+  justify-content: space-between; /* Space between header items */
+  align-items: center; /* Center items vertically */
+  padding-bottom: 20px; /* Space below header */
 }
 
-.dashboard-header h2 {
-  color: #333;
-  font-size: 28px; /* Adjust as per design */
+.welcome-message h1,
+.welcome-message p {
+  margin: 0; /* Reset default margins */
 }
 
 .search-bar {
-  display: flex;
   position: relative;
-  align-items: center;
 }
 
-.search-bar input[type="text"] {
-  padding: 10px;
-  border-radius: 20px;
-  border: 1px solid #ccc;
-  width: 100%;
-  max-width: 300px; /* Adjust as per design */
+.search-bar input {
+  width: 300px; /* Full width of the search bar container */
+  height: 50px;
+  padding: 8px 32px 8px 8px; /* Padding inside the input */
+  border-radius: 20px; /* Rounded corners */
+  border: 1px solid #ccc; /* Light border */
 }
 
-.search-button {
-  background: none;
-  border: none;
+.search-bar img {
   position: absolute;
-  right: 10px;
+  right: 8px; /* Position icon inside the input */
+  top: 50%;
+  transform: translateY(-50%); /* Center vertically */
   cursor: pointer;
 }
 
-/* Add additional responsive design as needed */
-@media (max-width: 768px) {
-  .dashboard {
-    flex-direction: column;
-  }
-
-  .sidebar {
-    width: 100%;
-    height: auto;
-    padding: 15px;
-  }
-
-  .dashboard-main {
-    padding: 20px;
-  }
+.profile-icon img {
+  width: 70px; /* Size of the profile icon */
+  height: auto;
+  border-radius: 50%; /* Make it round */
 }
 
-/* Continue adding specific styles for other dashboard components below... */
+/* Add any additional hover effects, active states, or responsive design styles as needed */
+.welcome-message h1 {
+  font-size: 44px;
+}
+.welcome-message p {
+  font-size: 20px;
+}

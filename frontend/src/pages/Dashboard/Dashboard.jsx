@@ -1,96 +1,98 @@
-// import React from "react";
-// import { Link } from "react-router-dom";
-// import "./Dashboard.css";
-// import ProfileImage from "../../assets/illustration.png";
-// import SearchIcon from "../../assets/search-icon.png";
-// const Dashboard = () => {
-//   // Dummy data, replace with actual data from your state or props
-//   const username = "Ali";
-//   const recentTests = [
-//     { id: 1, title: "C Programming", progress: 75 },
-//     { id: 2, title: "Python Programming", progress: 25 },
-//   ];
-//   const leaderboardData = [
-//     { id: 1, name: "SpongeBob", score: 98 },
-//     { id: 2, name: "Patrick Star", score: 89 },
-//     { id: 3, name: "Sandy Cheeks", score: 85 },
-//   ];
-//   const statsData = {
-//     testsWritten: 32,
-//     passed: 12,
-//     failed: 19,
-//     averageScore: 38,
-//   };
-//   return (
-//     <div className="dashboard">
-//       <aside className="sidebar">
-//         <div className="logo">
-//           <Link to="/">Byte Battle</Link>
-//         </div>
-//         <nav className="nav">
-//           <Link to="/dashboard" className="nav-item">
-//             Dashboard
-//           </Link>
-//           <Link to="/tests" className="nav-item">
-//             Tests
-//           </Link>
-//           <Link to="/courses" className="nav-item">
-//             Courses
-//           </Link>
-//           <Link to="/profile" className="nav-item">
-//             Profile
-//           </Link>
-//           <Link to="/leaderboard" className="nav-item">
-//             Leaderboard
-//           </Link>
-//           <button className="nav-item dark-mode">Dark Mode</button>
-//           <Link to="/logout" className="nav-item">
-//             Log Out
-//           </Link>
-//         </nav>
-//       </aside>
-//       <main className="dashboard-main">
-//         <header className="dashboard-header">
-//           <div className="welcome-message">
-//             <h2>Welcome {username}!</h2>
-//             <div className="search-bar">
-//               <input type="text" placeholder="Search..." />
-//               <button className="search-button">
-//                 <img src={SearchIcon} alt="Search" />
-//               </button>
-//             </div>
-//           </div>
-//         </header>
-//         <section className="recent-tests">
-//           {recentTests.map((test) => (
-//             <RecentTestCard
-//               key={test.id}
-//               title={test.title}
-//               progress={test.progress}
-//             />
-//           ))}
-//         </section>
-//         <section className="leaderboard">
-//           {leaderboardData.map((entry) => (
-//             <LeaderboardItem
-//               key={entry.id}
-//               name={entry.name}
-//               score={entry.score}
-//             />
-//           ))}
-//         </section>
-//         <section className="stats">
-//           <StatCard label="Tests Written" value={statsData.testsWritten} />
-//           <StatCard label="Passed" value={statsData.passed} />
-//           <StatCard label="Failed" value={statsData.failed} />
-//           <StatCard
-//             label="Average Score"
-//             value={`${statsData.averageScore}%`}
-//           />
-//         </section>
-//       </main>
-//     </div>
-//   );
-// };
+import React from "react";
+import "./Dashboard.css";
+import Logo from "../../assets/FullLogo.png";
+import DashboardIcon from "../../assets/Chart.png";
+import Tests from "../../assets/Edit 1.png";
+import Courses from "../../assets/Document Align Left 1.png";
+import Profile from "../../assets/Profile 1.png";
+import DarkMode from "../../assets/Moon.png";
+import Leaderboard from "../../assets/Award 5.png";
+import LogOut from "../../assets/Unlock 2.png";
+import UserAvatar from "../../assets/Profile (1).png";
+import Search from "../../assets/search-icon.png";
 
-// export default Dashboard;
+function Dashboard() {
+  return (
+    <div className="dashboard">
+      <div className="menu">
+        <div className="logo-section">
+          <img src={Logo} alt="Byte Battle Logo" />
+        </div>
+        <div className="menu-item">
+          <div className="icon-bg">
+            <div className="icon-green">
+              <img src={DashboardIcon} alt="Byte Battle Logo" />
+            </div>
+          </div>
+          <div className="menu-text menu-text-green">Dashboard</div>
+        </div>
+        <div className="menu-item">
+          <div className="icon-bg">
+            <div className="icon-black">
+              <img src={Tests} alt="Byte Battle Logo" />
+            </div>
+          </div>
+          <div className="menu-text">Tests</div>
+        </div>
+        <div className="menu-item">
+          <div className="icon-bg">
+            <div className="icon-black">
+              <img src={Courses} alt="Byte Battle Logo" />
+            </div>
+          </div>
+          <div className="menu-text">Courses</div>
+        </div>
+        <div className="menu-item">
+          <div className="icon-bg">
+            <div className="icon-black">
+              <img src={Profile} alt="Byte Battle Logo" />
+            </div>
+          </div>
+          <div className="menu-text">Profile</div>
+        </div>
+        <div className="menu-item">
+          <div className="icon-bg">
+            <div className="icon-dark">
+              <img src={Leaderboard} alt="Byte Battle Logo" />
+            </div>
+          </div>
+          <div className="menu-text menu-text-dark">Leaderboard</div>
+        </div>
+        <div className="menu-item">
+          <div className="icon-bg">
+            <div className="icon-dark">
+              <img src={DarkMode} alt="Byte Battle Logo" />
+            </div>
+          </div>
+          <div className="menu-text menu-text-dark">Dark mode</div>
+        </div>
+        <div className="menu-item">
+          <div className="icon-bg">
+            <div className="icon-dark">
+              <img src={LogOut} alt="Byte Battle Logo" />
+            </div>
+          </div>
+          <div className="menu-text menu-text-dark">Log Out</div>
+        </div>
+      </div>
+      <div className="main-content">
+        <header className="main-header">
+          <div className="welcome-message">
+            <h1>Welcome Ali!</h1>
+            <p>Here is your Profile Dashboard</p>
+          </div>
+          <div className="search-bar">
+            <input type="text" placeholder="Search" />
+            <img src={Search} alt="User Profile" />
+          </div>
+          <div className="profile-icon">
+            <img src={UserAvatar} alt="User Profile" />
+          </div>
+        </header>
+        {/* Rest of the main content goes here */}
+      </div>
+    </div>
+  );
+}
+
+export default Dashboard;
