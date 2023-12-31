@@ -15,6 +15,10 @@ import GoldMedal from "../../assets/gold-medal.png";
 import SilverMedal from "../../assets/silver-medal.png";
 import BronzeMedal from "../../assets/bronze-medal.png";
 import CalendarIcon from "../../assets/CalendarIcon.png";
+import Participants from "../../assets/Work.png";
+import Average from "../../assets/%.png";
+import Passed from "../../assets/Like.png";
+import Failed from "../../assets/Dislike.png";
 
 function Dashboard() {
   return (
@@ -205,25 +209,21 @@ function Dashboard() {
 
           <section className="statistics">
             <div className="statistic-card">
-              <img
-                src={TestsIcon}
-                alt="Tests Written"
-                className="statistic-icon"
-              />
+              <img src={Tests} alt="Tests Written" className="statistic-icon" />
               <div className="statistic-info">
                 <span className="statistic-number">32</span>
                 <span className="statistic-text">Tests Written</span>
               </div>
             </div>
             <div className="statistic-card">
-              <img src={PassedIcon} alt="Passed" className="statistic-icon" />
+              <img src={Tests} alt="Passed" className="statistic-icon" />
               <div className="statistic-info">
                 <span className="statistic-number">12</span>
                 <span className="statistic-text">Passed</span>
               </div>
             </div>
             <div className="statistic-card">
-              <img src={FailedIcon} alt="Failed" className="statistic-icon" />
+              <img src={Tests} alt="Failed" className="statistic-icon" />
               <div className="statistic-info">
                 <span className="statistic-number">19</span>
                 <span className="statistic-text">Failed</span>
@@ -231,7 +231,7 @@ function Dashboard() {
             </div>
             <div className="statistic-card">
               <img
-                src={WaitingIcon}
+                src={Tests}
                 alt="Waiting for Result"
                 className="statistic-icon"
               />
@@ -242,7 +242,7 @@ function Dashboard() {
             </div>
             <div className="statistic-card">
               <img
-                src={AverageIcon}
+                src={Average}
                 alt="Overall Average"
                 className="statistic-icon"
               />
