@@ -95,3 +95,65 @@
 .welcome-message p {
   font-size: 20px;
 }
+.content-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Two columns */
+  grid-template-rows: repeat(2, 1fr); /* Two rows */
+  gap: 20px; /* Space between grid items */
+  padding: 20px 0; /* Padding above and below the grid */
+}
+
+.recent-tests {
+  grid-column: span 2; /* If "Recent Tests" should span across two columns */
+  /* Add more styling as needed */
+}
+
+.test-cards-container {
+  display: flex;
+  overflow-x: auto; /* Allows scrolling on x-axis if cards overflow */
+}
+
+.test-card {
+  background-color: #f0f0f0; /* Light gray background, adjust as needed */
+  border-radius: 10px; /* Rounded corners */
+  margin-right: 20px; /* Space between cards */
+  padding: 20px; /* Padding inside cards */
+  width: 300px; /* Fixed width, adjust as needed */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Optional shadow */
+}
+
+.test-card-info h3 {
+  margin: 0 0 10px 0; /* Space below the title */
+}
+
+.resume-button {
+  /* Style your button */
+}
+
+.test-progress .progress-indicator {
+  /* Style your progress indicator */
+}
+
+.progress-indicator.green {
+  color: #00c354; /* Green color for progress */
+}
+
+.progress-indicator.red {
+  color: #ff0000; /* Red color for progress */
+}
+
+/* Styles for the other grid sections */
+.grid-section {
+  /* Apply shared styles for the other parts of the grid */
+}
+
+/* Add any responsive design styles as needed */
+@media (max-width: 768px) {
+  .content-grid {
+    grid-template-columns: 1fr; /* Stack grid items in a single column on small screens */
+  }
+
+  .recent-tests {
+    grid-column: 1; /* Ensure "Recent Tests" uses only one column on small screens */
+  }
+}
