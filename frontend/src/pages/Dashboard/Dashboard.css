@@ -185,3 +185,67 @@ h3 {
 .test-progress.red span {
   color: #ff6b6b;
 }
+/* ... (existing styles) ... */
+
+.leaderboard {
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.leaderboard-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.leaderboard-entry {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px; /* Space between entries */
+}
+
+.leaderboard-avatar {
+  width: 50px; /* Adjust as needed */
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.leaderboard-info h3 {
+  margin: 0;
+  font-size: 1.2em; /* Adjust as needed */
+}
+
+.leaderboard-info p {
+  margin: 0;
+  color: #666; /* Light text color for the league info */
+  font-size: 0.9em; /* Smaller font size for league info */
+}
+
+.leaderboard-rank {
+  font-size: 1.5em; /* Larger font size for rank */
+  margin-right: 10px;
+}
+
+.gold {
+  color: #ffd700; /* Gold color for first place */
+}
+
+.silver {
+  color: #c0c0c0; /* Silver color for second place */
+}
+
+.bronze {
+  color: #cd7f32; /* Bronze color for third place */
+}
+
+/* ... (rest of the styles) ... */
+
+/* Additional styles for medals or ranks if you have icons/images for them */
+.medal {
+  width: 24px; /* Adjust as needed */
+  height: 24px; /* Adjust as needed */
+  /* You might need to add specific positioning if it's not a simple text rank */
+}
