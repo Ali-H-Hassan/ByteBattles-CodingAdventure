@@ -1,7 +1,6 @@
-// Header.jsx
 import React from "react";
-import SearchIcon from "../../assets/search-icon.png"; // Update the path as needed
-import UserAvatar from "../../assets/Profile (1).png"; // Update the path as needed
+import SearchIcon from "../../assets/search-icon.png";
+import UserAvatar from "../../assets/Profile (1).png";
 
 function Header() {
   return (
