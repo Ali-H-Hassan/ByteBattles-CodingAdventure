@@ -1,4 +1,3 @@
-// Sidebar.jsx
 import React from "react";
 import Logo from "../../assets/FullLogo.png";
 import DashboardIcon from "../../assets/Chart.png";
