@@ -1,9 +1,10 @@
 import React from "react";
-import "./Leaderboard.css"; // Assuming you have a corresponding CSS file for styling
+import "./Leaderboard.css";
 import GoldMedal from "../../assets/gold-medal.png";
 import SilverMedal from "../../assets/silver-medal.png";
 import BronzeMedal from "../../assets/bronze-medal.png";
-import UserAvatar from "../../assets/Profile (1).png"; // Replace with dynamic avatars if needed
+import UserAvatar from "../../assets/Profile (1).png";
+import LeaderboardIcon from "../../assets/Award 5.png";
 
 function Leaderboard() {
   return (

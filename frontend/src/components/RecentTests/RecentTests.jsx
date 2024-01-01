@@ -1,11 +1,12 @@
 import React from "react";
-import TestCardImage from "../../assets/Test1.png"; // Assuming this is the path to your test card image
+import TestCardImage from "../../assets/Test1.png";
+import Tests from "../../assets/Edit 1.png";
 
 function RecentTests() {
   return (
     <section className="recent-tests">
       <div className="section-header">
-        <img src={TestCardImage} alt="Test Icon" className="section-icon" />
+        <img src={Tests} alt="Test Icon" className="section-icon" />
         <h2 className="section-title">Recent Tests</h2>
       </div>
       <div className="test-cards-container">
