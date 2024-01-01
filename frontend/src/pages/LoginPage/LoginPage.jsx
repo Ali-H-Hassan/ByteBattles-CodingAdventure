@@ -3,17 +3,19 @@ import { loginUser } from "../../services/authService";
 import { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import "./loginPage.css";
-import LoginImg from "../../assets/LoginImg.png"; // Ensure assets are correctly imported
+import LoginImg from "../../assets/LoginImg.png";
 import FbCard from "../../assets/FacebookCard.png";
 import GithCard from "../../assets/GithubCard.png";
 import GgCard from "../../assets/GoogleCard.png";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
-  const { setAuthState } = useContext(AuthContext); // Use setAuthState to update the global state
+  const { setAuthState } = useContext(AuthContext);
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
+  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -32,12 +34,12 @@ const LoginPage = () => {
         user: data.user,
         token: data.token,
       });
-      // Redirect to home or dashboard page
-    } catch (error) {
-      // Display error message from response or default message
-    }
+      navigate("/dashboard");
+    } catch (error) {}
   };
-
+  const handleSignUpClick = () => {
+    navigate("/signup");
+  };
   return (
     <div className="login-page">
       <Header />
@@ -71,7 +73,7 @@ const LoginPage = () => {
               <a href="#" className="forgot-password">
                 Forget Password?
               </a>
-              <a href="#" className="signup-link">
+              <a href="#" className="signup-link" onClick={handleSignUpClick}>
                 Sign Up
               </a>
             </div>

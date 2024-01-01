@@ -28,7 +28,9 @@
   padding: 10px 20px;
   cursor: pointer;
 }
-
+.menu-text:hover {
+  color: #00c354;
+}
 .icon-bg {
   display: flex;
   justify-content: center;

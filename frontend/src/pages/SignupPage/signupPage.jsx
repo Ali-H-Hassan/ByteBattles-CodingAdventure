@@ -1,7 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
 import Header from "../../components/Header/Header";
 import { registerUser } from "../../services/authService";
 import { AuthContext } from "../../context/AuthContext";
@@ -20,24 +19,21 @@ const SignupPage = () => {
   });
   const navigate = useNavigate();
 
-  // Function to fetch Google Auth URL
   const fetchGoogleAuthUrl = async () => {
     try {
       const response = await axios.post("http://localhost:3000/request");
       const googleAuthUrl = response.data.url;
-      window.location.href = googleAuthUrl; // Redirect to Google Auth URL
+      window.location.href = googleAuthUrl;
     } catch (error) {
       console.error("Error fetching Google Auth URL:", error);
     }
   };
 
-  // Handle changes in form inputs
   const handleChange = (event) => {
     const { name, value } = event.target;
     setNewUser({ ...newUser, [name]: value });
   };
 
-  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -47,15 +43,18 @@ const SignupPage = () => {
         user: data.user,
         token: data.token,
       });
-      navigate("/"); // Navigate to home or dashboard after successful registration
+      navigate("/dashboard");
     } catch (error) {
       console.error("Registration error:", error);
     }
   };
 
-  // Handle click on Google logo
   const handleGoogleSignIn = () => {
     fetchGoogleAuthUrl();
+  };
+
+  const handleNavigateToLogin = () => {
+    navigate("/login");
   };
 
   return (
@@ -98,7 +97,11 @@ const SignupPage = () => {
               </button>
             </form>
             <div className="signup-options">
-              <a href="#" className="login-link">
+              <a
+                href="#"
+                className="login-link"
+                onClick={handleNavigateToLogin}
+              >
                 Have an Account? Log In
               </a>
             </div>
