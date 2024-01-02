@@ -1,10 +1,12 @@
 import React from "react";
 import "./Footer.css";
-import logo from "../../assets/Logo.png";
-import Facebook from "../../assets/Facebook.png";
-import Instagram from "../../assets/Instagram.png";
-import Twitter from "../../assets/Twitter.png";
-import LinkedIn from "../../assets/LinkedIn.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebookF,
+  faInstagram,
+  faTwitter,
+  faLinkedinIn,
+} from "@fortawesome/free-brands-svg-icons";
 
 const Footer = () => {
   return (
@@ -24,34 +26,28 @@ const Footer = () => {
             info@ByteBattles.io
           </p>
           <div className="social-icons">
-            <div className="icon facebook">
-              <img
-                src={Facebook}
-                alt="Byte Battles logo"
-                className="footer-logo"
-              />
-            </div>
-            <div className="icon twitter">
-              <img
-                src={Instagram}
-                alt="Byte Battles logo"
-                className="footer-logo"
-              />
-            </div>
-            <div className="icon instagram">
-              <img
-                src={Twitter}
-                alt="Byte Battles logo"
-                className="footer-logo"
-              />
-            </div>
-            <div className="icon linkedin">
-              <img
-                src={LinkedIn}
-                alt="Byte Battles logo"
-                className="footer-logo"
-              />
-            </div>
+            <ul>
+              <li className="item facebook">
+                <a href="https://www.facebook.com">
+                  <FontAwesomeIcon icon={faFacebookF} className="icon" />
+                </a>
+              </li>
+              <li className="item instagram">
+                <a href="https://www.instagram.com">
+                  <FontAwesomeIcon icon={faInstagram} className="icon" />
+                </a>
+              </li>
+              <li className="item twitter">
+                <a href="https://www.twitter.com">
+                  <FontAwesomeIcon icon={faTwitter} className="icon" />
+                </a>
+              </li>
+              <li className="item linkedin">
+                <a href="https://www.linkedin.com">
+                  <FontAwesomeIcon icon={faLinkedinIn} className="icon" />
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
         <div className="footer-links">
