@@ -1,13 +1,14 @@
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import Header from "../../components/Header/Header";
 import { loginUser } from "../../services/authService";
-import { useState, useContext } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import "./loginPage.css";
 import LoginImg from "../../assets/LoginImg.png";
 import FbCard from "../../assets/FacebookCard.png";
 import GithCard from "../../assets/GithubCard.png";
 import GgCard from "../../assets/GoogleCard.png";
-import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const { setAuthState } = useContext(AuthContext);
@@ -35,11 +36,15 @@ const LoginPage = () => {
         token: data.token,
       });
       navigate("/dashboard");
-    } catch (error) {}
+    } catch (error) {
+      console.error("Login error:", error);
+    }
   };
+
   const handleSignUpClick = () => {
     navigate("/signup");
   };
+
   return (
     <div className="login-page">
       <Header />
@@ -50,22 +55,36 @@ const LoginPage = () => {
         <div className="login-form-section">
           <form onSubmit={handleSubmit} className="login-container">
             <h2 className="login-title">Byte Battle</h2>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Example@example.com"
-              value={credentials.email}
-              onChange={handleChange}
-            />
-            <input
-              type="password"
-              id="password"
-              name="password"
-              placeholder="Password"
-              value={credentials.password}
-              onChange={handleChange}
-            />
+            <div className="input-group">
+              <input
+                className="input"
+                required
+                type="email"
+                id="email"
+                name="email"
+                placeholder=" "
+                value={credentials.email}
+                onChange={handleChange}
+              />
+              <label className="label" htmlFor="email">
+                Email
+              </label>
+            </div>
+            <div className="input-group">
+              <input
+                className="input"
+                required
+                type="password"
+                id="password"
+                name="password"
+                placeholder=" "
+                value={credentials.password}
+                onChange={handleChange}
+              />
+              <label className="label" htmlFor="password">
+                Password
+              </label>
+            </div>
             <button type="submit" className="login-button">
               Log In
             </button>
@@ -77,9 +96,8 @@ const LoginPage = () => {
                 Sign Up
               </a>
             </div>
-
-            {/* Social login and other components */}
             <div className="social-signup">
+              {/* Social login and other components, add functionality as needed */}
               <p>Or you can Signup with</p>
               <div className="social-icons">
                 <img src={GgCard} alt="Google" className="social-icon google" />
