@@ -135,6 +135,11 @@
   color: #666;
   margin-top: 20px;
 }
+.password-error {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 5px;
+}
 
 /* Responsive styles */
 @media (max-width: 768px) {

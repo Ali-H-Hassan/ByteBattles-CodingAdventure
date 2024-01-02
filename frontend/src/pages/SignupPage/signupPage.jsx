@@ -17,25 +17,40 @@ const SignupPage = () => {
     username: "",
     password: "",
   });
+  const [passwordError, setPasswordError] = useState("");
   const navigate = useNavigate();
 
-  const fetchGoogleAuthUrl = async () => {
-    try {
-      const response = await axios.post("http://localhost:3000/request");
-      const googleAuthUrl = response.data.url;
-      window.location.href = googleAuthUrl;
-    } catch (error) {
-      console.error("Error fetching Google Auth URL:", error);
+  const isPasswordValid = (password) => {
+    if (password.length < 8) {
+      return "Password must be at least 8 characters.";
     }
+    if (!/[A-Z]/.test(password)) {
+      return "Password must contain at least one uppercase letter.";
+    }
+    if (!/\d/.test(password)) {
+      return "Password must contain at least one number.";
+    }
+    return "";
   };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setNewUser({ ...newUser, [name]: value });
+
+    // Validate password as the user types
+    if (name === "password") {
+      setPasswordError(isPasswordValid(value));
+    }
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    const passwordValidationMessage = isPasswordValid(newUser.password);
+    if (passwordValidationMessage) {
+      setPasswordError(passwordValidationMessage);
+      return;
+    }
+
     try {
       const data = await registerUser(newUser);
       setAuthState({
@@ -46,6 +61,16 @@ const SignupPage = () => {
       navigate("/dashboard");
     } catch (error) {
       console.error("Registration error:", error);
+    }
+  };
+
+  const fetchGoogleAuthUrl = async () => {
+    try {
+      const response = await axios.post("http://localhost:3000/request");
+      const googleAuthUrl = response.data.url;
+      window.location.href = googleAuthUrl;
+    } catch (error) {
+      console.error("Error fetching Google Auth URL:", error);
     }
   };
 
@@ -68,6 +93,7 @@ const SignupPage = () => {
           <div className="signup-container">
             <h2 className="signup-title">Byte Battle</h2>
             <form onSubmit={handleSubmit}>
+              {/* Email and Username Fields */}
               <div className="input-group">
                 <input
                   className="input"
@@ -98,6 +124,8 @@ const SignupPage = () => {
                   Username
                 </label>
               </div>
+
+              {/* Password Field with Validation Message */}
               <div className="input-group">
                 <input
                   className="input"
@@ -112,11 +140,17 @@ const SignupPage = () => {
                 <label className="label" htmlFor="password">
                   Password
                 </label>
+                {passwordError && (
+                  <div className="password-error">{passwordError}</div>
+                )}
               </div>
+
               <button type="submit" className="signup-button">
                 Register
               </button>
             </form>
+
+            {/* Other Signup Options */}
             <div className="signup-options">
               <a
                 href="#"

@@ -2,11 +2,11 @@ import React from "react";
 import SearchIcon from "../../assets/search-icon.png";
 import UserAvatar from "../../assets/Profile (1).png";
 
-function Header() {
+function HeaderDashboard({ username }) {
   return (
     <header className="main-header">
       <div className="welcome-message">
-        <h1>Welcome Ali!</h1>
+        <h1>Welcome, {username}!</h1>
         <p>Here is your Profile Dashboard</p>
       </div>
       <div className="search-bar">
@@ -20,4 +20,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default HeaderDashboard;
