@@ -68,30 +68,51 @@ const SignupPage = () => {
           <div className="signup-container">
             <h2 className="signup-title">Byte Battle</h2>
             <form onSubmit={handleSubmit}>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="Mail Id"
-                value={newUser.email}
-                onChange={handleChange}
-              />
-              <input
-                type="text"
-                id="username"
-                name="username"
-                placeholder="Username"
-                value={newUser.username}
-                onChange={handleChange}
-              />
-              <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Password"
-                value={newUser.password}
-                onChange={handleChange}
-              />
+              <div className="input-group">
+                <input
+                  className="input"
+                  required
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder=" "
+                  value={newUser.email}
+                  onChange={handleChange}
+                />
+                <label className="label" htmlFor="email">
+                  Email
+                </label>
+              </div>
+              <div className="input-group">
+                <input
+                  className="input"
+                  required
+                  type="text"
+                  id="username"
+                  name="username"
+                  placeholder=" "
+                  value={newUser.username}
+                  onChange={handleChange}
+                />
+                <label className="label" htmlFor="username">
+                  Username
+                </label>
+              </div>
+              <div className="input-group">
+                <input
+                  className="input"
+                  required
+                  type="password"
+                  id="password"
+                  name="password"
+                  placeholder=" "
+                  value={newUser.password}
+                  onChange={handleChange}
+                />
+                <label className="label" htmlFor="password">
+                  Password
+                </label>
+              </div>
               <button type="submit" className="signup-button">
                 Register
               </button>
