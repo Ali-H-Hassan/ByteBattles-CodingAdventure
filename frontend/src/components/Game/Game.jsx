@@ -1,8 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Phaser from "phaser";
 import GameScene from "./GameScene";
 
-const Game = () => {
+const GameComponent = () => {
+  const gameRef = useRef(null);
+
   useEffect(() => {
     const config = {
       type: Phaser.AUTO,
@@ -12,15 +14,18 @@ const Game = () => {
       scene: [GameScene],
     };
 
-    new Phaser.Game(config);
+    // Assign game to the ref
+    gameRef.current = new Phaser.Game(config);
 
-    // This will clean up the game when the component unmounts
+    // Cleanup function
     return () => {
-      this.game.destroy(true);
+      if (gameRef.current) {
+        gameRef.current.destroy(true);
+      }
     };
   }, []);
 
   return <div id="phaser-container"></div>;
 };
 
-export default Game;
+export default GameComponent;

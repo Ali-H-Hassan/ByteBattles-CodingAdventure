@@ -1,35 +1,25 @@
 require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
-// const passport = require("./middlewares/googleStrategy");
 const userRoutes = require("./routes/users");
 const challengeRoutes = require("./routes/challenges");
 const authRoutes = require("./routes/auth");
-const oauthRouter = require("./routes/oauth"); // Renamed for clarity
+const oauthRouter = require("./routes/oauth");
 const requestRouter = require("./routes/request");
 require("./db");
 const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3000;
+const gameRoutes = require("./routes/game");
 
 app.use(express.json());
 app.use(cors());
-// Session and Passport middleware should be initialized before defining any routes
-// app.use(
-//   session({
-//     secret: process.env.JWT_SECRET, // Use the secret from your environment variables
-//     resave: false,
-//     saveUninitialized: true,
-//   })
-// );
-
-// app.use(passport.initialize());
-// app.use(passport.session());
 
 // Define routes after middleware
 app.use("/users", userRoutes);
 app.use("/challenges", challengeRoutes);
 app.use("/api/auth", authRoutes); // If you want to keep this endpoint
+app.use("/api/game", gameRoutes);
 // OAuth Google callback route
 app.use("/request", requestRouter); // Request route for Google Auth URL
 app.get("/auth/google/callback", oauthRouter);

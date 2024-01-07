@@ -7,7 +7,7 @@ class GameScene extends Phaser.Scene {
 
   preload() {
     // Preload an image for an HTML tag example
-    this.load.image("htmlTag", "path_to_html_tag_image.png");
+    this.load.image("htmlTag", "Assets/Game.png");
     // Load additional assets as needed
   }
 
