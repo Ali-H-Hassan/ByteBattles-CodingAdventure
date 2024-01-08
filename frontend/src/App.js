@@ -9,14 +9,9 @@ import "./App.css";
 import GoogleCallbackHandler from "./pages/GoogleCallbackHandler";
 import Dashboard from "../src/pages/Dashboard/Dashboard";
 import GamePage from "./pages/GamePage";
+import Display from "../src/components/CoursesDisplay/CoursesDisplay";
 
 function App() {
-  const courses = [
-    // Add your course objects here
-    { id: "course1", imageUrl: "path/to/image1.jpg", title: "Course 1" },
-    { id: "course2", imageUrl: "path/to/image2.jpg", title: "Course 2" },
-    // ...more courses
-  ];
   return (
     <AuthProvider>
       <Router>
@@ -27,6 +22,7 @@ function App() {
             <Route path="/login" element={<Login />} />
             <Route path="/Dashboard" element={<Dashboard />} />
             <Route path="/game" element={<GamePage />} />
+            <Route path="/display" element={<Display />} />
             <Route
               path="/auth/google/callback"
               element={<GoogleAuthHandler />}
