@@ -11,6 +11,12 @@ import Dashboard from "../src/pages/Dashboard/Dashboard";
 import GamePage from "./pages/GamePage";
 
 function App() {
+  const courses = [
+    // Add your course objects here
+    { id: "course1", imageUrl: "path/to/image1.jpg", title: "Course 1" },
+    { id: "course2", imageUrl: "path/to/image2.jpg", title: "Course 2" },
+    // ...more courses
+  ];
   return (
     <AuthProvider>
       <Router>
