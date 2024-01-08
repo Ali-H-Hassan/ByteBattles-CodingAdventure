@@ -1,23 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap");
 
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: "Inter", sans-serif;
-  height: 100vh;
-  color: white;
-  background-color: #e9e9f0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .courses-display-container img {
   width: 100%;
   height: 100%;
@@ -116,6 +98,7 @@ body {
   transform: translateY(100%);
   opacity: 0;
   transition-delay: 0.3s;
+  color: rgb(110, 252, 205);
 }
 
 .courses-display-card-active .courses-display-title {

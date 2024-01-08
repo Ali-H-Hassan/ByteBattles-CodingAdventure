@@ -8,13 +8,13 @@ import DarkMode from "../../assets/Moon.png";
 import Leaderboard from "../../assets/Award 5.png";
 import LogOut from "../../assets/Unlock 2.png";
 
-function Sidebar() {
+function Sidebar({ onOptionSelect }) {
   return (
     <div className="menu">
       <div className="logo-section">
         <img src={Logo} alt="Byte Battle Logo" />
       </div>
-      <div className="menu-item">
+      <div className="menu-item" onClick={() => onOptionSelect("dashboard")}>
         <div className="icon-bg">
           <div className="icon-green">
             <img src={DashboardIcon} alt="Dashboard Icon" />
@@ -22,7 +22,7 @@ function Sidebar() {
         </div>
         <div className="menu-text menu-text-green">Dashboard</div>
       </div>
-      <div className="menu-item">
+      <div className="menu-item" onClick={() => onOptionSelect("tests")}>
         <div className="icon-bg">
           <div className="icon-black">
             <img src={Tests} alt="Tests Icon" />
@@ -30,7 +30,7 @@ function Sidebar() {
         </div>
         <div className="menu-text">Tests</div>
       </div>
-      <div className="menu-item">
+      <div className="menu-item" onClick={() => onOptionSelect("courses")}>
         <div className="icon-bg">
           <div className="icon-black">
             <img src={Courses} alt="Courses Icon" />
@@ -38,7 +38,7 @@ function Sidebar() {
         </div>
         <div className="menu-text">Courses</div>
       </div>
-      <div className="menu-item">
+      <div className="menu-item" onClick={() => onOptionSelect("profile")}>
         <div className="icon-bg">
           <div className="icon-black">
             <img src={Profile} alt="Profile Icon" />
@@ -46,7 +46,7 @@ function Sidebar() {
         </div>
         <div className="menu-text">Profile</div>
       </div>
-      <div className="menu-item">
+      <div className="menu-item" onClick={() => onOptionSelect("leaderboard")}>
         <div className="icon-bg">
           <div className="icon-dark">
             <img src={Leaderboard} alt="Leaderboard Icon" />
@@ -54,6 +54,7 @@ function Sidebar() {
         </div>
         <div className="menu-text menu-text-dark">Leaderboard</div>
       </div>
+      {/* Assuming Dark Mode toggle is handled differently, not including in onOptionSelect */}
       <div className="menu-item">
         <div className="icon-bg">
           <div className="icon-dark">
@@ -62,6 +63,7 @@ function Sidebar() {
         </div>
         <div className="menu-text menu-text-dark">Dark Mode</div>
       </div>
+      {/* Assuming Log Out is handled differently, not including in onOptionSelect */}
       <div className="menu-item">
         <div className="icon-bg">
           <div className="icon-dark">
