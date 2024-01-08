@@ -6,16 +6,24 @@ class GameScene extends Phaser.Scene {
   }
 
   preload() {
-    // Preload an image for an HTML tag example
-    this.load.image("htmlTag", "Assets/Game.png");
-    // Load additional assets as needed
+    // Currently, we're not loading any assets.
   }
 
   create() {
-    // Add an HTML tag sprite to the scene
-    this.htmlTag = this.add.sprite(100, 200, "htmlTag").setInteractive();
+    // Create a simple rectangle shape to represent the "htmlTag"
+    this.htmlTag = this.add.graphics({ fillStyle: { color: 0x9966ff } });
+
+    // Draw the rectangle onto the graphics object
+    this.htmlTag.fillRect(100, 200, 100, 100);
+
+    // Set the graphics object to be interactive
+    this.htmlTag.setInteractive(
+      new Phaser.Geom.Rectangle(0, 0, 100, 100),
+      Phaser.Geom.Rectangle.Contains
+    );
+
+    // Now we can make it draggable
     this.input.setDraggable(this.htmlTag);
-    this.htmlTag.data.set("type", "tag");
 
     // Add text to the scene
     this.add.text(20, 20, "Drag the HTML tags to the correct container", {
@@ -23,18 +31,16 @@ class GameScene extends Phaser.Scene {
       fill: "#ffffff",
     });
 
-    // Event listener for drag start
+    // Event listeners for drag events
     this.input.on("dragstart", (pointer, gameObject) => {
       gameObject.setTint(0xff69b4); // Highlight the object when being dragged
     });
 
-    // Event listener for drag
     this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
       gameObject.x = dragX;
       gameObject.y = dragY;
     });
 
-    // Event listener for drag end
     this.input.on("dragend", (pointer, gameObject) => {
       gameObject.clearTint(); // Remove highlight when released
 
@@ -64,7 +70,6 @@ class GameScene extends Phaser.Scene {
 
   isCorrectDropZone(gameObject) {
     // Define a drop zone area and check if the gameObject is within this area
-    // This is placeholder logic; you'd define your drop zone coordinates here
     const dropZone = new Phaser.Geom.Rectangle(300, 400, 200, 100);
     return dropZone.contains(gameObject.x, gameObject.y);
   }
