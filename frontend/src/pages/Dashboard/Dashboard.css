@@ -69,11 +69,12 @@
 }
 
 .search-bar input {
-  width: 300px;
+  width: 400px;
   height: 50px;
   padding: 8px 32px 8px 8px;
   border-radius: 20px;
   border: 1px solid #ccc;
+  font-size: 20px;
 }
 
 .search-bar img {
