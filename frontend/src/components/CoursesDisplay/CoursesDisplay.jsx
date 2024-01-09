@@ -40,14 +40,6 @@ const CourseSection = ({ title, courses }) => {
     setActiveCourse(activeCourse === courseId ? null : courseId);
   };
 
-  const handleMouseMove = (e) => {
-    const rect = e.target.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    e.target.style.setProperty("--mouseX", `${x}px`);
-    e.target.style.setProperty("--mouseY", `${y}px`);
-  };
-
   return (
     <>
       <h2>{title}</h2>
@@ -72,10 +64,13 @@ const CourseSection = ({ title, courses }) => {
               </div>
               <h3 className="courses-display-title">{course.title}</h3>
               {activeCourse === course.id && (
-                <button className="neon-button" onMouseMove={handleMouseMove}>
-                  <div className="neon-inner"></div>
-                  <span>Start Adventure</span>
-                </button>
+                <a className="new-neon-button">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  Start Adventure
+                </a>
               )}
             </div>
 
