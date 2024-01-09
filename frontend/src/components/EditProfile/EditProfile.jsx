@@ -23,7 +23,6 @@ function EditProfile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle form submission
     console.log(profile);
   };
 
@@ -85,18 +84,14 @@ function EditProfile() {
             name="country"
             value={profile.country}
             onChange={handleChange}
-          >
-            {/* Add options here */}
-          </select>
+          ></select>
           <label htmlFor="city">City</label>
           <select
             id="city"
             name="city"
             value={profile.city}
             onChange={handleChange}
-          >
-            {/* Add options here */}
-          </select>
+          ></select>
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
