@@ -8,7 +8,6 @@ import UpcomingQuiz from "../../components/UpcomingQuiz/UpcomingQuiz";
 import Statistics from "../../components/Statistics/Statistics";
 import CoursesDisplay from "../../components/CoursesDisplay/CoursesDisplay";
 import "./Dashboard.css";
-
 function Dashboard() {
   const { authState } = useContext(AuthContext);
   const username = authState.user ? authState.user.username : "User";
@@ -21,8 +20,9 @@ function Dashboard() {
   return (
     <div className="dashboard">
       <Sidebar onOptionSelect={handleOptionSelect} />
+
       <div className="main-content">
-        <Header username={username} />
+        {selectedOption === "dashboard" && <Header username={username} />}
         <div className="content-grid">
           {selectedOption === "dashboard" && (
             <>

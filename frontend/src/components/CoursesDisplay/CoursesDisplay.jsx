@@ -35,32 +35,43 @@ const CoursesDisplay = () => {
   const handleCardClick = (courseId) => {
     setActiveCourse(activeCourse === courseId ? null : courseId);
   };
+
   return (
-    <div className="courses-display-container">
-      {courses.map((course) => (
-        <div
-          key={course.id}
-          className={`courses-display-card ${
-            activeCourse === course.id ? "courses-display-card-active" : ""
-          }`}
-          onClick={() => handleCardClick(course.id)}
-        >
-          <img
-            className="courses-display-background"
-            src={course.imageUrl}
-            alt={course.title}
-          />
+    <div className="courses-grid-container">
+      <div className="courses-header">
+        <p>Select a course to embark on your gamified learning adventure!</p>
+      </div>
+      <div className="courses-display-container">
+        {courses.map((course) => (
+          <div
+            key={course.id}
+            className={`courses-display-card ${
+              activeCourse === course.id ? "courses-display-card-active" : ""
+            }`}
+            onClick={() => handleCardClick(course.id)}
+          >
+            <img
+              className="courses-display-background"
+              src={course.imageUrl}
+              alt={course.title}
+            />
 
-          <div className="courses-display-card-content">
-            <div className="courses-display-profile-image">
-              <GamepadSVG />
+            <div className="courses-display-card-content">
+              <div className="courses-display-profile-image">
+                <GamepadSVG />
+              </div>
+              <h3 className="courses-display-title">{course.title}</h3>
+              {activeCourse === course.id && (
+                <button className="start-adventure-button">
+                  Start Adventure
+                </button>
+              )}
             </div>
-            <h3 className="courses-display-title">{course.title}</h3>
-          </div>
 
-          <div className="courses-display-backdrop"></div>
-        </div>
-      ))}
+            <div className="courses-display-backdrop"></div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
