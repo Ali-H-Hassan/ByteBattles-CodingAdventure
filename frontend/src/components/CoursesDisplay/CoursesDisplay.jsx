@@ -23,13 +23,17 @@ const GamepadSVG = () => (
   </svg>
 );
 
-const courses = [
+const frontendCourses = [
   { id: 1, imageUrl: Display, title: "HTML" },
   { id: 2, imageUrl: Display, title: "CSS" },
-  // ... add other courses here
 ];
 
-const CoursesDisplay = () => {
+const backendCourses = [
+  { id: 3, imageUrl: Display, title: "Node.js" },
+  { id: 4, imageUrl: Display, title: "Python" },
+];
+
+const CourseSection = ({ title, courses }) => {
   const [activeCourse, setActiveCourse] = useState(null);
 
   const handleCardClick = (courseId) => {
@@ -45,10 +49,8 @@ const CoursesDisplay = () => {
   };
 
   return (
-    <div className="courses-grid-container">
-      <div className="courses-header">
-        <p>Select a course to embark on your gamified learning adventure!</p>
-      </div>
+    <>
+      <h2>{title}</h2>
       <div className="courses-display-container">
         {courses.map((course) => (
           <div
@@ -81,6 +83,18 @@ const CoursesDisplay = () => {
           </div>
         ))}
       </div>
+    </>
+  );
+};
+
+const CoursesDisplay = () => {
+  return (
+    <div className="courses-grid-container">
+      <div className="courses-header">
+        <h1>Select a course to embark on your gamified learning adventure!</h1>
+      </div>
+      <CourseSection title="Frontend" courses={frontendCourses} />
+      <CourseSection title="Backend" courses={backendCourses} />
     </div>
   );
 };

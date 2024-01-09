@@ -2,27 +2,36 @@
 
 .courses-grid-container {
   display: grid;
-  grid-template-rows: auto 1fr; /* Header and courses in separate rows */
-  gap: 20px; /* Adjust the gap as needed */
+  grid-template-rows: auto 1fr;
+  gap: 20px;
   width: 100%;
   max-width: 900px;
   margin-inline: auto;
 }
 
-.courses-header {
+.courses-header h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 0.5em;
   text-align: center;
-  grid-row: 1; /* Places the header in the first row */
+}
+
+h2 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 1em;
 }
 
 .courses-display-container {
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
-  height: 400px;
-  grid-row: 2; /* Places the courses in the second row */
 }
+
 .courses-display-card {
   min-width: 100px;
-  height: 100%;
+  min-height: 300px;
   border-radius: 30px;
   overflow: hidden;
   display: flex;
@@ -30,8 +39,7 @@
   flex-grow: 1;
   cursor: pointer;
   position: relative;
-  transition: flex-grow 0.5s cubic-bezier(0.455, 0.03, 0.515, 0.955),
-    filter 0.25s ease;
+  transition: flex-grow 0.5s, filter 0.25s ease;
 }
 
 .courses-display-card-active {
@@ -41,18 +49,13 @@
 .courses-display-background {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   object-position: center;
-  filter: brightness(0.8);
-  z-index: -1;
+  filter: brightness(1);
+  z-index: 0;
   transition: filter 0.25s ease;
-  width: 100%; /* Full width of the container */
-  height: 100%; /* Full height of the container */
-  object-fit: cover;
-}
-
-.courses-display-card-active > .courses-display-background {
-  filter: brightness(1) grayscale(0);
 }
 
 .courses-display-card-content {
@@ -75,6 +78,8 @@
 
 .courses-display-card-content * {
   transition: opacity 0.25s, transform 0.25s;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .courses-display-profile-image {
@@ -104,15 +109,7 @@
 .courses-display-title {
   white-space: nowrap;
   margin-left: 10px;
-  transform: translateY(100%);
-  opacity: 0;
-  transition-delay: 0.3s;
   color: rgb(110, 252, 205);
-}
-
-.courses-display-card-active .courses-display-title {
-  opacity: 1;
-  transform: translateY(0);
 }
 
 .courses-display-backdrop {
@@ -121,23 +118,8 @@
   right: 0;
   bottom: 0;
   height: 100px;
-  z-index: 0;
+  z-index: 5;
   background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7));
-}
-
-.start-adventure-button {
-  margin-left: 10px;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #4caf50;
-  color: white;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.start-adventure-button:hover {
-  background-color: #388e3c;
 }
 
 .neon-button {
@@ -150,10 +132,12 @@
   outline: none;
   border-radius: 5px;
   overflow: hidden;
-  z-index: 1;
-  --primary: 200; /* This should be a full HSL color value */
-  --mouseX: 50%; /* Default value */
-  --mouseY: 50%; /* Default value */
+  z-index: 10;
+  --primary-h: 162;
+  --primary-s: 100%;
+  --primary-l: 50%;
+  --mouseX: 50%;
+  --mouseY: 50%;
   --angle: 0deg;
 }
 
@@ -168,8 +152,8 @@
     from var(--angle) at 50% 50%,
     transparent 0%,
     transparent 33%,
-    hsl(var(--primary), 100%, 50%) 50%,
-    /* Updated to use full color value */ transparent 66%,
+    hsl(var(--primary-h), var(--primary-s), var(--primary-l)) 50%,
+    transparent 66%,
     transparent 100%
   );
   animation: rotate 2s infinite linear;
@@ -185,12 +169,12 @@
   inset: 0;
   background: radial-gradient(
     100px circle at var(--mouseX) var(--mouseY),
-    hsl(var(--primary), 100%, 50%) 0%,
-    /* Updated to use full color value */ transparent 50%
+    rgba(110, 252, 205, 0.3) 0%,
+    transparent 50%
   );
   border-radius: inherit;
   z-index: 0;
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.3s ease;
 }
 
