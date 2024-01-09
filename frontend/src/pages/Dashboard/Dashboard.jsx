@@ -7,6 +7,8 @@ import Leaderboard from "../../components/Leaderboard/Leaderboard";
 import UpcomingQuiz from "../../components/UpcomingQuiz/UpcomingQuiz";
 import Statistics from "../../components/Statistics/Statistics";
 import CoursesDisplay from "../../components/CoursesDisplay/CoursesDisplay";
+import EditProfile from "../../components/EditProfile/EditProfile";
+
 import "./Dashboard.css";
 function Dashboard() {
   const { authState } = useContext(AuthContext);
@@ -33,6 +35,7 @@ function Dashboard() {
             </>
           )}
           {selectedOption === "courses" && <CoursesDisplay />}
+          {selectedOption === "profile" && <EditProfile />}
         </div>
       </div>
     </div>
