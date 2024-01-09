@@ -65,6 +65,7 @@
   overflow: hidden;
   transition: all 0.25s ease;
   z-index: 10;
+  justify-content: space-between;
 }
 
 .courses-display-card-active > .courses-display-card-content {
@@ -137,4 +138,71 @@
 
 .start-adventure-button:hover {
   background-color: #388e3c;
+}
+
+.neon-button {
+  position: relative;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #111;
+  color: white;
+  outline: none;
+  border-radius: 5px;
+  overflow: hidden;
+  z-index: 1;
+  --primary: 200; /* This should be a full HSL color value */
+  --mouseX: 50%; /* Default value */
+  --mouseY: 50%; /* Default value */
+  --angle: 0deg;
+}
+
+.neon-button::before,
+.neon-button::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  background-color: inherit;
+  border-radius: inherit;
+  background-image: conic-gradient(
+    from var(--angle) at 50% 50%,
+    transparent 0%,
+    transparent 33%,
+    hsl(var(--primary), 100%, 50%) 50%,
+    /* Updated to use full color value */ transparent 66%,
+    transparent 100%
+  );
+  animation: rotate 2s infinite linear;
+  z-index: -1;
+}
+
+.neon-button::before {
+  filter: blur(15px);
+}
+
+.neon-button .neon-inner {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    100px circle at var(--mouseX) var(--mouseY),
+    hsl(var(--primary), 100%, 50%) 0%,
+    /* Updated to use full color value */ transparent 50%
+  );
+  border-radius: inherit;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.neon-button:hover .neon-inner {
+  opacity: 1;
+}
+
+@keyframes rotate {
+  from {
+    --angle: 0deg;
+  }
+  to {
+    --angle: 360deg;
+  }
 }
