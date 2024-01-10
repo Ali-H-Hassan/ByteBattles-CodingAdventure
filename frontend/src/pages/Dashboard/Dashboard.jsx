@@ -34,9 +34,9 @@ function Dashboard() {
               <Statistics />
             </>
           )}
-          {selectedOption === "courses" && <CoursesDisplay />}
-          {selectedOption === "profile" && <EditProfile />}
         </div>
+        {selectedOption === "courses" && <CoursesDisplay />}
+        {selectedOption === "profile" && <EditProfile />}
       </div>
     </div>
   );

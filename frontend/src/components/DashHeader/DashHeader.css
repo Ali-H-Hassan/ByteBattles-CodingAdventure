@@ -12,6 +12,7 @@
 
 .search-bar {
   position: relative;
+  padding-left: 235px;
 }
 
 .search-bar input {
