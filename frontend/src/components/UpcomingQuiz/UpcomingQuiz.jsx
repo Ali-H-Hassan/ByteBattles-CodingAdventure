@@ -1,5 +1,6 @@
 import React from "react";
 import CalendarIcon from "../../assets/CalendarIcon.png";
+import "./UpcomingQuiz.css";
 
 const UpcomingQuiz = () => {
   return (

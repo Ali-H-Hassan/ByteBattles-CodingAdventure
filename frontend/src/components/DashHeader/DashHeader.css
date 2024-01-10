@@ -1,0 +1,46 @@
+.main-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 20px;
+}
+
+.welcome-message h1,
+.welcome-message p {
+  margin: 0;
+}
+
+.search-bar {
+  position: relative;
+}
+
+.search-bar input {
+  width: 400px;
+  height: 50px;
+  padding: 8px 32px 8px 8px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  font-size: 20px;
+}
+
+.search-bar img {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.profile-icon img {
+  width: 70px;
+  height: auto;
+  border-radius: 50%;
+}
+
+.welcome-message h1 {
+  font-size: 44px;
+}
+
+.welcome-message p {
+  font-size: 20px;
+}

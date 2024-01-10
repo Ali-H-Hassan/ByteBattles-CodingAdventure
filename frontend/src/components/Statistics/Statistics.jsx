@@ -3,6 +3,7 @@ import TestsIcon from "../../assets/Edit 1.png";
 import PassedIcon from "../../assets/Like.png";
 import FailedIcon from "../../assets/Dislike.png";
 import AverageIcon from "../../assets/%.png";
+import "./Statistics.css";
 
 function Statistics() {
   return (

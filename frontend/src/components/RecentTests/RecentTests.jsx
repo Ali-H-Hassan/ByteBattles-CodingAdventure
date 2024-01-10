@@ -1,6 +1,7 @@
 import React from "react";
 import TestCardImage from "../../assets/Test1.png";
 import Tests from "../../assets/Edit 1.png";
+import "./RecentTests.css";
 
 function RecentTests() {
   return (

@@ -1,6 +1,7 @@
 import React from "react";
 import SearchIcon from "../../assets/search-icon.png";
 import UserAvatar from "../../assets/Profile (1).png";
+import "./DashHeader.css";
 
 function HeaderDashboard({ username }) {
   return (

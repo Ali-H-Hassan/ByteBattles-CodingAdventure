@@ -7,6 +7,7 @@ import Profile from "../../assets/Profile 1.png";
 import DarkMode from "../../assets/Moon.png";
 import Leaderboard from "../../assets/Award 5.png";
 import LogOut from "../../assets/Unlock 2.png";
+import "./Sidebar.css";
 
 function Sidebar({ onOptionSelect }) {
   return (

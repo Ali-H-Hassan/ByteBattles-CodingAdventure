@@ -26,6 +26,8 @@
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  height: 45px;
+  font-size: 18px;
 }
 
 .form-buttons {
@@ -39,6 +41,9 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  height: auto;
+  width: 180px;
+  font-size: 25px;
 }
 
 .cancel-button {
