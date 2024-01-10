@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./EditProfile.css";
+import Avatar from "../../assets/Profile (1).png";
 
 function EditProfile() {
   const [profile, setProfile] = useState({
@@ -20,14 +21,34 @@ function EditProfile() {
       [name]: value,
     }));
   };
-
+  const [profilePicture, setProfilePicture] = useState(Avatar);
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(profile);
   };
-
+  const handleProfilePictureChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setProfilePicture(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
   return (
     <div className="edit-profile-container">
+      <div className="profile-image-container">
+        <img src={Avatar} alt="Profile" className="profile-image" />
+        <input
+          type="file"
+          id="profilePicture"
+          name="profilePicture"
+          onChange={handleProfilePictureChange}
+          hidden
+        />
+        <label htmlFor="profilePicture" className="edit-image-button">
+          Edit Image
+        </label>
+      </div>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="firstName">First Name</label>
