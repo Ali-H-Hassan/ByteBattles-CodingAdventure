@@ -36,19 +36,6 @@ function EditProfile() {
   };
   return (
     <div className="edit-profile-container">
-      <div className="profile-image-container">
-        <img src={Avatar} alt="Profile" className="profile-image" />
-        <input
-          type="file"
-          id="profilePicture"
-          name="profilePicture"
-          onChange={handleProfilePictureChange}
-          hidden
-        />
-        <label htmlFor="profilePicture" className="edit-image-button">
-          Edit Image
-        </label>
-      </div>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="firstName">First Name</label>
@@ -133,6 +120,19 @@ function EditProfile() {
           </button>
         </div>
       </form>
+      <div className="profile-image-container">
+        <img src={Avatar} alt="Profile" className="profile-image" />
+        <input
+          type="file"
+          id="profilePicture"
+          name="profilePicture"
+          onChange={handleProfilePictureChange}
+          hidden
+        />
+        <button htmlFor="profilePicture" className="edit-image-button">
+          Edit Image
+        </button>
+      </div>
     </div>
   );
 }
