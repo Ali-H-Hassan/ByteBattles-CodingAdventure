@@ -34,6 +34,9 @@ function EditProfile() {
     };
     reader.readAsDataURL(file);
   };
+  const handleCancel = () => {
+    window.location.href = "/dashboard";
+  };
   return (
     <div className="edit-profile-container">
       <form onSubmit={handleSubmit}>
@@ -112,7 +115,11 @@ function EditProfile() {
           />
         </div>
         <div className="form-buttons">
-          <button type="button" className="cancel-button">
+          <button
+            type="button"
+            className="cancel-button"
+            onClick={handleCancel}
+          >
             Cancel
           </button>
           <button type="submit" className="save-button">
