@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import "./LeaderboardHeader.css";
 
 const Header = ({ companies, currentCompany, onCompanyChange }) => {
   const navigate = useNavigate();
