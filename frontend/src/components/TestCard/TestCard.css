@@ -1,41 +1,48 @@
-.test-card {
-  background: #ffffff;
-  border-radius: 10px; /* Adjust as needed for your design */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* This gives a subtle shadow */
+.test-card-main {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 20px; /* Adjust padding as needed */
-  margin: 20px; /* Space between cards if you have a grid */
-  transition: transform 0.3s ease-in-out; /* For a hover effect if you want */
+  padding: 20px;
+  transition: box-shadow 0.3s ease-in-out;
 }
 
-.test-card:hover {
-  transform: translateY(-5px); /* Optional hover effect */
+.test-card-main:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.test-card-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
 .test-logo {
-  max-width: 80px; /* Adjust the size as needed */
-  margin-bottom: 16px; /* Space below the logo */
+  width: 130px;
+  height: auto;
 }
 
 .test-status {
-  background-color: #4caf50; /* Green background for the 'Submitted' status */
+  background-color: #4caf50;
   color: white;
-  border-radius: 20px;
-  padding: 5px 10px;
-  font-size: 0.8em;
-  margin-bottom: 16px; /* Space below the status badge */
-  align-self: flex-start; /* Position to the left */
+  padding: 5px 15px;
+  border-radius: 16px;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 .test-title {
-  font-size: 1.5em; /* Larger font size for the title */
+  font-size: 1.2rem;
   color: #333;
-  margin-bottom: 4px; /* Space between title and subtitle */
+  font-weight: bold;
+  margin: 5px 0;
 }
 
 .test-subtitle {
-  font-size: 1em;
+  font-size: 0.9rem;
   color: #666;
 }

@@ -5,7 +5,6 @@ import "./Test.css";
 import Amazon from "../../assets/amazon.png";
 
 const TestsPage = () => {
-  // Create an array with six test items
   const testData = Array(6).fill({
     logo: Amazon,
     title: "Amazon Model Test",
