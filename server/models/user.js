@@ -7,6 +7,30 @@ const userSchema = new mongoose.Schema({
     unique: true,
     sparse: true,
   },
+  name: {
+    type: String,
+    required: true,
+  },
+  contactNumber: {
+    type: String,
+    required: true,
+  },
+  address: {
+    type: String,
+    required: true,
+  },
+  country: {
+    type: String,
+    required: true,
+  },
+  city: {
+    type: String,
+    required: true,
+  },
+  profilePictureUrl: {
+    type: String,
+    default: "",
+  },
   username: {
     type: String,
     required: true,

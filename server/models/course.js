@@ -35,7 +35,6 @@ const courseSchema = new mongoose.Schema({
   },
 });
 
-// Middleware to update the 'updated_at' field on save
 courseSchema.pre("save", function (next) {
   this.updated_at = Date.now();
   next();
