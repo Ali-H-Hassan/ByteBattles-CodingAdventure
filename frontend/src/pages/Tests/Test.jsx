@@ -1,8 +1,8 @@
 import React from "react";
-import Sidebar from "./Sidebar";
-import DashHeader from "./DashHeader";
-import TestCard from "./TestCard";
-import "./TestsPage.css"; // Your CSS file for styling
+import Sidebar from "../../components/Sidebar/Sidebar";
+import DashHeader from "../../components/DashHeader/DashHeader";
+import TestCard from "../../components/TestCard/TestCard";
+import "./TestsPage.css";
 
 const TestsPage = () => {
   // Placeholder for actual test data
