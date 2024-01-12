@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "./EditProfile.css";
 import Avatar from "../../assets/Profile (1).png";
 
@@ -21,7 +21,7 @@ function EditProfile() {
     city: "",
     password: "",
   });
-
+  const fileInputRef = useRef();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProfile((prevProfile) => ({
@@ -36,9 +36,29 @@ function EditProfile() {
 
   const [profilePicture, setProfilePicture] = useState(Avatar);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(profile);
+
+    const formData = new FormData();
+    Object.entries(profile).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+
+    const file = fileInputRef.current.files[0];
+    if (file) {
+      formData.append("profilePicture", file);
+    }
+
+    try {
+      const response = await fetch("/api/profile/update", {
+        method: "POST",
+        body: formData,
+      });
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   const handleProfilePictureChange = (e) => {
@@ -55,13 +75,13 @@ function EditProfile() {
   };
   return (
     <div className="edit-profile-container">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
         <div className="form-group">
           <label htmlFor="Name">Full Name</label>
           <input
             type="text"
             id="Name"
-            name="Name"
+            name="name"
             value={profile.name}
             onChange={handleChange}
           />
@@ -69,7 +89,7 @@ function EditProfile() {
           <input
             type="text"
             id="Username"
-            name="Username"
+            name="username"
             value={profile.username}
             onChange={handleChange}
           />
@@ -161,16 +181,17 @@ function EditProfile() {
       </form>
       <div className="profile-image-container">
         <img src={Avatar} alt="Profile" className="profile-image" />
+        <label htmlFor="profilePicture" className="edit-image-button">
+          Edit Image
+        </label>
         <input
           type="file"
           id="profilePicture"
           name="profilePicture"
+          ref={fileInputRef}
           onChange={handleProfilePictureChange}
           hidden
         />
-        <button htmlFor="profilePicture" className="edit-image-button">
-          Edit Image
-        </button>
       </div>
     </div>
   );
