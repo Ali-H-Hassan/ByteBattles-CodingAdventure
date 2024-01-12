@@ -4,6 +4,7 @@ const session = require("express-session");
 const userRoutes = require("./routes/users");
 const challengeRoutes = require("./routes/challenges");
 const authRoutes = require("./routes/auth");
+const profileRoutes = require("./routes/profile");
 const oauthRouter = require("./routes/oauth");
 const requestRouter = require("./routes/request");
 require("./db");
@@ -19,6 +20,7 @@ app.use("/users", userRoutes);
 app.use("/challenges", challengeRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/game", gameRoutes);
+app.use("/api/profile", profileRoutes);
 app.use("/request", requestRouter);
 app.get("/auth/google/callback", oauthRouter);
 
