@@ -1,6 +1,7 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import "./EditProfile.css";
 import Avatar from "../../assets/Profile (1).png";
+import { AuthContext } from "../../context/AuthContext";
 
 const countries = ["United States", "United Kingdom", "Canada"];
 
@@ -11,6 +12,8 @@ const cities = {
 };
 
 function EditProfile() {
+  const { authState } = useContext(AuthContext);
+  const authToken = authState.token;
   const [profile, setProfile] = useState({
     name: "",
     username: "",
@@ -50,14 +53,30 @@ function EditProfile() {
     }
 
     try {
-      const response = await fetch("/api/profile/update", {
+      const response = await fetch("http://localhost:3000/api/profile/update", {
         method: "POST",
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
         body: formData,
       });
-      const result = await response.json();
-      console.log(result);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      if (response.headers.get("Content-Type").includes("application/json")) {
+        const result = await response.json();
+        console.log(result);
+        // Handle success - Update UI or redirect user
+      } else {
+        const text = await response.text();
+        console.log(text);
+        // Handle non-JSON response
+      }
     } catch (error) {
       console.error("Error:", error);
+      // Handle fetch errors
     }
   };
 

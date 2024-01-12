@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const multer = require("multer");
 const profileController = require("../controllers/profileController");
+const auth = require("../middlewares/auth");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -30,6 +31,7 @@ const upload = multer({
 
 router.post(
   "/update",
+  auth,
   upload.single("profilePicture"),
   profileController.updateProfile
 );
