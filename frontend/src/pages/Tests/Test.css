@@ -1,0 +1,19 @@
+.tests-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Three columns */
+  gap: 20px; /* Adjust the gap as needed */
+  padding: 20px; /* Add padding as per your design */
+}
+
+/* Add responsive behavior if needed, for example: */
+@media (max-width: 768px) {
+  .tests-container {
+    grid-template-columns: 1fr 1fr; /* Two columns for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .tests-container {
+    grid-template-columns: 1fr; /* One column for even smaller screens */
+  }
+}

@@ -1,24 +1,20 @@
 import React from "react";
-import Sidebar from "../../components/Sidebar/Sidebar";
 import DashHeader from "../../components/DashHeader/DashHeader";
 import TestCard from "../../components/TestCard/TestCard";
-import "./TestsPage.css";
+import "./Test.css";
+import Amazon from "../../assets/amazon.png";
 
 const TestsPage = () => {
-  // Placeholder for actual test data
-  const testData = [
-    {
-      logo: "/path/to/tcs-logo.png",
-      title: "TCS Quiz Competition",
-      subtitle: "TCS Campus Drive-2023",
-      status: "Upcoming",
-    },
-    // ... other test data
-  ];
+  // Create an array with six test items
+  const testData = Array(6).fill({
+    logo: Amazon,
+    title: "Amazon Model Test",
+    subtitle: "MTSL Campus Drive-2023",
+    status: "Upcoming",
+  });
 
   return (
     <div className="tests-page-container">
-      <Sidebar />
       <div className="main-content">
         <DashHeader />
         <div className="tests-container">
