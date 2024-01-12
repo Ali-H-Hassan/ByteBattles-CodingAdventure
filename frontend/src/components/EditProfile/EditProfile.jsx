@@ -2,6 +2,7 @@ import React, { useState, useRef, useContext } from "react";
 import "./EditProfile.css";
 import Avatar from "../../assets/Profile (1).png";
 import { AuthContext } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 const countries = ["United States", "United Kingdom", "Canada"];
 
@@ -14,6 +15,7 @@ const cities = {
 function EditProfile() {
   const { authState } = useContext(AuthContext);
   const authToken = authState.token;
+  const navigate = useNavigate();
   const [profile, setProfile] = useState({
     name: "",
     username: "",
@@ -61,22 +63,14 @@ function EditProfile() {
         body: formData,
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      if (response.headers.get("Content-Type").includes("application/json")) {
-        const result = await response.json();
-        console.log(result);
-        // Handle success - Update UI or redirect user
+      if (response.ok) {
+        navigate("/dashboard");
       } else {
-        const text = await response.text();
-        console.log(text);
-        // Handle non-JSON response
+        const errorText = await response.text();
+        console.error("Update failed:", errorText);
       }
     } catch (error) {
       console.error("Error:", error);
-      // Handle fetch errors
     }
   };
 

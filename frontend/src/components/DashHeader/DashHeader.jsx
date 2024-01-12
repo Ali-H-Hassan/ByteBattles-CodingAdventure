@@ -3,7 +3,7 @@ import SearchIcon from "../../assets/search-icon.png";
 import UserAvatar from "../../assets/Profile (1).png";
 import "./DashHeader.css";
 
-function HeaderDashboard({ username }) {
+function HeaderDashboard({ username, profilePic }) {
   return (
     <header className="main-header">
       <div className="welcome-message">
@@ -15,7 +15,7 @@ function HeaderDashboard({ username }) {
         <img src={SearchIcon} alt="Search" />
       </div>
       <div className="profile-icon">
-        <img src={UserAvatar} alt="User Profile" />
+        <img src={profilePic || UserAvatar} alt="User Profile" />
       </div>
     </header>
   );
