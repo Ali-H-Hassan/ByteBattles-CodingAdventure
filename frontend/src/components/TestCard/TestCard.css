@@ -1,0 +1,27 @@
+.test-card {
+  background: #ffffff;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border-radius: 5px;
+  padding: 16px;
+  text-align: center;
+  margin: 8px;
+}
+
+.test-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.test-title {
+  font-size: 18px;
+  color: #333;
+}
+
+.test-subtitle {
+  font-size: 16px;
+  color: #666;
+}
+.test-logo {
+  max-width: 50px;
+  margin-bottom: 16px;
+}
