@@ -2,6 +2,14 @@ import React, { useState } from "react";
 import "./EditProfile.css";
 import Avatar from "../../assets/Profile (1).png";
 
+const countries = ["United States", "United Kingdom", "Canada"];
+
+const cities = {
+  "United States": ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"],
+  "United Kingdom": ["London", "Birmingham", "Manchester", "Glasgow", "Leeds"],
+  Canada: ["Toronto", "Montreal", "Vancouver", "Calgary", "Edmonton"],
+};
+
 function EditProfile() {
   const [profile, setProfile] = useState({
     firstName: "",
@@ -20,12 +28,19 @@ function EditProfile() {
       ...prevProfile,
       [name]: value,
     }));
+
+    if (name === "country") {
+      setProfile((prevProfile) => ({ ...prevProfile, city: "" }));
+    }
   };
+
   const [profilePicture, setProfilePicture] = useState(Avatar);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(profile);
   };
+
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0];
     const reader = new FileReader();
@@ -34,6 +49,7 @@ function EditProfile() {
     };
     reader.readAsDataURL(file);
   };
+
   const handleCancel = () => {
     window.location.href = "/dashboard";
   };
@@ -95,14 +111,30 @@ function EditProfile() {
             name="country"
             value={profile.country}
             onChange={handleChange}
-          ></select>
+          >
+            <option value="">Select a country</option>
+            {countries.map((country) => (
+              <option key={country} value={country}>
+                {country}
+              </option>
+            ))}
+          </select>
           <label htmlFor="city">City</label>
           <select
             id="city"
             name="city"
             value={profile.city}
             onChange={handleChange}
-          ></select>
+            disabled={!profile.country}
+          >
+            <option value="">Select a city</option>
+            {profile.country &&
+              cities[profile.country].map((city) => (
+                <option key={city} value={city}>
+                  {city}
+                </option>
+              ))}
+          </select>
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
