@@ -4,8 +4,8 @@ const bcrypt = require("bcrypt");
 const userSchema = new mongoose.Schema({
   googleId: {
     type: String,
-    unique: true, // Ensure no two users have the same Google ID
-    sparse: true, // Sparse indexing will make sure the index only applies to documents with the googleId field
+    unique: true,
+    sparse: true,
   },
   username: {
     type: String,
@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: function () {
       return !this.googleId;
-    }, // Make password required only if googleId is not present
+    },
   },
   roles: [
     {
@@ -62,16 +62,7 @@ const userSchema = new mongoose.Schema({
   lastLogin: Date,
 });
 
-// userSchema.pre("save", async function (next) {
-//   if (this.isModified("password")) {
-//     this.password = await bcrypt.hash(this.password, 8);
-//   }
-//   next();
-// });
-
-// Modify the comparePassword method to ensure it doesn't get called if there's no password
 userSchema.methods.comparePassword = async function (candidatePassword) {
-  // Return true if no password is set (Google user)
   if (!this.password) return true;
   return bcrypt.compare(candidatePassword, this.password);
 };

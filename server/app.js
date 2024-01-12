@@ -15,13 +15,11 @@ const gameRoutes = require("./routes/game");
 app.use(express.json());
 app.use(cors());
 
-// Define routes after middleware
 app.use("/users", userRoutes);
 app.use("/challenges", challengeRoutes);
-app.use("/api/auth", authRoutes); // If you want to keep this endpoint
+app.use("/api/auth", authRoutes);
 app.use("/api/game", gameRoutes);
-// OAuth Google callback route
-app.use("/request", requestRouter); // Request route for Google Auth URL
+app.use("/request", requestRouter);
 app.get("/auth/google/callback", oauthRouter);
 
 app.listen(PORT, () => {

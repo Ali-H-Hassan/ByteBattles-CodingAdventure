@@ -12,8 +12,8 @@ const cities = {
 
 function EditProfile() {
   const [profile, setProfile] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
+    username: "",
     email: "",
     address: "",
     contactNumber: "",
@@ -57,20 +57,20 @@ function EditProfile() {
     <div className="edit-profile-container">
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label htmlFor="firstName">First Name</label>
+          <label htmlFor="Name">Full Name</label>
           <input
             type="text"
-            id="firstName"
-            name="firstName"
-            value={profile.firstName}
+            id="Name"
+            name="Name"
+            value={profile.name}
             onChange={handleChange}
           />
-          <label htmlFor="lastName">Last Name</label>
+          <label htmlFor="lastName">Username</label>
           <input
             type="text"
-            id="lastName"
-            name="lastName"
-            value={profile.lastName}
+            id="Username"
+            name="Username"
+            value={profile.username}
             onChange={handleChange}
           />
         </div>
