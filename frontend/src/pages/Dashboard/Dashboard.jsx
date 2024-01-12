@@ -8,6 +8,7 @@ import UpcomingQuiz from "../../components/UpcomingQuiz/UpcomingQuiz";
 import Statistics from "../../components/Statistics/Statistics";
 import CoursesDisplay from "../../components/CoursesDisplay/CoursesDisplay";
 import EditProfile from "../../components/EditProfile/EditProfile";
+import Tests from "../../pages/Tests/Test";
 
 import "./Dashboard.css";
 function Dashboard() {
@@ -37,6 +38,7 @@ function Dashboard() {
         </div>
         {selectedOption === "courses" && <CoursesDisplay />}
         {selectedOption === "profile" && <EditProfile />}
+        {selectedOption === "tests" && <Tests />}
       </div>
     </div>
   );
