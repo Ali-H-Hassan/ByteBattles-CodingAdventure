@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "../../components/LeaderboardHeader/LeaderboardHeader";
 import RowComponent from "../../components/LeaderboardRow/LeaderboardRow";
 import "./LeaderboardPage.css";
@@ -24,7 +25,11 @@ const LeaderboardPage = () => {
     // This is a stub, you'd update state in a real app
     console.log(event.target.value);
   };
+  const navigate = useNavigate();
 
+  const handleBackClick = () => {
+    navigate("/dashboard");
+  };
   return (
     <div className="leaderboard-page">
       <Header
@@ -43,6 +48,12 @@ const LeaderboardPage = () => {
           />
         ))}
       </div>
+      <button
+        className="leaderboard-page__back-button"
+        onClick={handleBackClick}
+      >
+        Back
+      </button>
     </div>
   );
 };
