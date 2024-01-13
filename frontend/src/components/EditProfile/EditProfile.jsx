@@ -116,6 +116,7 @@ function EditProfile() {
             name="email"
             value={profile.email}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="form-group">
@@ -178,6 +179,7 @@ function EditProfile() {
             name="password"
             value={profile.password}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="form-buttons">
