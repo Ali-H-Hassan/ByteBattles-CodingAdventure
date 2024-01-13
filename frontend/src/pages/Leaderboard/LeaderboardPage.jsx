@@ -2,11 +2,12 @@ import React from "react";
 import Header from "../../components/LeaderboardHeader/LeaderboardHeader";
 import RowComponent from "../../components/LeaderboardRow/LeaderboardRow";
 import "./LeaderboardPage.css";
+import AmazonLogo from "../../assets/amazon.png";
 
 const LeaderboardPage = () => {
   const companies = [
-    { id: "comp1", name: "Company 1", logo: "/path-to-logo1.png" },
-    { id: "comp2", name: "Company 2", logo: "/path-to-logo2.png" },
+    { id: "comp1", name: "Company 1", logo: AmazonLogo },
+    { id: "comp2", name: "Company 2", logo: AmazonLogo },
     // ... more companies
   ];
 

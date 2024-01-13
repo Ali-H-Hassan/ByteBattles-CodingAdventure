@@ -1,13 +1,41 @@
+/* LeaderboardPage.css */
 .leaderboard-page {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
   padding: 20px;
-  box-sizing: border-box;
+  background-color: #f7f7f7; /* Match the background color to your design */
 }
 
 .leaderboard-list {
-  margin-top: 20px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  background-color: #fff; /* White background for the list */
+  border-radius: 8px; /* Rounded corners as per design */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+  overflow: hidden; /* Ensures the child elements do not break the border radius */
+}
+
+/* RowComponent.css */
+.leaderboard-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #eaeaea; /* Separate rows */
+}
+
+.leaderboard-row:last-child {
+  border-bottom: none; /* No border for the last row */
+}
+
+.leaderboard-row > div {
+  flex: 1;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.leaderboard-row > div:first-child {
+  text-align: left;
+}
+.leaderboard-row > div:last-child {
+  text-align: right; /* Align the last cell (typically the score) to the right */
 }

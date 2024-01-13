@@ -1,20 +1,26 @@
+/* LeaderboardHeader.css */
 .leaderboard-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 20px;
   background-color: #fff;
-  border-bottom: 1px solid #eaeaea;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.leaderboard-header__logo-container {
+  display: flex;
+  align-items: center;
+}
+
 .leaderboard-header__logo {
-  height: 40px;
-  margin-right: 20px;
+  height: auto;
+  width: 100px; /* Adjust width to match your design */
 }
 
 .leaderboard-header__select {
   padding: 5px 10px;
+  margin-left: 20px; /* Space between logo and select */
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 16px;
@@ -37,6 +43,7 @@
   background-color: #0056b3;
 }
 
+/* Responsive adjustments */
 @media (max-width: 768px) {
   .leaderboard-header {
     flex-direction: column;

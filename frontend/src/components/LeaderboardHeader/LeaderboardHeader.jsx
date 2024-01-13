@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./LeaderboardHeader.css";
+import AmazonLogo from "../../assets/amazon.png";
 
 const Header = ({ companies, currentCompany, onCompanyChange }) => {
   const navigate = useNavigate();
