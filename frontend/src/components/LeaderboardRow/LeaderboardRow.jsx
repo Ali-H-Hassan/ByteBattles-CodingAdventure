@@ -3,7 +3,7 @@ import "./LeaderboardRow.css";
 
 const RowComponent = ({ avatarUrl, username, userId, city, score }) => {
   return (
-    <div className="leaderboard-row">
+    <div className="leaderboard-row-main">
       <div className="leaderboard-row__avatar-container">
         <img
           src={avatarUrl}

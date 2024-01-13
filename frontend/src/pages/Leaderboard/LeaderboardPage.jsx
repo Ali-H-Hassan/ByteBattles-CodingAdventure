@@ -40,13 +40,13 @@ const LeaderboardPage = () => {
     navigate("/dashboard");
   };
   return (
-    <div className="leaderboard-page">
+    <div className="lb-page">
       <Header
         companies={companies}
         currentCompany={currentCompany}
         onCompanyChange={onCompanyChange}
       />
-      <div className="leaderboard-list">
+      <div className="lb-list">
         {userData.map((user) => (
           <RowComponent
             key={user.userId}
@@ -58,10 +58,7 @@ const LeaderboardPage = () => {
           />
         ))}
       </div>
-      <button
-        className="leaderboard-page__back-button"
-        onClick={handleBackClick}
-      >
+      <button className="lb-page__back-button" onClick={handleBackClick}>
         &lt; Back
       </button>
     </div>
