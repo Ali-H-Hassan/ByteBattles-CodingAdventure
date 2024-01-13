@@ -5,21 +5,36 @@ const challengeSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  description: String,
-  difficultyLevel: {
+  description: {
     type: String,
-    enum: ["Easy", "Medium", "Hard"],
+    required: true,
   },
-  type: {
+  difficulty: {
     type: String,
-    enum: ["Coding", "Quiz"],
+    enum: ["easy", "medium", "hard"],
+    required: true,
   },
-  relatedConcepts: [String],
+  templateCode: {
+    type: Map,
+    of: String,
+    required: true,
+  },
+  testCases: [
+    {
+      input: {
+        type: [mongoose.Schema.Types.Mixed],
+        required: true,
+      },
+      output: {
+        type: mongoose.Schema.Types.Mixed,
+        required: true,
+      },
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
   },
-  updatedAt: Date,
 });
 
 const Challenge = mongoose.model("Challenge", challengeSchema);
