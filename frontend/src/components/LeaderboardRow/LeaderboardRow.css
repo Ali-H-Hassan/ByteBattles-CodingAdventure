@@ -1,6 +1,5 @@
 .leaderboard-row {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   padding: 10px;
   border-bottom: 1px solid #eaeaea;
@@ -17,10 +16,31 @@
   padding: 0 10px;
 }
 
+/* Style for the avatar container */
+.leaderboard-row__avatar-container {
+  flex: 0; /* Do not grow or shrink */
+  padding-right: 10px; /* Space between the avatar and the username */
+}
+
+/* Style for the avatar image */
+.leaderboard-row__avatar {
+  width: 40px; /* Example size, adjust as needed */
+  height: 40px; /* Example size, adjust as needed */
+  border-radius: 50%; /* Circular avatar */
+  object-fit: cover; /* Preserve aspect ratio while filling the element */
+}
+
 .leaderboard-row > div:first-child {
   text-align: left;
+  display: flex; /* To align avatar and username */
+  align-items: center; /* Center items vertically */
 }
 
 .leaderboard-row > div:last-child {
   text-align: right;
+}
+
+/* Ensure username follows the avatar */
+.leaderboard-row__username {
+  margin-left: 10px; /* Space between the avatar and the username */
 }

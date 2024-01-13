@@ -1,13 +1,20 @@
 import React from "react";
 import "./LeaderboardRow.css";
 
-const RowComponent = ({ username, userId, city, score }) => {
+const RowComponent = ({ avatarUrl, username, userId, city, score }) => {
   return (
     <div className="leaderboard-row">
-      <div>{username}</div>
-      <div>{userId}</div>
-      <div>{city}</div>
-      <div>{score}</div>
+      <div className="leaderboard-row__avatar-container">
+        <img
+          src={avatarUrl}
+          alt={`${username}'s avatar`}
+          className="leaderboard-row__avatar"
+        />
+      </div>
+      <div className="leaderboard-row__username">{username}</div>
+      <div className="leaderboard-row__userid">{userId}</div>
+      <div className="leaderboard-row__city">{city}</div>
+      <div className="leaderboard-row__score">{score}</div>
     </div>
   );
 };
