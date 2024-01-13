@@ -1,52 +1,39 @@
-const { Configuration, OpenAIApi } = require("openai");
+const OpenAI = require("openai").default;
 const Challenge = require("../models/challenge");
 
-// Initialize the OpenAI API client with your API key
-const configuration = new Configuration({
+const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
-const openai = new OpenAIApi(configuration);
 
-// Placeholder function to execute code, replace with actual logic
 const executeUserCode = async (code, language) => {
-  // Logic to send the code to a secure execution environment
-  // and return the result
-  // ...
   return {
-    executionTime: 100, // Mock execution time
-    output: "42", // Mock output
-    passed: true, // Mock pass status
+    executionTime: 100,
+    output: "42",
+    passed: true,
   };
 };
 
-// Function to run a coding battle between user and AI
 const runBattle = async (req, res) => {
   const { userId, challengeId, userCode, language } = req.body;
 
   try {
-    // Fetch the challenge from the database
     const challenge = await Challenge.findById(challengeId);
     if (!challenge) {
       return res.status(404).json({ message: "Challenge not found" });
     }
 
-    // Generate AI code using OpenAI's Codex
-    const response = await openai.createCompletion({
-      model: "code-davinci-002", // Replace with the latest model
-      prompt: challenge.description, // The prompt should be the challenge description
-      temperature: 0, // Controls randomness, set to 0 for deterministic output
-      max_tokens: 150, // Maximum length of the generated code
+    const completion = await openai.completions.create({
+      model: "gpt-3.5-turbo-instruct",
+      prompt: challenge.description,
+      temperature: 0,
+      max_tokens: 150,
     });
 
-    const aiCode = response.data.choices[0].text;
+    const aiCode = completion.data.choices[0].text;
 
-    // Execute the user's code
     const userResults = await executeUserCode(userCode, language);
-
-    // Execute the AI's code
     const aiResults = await executeUserCode(aiCode, language);
 
-    // Determine the winner based on execution time
     const winner =
       userResults.executionTime < aiResults.executionTime ? "user" : "ai";
 
@@ -54,10 +41,14 @@ const runBattle = async (req, res) => {
       winner,
       userResults,
       aiResults,
-      aiCode, // Optionally send back the AI's code
+      aiCode,
     });
   } catch (error) {
-    res.status(500).json({ message: "Error running the battle", error });
+    console.error(error);
+    res.status(500).json({
+      message: "Error running the battle",
+      error: error.message,
+    });
   }
 };
 
