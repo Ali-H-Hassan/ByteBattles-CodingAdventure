@@ -55,14 +55,13 @@ function Sidebar({ onOptionSelect }) {
         </div>
         <div className="menu-text menu-text-dark">Leaderboard</div>
       </div>
-      {/* Assuming Dark Mode toggle is handled differently, not including in onOptionSelect */}
       <div className="menu-item">
         <div className="icon-bg">
           <div className="icon-dark">
             <img src={DarkMode} alt="Dark Mode Icon" />
           </div>
         </div>
-        <div className="menu-text menu-text-dark">Dark Mode</div>
+        <div className="menu-text menu-text-dark">AI Battle Mode</div>
       </div>
       {/* Assuming Log Out is handled differently, not including in onOptionSelect */}
       <div className="menu-item">
