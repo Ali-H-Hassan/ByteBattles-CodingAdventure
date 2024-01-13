@@ -3,12 +3,27 @@ import Header from "../../components/LeaderboardHeader/LeaderboardHeader";
 import RowComponent from "../../components/LeaderboardRow/LeaderboardRow";
 import "./LeaderboardPage.css";
 
-const LeaderboardPage = ({
-  companies,
-  userData,
-  currentCompany,
-  onCompanyChange,
-}) => {
+const LeaderboardPage = () => {
+  const companies = [
+    { id: "comp1", name: "Company 1", logo: "/path-to-logo1.png" },
+    { id: "comp2", name: "Company 2", logo: "/path-to-logo2.png" },
+    // ... more companies
+  ];
+
+  const currentCompany = companies[0]; // Default to the first company
+
+  const userData = [
+    { username: "user1", userId: "1", city: "City1", score: 100 },
+    { username: "user2", userId: "2", city: "City2", score: 95 },
+    // ... more users
+  ];
+
+  const onCompanyChange = (event) => {
+    // Logic to update current company based on the event.target.value
+    // This is a stub, you'd update state in a real app
+    console.log(event.target.value);
+  };
+
   return (
     <div className="leaderboard-page">
       <Header
@@ -16,8 +31,8 @@ const LeaderboardPage = ({
         currentCompany={currentCompany}
         onCompanyChange={onCompanyChange}
       />
-      <div className="leaderboard">
-        {userData.map((user, index) => (
+      <div className="leaderboard-list">
+        {userData.map((user) => (
           <RowComponent
             key={user.userId}
             username={user.username}

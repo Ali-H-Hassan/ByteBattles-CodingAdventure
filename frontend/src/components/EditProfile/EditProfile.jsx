@@ -105,6 +105,7 @@ function EditProfile() {
             name="username"
             value={profile.username}
             onChange={handleChange}
+            required
           />
         </div>
         <div className="form-group">

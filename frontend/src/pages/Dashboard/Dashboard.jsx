@@ -9,6 +9,7 @@ import Statistics from "../../components/Statistics/Statistics";
 import CoursesDisplay from "../../components/CoursesDisplay/CoursesDisplay";
 import EditProfile from "../../components/EditProfile/EditProfile";
 import Tests from "../../pages/Tests/Test";
+import FullLeaderboard from "../Leaderboard/LeaderboardPage";
 
 import "./Dashboard.css";
 function Dashboard() {
@@ -39,6 +40,7 @@ function Dashboard() {
         {selectedOption === "courses" && <CoursesDisplay />}
         {selectedOption === "profile" && <EditProfile />}
         {selectedOption === "tests" && <Tests />}
+        {selectedOption === "leaderboard" && <FullLeaderboard />}
       </div>
     </div>
   );
