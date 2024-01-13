@@ -4,6 +4,7 @@ import Header from "../../components/LeaderboardHeader/LeaderboardHeader";
 import RowComponent from "../../components/LeaderboardRow/LeaderboardRow";
 import "./LeaderboardPage.css";
 import AmazonLogo from "../../assets/amazon.png";
+import Avatar from "../../assets/Profile (1).png";
 
 const LeaderboardPage = () => {
   const companies = [
@@ -14,8 +15,20 @@ const LeaderboardPage = () => {
   const currentCompany = companies[0];
 
   const userData = [
-    { username: "Ali", userId: "1", city: "City1", score: 100 },
-    { username: "George", userId: "2", city: "City2", score: 95 },
+    {
+      avatarUrl: Avatar,
+      username: "Ali",
+      userId: "1",
+      city: "City1",
+      score: 100,
+    },
+    {
+      avatarUrl: Avatar,
+      username: "George",
+      userId: "2",
+      city: "City2",
+      score: 95,
+    },
   ];
 
   const onCompanyChange = (event) => {
@@ -37,6 +50,7 @@ const LeaderboardPage = () => {
         {userData.map((user) => (
           <RowComponent
             key={user.userId}
+            avatarUrl={user.avatarUrl}
             userId={user.userId}
             username={user.username}
             city={user.city}

@@ -14,33 +14,30 @@
   flex: 1;
   text-align: center;
   padding: 0 10px;
+  font-weight: bold;
 }
-
-/* Style for the avatar container */
 .leaderboard-row__avatar-container {
-  flex: 0; /* Do not grow or shrink */
-  padding-right: 10px; /* Space between the avatar and the username */
+  flex: 0;
+  padding-right: 10px;
 }
 
-/* Style for the avatar image */
 .leaderboard-row__avatar {
-  width: 40px; /* Example size, adjust as needed */
-  height: 40px; /* Example size, adjust as needed */
-  border-radius: 50%; /* Circular avatar */
-  object-fit: cover; /* Preserve aspect ratio while filling the element */
+  width: 60px;
+  height: auto;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .leaderboard-row > div:first-child {
   text-align: left;
-  display: flex; /* To align avatar and username */
-  align-items: center; /* Center items vertically */
+  display: flex;
+  align-items: center;
 }
 
 .leaderboard-row > div:last-child {
   text-align: right;
 }
 
-/* Ensure username follows the avatar */
 .leaderboard-row__username {
-  margin-left: 10px; /* Space between the avatar and the username */
+  margin-left: 10px;
 }
