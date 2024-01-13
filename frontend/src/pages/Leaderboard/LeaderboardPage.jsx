@@ -7,22 +7,18 @@ import AmazonLogo from "../../assets/amazon.png";
 
 const LeaderboardPage = () => {
   const companies = [
-    { id: "comp1", name: "Company 1", logo: AmazonLogo },
+    { id: "comp1", name: "Amazon", logo: AmazonLogo },
     { id: "comp2", name: "Company 2", logo: AmazonLogo },
-    // ... more companies
   ];
 
-  const currentCompany = companies[0]; // Default to the first company
+  const currentCompany = companies[0];
 
   const userData = [
     { username: "user1", userId: "1", city: "City1", score: 100 },
     { username: "user2", userId: "2", city: "City2", score: 95 },
-    // ... more users
   ];
 
   const onCompanyChange = (event) => {
-    // Logic to update current company based on the event.target.value
-    // This is a stub, you'd update state in a real app
     console.log(event.target.value);
   };
   const navigate = useNavigate();

@@ -18,24 +18,18 @@ const Header = ({ companies, currentCompany, onCompanyChange }) => {
           alt="Company Logo"
           className="leaderboard-header__logo"
         />
-        <select
-          onChange={onCompanyChange}
-          className="leaderboard-header__select"
-        >
-          {companies.map((company) => (
-            <option
-              key={company.id}
-              value={company.id}
-              className="leaderboard-header__option"
-            >
-              {company.name}
-            </option>
-          ))}
-        </select>
       </div>
-      <button onClick={handleBackClick} className="leaderboard-header__button">
-        Back
-      </button>
+      <select onChange={onCompanyChange} className="leaderboard-header__select">
+        {companies.map((company) => (
+          <option
+            key={company.id}
+            value={company.id}
+            className="leaderboard-header__option"
+          >
+            {company.name}
+          </option>
+        ))}
+      </select>
     </header>
   );
 };
