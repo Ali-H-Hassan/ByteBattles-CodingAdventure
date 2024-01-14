@@ -1,7 +1,6 @@
 .aibattle-mode-container {
-  max-width: 800px;
+  max-width: 80%;
   margin: 0 auto;
-  padding: 20px;
   box-sizing: border-box;
 }
 
@@ -17,7 +16,7 @@
   margin-top: 20px;
   font-size: 16px;
   color: #fff;
-  background-color: #007bff;
+  background-color: #00c354;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -26,7 +25,9 @@
 }
 
 .aibattle-mode-submit-btn:hover {
-  background-color: #0056b3;
+  background-color: transparent;
+  color: #00c354;
+  border: #00c354;
 }
 
 .aibattle-mode-submit-btn:disabled {
