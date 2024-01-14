@@ -4,7 +4,7 @@ import DashboardIcon from "../../assets/Chart.png";
 import Tests from "../../assets/Edit 1.png";
 import Courses from "../../assets/Document Align Left 1.png";
 import Profile from "../../assets/Profile 1.png";
-import DarkMode from "../../assets/Moon.png";
+import battle from "../../assets/Moon.png";
 import Leaderboard from "../../assets/Award 5.png";
 import LogOut from "../../assets/Unlock 2.png";
 import "./Sidebar.css";
@@ -55,10 +55,10 @@ function Sidebar({ onOptionSelect }) {
         </div>
         <div className="menu-text menu-text-dark">Leaderboard</div>
       </div>
-      <div className="menu-item">
+      <div className="menu-item" onClick={() => onOptionSelect("battle")}>
         <div className="icon-bg">
           <div className="icon-dark">
-            <img src={DarkMode} alt="Dark Mode Icon" />
+            <img src={battle} alt="Dark Mode Icon" />
           </div>
         </div>
         <div className="menu-text menu-text-dark">AI Battle Mode</div>

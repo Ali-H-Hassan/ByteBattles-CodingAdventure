@@ -10,6 +10,7 @@ import CoursesDisplay from "../../components/CoursesDisplay/CoursesDisplay";
 import EditProfile from "../../components/EditProfile/EditProfile";
 import Tests from "../../pages/Tests/Test";
 import FullLeaderboard from "../Leaderboard/LeaderboardPage";
+import AIBattleMode from "../../pages/AIBattleMode/AIBattleMode";
 
 import "./Dashboard.css";
 function Dashboard() {
@@ -41,6 +42,7 @@ function Dashboard() {
         {selectedOption === "profile" && <EditProfile />}
         {selectedOption === "tests" && <Tests />}
         {selectedOption === "leaderboard" && <FullLeaderboard />}
+        {selectedOption === "battle" && <AIBattleMode />}
       </div>
     </div>
   );
