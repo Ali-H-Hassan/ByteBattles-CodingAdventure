@@ -12,15 +12,21 @@ import EditProfile from "../../components/EditProfile/EditProfile";
 import Tests from "../../pages/Tests/Test";
 import FullLeaderboard from "../Leaderboard/LeaderboardPage";
 import AIBattleMode from "../../pages/AIBattleMode/AIBattleMode";
-import HomePage from "../../pages/WelcomePage/WelcomePage";
 import "./Dashboard.css";
+
 function Dashboard() {
-  const { authState } = useContext(AuthContext);
+  const { authState, logout } = useContext(AuthContext);
+  const navigate = useNavigate();
   const username = authState.user ? authState.user.username : "User";
   const [selectedOption, setSelectedOption] = useState("dashboard");
 
   const handleOptionSelect = (option) => {
-    setSelectedOption(option);
+    if (option === "logout") {
+      logout();
+      navigate("/");
+    } else {
+      setSelectedOption(option);
+    }
   };
 
   return (
@@ -38,12 +44,12 @@ function Dashboard() {
               <Statistics />
             </>
           )}
+          {selectedOption === "courses" && <CoursesDisplay />}
+          {selectedOption === "profile" && <EditProfile />}
+          {selectedOption === "tests" && <Tests />}
+          {selectedOption === "leaderboard" && <FullLeaderboard />}
+          {selectedOption === "battle" && <AIBattleMode />}
         </div>
-        {selectedOption === "courses" && <CoursesDisplay />}
-        {selectedOption === "profile" && <EditProfile />}
-        {selectedOption === "tests" && <Tests />}
-        {selectedOption === "leaderboard" && <FullLeaderboard />}
-        {selectedOption === "battle" && <AIBattleMode />}
       </div>
     </div>
   );
