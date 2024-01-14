@@ -44,12 +44,12 @@ function Dashboard() {
               <Statistics />
             </>
           )}
-          {selectedOption === "courses" && <CoursesDisplay />}
-          {selectedOption === "profile" && <EditProfile />}
-          {selectedOption === "tests" && <Tests />}
-          {selectedOption === "leaderboard" && <FullLeaderboard />}
-          {selectedOption === "battle" && <AIBattleMode />}
         </div>
+        {selectedOption === "courses" && <CoursesDisplay />}
+        {selectedOption === "profile" && <EditProfile />}
+        {selectedOption === "tests" && <Tests />}
+        {selectedOption === "leaderboard" && <FullLeaderboard />}
+        {selectedOption === "battle" && <AIBattleMode />}
       </div>
     </div>
   );

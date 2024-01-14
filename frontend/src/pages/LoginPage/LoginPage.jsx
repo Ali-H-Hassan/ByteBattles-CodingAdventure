@@ -9,8 +9,6 @@ import LoginImg from "../../assets/LoginImg.png";
 import FbCard from "../../assets/FacebookCard.png";
 import GithCard from "../../assets/GithubCard.png";
 import GgCard from "../../assets/GoogleCard.png";
-import { useDispatch } from "react-redux";
-import { loginUserAction } from "../../redux/actions/authActions";
 
 const LoginPage = () => {
   const { setAuthState } = useContext(AuthContext);
