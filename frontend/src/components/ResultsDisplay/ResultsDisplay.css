@@ -1,15 +1,34 @@
-.results-display {
-  padding: 20px;
-  background-color: blue;
-  border-radius: 5px;
+.results-display-container {
   margin-top: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.results-display h3 {
+.results-display-container h3 {
   margin-top: 0;
+  margin-bottom: 15px;
+  color: #333;
+  font-size: 1.4em;
 }
 
-.results-display div {
+.results-display-container div {
   margin-bottom: 10px;
-  font-size: 16px;
+  color: #555;
+  font-size: 1em;
+}
+
+.result-user,
+.result-ai {
+  font-weight: bold;
+}
+
+.result-user {
+  color: #2a9d8f;
+}
+
+.result-ai {
+  color: #e76f51;
 }
