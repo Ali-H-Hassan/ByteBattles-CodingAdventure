@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { performLogout } from "../../actions/authActions";
+import { logout } from "../../actions/authActions";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Header from "../../components/DashHeader/DashHeader";
 import RecentTests from "../../components/RecentTests/RecentTests";
@@ -19,12 +19,10 @@ function Dashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Accessing the Redux store state
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
   const username = user ? user.username : "User";
 
-  // Local state for controlling the selected option in the dashboard
   const [selectedOption, setSelectedOption] = useState("dashboard");
 
   useEffect(() => {
@@ -35,7 +33,7 @@ function Dashboard() {
 
   const handleOptionSelect = (option) => {
     if (option === "logout") {
-      dispatch(performLogout());
+      dispatch(logout());
       navigate("/");
     } else {
       setSelectedOption(option);

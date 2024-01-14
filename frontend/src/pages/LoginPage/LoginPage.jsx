@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { login } from "../../actions/authActions";
 import Header from "../../components/Header/Header";
 import "./loginPage.css";
@@ -12,10 +12,16 @@ import GgCard from "../../assets/GoogleCard.png";
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard"); // Redirect to dashboard when authenticated
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
