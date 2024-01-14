@@ -1,34 +1,43 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
-import Login from "../src/pages/LoginPage/LoginPage";
-import Signup from "../src/pages/SignupPage/signupPage";
-import WelcomePage from "../src/pages/WelcomePage/WelcomePage";
+import Login from "./pages/LoginPage/LoginPage";
+import Signup from "./pages/SignupPage/signupPage";
+import WelcomePage from "./pages/WelcomePage/WelcomePage";
 import GoogleAuthHandler from "./pages/GoogleAuthHandler";
-import "./App.css";
 import GoogleCallbackHandler from "./pages/GoogleCallbackHandler";
-import Dashboard from "../src/pages/Dashboard/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard";
 import GamePage from "./pages/GamePage";
+import { Provider } from "react-redux";
+import store from "./store";
+
+import "./App.css";
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <div className="App">
-          <Routes>
-            <Route path="/" element={<WelcomePage />} />{" "}
-            <Route path="/signup" element={<Signup />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/Dashboard" element={<Dashboard />} />
-            <Route path="/game" element={<GamePage />} />
-            <Route
-              path="/auth/google/callback"
-              element={<GoogleAuthHandler />}
-            />
-          </Routes>
-        </div>
-      </Router>
-    </AuthProvider>
+    <Provider store={store}>
+      <AuthProvider>
+        <Router>
+          <div className="App">
+            <Routes>
+              <Route path="/" element={<WelcomePage />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/game" element={<GamePage />} />
+              <Route
+                path="/auth/google/callback"
+                element={<GoogleAuthHandler />}
+              />
+              <Route
+                path="/auth/google/callback"
+                element={<GoogleCallbackHandler />}
+              />
+            </Routes>
+          </div>
+        </Router>
+      </AuthProvider>
+    </Provider>
   );
 }
 
