@@ -1,6 +1,7 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/AuthContext";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutAction } from "../../actions/authActions"; // Ensure you have created this
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Header from "../../components/DashHeader/DashHeader";
 import RecentTests from "../../components/RecentTests/RecentTests";
@@ -15,14 +16,26 @@ import AIBattleMode from "../../pages/AIBattleMode/AIBattleMode";
 import "./Dashboard.css";
 
 function Dashboard() {
-  const { authState, logout } = useContext(AuthContext);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const username = authState.user ? authState.user.username : "User";
+
+  // Accessing the Redux store state
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const user = useSelector((state) => state.auth.user);
+  const username = user ? user.username : "User";
+
+  // Local state for controlling the selected option in the dashboard
   const [selectedOption, setSelectedOption] = useState("dashboard");
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login");
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleOptionSelect = (option) => {
     if (option === "logout") {
-      logout();
+      dispatch(logoutAction());
       navigate("/");
     } else {
       setSelectedOption(option);
