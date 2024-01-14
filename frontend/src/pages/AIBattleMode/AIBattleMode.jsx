@@ -1,11 +1,34 @@
-// AIBattleMode.jsx
-import React from 'react';
+import React, { useState } from "react";
+import ProblemStatement from "../components/ProblemStatement";
+import CodingEditor from "../components/CodingEditor";
+import ResultsDisplay from "../components/ResultsDisplay";
 
 const AIBattleMode = () => {
-  // Component logic
-  return (
-    // JSX for the component
-  );
-}
+  const [userCode, setUserCode] = useState("");
+  const [results, setResults] = useState(null);
 
-export default AIBattleMode; // Make sure this is not wrapped in {}
+  const handleCodeChange = (newCode) => {
+    setUserCode(newCode);
+  };
+
+  const handleSubmit = async () => {
+    // You would send the userCode to the backend and wait for the result
+    // For now, we'll just simulate a result
+    const simulatedResult = {
+      user: { efficiency: 85, runTime: "0.5s" },
+      ai: { efficiency: 95, runTime: "0.3s" },
+    };
+    setResults(simulatedResult);
+  };
+
+  return (
+    <div>
+      <ProblemStatement />
+      <CodingEditor code={userCode} handleCodeChange={handleCodeChange} />
+      <button onClick={handleSubmit}>Submit Code</button>
+      {results && <ResultsDisplay results={results} />}
+    </div>
+  );
+};
+
+export default AIBattleMode;
