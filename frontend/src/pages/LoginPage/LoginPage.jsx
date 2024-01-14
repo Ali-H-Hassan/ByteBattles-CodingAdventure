@@ -19,7 +19,7 @@ const LoginPage = () => {
   });
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/dashboard"); // Redirect to dashboard when authenticated
+      navigate("/dashboard");
     }
   }, [isAuthenticated, navigate]);
 

@@ -1,9 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { signup } from "../../actions/authActions";
 import Header from "../../components/Header/Header";
-import { registerUser } from "../../services/authService";
-import { AuthContext } from "../../context/AuthContext";
 import "./signupPage.css";
 import SignUpImg from "../../assets/SignUpImg.png";
 import FbCard from "../../assets/FacebookCard.png";
@@ -11,15 +10,20 @@ import GithCard from "../../assets/GithubCard.png";
 import GgCard from "../../assets/GoogleCard.png";
 
 const SignupPage = () => {
-  const { setAuthState } = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [newUser, setNewUser] = useState({
     email: "",
     username: "",
     password: "",
   });
   const [passwordError, setPasswordError] = useState("");
-  const navigate = useNavigate();
-
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, navigate]);
   const isPasswordValid = (password) => {
     if (password.length < 8) {
       return "Password must be at least 8 characters.";
@@ -37,7 +41,6 @@ const SignupPage = () => {
     const { name, value } = event.target;
     setNewUser({ ...newUser, [name]: value });
 
-    // Validate password as the user types
     if (name === "password") {
       setPasswordError(isPasswordValid(value));
     }
@@ -51,17 +54,7 @@ const SignupPage = () => {
       return;
     }
 
-    try {
-      const data = await registerUser(newUser);
-      setAuthState({
-        isAuthenticated: true,
-        user: data.user,
-        token: data.token,
-      });
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("Registration error:", error);
-    }
+    dispatch(signup(newUser));
   };
 
   const fetchGoogleAuthUrl = async () => {
@@ -93,7 +86,6 @@ const SignupPage = () => {
           <div className="signup-container">
             <h2 className="signup-title">Byte Battle</h2>
             <form onSubmit={handleSubmit}>
-              {/* Email and Username Fields */}
               <div className="input-group">
                 <input
                   className="input"
@@ -124,8 +116,6 @@ const SignupPage = () => {
                   Username
                 </label>
               </div>
-
-              {/* Password Field with Validation Message */}
               <div className="input-group">
                 <input
                   className="input"
@@ -150,7 +140,6 @@ const SignupPage = () => {
               </button>
             </form>
 
-            {/* Other Signup Options */}
             <div className="signup-options">
               <a
                 href="#"
