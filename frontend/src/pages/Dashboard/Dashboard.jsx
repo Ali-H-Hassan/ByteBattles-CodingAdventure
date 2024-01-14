@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { logoutAction } from "../../actions/authActions"; // Ensure you have created this
+import { performLogout } from "../../actions/authActions";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Header from "../../components/DashHeader/DashHeader";
 import RecentTests from "../../components/RecentTests/RecentTests";
@@ -35,7 +35,7 @@ function Dashboard() {
 
   const handleOptionSelect = (option) => {
     if (option === "logout") {
-      dispatch(logoutAction());
+      dispatch(performLogout());
       navigate("/");
     } else {
       setSelectedOption(option);

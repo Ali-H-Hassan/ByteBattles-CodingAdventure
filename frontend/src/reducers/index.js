@@ -1,10 +1,11 @@
+// src/reducers/index.js
 import { combineReducers } from "redux";
 import authReducer from "./authReducer";
-import todosReducer from "./todosReducer";
+// import other reducers
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  todos: todosReducer,
+  // other reducers
 });
 
 export default rootReducer;
