@@ -1,12 +1,12 @@
 import React from "react";
 import Logo from "../../assets/FullLogo.png";
 import DashboardIcon from "../../assets/Chart.png";
-import Tests from "../../assets/Edit 1.png";
-import Courses from "../../assets/Document Align Left 1.png";
-import Profile from "../../assets/Profile 1.png";
-import battle from "../../assets/Moon.png";
-import Leaderboard from "../../assets/Award 5.png";
-import LogOut from "../../assets/Unlock 2.png";
+import TestsIcon from "../../assets/Edit 1.png";
+import CoursesIcon from "../../assets/Document Align Left 1.png";
+import ProfileIcon from "../../assets/Profile 1.png";
+import BattleIcon from "../../assets/Moon.png";
+import LeaderboardIcon from "../../assets/Award 5.png";
+import LogOutIcon from "../../assets/Unlock 2.png";
 import "./Sidebar.css";
 
 function Sidebar({ onOptionSelect }) {
@@ -26,7 +26,7 @@ function Sidebar({ onOptionSelect }) {
       <div className="menu-item" onClick={() => onOptionSelect("tests")}>
         <div className="icon-bg">
           <div className="icon-black">
-            <img src={Tests} alt="Tests Icon" />
+            <img src={TestsIcon} alt="Tests Icon" />
           </div>
         </div>
         <div className="menu-text">Tests</div>
@@ -34,7 +34,7 @@ function Sidebar({ onOptionSelect }) {
       <div className="menu-item" onClick={() => onOptionSelect("courses")}>
         <div className="icon-bg">
           <div className="icon-black">
-            <img src={Courses} alt="Courses Icon" />
+            <img src={CoursesIcon} alt="Courses Icon" />
           </div>
         </div>
         <div className="menu-text">Courses</div>
@@ -42,7 +42,7 @@ function Sidebar({ onOptionSelect }) {
       <div className="menu-item" onClick={() => onOptionSelect("profile")}>
         <div className="icon-bg">
           <div className="icon-black">
-            <img src={Profile} alt="Profile Icon" />
+            <img src={ProfileIcon} alt="Profile Icon" />
           </div>
         </div>
         <div className="menu-text">Profile</div>
@@ -50,7 +50,7 @@ function Sidebar({ onOptionSelect }) {
       <div className="menu-item" onClick={() => onOptionSelect("leaderboard")}>
         <div className="icon-bg">
           <div className="icon-dark">
-            <img src={Leaderboard} alt="Leaderboard Icon" />
+            <img src={LeaderboardIcon} alt="Leaderboard Icon" />
           </div>
         </div>
         <div className="menu-text menu-text-dark">Leaderboard</div>
@@ -58,16 +58,15 @@ function Sidebar({ onOptionSelect }) {
       <div className="menu-item" onClick={() => onOptionSelect("battle")}>
         <div className="icon-bg">
           <div className="icon-dark">
-            <img src={battle} alt="Dark Mode Icon" />
+            <img src={BattleIcon} alt="AI Battle Mode Icon" />
           </div>
         </div>
         <div className="menu-text menu-text-dark">AI Battle Mode</div>
       </div>
-      {/* Assuming Log Out is handled differently, not including in onOptionSelect */}
-      <div className="menu-item">
+      <div className="menu-item" onClick={() => onOptionSelect("logout")}>
         <div className="icon-bg">
           <div className="icon-dark">
-            <img src={LogOut} alt="Log Out Icon" />
+            <img src={LogOutIcon} alt="Log Out Icon" />
           </div>
         </div>
         <div className="menu-text menu-text-dark">Log Out</div>

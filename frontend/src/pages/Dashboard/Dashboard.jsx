@@ -1,4 +1,5 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Header from "../../components/DashHeader/DashHeader";
@@ -11,7 +12,7 @@ import EditProfile from "../../components/EditProfile/EditProfile";
 import Tests from "../../pages/Tests/Test";
 import FullLeaderboard from "../Leaderboard/LeaderboardPage";
 import AIBattleMode from "../../pages/AIBattleMode/AIBattleMode";
-
+import HomePage from "../../pages/WelcomePage/WelcomePage";
 import "./Dashboard.css";
 function Dashboard() {
   const { authState } = useContext(AuthContext);
