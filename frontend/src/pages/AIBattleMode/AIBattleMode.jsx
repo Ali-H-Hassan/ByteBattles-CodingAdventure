@@ -13,8 +13,6 @@ const AIBattleMode = () => {
   };
 
   const handleSubmit = async () => {
-    // You would send the userCode to the backend and wait for the result
-    // For now, we'll just simulate a result
     const simulatedResult = {
       user: { efficiency: 85, runTime: "0.5s" },
       ai: { efficiency: 95, runTime: "0.3s" },

@@ -1,14 +1,21 @@
-.problem-statement {
+.problem-statement-container {
   margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.problem-statement h2 {
+.problem-statement-container h2 {
+  margin-top: 0;
   margin-bottom: 10px;
+  color: #333;
+  font-size: 1.5em;
 }
 
-.problem-statement p {
-  background-color: #f8f9fa;
-  border-left: 4px solid #007bff;
-  padding: 10px;
-  margin-bottom: 0;
+.problem-statement-container p {
+  color: #666;
+  font-size: 1em;
+  line-height: 1.4;
 }

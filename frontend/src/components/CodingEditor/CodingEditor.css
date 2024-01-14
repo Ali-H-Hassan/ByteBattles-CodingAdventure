@@ -1,5 +1,6 @@
-.MonacoEditor {
-  position: relative;
-  height: 300px;
+.coding-editor-container {
   margin-bottom: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #1e1e1e;
 }
