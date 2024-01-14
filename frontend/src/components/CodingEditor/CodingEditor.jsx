@@ -20,15 +20,17 @@ const CodingEditor = ({ code, handleCodeChange }) => {
   };
 
   return (
-    <MonacoEditor
-      height="400"
-      language="javascript"
-      theme="vs-dark"
-      value={code}
-      options={options}
-      onChange={onChange}
-      editorDidMount={editorDidMount}
-    />
+    <div className="coding-editor-container">
+      <MonacoEditor
+        height="400"
+        language="javascript"
+        theme="vs-dark"
+        value={code}
+        options={options}
+        onChange={onChange}
+        editorDidMount={editorDidMount}
+      />
+    </div>
   );
 };
 
