@@ -1,9 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useDispatch } from "react-redux";
+import { login } from "../../actions/authActions";
 import Header from "../../components/Header/Header";
-import { loginUser } from "../../services/authService";
-import { AuthContext } from "../../context/AuthContext";
 import "./loginPage.css";
 import LoginImg from "../../assets/LoginImg.png";
 import FbCard from "../../assets/FacebookCard.png";
@@ -11,12 +10,12 @@ import GithCard from "../../assets/GithubCard.png";
 import GgCard from "../../assets/GoogleCard.png";
 
 const LoginPage = () => {
-  const { setAuthState } = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
   });
-  const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -28,17 +27,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const data = await loginUser(credentials);
-      setAuthState({
-        isAuthenticated: true,
-        user: data.user,
-        token: data.token,
-      });
-      navigate("/dashboard");
-    } catch (error) {
-      console.error("Login error:", error);
-    }
+    dispatch(login(credentials));
   };
 
   const handleSignUpClick = () => {
@@ -97,7 +86,6 @@ const LoginPage = () => {
               </a>
             </div>
             <div className="social-signup">
-              {/* Social login and other components, add functionality as needed */}
               <p>Or you can Signup with</p>
               <div className="social-icons">
                 <img src={GgCard} alt="Google" className="social-icon google" />
