@@ -31,7 +31,7 @@
 
 .login-container {
   width: 100%;
-  max-width: 400px;
+  max-width: 500px;
   background: #fff;
   padding: 40px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -58,7 +58,7 @@ input[type="password"] {
 }
 
 .login-button {
-  width: 100%;
+  width: 300px;
   padding: 15px;
   margin: 20px 0;
   background-color: #00c354;
@@ -66,18 +66,15 @@ input[type="password"] {
   border: none;
   border-radius: 20px;
   cursor: pointer;
+  font-size: 20px;
 }
 
 .login-options {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
+  width: 300px;
 }
-/* .login-image-logo {
-  width: 100px;
-  height: auto;
-} */
 
 .forgot-password,
 .signup-link {
