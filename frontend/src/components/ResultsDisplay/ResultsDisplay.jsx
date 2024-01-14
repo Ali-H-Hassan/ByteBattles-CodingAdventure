@@ -1,5 +1,5 @@
 import React from "react";
-
+import "./ResultsDisplay.css";
 const ResultsDisplay = ({ results }) => {
   return (
     <div>

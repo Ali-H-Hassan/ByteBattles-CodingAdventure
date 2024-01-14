@@ -1,4 +1,5 @@
 import React from "react";
+import "./ProblemStatement.css";
 
 const ProblemStatement = () => {
   const problemText = "Solve the following problem..."; // Replace with actual problem text

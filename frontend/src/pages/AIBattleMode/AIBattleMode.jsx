@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ProblemStatement from "../../components/ProblemStatement/ProblemStatement";
 import CodingEditor from "../../components/CodingEditor/CodingEditor";
 import ResultsDisplay from "../../components/ResultsDisplay/ResultsDisplay";
+import "./AIBattleMode.css";
 
 const AIBattleMode = () => {
   const [userCode, setUserCode] = useState("");
