@@ -1,15 +1,16 @@
-.ai-battle-mode {
-  padding: 20px;
-  margin: 0 auto;
+.aibattle-mode-container {
   max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
-.ai-battle-mode h1 {
+.aibattle-mode-container h1 {
   text-align: center;
   margin-bottom: 20px;
 }
 
-.ai-battle-mode button {
+.aibattle-mode-submit-btn {
   display: block;
   width: 100%;
   padding: 10px 20px;
@@ -20,8 +21,15 @@
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s;
 }
 
-.ai-battle-mode button:hover {
+.aibattle-mode-submit-btn:hover {
   background-color: #0056b3;
+}
+
+.aibattle-mode-submit-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }

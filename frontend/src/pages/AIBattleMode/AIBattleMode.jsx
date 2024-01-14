@@ -23,10 +23,13 @@ const AIBattleMode = () => {
   };
 
   return (
-    <div>
+    <div className="aibattle-mode-container">
+      <h1>AI Battle Mode</h1>
       <ProblemStatement />
       <CodingEditor code={userCode} handleCodeChange={handleCodeChange} />
-      <button onClick={handleSubmit}>Submit Code</button>
+      <button className="aibattle-mode-submit-btn" onClick={handleSubmit}>
+        Submit Code
+      </button>
       {results && <ResultsDisplay results={results} />}
     </div>
   );
