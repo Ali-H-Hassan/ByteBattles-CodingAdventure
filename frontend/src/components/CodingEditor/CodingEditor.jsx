@@ -1,8 +1,12 @@
 import React from "react";
 import AceEditor from "react-ace";
+import ace from "ace-builds/src-noconflict/ace"; // Ensure that ace is imported
 
 import "ace-builds/src-noconflict/mode-javascript";
 import "ace-builds/src-noconflict/theme-github";
+
+// Set the base path if needed
+ace.config.set("basePath", process.env.PUBLIC_URL + "/ace");
 
 const CodingEditor = ({ code, handleCodeChange }) => {
   return (
