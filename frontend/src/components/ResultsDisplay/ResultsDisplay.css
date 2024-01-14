@@ -1,0 +1,15 @@
+.results-display {
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.results-display h3 {
+  margin-top: 0;
+}
+
+.results-display div {
+  margin-bottom: 10px;
+  font-size: 16px;
+}
