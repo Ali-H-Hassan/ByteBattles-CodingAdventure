@@ -1,0 +1,14 @@
+.problem-statement {
+  margin-bottom: 20px;
+}
+
+.problem-statement h2 {
+  margin-bottom: 10px;
+}
+
+.problem-statement p {
+  background-color: #f8f9fa;
+  border-left: 4px solid #007bff;
+  padding: 10px;
+  margin-bottom: 0;
+}
