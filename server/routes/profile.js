@@ -31,7 +31,7 @@ const upload = multer({
 
 router.post(
   "/update",
-  auth,
+  auth.authenticate,
   upload.single("profilePicture"),
   profileController.updateProfile
 );

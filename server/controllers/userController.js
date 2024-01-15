@@ -14,7 +14,7 @@ const register = async (req, res) => {
     user = new User({
       username: req.body.username,
       email: req.body.email,
-      password: req.body.password, // Directly using the password without hashing
+      password: req.body.password,
     });
 
     await user.save();
@@ -25,18 +25,17 @@ const register = async (req, res) => {
   }
 };
 
-// Login User
 const login = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    console.log("User found:", user); // Debug log
+    console.log("User found:", user);
 
     if (!user) {
       return res.status(400).send("Invalid email or password.");
     }
 
-    const isMatch = req.body.password === user.password; // Direct comparison without bcrypt
-    console.log("Password match:", isMatch); // Debug log
+    const isMatch = req.body.password === user.password;
+    console.log("Password match:", isMatch);
 
     if (!isMatch) {
       return res.status(400).send("Invalid email or password.");
@@ -49,7 +48,6 @@ const login = async (req, res) => {
   }
 };
 
-// Get All Users
 const getAllUsers = async (req, res) => {
   try {
     const users = await User.find();
@@ -59,21 +57,18 @@ const getAllUsers = async (req, res) => {
   }
 };
 
-// Get User By ID
-const getUserById = async (req, res, next, id) => {
+const getUserById = async (req, res) => {
   try {
-    const user = await User.findById(id);
-    if (user == null) {
+    const user = await User.findById(req.params.id);
+    if (!user) {
       return res.status(404).json({ message: "Cannot find user" });
     }
-    res.user = user;
-    next();
+    res.json(user);
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
 };
 
-// Update User
 const updateUser = async (req, res) => {
   if (req.body.username != null) {
     res.user.username = req.body.username;
@@ -93,7 +88,6 @@ const updateUser = async (req, res) => {
   }
 };
 
-// Delete User
 const deleteUser = async (req, res) => {
   try {
     const deletedUser = await User.findByIdAndDelete(req.params.id);
@@ -169,4 +163,6 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUser,
+  createChallenge,
+  createCompanyUser,
 };
