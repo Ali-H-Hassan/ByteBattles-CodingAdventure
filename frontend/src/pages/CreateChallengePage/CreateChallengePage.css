@@ -1,0 +1,71 @@
+.create-challenge-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.create-challenge-title {
+  text-align: center;
+  color: #333;
+  margin-bottom: 2rem;
+}
+
+.create-challenge-form .form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-weight: bold;
+}
+
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.form-input {
+  height: 40px;
+}
+
+.form-textarea {
+  height: 100px;
+  resize: vertical;
+}
+
+.form-select {
+  height: 40px;
+  background-color: #fff;
+}
+
+.create-challenge-button {
+  width: 100%;
+  padding: 0.75rem;
+  border: none;
+  background-color: #5cb85c;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: 1rem;
+}
+
+.create-challenge-button:hover {
+  background-color: #4cae4c;
+}
+
+@media (max-width: 768px) {
+  .create-challenge-container {
+    width: 90%;
+    padding: 1.5rem;
+  }
+}
