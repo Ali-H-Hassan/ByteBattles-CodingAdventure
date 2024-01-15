@@ -2,7 +2,7 @@ import {
   CREATE_CHALLENGE_REQUEST,
   CREATE_CHALLENGE_SUCCESS,
   CREATE_CHALLENGE_FAILURE,
-} from "../actions/challengeActionTypes";
+} from "../actions/actionTypes";
 
 const initialState = {
   creating: false,
