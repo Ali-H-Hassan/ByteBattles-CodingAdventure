@@ -1,21 +1,23 @@
-import React, { useState, useRef, useContext } from "react";
+import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import "./EditProfile.css";
 import Avatar from "../../assets/Profile (1).png";
-import { AuthContext } from "../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { updateProfile } from "../../actions/authActions";
 
 const countries = ["United States", "United Kingdom", "Canada"];
-
 const cities = {
   "United States": ["New York", "Los Angeles", "Chicago", "Houston", "Phoenix"],
   "United Kingdom": ["London", "Birmingham", "Manchester", "Glasgow", "Leeds"],
   Canada: ["Toronto", "Montreal", "Vancouver", "Calgary", "Edmonton"],
 };
 
-function EditProfile() {
-  const { authState } = useContext(AuthContext);
-  const authToken = authState.token;
+const EditProfile = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
+  const authToken = useSelector((state) => state.auth.token);
+
   const [profile, setProfile] = useState({
     name: "",
     username: "",
@@ -26,7 +28,19 @@ function EditProfile() {
     city: "",
     password: "",
   });
+  const [profilePicture, setProfilePicture] = useState(Avatar);
   const fileInputRef = useRef();
+
+  useEffect(() => {
+    if (user) {
+      setProfile({
+        name: user.name,
+        username: user.username,
+        email: user.email,
+      });
+    }
+  }, [user]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProfile((prevProfile) => ({
@@ -39,7 +53,14 @@ function EditProfile() {
     }
   };
 
-  const [profilePicture, setProfilePicture] = useState(Avatar);
+  const handleProfilePictureChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setProfilePicture(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -53,7 +74,6 @@ function EditProfile() {
     if (file) {
       formData.append("profilePicture", file);
     }
-
     try {
       const response = await fetch("http://localhost:3000/api/profile/update", {
         method: "POST",
@@ -74,17 +94,8 @@ function EditProfile() {
     }
   };
 
-  const handleProfilePictureChange = (e) => {
-    const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setProfilePicture(reader.result);
-    };
-    reader.readAsDataURL(file);
-  };
-
   const handleCancel = () => {
-    window.location.href = "/dashboard";
+    navigate("/dashboard");
   };
   return (
     <div className="edit-profile-container">
@@ -211,6 +222,6 @@ function EditProfile() {
       </div>
     </div>
   );
-}
+};
 
 export default EditProfile;
