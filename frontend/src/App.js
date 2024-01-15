@@ -8,9 +8,9 @@ import GoogleAuthHandler from "./pages/GoogleAuthHandler";
 import GoogleCallbackHandler from "./pages/GoogleCallbackHandler";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import GamePage from "./pages/GamePage";
+import CreateChallengePage from "./pages/CreateChallengePage/CreateChallengePage";
 import { Provider } from "react-redux";
 import store from "./store";
-
 import "./App.css";
 
 function App() {
@@ -25,6 +25,10 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/game" element={<GamePage />} />
+              <Route
+                path="/create-challenge"
+                element={<CreateChallengePage />}
+              />{" "}
               <Route
                 path="/auth/google/callback"
                 element={<GoogleAuthHandler />}
