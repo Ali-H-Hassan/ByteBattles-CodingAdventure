@@ -14,23 +14,45 @@ const challengeSchema = new mongoose.Schema({
     enum: ["easy", "medium", "hard"],
     required: true,
   },
+  type: {
+    type: String,
+    enum: ["mcq", "coding"],
+    required: true,
+  },
   templateCode: {
     type: Map,
     of: String,
-    required: true,
+    required: function () {
+      return this.type === "coding";
+    }, // Only required for coding questions
   },
   testCases: [
     {
       input: {
         type: [mongoose.Schema.Types.Mixed],
-        required: true,
+        required: function () {
+          return this.type === "coding";
+        }, // Only required for coding questions
       },
       output: {
         type: mongoose.Schema.Types.Mixed,
-        required: true,
+        required: function () {
+          return this.type === "coding";
+        }, // Only required for coding questions
       },
     },
   ],
+  mcqOptions: {
+    type: [
+      {
+        option: String,
+        isCorrect: Boolean,
+      },
+    ],
+    required: function () {
+      return this.type === "mcq";
+    }, // Only required for MCQ questions
+  },
   createdAt: {
     type: Date,
     default: Date.now,

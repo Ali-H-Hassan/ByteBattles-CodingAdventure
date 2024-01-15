@@ -87,10 +87,10 @@ const userSchema = new mongoose.Schema({
   companyName: String,
   companyAddress: String,
   companyContactNumber: String,
-  createdTests: [
+  ccreatedTests: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Test",
+      ref: "Challenge",
     },
   ],
   createdAt: {
