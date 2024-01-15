@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { createChallenge } from "../../actions/challengeActions";
 
 const CreateChallengePage = () => {
@@ -8,6 +9,8 @@ const CreateChallengePage = () => {
     difficulty: "",
   });
 
+  const dispatch = useDispatch();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setChallengeData({ ...challengeData, [name]: value });
@@ -15,7 +18,7 @@ const CreateChallengePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    createChallenge(challengeData);
+    dispatch(createChallenge(challengeData));
   };
 
   return (
