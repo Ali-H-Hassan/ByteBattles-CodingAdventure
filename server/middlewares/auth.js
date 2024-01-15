@@ -20,4 +20,21 @@ const auth = async (req, res, next) => {
   }
 };
 
-module.exports = auth;
+const authorize = (role) => (req, res, next) => {
+  if (!req.user) {
+    return res.status(401).send({ error: "Please authenticate." });
+  }
+
+  if (!req.user.roles.includes(role)) {
+    return res
+      .status(403)
+      .send({ error: "Access denied. Insufficient permissions." });
+  }
+
+  next();
+};
+
+module.exports = {
+  auth,
+  authorize,
+};
