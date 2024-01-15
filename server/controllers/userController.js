@@ -105,6 +105,62 @@ const deleteUser = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+const createCompanyUser = async (req, res) => {
+  const {
+    username,
+    email,
+    password,
+    companyName,
+    companyAddress,
+    companyContactNumber,
+  } = req.body;
+
+  try {
+    const hashedPassword = await bcrypt.hash(password, bcryptSaltRounds);
+
+    const companyUser = new User({
+      userType: "company",
+      username,
+      email,
+      password: hashedPassword,
+      companyName,
+      companyAddress,
+      companyContactNumber,
+      roles: ["company"],
+    });
+
+    await companyUser.save();
+    const token = jwt.sign({ _id: companyUser._id }, JWT_SECRET, {
+      expiresIn: "24h",
+    });
+    res.status(201).json({ companyUser, token });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error creating company user", error: error.message });
+  }
+};
+
+const createChallenge = async (req, res) => {
+  const { title, description, difficulty, templateCode, testCases } = req.body;
+
+  try {
+    const challenge = new Challenge({
+      title,
+      description,
+      difficulty,
+      templateCode,
+      testCases,
+    });
+
+    await challenge.save();
+    res.status(201).json(challenge);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error creating challenge", error: error.message });
+  }
+};
 
 module.exports = {
   register,
