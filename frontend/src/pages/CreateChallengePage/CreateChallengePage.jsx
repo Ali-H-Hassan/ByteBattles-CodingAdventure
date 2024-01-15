@@ -1,12 +1,11 @@
 import React, { useState } from "react";
-import { createChallenge } from "../../actions/actionTypes"; // Import your action creator
+import { createChallenge } from "../../actions/challengeActions";
 
 const CreateChallengePage = () => {
   const [challengeData, setChallengeData] = useState({
     title: "",
     description: "",
     difficulty: "",
-    // ...other fields
   });
 
   const handleChange = (e) => {
@@ -16,7 +15,6 @@ const CreateChallengePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // Call the action creator to dispatch the challenge creation
     createChallenge(challengeData);
   };
 
@@ -30,7 +28,6 @@ const CreateChallengePage = () => {
           onChange={handleChange}
           placeholder="Title"
         />
-        {/* Add inputs for description, difficulty, etc. */}
         <button type="submit">Create Challenge</button>
       </form>
     </div>
