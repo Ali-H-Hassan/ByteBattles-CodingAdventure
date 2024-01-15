@@ -1,8 +1,11 @@
 import {
+  LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
   LOGOUT,
-  LOGIN_REQUEST,
+  REGISTER_REQUEST,
+  REGISTER_SUCCESS,
+  REGISTER_FAILURE,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -16,12 +19,14 @@ const initialState = {
 const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_REQUEST:
+    case REGISTER_REQUEST:
       return {
         ...state,
         loading: true,
         error: null,
       };
     case LOGIN_SUCCESS:
+    case REGISTER_SUCCESS:
       return {
         ...state,
         isAuthenticated: true,
@@ -31,6 +36,7 @@ const authReducer = (state = initialState, action) => {
         loading: false,
       };
     case LOGIN_FAILURE:
+    case REGISTER_FAILURE:
       return {
         ...state,
         isAuthenticated: false,

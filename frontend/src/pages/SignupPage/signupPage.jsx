@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { signup } from "../../actions/authActions";
+import { registerUser } from "../../actions/authActions";
 import Header from "../../components/Header/Header";
 import "./signupPage.css";
 import SignUpImg from "../../assets/SignUpImg.png";
 import FbCard from "../../assets/FacebookCard.png";
 import GithCard from "../../assets/GithubCard.png";
 import GgCard from "../../assets/GoogleCard.png";
+import axios from "axios";
 
 const SignupPage = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,7 @@ const SignupPage = () => {
     password: "",
   });
   const [passwordError, setPasswordError] = useState("");
+
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/dashboard");
@@ -54,7 +56,7 @@ const SignupPage = () => {
       return;
     }
 
-    dispatch(signup(newUser));
+    dispatch(registerUser(newUser));
   };
 
   const fetchGoogleAuthUrl = async () => {
