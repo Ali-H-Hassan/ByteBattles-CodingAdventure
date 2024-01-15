@@ -6,6 +6,9 @@ import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
+  PROFILE_UPDATE_REQUEST,
+  PROFILE_UPDATE_SUCCESS,
+  PROFILE_UPDATE_FAILURE,
 } from "../actions/actionTypes";
 
 const initialState = {
@@ -20,6 +23,7 @@ const authReducer = (state = initialState, action) => {
   switch (action.type) {
     case LOGIN_REQUEST:
     case REGISTER_REQUEST:
+    case PROFILE_UPDATE_REQUEST:
       return {
         ...state,
         loading: true,
@@ -27,16 +31,18 @@ const authReducer = (state = initialState, action) => {
       };
     case LOGIN_SUCCESS:
     case REGISTER_SUCCESS:
+    case PROFILE_UPDATE_SUCCESS:
       return {
         ...state,
         isAuthenticated: true,
         user: action.payload.user,
-        token: action.payload.token,
+        token: action.payload.token || state.token,
         error: null,
         loading: false,
       };
     case LOGIN_FAILURE:
     case REGISTER_FAILURE:
+    case PROFILE_UPDATE_FAILURE:
       return {
         ...state,
         isAuthenticated: false,
