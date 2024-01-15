@@ -11,9 +11,11 @@ exports.updateProfile = async (req, res) => {
       updatedData.profilePictureUrl = req.file.path;
     }
 
-    await User.findByIdAndUpdate(userId, updatedData, { new: true });
+    const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
+      new: true,
+    });
 
-    res.status(200).send("Profile updated successfully");
+    res.status(200).json(updatedUser);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
