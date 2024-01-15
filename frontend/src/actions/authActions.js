@@ -75,3 +75,30 @@ export const registerUser = (userData) => async (dispatch) => {
     dispatch(registerFailure(errorMessage));
   }
 };
+export const profileUpdateRequest = () => ({
+  type: PROFILE_UPDATE_REQUEST,
+});
+
+export const profileUpdateSuccess = (userData) => ({
+  type: PROFILE_UPDATE_SUCCESS,
+  payload: userData,
+});
+
+export const profileUpdateFailure = (error) => ({
+  type: PROFILE_UPDATE_FAILURE,
+  payload: error,
+});
+
+export const updateProfile = (userData, authToken) => async (dispatch) => {
+  dispatch(profileUpdateRequest());
+  try {
+    const response = await apiClient.post("/api/profile/update", userData, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
+    dispatch(profileUpdateSuccess(response.data));
+  } catch (error) {
+    dispatch(profileUpdateFailure(error.response.data));
+  }
+};
