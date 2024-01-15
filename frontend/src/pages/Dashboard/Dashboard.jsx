@@ -22,6 +22,7 @@ function Dashboard() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
   const username = user ? user.username : "User";
+  const profilePic = user && user.profilePicUrl ? user.profilePicUrl : null;
 
   const [selectedOption, setSelectedOption] = useState("dashboard");
 
@@ -45,7 +46,9 @@ function Dashboard() {
       <Sidebar onOptionSelect={handleOptionSelect} />
 
       <div className="main-content">
-        {selectedOption === "dashboard" && <Header username={username} />}
+        {selectedOption === "dashboard" && (
+          <Header username={username} profilePic={profilePic} />
+        )}
         <div className="content-grid">
           {selectedOption === "dashboard" && (
             <>
