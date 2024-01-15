@@ -79,6 +79,20 @@ const userSchema = new mongoose.Schema({
       ref: "Challenge",
     },
   ],
+  userType: {
+    type: String,
+    enum: ["individual", "company"],
+    required: true,
+  },
+  companyName: String,
+  companyAddress: String,
+  companyContactNumber: String,
+  createdTests: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Test",
+    },
+  ],
   createdAt: {
     type: Date,
     default: Date.now,
@@ -86,8 +100,14 @@ const userSchema = new mongoose.Schema({
   lastLogin: Date,
 });
 
+userSchema.pre("save", function (next) {
+  if (this.isNew && this.userType === "company") {
+  }
+  next();
+});
+
 userSchema.methods.comparePassword = async function (candidatePassword) {
-  if (!this.password) return true;
+  if (!this.password) return this.googleId ? true : false;
   return bcrypt.compare(candidatePassword, this.password);
 };
 

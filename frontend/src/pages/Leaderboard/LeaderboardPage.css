@@ -4,6 +4,7 @@
   height: 90%;
   position: relative;
   background-color: #f7f7f7;
+  border-radius: 15px;
 }
 
 .lb-header {
