@@ -15,7 +15,10 @@ function HeaderDashboard({ username, profilePic }) {
         <img src={SearchIcon} alt="Search" />
       </div>
       <div className="profile-icon">
-        <img src={profilePic || UserAvatar} alt="User Profile" />
+        <img
+          src={`http://localhost:3000/${profilePic || UserAvatar}`}
+          alt="User Profile"
+        />
       </div>
     </header>
   );

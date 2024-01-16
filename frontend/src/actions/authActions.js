@@ -6,6 +6,9 @@ import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
+  PROFILE_UPDATE_REQUEST,
+  PROFILE_UPDATE_SUCCESS,
+  PROFILE_UPDATE_FAILURE,
 } from "./actionTypes";
 import apiClient from "../services/apiConfig";
 
@@ -32,6 +35,7 @@ export const login = (credentials) => async (dispatch) => {
     );
     const { user, token } = response.data;
     localStorage.setItem("token", token);
+    console.log(user);
     dispatch(loginSuccess({ user, token }));
   } catch (error) {
     const errorMessage = error.response ? error.response.data : "Login failed";

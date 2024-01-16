@@ -22,8 +22,10 @@ function Dashboard() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
   const username = user ? user.username : "User";
-  const profilePic = user && user.profilePicUrl ? user.profilePicUrl : null;
-
+  const profilePic = user?.profilePictureUrl;
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
   const [selectedOption, setSelectedOption] = useState("dashboard");
 
   useEffect(() => {
