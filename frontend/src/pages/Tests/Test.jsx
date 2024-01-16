@@ -15,11 +15,11 @@ const TestsPage = () => {
     subtitle: "MTSL Campus Drive-2023",
     status: "Upcoming",
   });
-
+  const profilePic = user?.profilePictureUrl;
   return (
     <div className="tests-page-container">
       <div className="main-content">
-        <Header username={username} />
+        <Header username={username} profilePic={profilePic} />
         <div className="tests-container">
           {testData.map((test, index) => (
             <TestCard
