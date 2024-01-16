@@ -1,78 +1,124 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createChallenge } from "../../actions/challengeActions";
+import "./CreateChallengePage.css";
 
 const CreateChallengePage = () => {
-  const [challengeData, setChallengeData] = useState({
-    title: "",
-    description: "",
-    difficulty: "",
+  const [mcqData, setMcqData] = useState({
+    question: "",
+    options: ["", "", "", ""],
+    correctOption: "",
+  });
+
+  const [codingData, setCodingData] = useState({
+    prompt: "",
+    templateCode: "",
+    testCases: ["", ""],
   });
 
   const dispatch = useDispatch();
 
-  const handleChange = (e) => {
+  const handleMcqChange = (e) => {
     const { name, value } = e.target;
-    setChallengeData({ ...challengeData, [name]: value });
+    if (name.startsWith("option")) {
+      const index = parseInt(name.replace("option", ""), 10);
+      const updatedOptions = [...mcqData.options];
+      updatedOptions[index] = value;
+      setMcqData({ ...mcqData, options: updatedOptions });
+    } else {
+      setMcqData({ ...mcqData, [name]: value });
+    }
   };
 
-  const handleSubmit = (e) => {
+  const handleCodingChange = (e) => {
+    const { name, value } = e.target;
+    setCodingData({ ...codingData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const challengeData = { mcqData, codingData };
     dispatch(createChallenge(challengeData));
   };
 
   return (
     <div className="create-challenge-container">
-      <h2 className="create-challenge-title">Create a New Challenge</h2>
+      <h2 className="create-challenge-title">Create a New Test</h2>
       <form className="create-challenge-form" onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="title" className="form-label">
-            Title
+        <fieldset>
+          <legend>MCQ Question</legend>
+          <label>
+            Question:
+            <input
+              type="text"
+              name="question"
+              value={mcqData.question}
+              onChange={handleMcqChange}
+              required
+            />
           </label>
-          <input
-            id="title"
-            name="title"
-            className="form-input"
-            value={challengeData.title}
-            onChange={handleChange}
-            placeholder="Title"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="description" className="form-label">
-            Description
+          {mcqData.options.map((option, index) => (
+            <label key={index}>
+              Option {index + 1}:
+              <input
+                type="text"
+                name={`option${index}`}
+                value={option}
+                onChange={handleMcqChange}
+                required
+              />
+            </label>
+          ))}
+          <label>
+            Correct Option Number:
+            <input
+              type="number"
+              name="correctOption"
+              min="1"
+              max="4"
+              value={mcqData.correctOption}
+              onChange={handleMcqChange}
+              required
+            />
           </label>
-          <textarea
-            id="description"
-            name="description"
-            className="form-textarea"
-            value={challengeData.description}
-            onChange={handleChange}
-            placeholder="Description"
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="difficulty" className="form-label">
-            Difficulty
+        </fieldset>
+
+        <fieldset>
+          <legend>Coding Question</legend>
+          <label>
+            Prompt:
+            <textarea
+              name="prompt"
+              value={codingData.prompt}
+              onChange={handleCodingChange}
+              required
+            />
           </label>
-          <select
-            id="difficulty"
-            name="difficulty"
-            className="form-select"
-            value={challengeData.difficulty}
-            onChange={handleChange}
-            required
-          >
-            <option value="">Select Difficulty</option>
-            <option value="easy">Easy</option>
-            <option value="medium">Medium</option>
-            <option value="hard">Hard</option>
-          </select>
-        </div>
+          <label>
+            Template Code:
+            <textarea
+              name="templateCode"
+              value={codingData.templateCode}
+              onChange={handleCodingChange}
+              required
+            />
+          </label>
+          {codingData.testCases.map((testCase, index) => (
+            <label key={index}>
+              Test Case {index + 1}:
+              <input
+                type="text"
+                name={`testCase${index}`}
+                value={testCase}
+                onChange={handleCodingChange}
+                required
+              />
+            </label>
+          ))}
+        </fieldset>
+
         <button className="create-challenge-button" type="submit">
-          Create Challenge
+          Create Test
         </button>
       </form>
     </div>

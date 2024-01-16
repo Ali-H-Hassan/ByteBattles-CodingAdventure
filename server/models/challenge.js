@@ -1,64 +1,44 @@
 const mongoose = require("mongoose");
 
-const challengeSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  difficulty: {
-    type: String,
-    enum: ["easy", "medium", "hard"],
-    required: true,
-  },
+const questionSchema = new mongoose.Schema({
   type: {
     type: String,
     enum: ["mcq", "coding"],
     required: true,
   },
-  templateCode: {
-    type: Map,
-    of: String,
-    required: function () {
-      return this.type === "coding";
-    }, // Only required for coding questions
+  questionText: {
+    type: String,
+    required: true,
   },
-  testCases: [
+  options: [
     {
-      input: {
-        type: [mongoose.Schema.Types.Mixed],
-        required: function () {
-          return this.type === "coding";
-        }, // Only required for coding questions
-      },
-      output: {
-        type: mongoose.Schema.Types.Mixed,
-        required: function () {
-          return this.type === "coding";
-        }, // Only required for coding questions
-      },
+      text: String,
+      isCorrect: Boolean,
     },
   ],
-  mcqOptions: {
-    type: [
-      {
-        option: String,
-        isCorrect: Boolean,
-      },
-    ],
-    required: function () {
-      return this.type === "mcq";
-    }, // Only required for MCQ questions
+  templateCode: String,
+  testCases: [
+    {
+      input: [mongoose.Schema.Types.Mixed],
+      output: mongoose.Schema.Types.Mixed,
+    },
+  ],
+});
+
+const testSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
   },
+  description: String,
+  questions: [questionSchema],
+  timeLimit: Number,
   createdAt: {
     type: Date,
     default: Date.now,
   },
 });
 
-const Challenge = mongoose.model("Challenge", challengeSchema);
+const Test = mongoose.model("Test", testSchema);
 
-module.exports = Challenge;
+module.exports = Test;
