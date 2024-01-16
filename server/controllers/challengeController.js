@@ -35,19 +35,18 @@ const getChallengeById = async (req, res) => {
   }
 };
 
-const createChallenge = async (req, res) => {
-  const { title, description, difficulty, templateCode, testCases } = req.body;
-  const challenge = new Challenge({
+const createTest = async (req, res) => {
+  const { title, description, questions, timeLimit } = req.body;
+  const test = new Challenge({
     title,
     description,
-    difficulty,
-    templateCode,
-    testCases,
+    questions,
+    timeLimit,
   });
 
   try {
-    const newChallenge = await challenge.save();
-    res.status(201).json(newChallenge);
+    const newTest = await test.save();
+    res.status(201).json(newTest);
   } catch (err) {
     res.status(400).json({ message: err.message });
   }
@@ -91,7 +90,7 @@ module.exports = {
   getAllChallenges,
   getRandomChallenge,
   getChallengeById,
-  createChallenge,
+  createTest,
   updateChallenge,
   deleteChallenge,
 };
