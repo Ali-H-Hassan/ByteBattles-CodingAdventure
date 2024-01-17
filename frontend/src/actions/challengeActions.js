@@ -36,3 +36,28 @@ export const createChallenge = (challengeData, token) => async (dispatch) => {
     dispatch(createChallengeFailure(error.response.data));
   }
 };
+export const fetchChallengeRequest = () => ({
+  type: FETCH_CHALLENGE_REQUEST,
+});
+
+export const fetchChallengeSuccess = (challengeData) => ({
+  type: FETCH_CHALLENGE_SUCCESS,
+  payload: challengeData,
+});
+
+export const fetchChallengeFailure = (error) => ({
+  type: FETCH_CHALLENGE_FAILURE,
+  payload: error,
+});
+
+export const fetchChallenge = (challengeId) => async (dispatch) => {
+  dispatch(fetchChallengeRequest());
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/api/challenges/${challengeId}`
+    );
+    dispatch(fetchChallengeSuccess(response.data));
+  } catch (error) {
+    dispatch(fetchChallengeFailure(error.response.data));
+  }
+};
