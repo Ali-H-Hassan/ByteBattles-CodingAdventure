@@ -13,6 +13,7 @@ import { Provider } from "react-redux";
 import store from "./store";
 import "./App.css";
 import DisplayTest from "./pages/DisplayTest/DisplayTest";
+import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   return (
@@ -27,18 +28,12 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/game" element={<GamePage />} />
               <Route path="/test" element={<DisplayTest />} />
-              <Route
-                path="/create-challenge"
-                element={<CreateChallengePage />}
-              />{" "}
-              <Route
-                path="/auth/google/callback"
-                element={<GoogleAuthHandler />}
-              />
-              <Route
-                path="/auth/google/callback"
-                element={<GoogleCallbackHandler />}
-              />
+              <Route element={<ProtectedRoute />}>
+                <Route
+                  path="/create-challenge"
+                  element={<CreateChallengePage />}
+                />
+              </Route>
             </Routes>
           </div>
         </Router>
