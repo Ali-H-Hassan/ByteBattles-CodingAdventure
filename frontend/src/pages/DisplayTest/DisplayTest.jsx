@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchChallenge } from "../../actions/challengeActions"; // Adjust based on your action file's content
-import "./DisplayTest.css"; // Your CSS file for styling
+import { fetchChallenge } from "../../actions/challengeActions";
+import "./DisplayTest.css";
 
 const DisplayTest = ({ testId }) => {
   const dispatch = useDispatch();
@@ -12,7 +12,7 @@ const DisplayTest = ({ testId }) => {
   } = useSelector((state) => state.challenge);
 
   useEffect(() => {
-    dispatch(fetchChallenge(testId)); // Dispatch the action to fetch the test data
+    dispatch(fetchChallenge(testId));
   }, [dispatch, testId]);
 
   if (loading) return <div className="test-loading">Loading test...</div>;
@@ -22,20 +22,26 @@ const DisplayTest = ({ testId }) => {
     return <div className="test-no-data">No test data available.</div>;
 
   return (
-    <div className="test-container">
-      <h1 className="test-title">{testData.title}</h1>
-      <p className="test-description">{testData.description}</p>
-      <div className="questions-container">
+    <div className="test-display-container">
+      <h1 className="test-display-title">{testData.title}</h1>
+      <p className="test-display-description">{testData.description}</p>
+      <div className="test-display-questions">
         {testData.questions.map((question, index) => (
-          <div key={index} className="question">
+          <div key={index} className="test-display-question">
             <h3>Question {index + 1}</h3>
-            <p>{question.questionText}</p>
+            <p className="test-display-question-text">
+              {question.questionText}
+            </p>
             {question.options && (
-              <ul className="options-list">
+              <ul className="test-display-options">
                 {question.options.map((option, idx) => (
                   <li
                     key={idx}
-                    className={option.isCorrect ? "option-correct" : "option"}
+                    className={
+                      option.isCorrect
+                        ? "test-display-option-correct"
+                        : "test-display-option"
+                    }
                   >
                     {option.text}
                   </li>
