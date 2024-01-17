@@ -12,6 +12,7 @@ import GgCard from "../../assets/GoogleCard.png";
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userType = useSelector((state) => state.auth.userType);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const [credentials, setCredentials] = useState({
     email: "",
@@ -19,15 +20,13 @@ const LoginPage = () => {
   });
   useEffect(() => {
     if (isAuthenticated) {
-      const userType = useSelector((state) => state.auth.userType);
-
       if (userType === "company") {
-        navigate("/create-test");
+        navigate("/create-challenge");
       } else {
         navigate("/dashboard");
       }
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, userType, navigate]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -39,7 +38,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    dispatch(login(credentials));
+    dispatch(login(credentials, navigate));
   };
 
   const handleSignUpClick = () => {
