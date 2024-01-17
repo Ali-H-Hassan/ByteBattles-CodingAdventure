@@ -30,6 +30,25 @@ const challengeReducer = (state = initialState, action) => {
         creating: false,
         error: action.payload,
       };
+    case FETCH_CHALLENGE_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case FETCH_CHALLENGE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        challenge: action.payload,
+        error: null,
+      };
+    case FETCH_CHALLENGE_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }
