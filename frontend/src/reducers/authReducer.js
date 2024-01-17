@@ -14,6 +14,7 @@ import {
 const initialState = {
   isAuthenticated: false,
   user: null,
+  userType: null,
   token: null,
   error: null,
   loading: false,
@@ -34,6 +35,7 @@ const authReducer = (state = initialState, action) => {
         ...state,
         isAuthenticated: true,
         user: action.payload.user,
+        userType: action.payload.user.userType,
         token: action.payload.token || state.token,
         error: null,
         loading: false,
@@ -62,6 +64,7 @@ const authReducer = (state = initialState, action) => {
     case LOGOUT:
       return {
         ...initialState,
+        userType: null,
       };
     default:
       return state;

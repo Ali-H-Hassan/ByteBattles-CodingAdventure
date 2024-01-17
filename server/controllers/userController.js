@@ -28,15 +28,11 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    console.log("User found:", user);
-
     if (!user) {
       return res.status(400).send("Invalid email or password.");
     }
 
-    const isMatch = req.body.password === user.password;
-    console.log("Password match:", isMatch);
-
+    const isMatch = await user.comparePassword(req.body.password);
     if (!isMatch) {
       return res.status(400).send("Invalid email or password.");
     }
@@ -47,7 +43,14 @@ const login = async (req, res) => {
       { expiresIn: "24h" }
     );
 
-    res.send({ user: { ...user.toObject(), token, userType: user.userType } });
+    const userToSend = {
+      ...user.toObject(),
+      password: undefined,
+      token,
+      userType: user.userType,
+    };
+
+    res.send({ user: userToSend });
   } catch (error) {
     res.status(500).send("Error during login: " + error.message);
   }
