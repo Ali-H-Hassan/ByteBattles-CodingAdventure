@@ -38,7 +38,7 @@ const CreateChallengePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    console.log("Token in CreateChallengePage:", token);
     if (!token) {
       console.error("Authentication token is not available. Please log in.");
       alert("You are not logged in. Please log in to create a challenge.");
