@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createChallenge } from "../../actions/challengeActions";
 import "./CreateChallengePage.css";
+import { useSelector } from "react-redux";
 
 const CreateChallengePage = () => {
   const [mcqData, setMcqData] = useState({
@@ -9,7 +10,7 @@ const CreateChallengePage = () => {
     options: ["", "", "", ""],
     correctOption: "",
   });
-
+  const token = useSelector((state) => state.auth.token);
   const [codingData, setCodingData] = useState({
     prompt: "",
     templateCode: "",
@@ -38,7 +39,7 @@ const CreateChallengePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const challengeData = { mcqData, codingData };
-    dispatch(createChallenge(challengeData));
+    dispatch(createChallenge(challengeData, token));
   };
 
   return (
