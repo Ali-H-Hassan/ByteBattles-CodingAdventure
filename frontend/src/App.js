@@ -12,6 +12,7 @@ import CreateChallengePage from "./pages/CreateChallengePage/CreateChallengePage
 import { Provider } from "react-redux";
 import store from "./store";
 import "./App.css";
+import DisplayTest from "./pages/DisplayTest/DisplayTest";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/game" element={<GamePage />} />
+              <Route path="/test" element={<DisplayTest />} />
               <Route
                 path="/create-challenge"
                 element={<CreateChallengePage />}

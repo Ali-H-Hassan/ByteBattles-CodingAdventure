@@ -39,7 +39,6 @@ const CreateChallengePage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // No need to retrieve the token here, as it is already retrieved above
     if (!token) {
       console.error("Authentication token is not available. Please log in.");
       alert("You are not logged in. Please log in to create a challenge.");
@@ -47,11 +46,10 @@ const CreateChallengePage = () => {
     }
 
     const challengeData = {
-      // Assuming you want to send the data structured this way
       mcq: mcqData,
       coding: codingData,
     };
-    dispatch(createChallenge(challengeData, token)); // Pass the token here
+    dispatch(createChallenge(challengeData, token));
   };
 
   return (
