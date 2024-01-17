@@ -26,7 +26,7 @@ export const loginFailure = (error) => ({
   payload: error,
 });
 
-export const login = (credentials) => async (dispatch) => {
+export const login = (credentials) => async (dispatch, getState) => {
   dispatch(loginRequest());
   try {
     const response = await apiClient.post(
@@ -35,8 +35,12 @@ export const login = (credentials) => async (dispatch) => {
     );
     const { user, token } = response.data;
     localStorage.setItem("token", token);
-    console.log(user);
     dispatch(loginSuccess({ user, token }));
+    if (user.userType === "company") {
+      navigate("/create-test");
+    } else {
+      navigate("/dashboard");
+    }
   } catch (error) {
     const errorMessage = error.response ? error.response.data : "Login failed";
     dispatch(loginFailure(errorMessage));
