@@ -15,7 +15,7 @@ router.get("/random", authenticate, challengeController.getRandomChallenge);
 router.get("/:id", authenticate, challengeController.getChallengeById);
 
 router.post(
-  "/",
+  "/create-challenge",
   authenticate,
   authorize("company"),
   challengeController.createTest

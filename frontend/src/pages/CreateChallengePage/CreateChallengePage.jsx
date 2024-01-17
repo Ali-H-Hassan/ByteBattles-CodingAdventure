@@ -111,7 +111,6 @@ const CreateChallengePage = () => {
                 name={`testCase${index}`}
                 value={testCase}
                 onChange={handleCodingChange}
-                required
               />
             </label>
           ))}

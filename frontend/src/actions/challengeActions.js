@@ -23,7 +23,7 @@ export const createChallenge = (challengeData, token) => async (dispatch) => {
   dispatch(createChallengeRequest());
   try {
     const response = await axios.post(
-      "/api/company/create-challenge",
+      "http://localhost:3000/api/company/create-challenge", // Update this line
       challengeData,
       {
         headers: {
