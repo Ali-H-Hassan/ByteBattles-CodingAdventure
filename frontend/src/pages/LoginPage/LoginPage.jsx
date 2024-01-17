@@ -19,7 +19,13 @@ const LoginPage = () => {
   });
   useEffect(() => {
     if (isAuthenticated) {
-      navigate("/dashboard");
+      const userType = useSelector((state) => state.auth.userType);
+
+      if (userType === "company") {
+        navigate("/create-test");
+      } else {
+        navigate("/dashboard");
+      }
     }
   }, [isAuthenticated, navigate]);
 
