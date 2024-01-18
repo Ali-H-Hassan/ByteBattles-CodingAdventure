@@ -9,14 +9,6 @@ const GameComponent = ({ courseId }) => {
   const gameRef = useRef(null);
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth.user._id);
-  const onGameComplete = useCallback(
-    (finalScore) => {
-      if (userId) {
-        dispatch(submitScore(userId, finalScore));
-      }
-    },
-    [dispatch, userId]
-  );
 
   useEffect(() => {
     const config = {
@@ -24,7 +16,7 @@ const GameComponent = ({ courseId }) => {
       parent: "phaser-container",
       width: 800,
       height: 600,
-      scene: [new GameScene(courseId)],
+      scene: [new GameScene(courseId, onGameComplete)],
     };
 
     gameRef.current = new Phaser.Game(config);
@@ -34,7 +26,14 @@ const GameComponent = ({ courseId }) => {
         gameRef.current.destroy(true);
       }
     };
-  }, [courseId, onGameComplete]);
+  }, [courseId, dispatch]);
+
+  const onGameComplete = (finalScore) => {
+    if (userId) {
+      dispatch(submitScore(userId, finalScore));
+    }
+  };
+
   return <div id="phaser-container"></div>;
 };
 
