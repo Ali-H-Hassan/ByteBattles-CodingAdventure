@@ -1,9 +1,10 @@
 import Phaser from "phaser";
 
 class GameScene extends Phaser.Scene {
-  constructor(courseId) {
+  constructor(courseId, onGameComplete) {
     super({ key: "GameScene" });
     this.courseId = courseId;
+    this.onGameComplete = onGameComplete;
   }
 
   preload() {}
@@ -142,7 +143,7 @@ class GameScene extends Phaser.Scene {
     message.setPadding(10, 10, 10, 10);
     message.setInteractive();
     message.once("pointerdown", () => {
-      this.scene.restart();
+      this.onGameComplete(this.score);
     });
 
     this.tweens.add({
