@@ -10,18 +10,26 @@
 }
 
 .courses-header h1 {
-  font-size: 30px;
-  font-weight: bold;
-  margin-bottom: 0.5em;
+  font-family: "Montserrat", sans-serif;
+  font-size: 2rem;
+  font-weight: 900;
+  margin-bottom: 1em;
   text-align: center;
+  color: #833ab4;
+  background-image: linear-gradient(to right, #833ab4, #fd1d1d, #fcb045);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 8px rgba(131, 58, 180, 0.6);
 }
 
 .courses-grid-container h2 {
-  font-size: 25px;
-  font-weight: bold;
-  margin-top: 0;
-  margin-bottom: 1em;
-  color: #00c354;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #6a82fb;
+  text-shadow: 1px 1px 4px rgba(106, 130, 251, 0.5);
+  margin: 0;
+  margin-bottom: 1.5em;
 }
 
 .courses-display-container {
