@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./CoursesDisplay.css";
 import Display from "../../assets/HTML.jpeg";
 
@@ -35,9 +36,14 @@ const backendCourses = [
 
 const CourseSection = ({ title, courses }) => {
   const [activeCourse, setActiveCourse] = useState(null);
+  const navigate = useNavigate();
 
   const handleCardClick = (courseId) => {
     setActiveCourse(activeCourse === courseId ? null : courseId);
+  };
+
+  const startGame = (courseId) => {
+    navigate("/game", { state: { courseId: courseId } });
   };
 
   return (
@@ -57,23 +63,24 @@ const CourseSection = ({ title, courses }) => {
               src={course.imageUrl}
               alt={course.title}
             />
-
             <div className="courses-display-card-content">
               <div className="courses-display-profile-image">
                 <GamepadSVG />
               </div>
               <h3 className="courses-display-title">{course.title}</h3>
               {activeCourse === course.id && (
-                <a className="new-neon-button">
+                <button
+                  className="new-neon-button"
+                  onClick={() => startGame(course.id)}
+                >
                   <span></span>
                   <span></span>
                   <span></span>
                   <span></span>
                   Start Adventure
-                </a>
+                </button>
               )}
             </div>
-
             <div className="courses-display-backdrop"></div>
           </div>
         ))}
