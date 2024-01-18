@@ -1,31 +1,15 @@
 import Phaser from "phaser";
 
 class GameScene extends Phaser.Scene {
-  constructor() {
+  constructor(courseId) {
     super("GameScene");
+    this.courseId = courseId;
   }
 
   preload() {}
 
   create() {
-    const tags = [
-      {
-        name: "HTML",
-        color: 0x9966ff,
-        x: 100,
-        y: 200,
-        dropZoneX: 300,
-        dropZoneY: 100,
-      },
-      {
-        name: "CSS",
-        color: 0x6699ff,
-        x: 300,
-        y: 200,
-        dropZoneX: 300,
-        dropZoneY: 300,
-      },
-    ];
+    const tags = this.getTagsBasedOnCourse(this.courseId);
 
     tags.forEach((tag) => {
       this.createTag(tag);
@@ -43,8 +27,6 @@ class GameScene extends Phaser.Scene {
       fill: "#ffffff",
     });
   }
-
-  update() {}
 
   createTag(tag) {
     const tagGraphics = this.add.graphics({ fillStyle: { color: tag.color } });
@@ -90,6 +72,35 @@ class GameScene extends Phaser.Scene {
   updateScore() {
     this.score += 10;
     this.scoreText.setText(`Score: ${this.score}`);
+  }
+
+  getTagsBasedOnCourse(courseId) {
+    switch (courseId) {
+      case 1: // HTML Course
+        return [
+          {
+            name: "HTML Tag",
+            color: 0x9966ff,
+            x: 100,
+            y: 200,
+            dropZoneX: 300,
+            dropZoneY: 100,
+          },
+        ];
+      case 2:
+        return [
+          {
+            name: "CSS Tag",
+            color: 0x6699ff,
+            x: 300,
+            y: 200,
+            dropZoneX: 300,
+            dropZoneY: 300,
+          },
+        ];
+      default:
+        return [];
+    }
   }
 }
 
