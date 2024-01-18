@@ -41,7 +41,6 @@ const CreateChallengePage = () => {
     console.log("Token in CreateChallengePage:", token);
     if (!token) {
       console.error("Authentication token is not available. Please log in.");
-      alert("You are not logged in. Please log in to create a challenge.");
       return;
     }
 
@@ -56,76 +55,80 @@ const CreateChallengePage = () => {
     <div className="create-challenge-container">
       <h2 className="create-challenge-title">Create a New Test</h2>
       <form className="create-challenge-form" onSubmit={handleSubmit}>
-        <fieldset>
-          <legend>MCQ Question</legend>
-          <label>
-            Question:
-            <input
-              type="text"
-              name="question"
-              value={mcqData.question}
-              onChange={handleMcqChange}
-              required
-            />
-          </label>
-          {mcqData.options.map((option, index) => (
-            <label key={index}>
-              Option {index + 1}:
+        <div className="section mcq-section">
+          <fieldset>
+            <legend>MCQ Question</legend>
+            <label>
+              Question:
               <input
                 type="text"
-                name={`option${index}`}
-                value={option}
+                name="question"
+                value={mcqData.question}
                 onChange={handleMcqChange}
                 required
               />
             </label>
-          ))}
-          <label>
-            Correct Option Number:
-            <input
-              type="number"
-              name="correctOption"
-              min="1"
-              max="4"
-              value={mcqData.correctOption}
-              onChange={handleMcqChange}
-              required
-            />
-          </label>
-        </fieldset>
-
-        <fieldset>
-          <legend>Coding Question</legend>
-          <label>
-            Prompt:
-            <textarea
-              name="prompt"
-              value={codingData.prompt}
-              onChange={handleCodingChange}
-              required
-            />
-          </label>
-          <label>
-            Template Code:
-            <textarea
-              name="templateCode"
-              value={codingData.templateCode}
-              onChange={handleCodingChange}
-              required
-            />
-          </label>
-          {codingData.testCases.map((testCase, index) => (
-            <label key={index}>
-              Test Case {index + 1}:
+            {mcqData.options.map((option, index) => (
+              <label key={index}>
+                Option {index + 1}:
+                <input
+                  type="text"
+                  name={`option${index}`}
+                  value={option}
+                  onChange={handleMcqChange}
+                  required
+                />
+              </label>
+            ))}
+            <label>
+              Correct Option Number:
               <input
-                type="text"
-                name={`testCase${index}`}
-                value={testCase}
-                onChange={handleCodingChange}
+                type="number"
+                name="correctOption"
+                min="1"
+                max="4"
+                value={mcqData.correctOption}
+                onChange={handleMcqChange}
+                required
               />
             </label>
-          ))}
-        </fieldset>
+          </fieldset>
+        </div>
+
+        <div className="section coding-section">
+          <fieldset>
+            <legend>Coding Question</legend>
+            <label>
+              Prompt:
+              <textarea
+                name="prompt"
+                value={codingData.prompt}
+                onChange={handleCodingChange}
+                required
+              />
+            </label>
+            <label>
+              Template Code:
+              <textarea
+                name="templateCode"
+                value={codingData.templateCode}
+                onChange={handleCodingChange}
+                required
+              />
+            </label>
+            {codingData.testCases.map((testCase, index) => (
+              <label key={index}>
+                Test Case {index + 1}:
+                <input
+                  type="text"
+                  name={`testCase${index}`}
+                  value={testCase}
+                  onChange={handleCodingChange}
+                />
+              </label>
+            ))}
+          </fieldset>
+        </div>
 
         <button className="create-challenge-button" type="submit">
           Create Test
