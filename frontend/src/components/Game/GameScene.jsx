@@ -14,6 +14,8 @@ class GameScene extends Phaser.Scene {
     this.createTitle();
     this.createTagsAndZones();
     this.createScoreText();
+    this.totalTags = 4;
+    this.correctlyPlacedTags = 0;
   }
 
   createTitle() {
@@ -93,7 +95,11 @@ class GameScene extends Phaser.Scene {
               tagText.disableInteractive();
               tagText.x = zone.x - tagText.width / 2;
               tagText.y = zone.y - tagText.height / 2;
+              this.correctlyPlacedTags++;
               this.updateScore(10);
+              if (this.correctlyPlacedTags === this.totalTags) {
+                this.showCompletionMessage();
+              }
             }
           }
         });
@@ -116,6 +122,25 @@ class GameScene extends Phaser.Scene {
   updateScore(points) {
     this.score += points;
     this.scoreText.setText(`Score: ${this.score}`);
+  }
+  showCompletionMessage() {
+    let completionText = "Great Job! You've matched all the tags!";
+    let message = this.add.text(
+      this.scale.width / 2,
+      this.scale.height / 2,
+      completionText,
+      {
+        font: "32px Arial",
+        fill: "#ffffff",
+        backgroundColor: "#000000",
+      }
+    );
+    message.setOrigin(0.5);
+    message.setPadding(10, 10, 10, 10);
+    message.setInteractive();
+    message.once("pointerdown", () => {
+      this.scene.restart();
+    });
   }
 }
 
