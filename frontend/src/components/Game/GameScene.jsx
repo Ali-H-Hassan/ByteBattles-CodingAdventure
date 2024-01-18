@@ -9,6 +9,7 @@ class GameScene extends Phaser.Scene {
   preload() {}
 
   create() {
+    this.cameras.main.setBackgroundColor("#242424");
     this.score = 0;
     this.createTitle();
     this.createTagsAndZones();
@@ -16,16 +17,8 @@ class GameScene extends Phaser.Scene {
   }
 
   createTitle() {
-    let titleText = "";
-    switch (this.courseId) {
-      case 1:
-        titleText = "HTML Tag Matching!";
-        break;
-      default:
-        titleText = "Matching Game";
-        break;
-    }
-    this.title = this.add
+    let titleText = "HTML Basics";
+    this.add
       .text(this.scale.width / 2, 40, titleText, {
         font: "40px Arial",
         fill: "#ffffff",
@@ -35,29 +28,43 @@ class GameScene extends Phaser.Scene {
 
   createTagsAndZones() {
     const tags = [
-      { text: "<div>", category: "container", x: 100, y: 150 },
-      { text: "<p>", category: "text", x: 300, y: 150 },
-      { text: "<a>", category: "link", x: 500, y: 150 },
-      // Add more tags as needed
+      { text: "<div>", category: "Containers", x: 100, y: 150 },
+      { text: "<p>", category: "Text", x: 200, y: 150 },
+      { text: "<a>", category: "Links", x: 300, y: 150 },
+      { text: "<img>", category: "Media", x: 400, y: 150 },
     ];
 
     const categories = {
-      container: this.add.zone(100, 400, 140, 100).setName("container"),
-      text: this.add.zone(300, 400, 140, 100).setName("text"),
-      link: this.add.zone(500, 400, 140, 100).setName("link"),
-      // Define more categories as needed
+      Containers: { x: 100, y: 400, width: 140, height: 100 },
+      Text: { x: 300, y: 400, width: 140, height: 100 },
+      Links: { x: 500, y: 400, width: 140, height: 100 },
+      Media: { x: 700, y: 400, width: 140, height: 100 },
     };
 
-    Object.values(categories).forEach((zone) => {
-      this.add.graphics().lineStyle(2, 0xffffff).strokeRectShape(zone);
-    });
+    Object.entries(categories).forEach(
+      ([category, { x, y, width, height }]) => {
+        let zone = this.add
+          .zone(x, y, width, height)
+          .setRectangleDropZone(width, height);
+        this.add
+          .graphics()
+          .lineStyle(2, 0xffffff)
+          .strokeRect(x - width / 2, y - height / 2, width, height);
+        this.add
+          .text(x, y - height / 2 - 20, category, {
+            font: "18px Arial",
+            fill: "#ffffff",
+          })
+          .setOrigin(0.5);
+      }
+    );
 
     tags.forEach((tag) => {
-      const tagText = this.add
+      let tagText = this.add
         .text(tag.x, tag.y, tag.text, {
           font: "22px Arial",
-          backgroundColor: "#000000",
           color: "#ffffff",
+          backgroundColor: "transparent",
           padding: { left: 5, right: 5, top: 5, bottom: 5 },
         })
         .setInteractive();
@@ -69,20 +76,28 @@ class GameScene extends Phaser.Scene {
         tagText.y = dragY;
       });
 
-      tagText.on("dragend", (pointer, gameObject) => {
-        const category = categories[tag.category];
-        if (
-          Phaser.Geom.Rectangle.Overlaps(
-            tagText.getBounds(),
-            category.getBounds()
-          )
-        ) {
-          tagText.disableInteractive();
-          tagText.x = category.x;
-          tagText.y = category.y;
-          this.updateScore(10);
-          tagText.setBackgroundColor("#228B22");
-        } else {
+      tagText.on("dragend", (pointer) => {
+        let placed = false;
+        Object.entries(categories).forEach(([key, { x, y, width, height }]) => {
+          let zone = this.add
+            .zone(x, y, width, height)
+            .setRectangleDropZone(width, height);
+          if (
+            !placed &&
+            tag.category === key &&
+            Phaser.Geom.Rectangle.Overlaps(
+              tagText.getBounds(),
+              zone.getBounds()
+            )
+          ) {
+            tagText.disableInteractive();
+            tagText.x = zone.x - tagText.width / 2;
+            tagText.y = zone.y - tagText.height / 2;
+            this.updateScore(10);
+            placed = true;
+          }
+        });
+        if (!placed) {
           tagText.x = tag.x;
           tagText.y = tag.y;
         }
