@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { createChallenge } from "../../actions/challengeActions";
+import { createChallenge } from "../../actions/testActions";
 import "./CreateChallengePage.css";
 import { useSelector } from "react-redux";
 

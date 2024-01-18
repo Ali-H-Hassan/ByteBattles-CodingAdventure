@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchChallenge } from "../../actions/challengeActions";
+import { fetchChallenge } from "../../actions/testActions";
 import "./DisplayTest.css";
 
 const DisplayTest = ({ testId }) => {

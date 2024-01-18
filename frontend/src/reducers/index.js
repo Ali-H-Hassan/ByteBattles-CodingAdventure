@@ -1,6 +1,6 @@
 import { combineReducers } from "redux";
 import authReducer from "./authReducer";
-import challengeReducer from "./challengeReducer";
+import challengeReducer from "./testReducer";
 
 const rootReducer = combineReducers({
   auth: authReducer,
