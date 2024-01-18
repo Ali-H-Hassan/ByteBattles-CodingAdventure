@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import Phaser from "phaser";
 import GameScene from "./GameScene";
 
-const GameComponent = () => {
+const GameComponent = ({ courseId }) => {
   const gameRef = useRef(null);
 
   useEffect(() => {
@@ -11,19 +11,17 @@ const GameComponent = () => {
       parent: "phaser-container",
       width: 800,
       height: 600,
-      scene: [GameScene],
+      scene: [new GameScene(courseId)],
     };
 
-    // Assign game to the ref
     gameRef.current = new Phaser.Game(config);
 
-    // Cleanup function
     return () => {
       if (gameRef.current) {
         gameRef.current.destroy(true);
       }
     };
-  }, []);
+  }, [courseId]);
 
   return <div id="phaser-container"></div>;
 };
