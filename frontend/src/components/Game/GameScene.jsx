@@ -60,7 +60,7 @@ class GameScene extends Phaser.Scene {
     );
 
     tags.forEach((tag) => {
-      let tagText = this.add
+      const tagText = this.add
         .text(tag.x, tag.y, tag.text, {
           font: "22px Arial",
           color: "#ffffff",
@@ -77,29 +77,30 @@ class GameScene extends Phaser.Scene {
       });
 
       tagText.on("dragend", (pointer) => {
-        let placed = false;
+        let correctDrop = false;
         Object.entries(categories).forEach(([key, { x, y, width, height }]) => {
           let zone = this.add
             .zone(x, y, width, height)
             .setRectangleDropZone(width, height);
           if (
-            !placed &&
-            tag.category === key &&
             Phaser.Geom.Rectangle.Overlaps(
               tagText.getBounds(),
               zone.getBounds()
             )
           ) {
-            tagText.disableInteractive();
-            tagText.x = zone.x - tagText.width / 2;
-            tagText.y = zone.y - tagText.height / 2;
-            this.updateScore(10);
-            placed = true;
+            if (tag.category === key) {
+              correctDrop = true;
+              tagText.disableInteractive();
+              tagText.x = zone.x - tagText.width / 2;
+              tagText.y = zone.y - tagText.height / 2;
+              this.updateScore(10);
+            }
           }
         });
-        if (!placed) {
+        if (!correctDrop) {
           tagText.x = tag.x;
           tagText.y = tag.y;
+          this.updateScore(-5);
         }
       });
     });
