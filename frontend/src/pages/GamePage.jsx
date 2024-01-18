@@ -6,9 +6,19 @@ const GamePage = () => {
   const location = useLocation();
   const { courseId } = location.state || {};
 
+  const getCourseName = (id) => {
+    const courseNames = {
+      1: "HTML Basics",
+      2: "CSS Fundamentals",
+    };
+    return courseNames[id] || "Unknown Course";
+  };
+
+  const courseName = getCourseName(courseId);
+
   return (
     <div>
-      <h1>Game for Course ID: {courseId}</h1>
+      <h1>{courseName}</h1>
       <Game courseId={courseId} />
     </div>
   );

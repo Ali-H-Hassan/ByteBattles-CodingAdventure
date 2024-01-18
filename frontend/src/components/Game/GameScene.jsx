@@ -2,99 +2,103 @@ import Phaser from "phaser";
 
 class GameScene extends Phaser.Scene {
   constructor(courseId) {
-    super("GameScene");
+    super({ key: "GameScene" });
     this.courseId = courseId;
   }
 
-  preload() {
-    // Load any specific assets for HTML course if necessary
-  }
+  preload() {}
 
   create() {
-    if (this.courseId === 1) {
-      // If the course is HTML
-      this.createHtmlGame();
-    }
-    // Add more conditions for other courses
+    this.score = 0;
+    this.createTitle();
+    this.createTagsAndZones();
+    this.createScoreText();
   }
 
-  createHtmlGame() {
-    const htmlTags = [
-      { tag: "<div>", category: "Structure Tags", x: 100, y: 200 },
-      { tag: "<p>", category: "Structure Tags", x: 200, y: 200 },
-      { tag: "<b>", category: "Formatting Tags", x: 300, y: 200 },
-      // Add more HTML tags as necessary
+  createTitle() {
+    let titleText = "";
+    switch (this.courseId) {
+      case 1:
+        titleText = "HTML Tag Matching!";
+        break;
+      default:
+        titleText = "Matching Game";
+        break;
+    }
+    this.title = this.add
+      .text(this.scale.width / 2, 40, titleText, {
+        font: "40px Arial",
+        fill: "#ffffff",
+      })
+      .setOrigin(0.5);
+  }
+
+  createTagsAndZones() {
+    const tags = [
+      { text: "<div>", category: "container", x: 100, y: 150 },
+      { text: "<p>", category: "text", x: 300, y: 150 },
+      { text: "<a>", category: "link", x: 500, y: 150 },
+      // Add more tags as needed
     ];
 
-    this.dropZones = {
-      "Structure Tags": this.createDropZone(500, 100),
-      "Formatting Tags": this.createDropZone(500, 300),
-      // Add more drop zones as necessary
+    const categories = {
+      container: this.add.zone(100, 400, 140, 100).setName("container"),
+      text: this.add.zone(300, 400, 140, 100).setName("text"),
+      link: this.add.zone(500, 400, 140, 100).setName("link"),
+      // Define more categories as needed
     };
 
-    htmlTags.forEach((tag) => this.createHtmlTag(tag));
+    Object.values(categories).forEach((zone) => {
+      this.add.graphics().lineStyle(2, 0xffffff).strokeRectShape(zone);
+    });
 
-    this.add.text(20, 20, "Match the HTML tags with their correct categories", {
-      font: "18px Arial",
+    tags.forEach((tag) => {
+      const tagText = this.add
+        .text(tag.x, tag.y, tag.text, {
+          font: "22px Arial",
+          backgroundColor: "#000000",
+          color: "#ffffff",
+          padding: { left: 5, right: 5, top: 5, bottom: 5 },
+        })
+        .setInteractive();
+
+      this.input.setDraggable(tagText);
+
+      tagText.on("drag", (pointer, dragX, dragY) => {
+        tagText.x = dragX;
+        tagText.y = dragY;
+      });
+
+      tagText.on("dragend", (pointer, gameObject) => {
+        const category = categories[tag.category];
+        if (
+          Phaser.Geom.Rectangle.Overlaps(
+            tagText.getBounds(),
+            category.getBounds()
+          )
+        ) {
+          tagText.disableInteractive();
+          tagText.x = category.x;
+          tagText.y = category.y;
+          this.updateScore(10);
+          tagText.setBackgroundColor("#228B22");
+        } else {
+          tagText.x = tag.x;
+          tagText.y = tag.y;
+        }
+      });
+    });
+  }
+
+  createScoreText() {
+    this.scoreText = this.add.text(this.scale.width - 150, 15, "Score: 0", {
+      font: "22px Arial",
       fill: "#ffffff",
     });
-
-    this.score = 0;
-    this.scoreText = this.add.text(700, 20, "Score: 0", {
-      font: "18px Arial",
-      fill: "#ffffff",
-    });
   }
 
-  createHtmlTag(tagData) {
-    let tagText = this.add
-      .text(tagData.x, tagData.y, tagData.tag, {
-        font: "16px Arial",
-        fill: "#fff",
-        backgroundColor: "#000",
-      })
-      .setInteractive();
-
-    this.input.setDraggable(tagText);
-
-    tagText.on("drag", (pointer, dragX, dragY) => {
-      tagText.x = dragX;
-      tagText.y = dragY;
-    });
-
-    tagText.on("dragend", (pointer) => {
-      const dropZone = this.dropZones[tagData.category];
-      if (this.isInDropZone(tagText.x, tagText.y, dropZone)) {
-        tagText.x = dropZone.x + dropZone.width / 2 - tagText.width / 2;
-        tagText.y = dropZone.y + dropZone.height / 2 - tagText.height / 2;
-        tagText.disableInteractive();
-        this.updateScore(10);
-      } else {
-        tagText.x = tagData.x;
-        tagText.y = tagData.y;
-      }
-    });
-  }
-
-  createDropZone(x, y, width = 200, height = 100) {
-    let dropZone = this.add
-      .zone(x, y, width, height)
-      .setRectangleDropZone(width, height);
-    dropZone.setData("category", "Structure Tags"); // Example of setting data to a zone
-    // Visual representation of the drop zone (for debugging)
-    let graphics = this.add.graphics();
-    graphics.lineStyle(2, 0xffffff, 0.8);
-    graphics.strokeRect(x - width / 2, y - height / 2, width, height);
-    return dropZone;
-  }
-
-  isInDropZone(x, y, dropZone) {
-    // Phaser provides a method `Rectangle.Contains` to check this
-    return dropZone.input.hitArea.contains(x - dropZone.x, y - dropZone.y);
-  }
-
-  updateScore(value) {
-    this.score += value;
+  updateScore(points) {
+    this.score += points;
     this.scoreText.setText(`Score: ${this.score}`);
   }
 }
