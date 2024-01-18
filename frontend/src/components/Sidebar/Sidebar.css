@@ -23,7 +23,7 @@
 }
 
 .menu-text:hover {
-  color: #00c354;
+  color: inherit;
 }
 
 .icon-bg {
@@ -37,4 +37,7 @@
 .icon-black,
 .icon-dark {
   display: flex;
+}
+.menu-item.selected {
+  color: #00c354;
 }
