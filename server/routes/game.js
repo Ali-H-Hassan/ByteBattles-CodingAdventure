@@ -4,6 +4,6 @@ const gameController = require("../controllers/gameController");
 
 router.get("/courses", gameController.getCourses);
 
-// Add other routes as needed
+router.post("/submit-score", gameController.submitScore);
 
 module.exports = router;
