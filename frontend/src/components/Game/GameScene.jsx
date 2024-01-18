@@ -124,7 +124,6 @@ class GameScene extends Phaser.Scene {
     this.scoreText.setText(`Score: ${this.score}`);
   }
   showCompletionMessage() {
-    // Ensure the message doesn't overlap with the drop zones
     const messageY = this.scale.height / 2 - 100;
 
     let completionText = "Awesome work! All tags are correct!";
@@ -134,7 +133,7 @@ class GameScene extends Phaser.Scene {
       completionText,
       {
         font: "32px Arial",
-        fill: "#00ff00", // Cheerful green color
+        fill: "#00ff00",
         stroke: "#ffffff",
         strokeThickness: 2,
       }
@@ -143,14 +142,12 @@ class GameScene extends Phaser.Scene {
     message.setPadding(10, 10, 10, 10);
     message.setInteractive();
     message.once("pointerdown", () => {
-      // Here you could potentially restart the game or navigate to another scene
       this.scene.restart();
     });
 
-    // Create an animation or effect to make the message more cheerful
     this.tweens.add({
       targets: message,
-      y: messageY + 20, // subtle bounce effect
+      y: messageY + 20,
       ease: "Power1",
       duration: 800,
       yoyo: true,

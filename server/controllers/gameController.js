@@ -6,4 +6,25 @@ exports.getCourses = async (req, res) => {
   res.json(courses);
 };
 
-// Add other CRUD operations as needed
+exports.submitScore = async (req, res) => {
+  try {
+    const { userId, score } = req.body;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (score > user.highScore) {
+      user.highScore = score;
+      await user.save();
+    }
+
+    res.json({ highScore: user.highScore });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "An error occurred", error: error.message });
+  }
+};
