@@ -5,58 +5,38 @@ class GameScene extends Phaser.Scene {
     super("GameScene");
   }
 
-  preload() {
-    // Currently, we're not loading any assets.
-  }
+  preload() {}
 
   create() {
-    // Create a simple rectangle shape to represent the "htmlTag"
-    this.htmlTag = this.add.graphics({ fillStyle: { color: 0x9966ff } });
+    const tags = [
+      {
+        name: "HTML",
+        color: 0x9966ff,
+        x: 100,
+        y: 200,
+        dropZoneX: 300,
+        dropZoneY: 100,
+      },
+      {
+        name: "CSS",
+        color: 0x6699ff,
+        x: 300,
+        y: 200,
+        dropZoneX: 300,
+        dropZoneY: 300,
+      },
+    ];
 
-    // Draw the rectangle onto the graphics object
-    this.htmlTag.fillRect(100, 200, 100, 100);
+    tags.forEach((tag) => {
+      this.createTag(tag);
+      this.createDropZone(tag);
+    });
 
-    // Set the graphics object to be interactive
-    this.htmlTag.setInteractive(
-      new Phaser.Geom.Rectangle(0, 0, 100, 100),
-      Phaser.Geom.Rectangle.Contains
-    );
-
-    // Now we can make it draggable
-    this.input.setDraggable(this.htmlTag);
-
-    // Add text to the scene
-    this.add.text(20, 20, "Drag the HTML tags to the correct container", {
+    this.add.text(20, 20, "Drag the tags to the correct container", {
       font: "18px Arial",
       fill: "#ffffff",
     });
 
-    // Event listeners for drag events
-    this.input.on("dragstart", (pointer, gameObject) => {
-      gameObject.setTint(0xff69b4); // Highlight the object when being dragged
-    });
-
-    this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
-      gameObject.x = dragX;
-      gameObject.y = dragY;
-    });
-
-    this.input.on("dragend", (pointer, gameObject) => {
-      gameObject.clearTint(); // Remove highlight when released
-
-      // Check if the HTML tag is dropped in the correct area
-      if (this.isCorrectDropZone(gameObject)) {
-        // Logic for correct placement
-        gameObject.input.enabled = false; // Disable dragging after correct placement
-        this.updateScore();
-      } else {
-        // Logic for incorrect placement
-        gameObject.x = gameObject.input.dragStartX; // Reset to initial position
-        gameObject.y = gameObject.input.dragStartY;
-      }
-    });
-
-    // Initialize score and add score text to the scene
     this.score = 0;
     this.scoreText = this.add.text(700, 20, "Score: 0", {
       font: "18px Arial",
@@ -64,19 +44,52 @@ class GameScene extends Phaser.Scene {
     });
   }
 
-  update() {
-    // Game update loop
+  update() {}
+
+  createTag(tag) {
+    const tagGraphics = this.add.graphics({ fillStyle: { color: tag.color } });
+    tagGraphics.fillRect(tag.x, tag.y, 100, 100);
+    tagGraphics.setInteractive(
+      new Phaser.Geom.Rectangle(0, 0, 100, 100),
+      Phaser.Geom.Rectangle.Contains
+    );
+    this.input.setDraggable(tagGraphics);
+
+    tagGraphics.on("drag", (pointer, dragX, dragY) => {
+      tagGraphics.x = dragX;
+      tagGraphics.y = dragY;
+    });
+
+    tagGraphics.on("dragend", (pointer) => {
+      if (
+        this.isInDropZone(pointer.x, pointer.y, tag.dropZoneX, tag.dropZoneY)
+      ) {
+        tagGraphics.x = tag.dropZoneX;
+        tagGraphics.y = tag.dropZoneY;
+        tagGraphics.input.enabled = false;
+        this.updateScore();
+      } else {
+        tagGraphics.x = tag.x;
+        tagGraphics.y = tag.y;
+      }
+    });
   }
 
-  isCorrectDropZone(gameObject) {
-    // Define a drop zone area and check if the gameObject is within this area
-    const dropZone = new Phaser.Geom.Rectangle(300, 400, 200, 100);
-    return dropZone.contains(gameObject.x, gameObject.y);
+  createDropZone(tag) {
+    const dropZoneGraphics = this.add.graphics({
+      fillStyle: { color: 0x228b22, alpha: 0.5 },
+    });
+    dropZoneGraphics.fillRect(tag.dropZoneX, tag.dropZoneY, 100, 100);
+  }
+
+  isInDropZone(x, y, dropZoneX, dropZoneY) {
+    const dropZone = new Phaser.Geom.Rectangle(dropZoneX, dropZoneY, 100, 100);
+    return dropZone.contains(x, y);
   }
 
   updateScore() {
-    this.score += 10; // Increment score
-    this.scoreText.setText(`Score: ${this.score}`); // Update score text
+    this.score += 10;
+    this.scoreText.setText(`Score: ${this.score}`);
   }
 }
 
