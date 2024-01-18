@@ -29,6 +29,15 @@ const runBattle = async (req, res) => {
       max_tokens: 150,
     });
 
+    if (
+      !completion ||
+      !completion.data ||
+      !completion.data.choices ||
+      completion.data.choices.length === 0
+    ) {
+      throw new Error("Invalid response from OpenAI API.");
+    }
+
     const aiCode = completion.data.choices[0].text;
 
     const userResults = await executeUserCode(userCode, language);
