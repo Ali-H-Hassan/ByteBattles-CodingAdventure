@@ -49,6 +49,8 @@ class CssGameScene extends Phaser.Scene {
     const htmlTargets = [
       { key: "color", x: 100, y: 400 },
       { key: "font-size", x: 300, y: 400 },
+      { key: "background", x: 500, y: 400 },
+      { key: "margin", x: 700, y: 400 },
     ];
 
     htmlTargets.forEach((target) => {
@@ -60,33 +62,31 @@ class CssGameScene extends Phaser.Scene {
       let graphics = this.add.graphics();
       graphics.lineStyle(2, 0x00ff00);
       graphics.strokeRect(target.x - 75, target.y - 25, 150, 50);
+
+      this.add
+        .text(target.x, target.y - 60, target.key, {
+          font: "18px Arial",
+          color: "#ffffff",
+        })
+        .setOrigin(0.5);
     });
 
     this.input.on("drop", (pointer, gameObject, dropZone) => {
-      if (
-        dropZone.data &&
-        gameObject.text.includes(dropZone.data.get("class"))
-      ) {
-        console.log("Drop Zone Data:", dropZone.data.getAll());
-
-        if (gameObject.text.includes(dropZone.data.get("class"))) {
-          this.score += 10;
-          this.matches += 1;
-          gameObject.x = dropZone.x;
-          gameObject.y = dropZone.y;
-          gameObject.input.enabled = false;
-          gameObject.setBackgroundColor("#0f0");
-        } else {
-          this.score -= 5;
-          gameObject.x = gameObject.input.dragStartX;
-          gameObject.y = gameObject.input.dragStartY;
-        }
-        this.updateScore();
-        if (this.matches === htmlTargets.length) {
-          this.endGame();
-        }
+      if (gameObject.text.includes(dropZone.data.get("class"))) {
+        this.score += 10;
+        this.matches += 1;
+        gameObject.x = dropZone.x - gameObject.width / 2;
+        gameObject.y = dropZone.y - gameObject.height / 2;
+        gameObject.input.enabled = false;
+        gameObject.setBackgroundColor("#0f0");
       } else {
-        console.error("Drop Zone is null or has no data");
+        this.score -= 5;
+        gameObject.x = gameObject.input.dragStartX;
+        gameObject.y = gameObject.input.dragStartY;
+      }
+      this.updateScore();
+      if (this.matches === htmlTargets.length) {
+        this.endGame();
       }
     });
   }
@@ -103,7 +103,6 @@ class CssGameScene extends Phaser.Scene {
   }
 
   endGame() {
-    // Call onGameComplete when the game ends, if it's a function
     if (typeof this.onGameComplete === "function") {
       this.onGameComplete(this.score);
     }
