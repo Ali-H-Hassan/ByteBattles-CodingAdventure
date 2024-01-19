@@ -21,6 +21,10 @@ const courseSchema = new mongoose.Schema({
       ref: "Lesson",
     },
   ],
+  imageUrl: {
+    type: String,
+    required: true,
+  },
   created_at: {
     type: Date,
     default: Date.now,
@@ -36,7 +40,9 @@ const courseSchema = new mongoose.Schema({
 });
 
 courseSchema.pre("save", function (next) {
-  this.updated_at = Date.now();
+  if (this.isNew || this.isModified()) {
+    this.updated_at = Date.now();
+  }
   next();
 });
 
