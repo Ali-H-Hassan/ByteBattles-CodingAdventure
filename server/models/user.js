@@ -87,6 +87,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ["individual", "company"],
     required: true,
+    default: "individual",
   },
   companyName: String,
   companyAddress: String,

@@ -21,6 +21,7 @@ const register = async (req, res) => {
     const token = jwt.sign({ _id: user._id }, JWT_SECRET, { expiresIn: "24h" });
     res.status(201).send({ user, token });
   } catch (error) {
+    console.error("Error during registration:", error);
     res.status(500).send("Error during registration: " + error.message);
   }
 };
