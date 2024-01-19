@@ -1,26 +1,26 @@
 import Phaser from "phaser";
 
 class GameScene extends Phaser.Scene {
-  constructor(courseId, onGameComplete) {
+  constructor(courseId, courseData, onGameComplete) {
     super({ key: "GameScene" });
     this.courseId = courseId;
+    this.courseData = courseData;
     this.onGameComplete = onGameComplete;
   }
 
   preload() {}
 
   create() {
-    this.cameras.main.setBackgroundColor("#242424");
+    this.cameras.main.setBackgroundColor(this.courseData.backgroundColor);
     this.score = 0;
-    this.createTitle();
-    this.createTagsAndZones();
+    this.createTitle(this.courseData.title);
+    this.createTagsAndZones(this.courseData.tags, this.courseData.categories);
     this.createScoreText();
-    this.totalTags = 4;
+    this.totalTags = this.courseData.tags.length;
     this.correctlyPlacedTags = 0;
   }
 
-  createTitle() {
-    let titleText = "HTML Basics";
+  createTitle(titleText) {
     this.add
       .text(this.scale.width / 2, 40, titleText, {
         font: "40px Arial",
@@ -28,7 +28,6 @@ class GameScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
   }
-
   createTagsAndZones() {
     const tags = [
       { text: "<div>", category: "Containers", x: 100, y: 150 },
