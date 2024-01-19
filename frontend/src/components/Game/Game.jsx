@@ -31,6 +31,8 @@ const GameComponent = ({ courseId }) => {
       scene = CssGameScene;
     } else if (courseId === 3) {
       scene = NodeGame;
+    } else if (courseId === 4) {
+      scene = Python;
     }
     const config = {
       type: Phaser.AUTO,
