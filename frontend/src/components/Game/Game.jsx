@@ -4,6 +4,7 @@ import Phaser from "phaser";
 import GameScene from "./GameScene";
 import CssGameScene from "./CssGameScene";
 import NodeGame from "./NodeGameScene";
+import Python from "./PythonGameScene";
 import { submitScore } from "../../actions/gameActions";
 
 const GameComponent = ({ courseId }) => {
