@@ -1,17 +1,19 @@
-import { SUBMIT_SCORE } from "../actions/actionTypes";
+import { FETCH_COURSES } from "../actions/actionTypes";
 
 const initialState = {
-  highScore: 0,
+  courses: [],
 };
 
-export default function gameReducer(state = initialState, action) {
+const gameReducer = (state = initialState, action) => {
   switch (action.type) {
-    case SUBMIT_SCORE:
+    case FETCH_COURSES:
       return {
         ...state,
-        highScore: action.payload,
+        courses: action.payload,
       };
     default:
       return state;
   }
-}
+};
+
+export default gameReducer;
