@@ -6,6 +6,7 @@ import CssGameScene from "./CssGameScene";
 import NodeGame from "./NodeGameScene";
 import Python from "./PythonGameScene";
 import { submitScore } from "../../actions/gameActions";
+import "./Game.css";
 
 const GameComponent = ({ courseId }) => {
   const gameRef = useRef(null);

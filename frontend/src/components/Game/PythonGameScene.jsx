@@ -34,7 +34,8 @@ class PythonGameScene extends Phaser.Scene {
           borderRadius: "5px",
         })
         .setInteractive()
-        .setOrigin(0.5);
+        .setOrigin(0.5)
+        .setData("type", snippet.type);
 
       this.input.setDraggable(text);
     });
@@ -72,7 +73,7 @@ class PythonGameScene extends Phaser.Scene {
     });
 
     this.input.on("drop", (pointer, gameObject, dropZone) => {
-      if (gameObject.text.trim() === dropZone.data.get("type")) {
+      if (gameObject.data.get("type") === dropZone.data.get("type")) {
         this.score += 10;
         this.matches += 1;
         gameObject.x = dropZone.x;
