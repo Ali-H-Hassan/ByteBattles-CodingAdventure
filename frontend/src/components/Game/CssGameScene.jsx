@@ -22,6 +22,8 @@ class CssGameScene extends Phaser.Scene {
     const cssProperties = [
       { key: "color", value: "blue", x: 100, y: 150 },
       { key: "font-size", value: "16px", x: 300, y: 150 },
+      { key: "background", value: "red", x: 500, y: 150 },
+      { key: "margin", value: "10px", x: 700, y: 150 },
     ];
 
     cssProperties.forEach((property) => {
