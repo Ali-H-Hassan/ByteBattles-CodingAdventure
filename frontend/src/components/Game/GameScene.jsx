@@ -28,21 +28,8 @@ class GameScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
   }
+
   createTagsAndZones() {
-    const tags = [
-      { text: "<div>", category: "Containers", x: 100, y: 150 },
-      { text: "<p>", category: "Text", x: 200, y: 150 },
-      { text: "<a>", category: "Links", x: 300, y: 150 },
-      { text: "<img>", category: "Media", x: 400, y: 150 },
-    ];
-
-    const categories = {
-      Containers: { x: 100, y: 400, width: 140, height: 100 },
-      Text: { x: 300, y: 400, width: 140, height: 100 },
-      Links: { x: 500, y: 400, width: 140, height: 100 },
-      Media: { x: 700, y: 400, width: 140, height: 100 },
-    };
-
     Object.entries(categories).forEach(
       ([category, { x, y, width, height }]) => {
         let zone = this.add

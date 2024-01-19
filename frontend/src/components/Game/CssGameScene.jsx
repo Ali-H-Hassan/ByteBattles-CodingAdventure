@@ -1,9 +1,10 @@
 import Phaser from "phaser";
 
 class CssGameScene extends Phaser.Scene {
-  constructor(courseId, onGameComplete) {
+  constructor(courseId, courseData, onGameComplete) {
     super({ key: "CssGameScene" });
     this.courseId = courseId;
+    this.courseData = courseData;
     this.onGameComplete = onGameComplete;
     this.score = 0;
     this.matches = 0;
@@ -12,20 +13,13 @@ class CssGameScene extends Phaser.Scene {
   preload() {}
 
   create() {
-    this.cameras.main.setBackgroundColor("#242424");
-    this.createCSSProperties();
-    this.createHTMLTargets();
+    this.cameras.main.setBackgroundColor(this.courseData.backgroundColor);
+    this.createCSSProperties(this.courseData.cssProperties);
+    this.createHTMLTargets(this.courseData.htmlTargets);
     this.createScoreText();
   }
 
-  createCSSProperties() {
-    const cssProperties = [
-      { key: "color", value: "blue", x: 100, y: 150 },
-      { key: "font-size", value: "16px", x: 300, y: 150 },
-      { key: "background", value: "red", x: 500, y: 150 },
-      { key: "margin", value: "10px", x: 700, y: 150 },
-    ];
-
+  createCSSProperties(cssProperties) {
     cssProperties.forEach((property) => {
       let text = this.add
         .text(property.x, property.y, `${property.key}: ${property.value};`, {
@@ -36,16 +30,14 @@ class CssGameScene extends Phaser.Scene {
           borderRadius: "5px",
         })
         .setInteractive()
-        .setOrigin(0.5);
-
-      text.setStyle({
-        backgroundColor: "transparent",
-        border: "2px solid #00ff00",
-        borderRadius: "10px",
-      });
+        .setOrigin(0.5)
+        .setStyle({
+          backgroundColor: "transparent",
+          border: "2px solid #00ff00",
+          borderRadius: "10px",
+        });
 
       this.input.setDraggable(text);
-      this.add.existing(text);
     });
 
     this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
@@ -54,23 +46,17 @@ class CssGameScene extends Phaser.Scene {
     });
   }
 
-  createHTMLTargets() {
-    const htmlTargets = [
-      { key: "color", x: 100, y: 400 },
-      { key: "font-size", x: 300, y: 400 },
-      { key: "background", x: 500, y: 400 },
-      { key: "margin", x: 700, y: 400 },
-    ];
-
+  createHTMLTargets(htmlTargets) {
     htmlTargets.forEach((target) => {
       let zone = this.add
         .zone(target.x, target.y, 150, 50)
         .setRectangleDropZone(150, 50)
         .setData("class", target.key);
 
-      let graphics = this.add.graphics();
-      graphics.lineStyle(2, 0x00ff00);
-      graphics.strokeRect(target.x - 75, target.y - 25, 150, 50);
+      this.add
+        .graphics()
+        .lineStyle(2, 0x00ff00)
+        .strokeRect(zone.x - 75, zone.y - 25, 150, 50);
 
       this.add
         .text(target.x, target.y - 60, target.key, {
