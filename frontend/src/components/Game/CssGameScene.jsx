@@ -50,9 +50,10 @@ class CssGameScene extends Phaser.Scene {
     ];
 
     htmlTargets.forEach((target) => {
-      let zone = this.add.zone(target.x, target.y, 150, 50).setDropZone({
-        class: target.key,
-      });
+      let zone = this.add
+        .zone(target.x, target.y, 150, 50)
+        .setRectangleDropZone(150, 50)
+        .setData("class", target.key);
 
       let graphics = this.add.graphics();
       graphics.lineStyle(2, 0x00ff00);
@@ -60,9 +61,10 @@ class CssGameScene extends Phaser.Scene {
     });
 
     this.input.on("drop", (pointer, gameObject, dropZone) => {
-      // Debugging: Check the state of dropZone and its data
-      console.log("Drop Zone:", dropZone);
-      if (dropZone && dropZone.data) {
+      if (
+        dropZone.data &&
+        gameObject.text.includes(dropZone.data.get("class"))
+      ) {
         console.log("Drop Zone Data:", dropZone.data.getAll());
 
         if (gameObject.text.includes(dropZone.data.get("class"))) {
