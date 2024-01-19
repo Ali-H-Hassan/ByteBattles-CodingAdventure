@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCourses } from "../../actions/gameActions";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CoursesDisplay.css";
 import Display from "../../assets/HTML.jpeg";
