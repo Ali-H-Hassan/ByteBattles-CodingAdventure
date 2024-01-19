@@ -24,7 +24,6 @@ class CssGameScene extends Phaser.Scene {
       { key: "font-size", value: "16px", x: 300, y: 150 },
       { key: "background", value: "red", x: 500, y: 150 },
       { key: "margin", value: "10px", x: 700, y: 150 },
-      // Add additional properties here
     ];
 
     cssProperties.forEach((property) => {
@@ -126,43 +125,51 @@ class CssGameScene extends Phaser.Scene {
 
     let completionText = this.add
       .text(this.scale.width / 2, this.scale.height / 2, "Great Job!", {
-        font: "64px Arial",
+        font: "bold 64px Arial",
         fill: "#00ff00",
         stroke: "#ffffff",
-        strokeThickness: 4,
+        strokeThickness: 6,
       })
       .setOrigin(0.5);
 
-    let particles = this.add.particles("white");
-
-    let particleProps = {
-      x: completionText.x,
-      y: completionText.y,
-      lifespan: 1000,
-      speed: { min: 200, max: 300 },
-      angle: 0,
-      gravityY: 300,
-      scale: { start: 0.6, end: 0 },
-      quantity: 1,
-      blendMode: "ADD",
-    };
-
-    this.time.addEvent({
-      delay: 100,
-      callback: () => {
-        particles.emitParticleAt(completionText.x, completionText.y + 50);
-      },
-      repeat: 20,
-    });
-
     this.tweens.add({
       targets: completionText,
-      y: "+=10",
-      ease: "Power1",
+      scale: { from: 1, to: 1.2 },
+      ease: "Cubic.easeOut",
       duration: 800,
       yoyo: true,
       repeat: -1,
     });
+
+    this.drawBackgroundEffect(completionText);
+  }
+
+  drawBackgroundEffect(text) {
+    const glowColor = [0xff0000, 0x00ff00, 0x0000ff];
+    let currentColor = 0;
+    let graphics = this.add.graphics();
+
+    this.time.addEvent({
+      delay: 250,
+      loop: true,
+      callback: () => {
+        graphics.clear();
+        graphics.fillStyle(glowColor[currentColor], 0.5);
+        graphics.fillCircle(text.x, text.y, text.width / 2);
+        currentColor = (currentColor + 1) % glowColor.length;
+      },
+    });
+
+    this.tweens.add({
+      targets: graphics,
+      scaleX: 5,
+      scaleY: 5,
+      alpha: { from: 1, to: 0 },
+      ease: "Sine.easeInOut",
+      duration: 2000,
+      repeat: -1,
+    });
+    text.setDepth(1);
   }
 }
 
