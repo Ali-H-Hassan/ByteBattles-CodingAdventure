@@ -101,14 +101,28 @@ class CssGameScene extends Phaser.Scene {
   }
 
   endGame() {
-    this.onGameComplete(this.score);
+    // Call onGameComplete when the game ends, if it's a function
+    if (typeof this.onGameComplete === "function") {
+      this.onGameComplete(this.score);
+    }
 
-    this.add
-      .text(this.scale.width / 2, this.scale.height / 2, "Game Over!", {
-        fontSize: "64px",
-        fill: "#FFF",
+    let completionText = this.add
+      .text(this.scale.width / 2, this.scale.height / 2 - 100, "Great Job!", {
+        font: "64px Arial",
+        fill: "#00ff00",
+        stroke: "#ffffff",
+        strokeThickness: 4,
       })
       .setOrigin(0.5);
+
+    this.tweens.add({
+      targets: completionText,
+      y: this.scale.height / 2,
+      duration: 1500,
+      ease: "Bounce.easeOut",
+      yoyo: true,
+      repeat: -1,
+    });
   }
 }
 
