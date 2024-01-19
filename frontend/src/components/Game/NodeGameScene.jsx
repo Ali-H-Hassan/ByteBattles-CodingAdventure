@@ -58,7 +58,7 @@ class NodeGameScene extends Phaser.Scene {
 
   createMethodDescriptions() {
     this.nodeMethods.forEach((method, index) => {
-      let zoneY = method.y + 300 + index * 60; // Increased spacing
+      let zoneY = method.y + 300 + index * 60;
       let zone = this.add
         .zone(method.x, zoneY, 200, 50)
         .setRectangleDropZone(200, 50)

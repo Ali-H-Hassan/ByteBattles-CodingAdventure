@@ -10,6 +10,8 @@ const GamePage = () => {
     const courseNames = {
       1: "HTML Basics",
       2: "CSS Fundamentals",
+      3: "NodeJs Basics",
+      4: "Python Fundamentals",
     };
     return courseNames[id] || "Unknown Course";
   };
