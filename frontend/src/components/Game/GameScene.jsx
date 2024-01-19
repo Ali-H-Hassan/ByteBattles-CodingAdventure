@@ -29,7 +29,7 @@ class GameScene extends Phaser.Scene {
       .setOrigin(0.5);
   }
 
-  createTagsAndZones() {
+  createTagsAndZones(tags, categories) {
     Object.entries(categories).forEach(
       ([category, { x, y, width, height }]) => {
         let zone = this.add

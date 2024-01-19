@@ -21,7 +21,7 @@ app.use("/uploads", express.static("uploads"));
 app.use("/users", userRoutes);
 app.use("/api/company", challengeRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api/game", gameRoutes);
+app.use("/api/games", gameRoutes);
 app.use("/api/profile", profileRoutes);
 app.use("/request", requestRouter);
 app.use("/api/battle", battleRoutes);
