@@ -8,21 +8,16 @@ class NodeGameScene extends Phaser.Scene {
     this.score = 0;
     this.matches = 0;
 
-    // Define nodeMethods at the class level
     this.nodeMethods = [
-      {
-        key: "readFile",
-        value: "Asynchronously reads the contents of a file.",
-        x: 100,
-        y: 150,
-      },
+      { key: "readFile", value: "Reads a file asynchronously", x: 100, y: 100 },
       {
         key: "writeFile",
-        value: "Asynchronously writes data to a file.",
+        value: "Writes data to a file asynchronously",
         x: 300,
-        y: 150,
+        y: 100,
       },
-      // Add other methods and their descriptions here
+      { key: "unlink", value: "Deletes a file", x: 500, y: 100 },
+      { key: "mkdir", value: "Creates a new directory", x: 700, y: 100 },
     ];
   }
 
@@ -34,7 +29,6 @@ class NodeGameScene extends Phaser.Scene {
   }
 
   createNodeMethods() {
-    // Use this.nodeMethods here
     this.nodeMethods.forEach((method) => {
       let text = this.add
         .text(method.x, method.y, method.key, {
@@ -54,35 +48,31 @@ class NodeGameScene extends Phaser.Scene {
       });
 
       this.input.setDraggable(text);
-      this.add.existing(text);
+
+      text.on("drag", (pointer, dragX, dragY) => {
+        text.x = dragX;
+        text.y = dragY;
+      });
     });
   }
-  createScoreText() {
-    // Method to create the score text
-    this.scoreText = this.add.text(16, 16, "Score: 0", {
-      font: "32px Arial",
-      fill: "#FFF",
-      stroke: "#00ff00",
-      strokeThickness: 2,
-    });
-  }
+
   createMethodDescriptions() {
-    // Now this.nodeMethods is available
-    this.nodeMethods.forEach((method) => {
+    this.nodeMethods.forEach((method, index) => {
+      let zoneY = method.y + 300 + index * 60; // Increased spacing
       let zone = this.add
-        .zone(method.x, method.y + 250, 150, 50) // Offset the y position for the drop zones
-        .setRectangleDropZone(150, 50)
+        .zone(method.x, zoneY, 200, 50)
+        .setRectangleDropZone(200, 50)
         .setData("key", method.key);
 
       let graphics = this.add.graphics();
       graphics.lineStyle(2, 0x00ff00);
-      graphics.strokeRect(zone.x - 75, zone.y - 25, 150, 50);
+      graphics.strokeRect(zone.x - 100, zone.y - 25, 200, 50);
 
       this.add
         .text(zone.x, zone.y - 60, method.value, {
           font: "18px Arial",
           color: "#ffffff",
-          wordWrap: { width: 140, useAdvancedWrap: true },
+          wordWrap: { width: 190, useAdvancedWrap: true },
         })
         .setOrigin(0.5);
     });
@@ -94,16 +84,12 @@ class NodeGameScene extends Phaser.Scene {
         gameObject.x = dropZone.x;
         gameObject.y = dropZone.y;
         gameObject.input.enabled = false;
-        gameObject.setStyle({
-          color: "#ffffff",
-          stroke: "#00ff00",
-          strokeThickness: 2,
-        });
+        gameObject.setColor("#ffffff");
       } else {
         this.score -= 5;
         gameObject.x = gameObject.input.dragStartX;
         gameObject.y = gameObject.input.dragStartY;
-        gameObject.setStyle({ color: "#ff0000" });
+        gameObject.setColor("#ff0000");
       }
       this.updateScore();
       if (this.matches === this.nodeMethods.length) {
@@ -112,10 +98,24 @@ class NodeGameScene extends Phaser.Scene {
     });
   }
 
+  createScoreText() {
+    this.scoreText = this.add.text(16, 16, "Score: 0", {
+      font: "32px Arial",
+      fill: "#FFF",
+      stroke: "#00ff00",
+      strokeThickness: 2,
+    });
+  }
+
+  updateScore() {
+    this.scoreText.setText(`Score: ${this.score}`);
+  }
+
   endGame() {
     if (typeof this.onGameComplete === "function") {
       this.onGameComplete(this.score);
     }
+
     let completionText = this.add
       .text(this.scale.width / 2, this.scale.height / 2, "Great Job!", {
         font: "bold 64px Arial",
@@ -123,23 +123,15 @@ class NodeGameScene extends Phaser.Scene {
         stroke: "#ffffff",
         strokeThickness: 6,
       })
-      .setOrigin(0.5)
-      .setAlpha(0);
+      .setOrigin(0.5);
 
-    let backdrop = this.add
-      .rectangle(0, 0, this.scale.width, this.scale.height, 0x000000, 0.7)
-      .setOrigin(0)
-      .setInteractive();
     this.tweens.add({
-      targets: [completionText, backdrop],
-      alpha: 1,
-      duration: 1000,
-      hold: 3000,
-      ease: "Cubic.easeIn",
-      onComplete: () => {
-        completionText.destroy();
-        backdrop.destroy();
-      },
+      targets: completionText,
+      scale: { from: 1, to: 1.2 },
+      ease: "Cubic.easeOut",
+      duration: 800,
+      yoyo: true,
+      repeat: -1,
     });
   }
 }
