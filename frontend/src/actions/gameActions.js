@@ -1,6 +1,5 @@
 import apiClient from "../services/apiConfig";
 import { SUBMIT_SCORE, FETCH_COURSES } from "./actionTypes";
-import axios from "axios";
 
 export const submitScore = (userId, score) => async (dispatch) => {
   try {
@@ -16,9 +15,10 @@ export const submitScore = (userId, score) => async (dispatch) => {
     console.error("Error submitting score:", error);
   }
 };
+
 export const fetchCourses = () => async (dispatch) => {
   try {
-    const response = await axios.get("/api/games/courses");
+    const response = await apiClient.get("/api/games/courses");
     dispatch({
       type: FETCH_COURSES,
       payload: response.data,
