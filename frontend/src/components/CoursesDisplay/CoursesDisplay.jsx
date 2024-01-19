@@ -92,13 +92,26 @@ const CourseSection = ({ title, courses }) => {
 };
 
 const CoursesDisplay = () => {
+  const dispatch = useDispatch();
+  const courses = useSelector((state) => state.game.courses);
+
+  useEffect(() => {
+    dispatch(fetchCourses());
+  }, [dispatch]);
+
   return (
     <div className="courses-grid-container">
       <div className="courses-header">
         <h1>Select a course to embark on your gamified learning adventure!</h1>
       </div>
-      <CourseSection title="Frontend" courses={frontendCourses} />
-      <CourseSection title="Backend" courses={backendCourses} />
+      <CourseSection
+        title="Frontend"
+        courses={courses.filter((course) => course.type === "frontend")}
+      />
+      <CourseSection
+        title="Backend"
+        courses={courses.filter((course) => course.type === "backend")}
+      />
     </div>
   );
 };
