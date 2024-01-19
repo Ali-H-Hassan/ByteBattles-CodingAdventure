@@ -98,6 +98,11 @@ const CoursesDisplay = () => {
   useEffect(() => {
     dispatch(fetchCourses());
   }, [dispatch]);
+  console.log(courses);
+
+  if (!courses.length) {
+    return <div>Loading courses...</div>;
+  }
 
   return (
     <div className="courses-grid-container">
@@ -106,11 +111,17 @@ const CoursesDisplay = () => {
       </div>
       <CourseSection
         title="Frontend"
-        courses={courses.filter((course) => course.type === "frontend")}
+        courses={courses.filter(
+          (course) =>
+            course.title.includes("HTML") || course.title.includes("CSS")
+        )}
       />
       <CourseSection
         title="Backend"
-        courses={courses.filter((course) => course.type === "backend")}
+        courses={courses.filter(
+          (course) =>
+            course.title.includes("NodeJs") || course.title.includes("Python")
+        )}
       />
     </div>
   );

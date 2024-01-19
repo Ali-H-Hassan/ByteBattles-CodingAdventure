@@ -3,7 +3,7 @@ const User = require("../models/user");
 
 exports.getCourses = async (req, res) => {
   try {
-    const courses = await Course.find({ isActive: true }).populate("lessons");
+    const courses = await Course.find();
     res.json(courses);
   } catch (error) {
     res.status(500).json({
