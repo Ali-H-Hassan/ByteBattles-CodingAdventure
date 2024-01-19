@@ -61,7 +61,6 @@ class CssGameScene extends Phaser.Scene {
       { key: "font-size", x: 300, y: 400 },
       { key: "background", x: 500, y: 400 },
       { key: "margin", x: 700, y: 400 },
-      // Add additional targets here
     ];
 
     htmlTargets.forEach((target) => {
@@ -74,7 +73,6 @@ class CssGameScene extends Phaser.Scene {
       graphics.lineStyle(2, 0x00ff00);
       graphics.strokeRect(target.x - 75, target.y - 25, 150, 50);
 
-      // Label the drop zone
       this.add
         .text(target.x, target.y - 60, target.key, {
           font: "18px Arial",
@@ -99,7 +97,7 @@ class CssGameScene extends Phaser.Scene {
         this.score -= 5;
         gameObject.x = gameObject.input.dragStartX;
         gameObject.y = gameObject.input.dragStartY;
-        gameObject.setStyle({ color: "#ff0000" }); // Indicate incorrect placement
+        gameObject.setStyle({ color: "#ff0000" });
       }
       this.updateScore();
       if (this.matches === htmlTargets.length) {
@@ -122,12 +120,10 @@ class CssGameScene extends Phaser.Scene {
   }
 
   endGame() {
-    // Call onGameComplete when the game ends, if it's a function
     if (typeof this.onGameComplete === "function") {
       this.onGameComplete(this.score);
     }
 
-    // Display the game over message with animation
     let completionText = this.add
       .text(this.scale.width / 2, this.scale.height / 2, "Great Job!", {
         font: "64px Arial",
@@ -137,16 +133,27 @@ class CssGameScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
-    // Add a particle effect for visual flair
-    let particles = this.add.particles("spark");
+    let particles = this.add.particles("white");
 
-    let emitter = particles.createEmitter({
-      speed: 100,
-      scale: { start: 1, end: 0 },
+    let particleProps = {
+      x: completionText.x,
+      y: completionText.y,
+      lifespan: 1000,
+      speed: { min: 200, max: 300 },
+      angle: 0,
+      gravityY: 300,
+      scale: { start: 0.6, end: 0 },
+      quantity: 1,
       blendMode: "ADD",
-    });
+    };
 
-    emitter.startFollow(completionText);
+    this.time.addEvent({
+      delay: 100,
+      callback: () => {
+        particles.emitParticleAt(completionText.x, completionText.y + 50);
+      },
+      repeat: 20,
+    });
 
     this.tweens.add({
       targets: completionText,
