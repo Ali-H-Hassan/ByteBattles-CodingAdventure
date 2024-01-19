@@ -1,35 +1,26 @@
 import Phaser from "phaser";
 
 class NodeGameScene extends Phaser.Scene {
-  constructor(courseId, onGameComplete) {
+  constructor(courseId, courseData, onGameComplete) {
     super({ key: "NodeGameScene" });
     this.courseId = courseId;
+    this.courseData = courseData;
     this.onGameComplete = onGameComplete;
     this.score = 0;
     this.matches = 0;
-
-    this.nodeMethods = [
-      { key: "readFile", value: "Reads a file asynchronously", x: 100, y: 100 },
-      {
-        key: "writeFile",
-        value: "Writes data to a file asynchronously",
-        x: 300,
-        y: 100,
-      },
-      { key: "unlink", value: "Deletes a file", x: 500, y: 100 },
-      { key: "mkdir", value: "Creates a new directory", x: 700, y: 100 },
-    ];
   }
 
+  preload() {}
+
   create() {
-    this.cameras.main.setBackgroundColor("#242424");
-    this.createNodeMethods();
-    this.createMethodDescriptions();
+    this.cameras.main.setBackgroundColor(this.courseData.backgroundColor);
+    this.createNodeMethods(this.courseData.nodeMethods);
+    this.createMethodDescriptions(this.courseData.nodeMethods);
     this.createScoreText();
   }
 
-  createNodeMethods() {
-    this.nodeMethods.forEach((method) => {
+  createNodeMethods(nodeMethods) {
+    nodeMethods.forEach((method) => {
       let text = this.add
         .text(method.x, method.y, method.key, {
           font: "20px Arial",
@@ -39,13 +30,12 @@ class NodeGameScene extends Phaser.Scene {
           borderRadius: "5px",
         })
         .setInteractive()
-        .setOrigin(0.5);
-
-      text.setStyle({
-        backgroundColor: "transparent",
-        border: "2px solid #00ff00",
-        borderRadius: "10px",
-      });
+        .setOrigin(0.5)
+        .setStyle({
+          backgroundColor: "transparent",
+          border: "2px solid #00ff00",
+          borderRadius: "10px",
+        });
 
       this.input.setDraggable(text);
 
@@ -56,17 +46,18 @@ class NodeGameScene extends Phaser.Scene {
     });
   }
 
-  createMethodDescriptions() {
-    this.nodeMethods.forEach((method, index) => {
+  createMethodDescriptions(nodeMethods) {
+    nodeMethods.forEach((method, index) => {
       let zoneY = method.y + 300 + index * 60;
       let zone = this.add
         .zone(method.x, zoneY, 200, 50)
         .setRectangleDropZone(200, 50)
         .setData("key", method.key);
 
-      let graphics = this.add.graphics();
-      graphics.lineStyle(2, 0x00ff00);
-      graphics.strokeRect(zone.x - 100, zone.y - 25, 200, 50);
+      this.add
+        .graphics()
+        .lineStyle(2, 0x00ff00)
+        .strokeRect(zone.x - 100, zone.y - 25, 200, 50);
 
       this.add
         .text(zone.x, zone.y - 60, method.value, {
