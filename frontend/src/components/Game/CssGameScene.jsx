@@ -1,8 +1,10 @@
 import Phaser from "phaser";
 
 class CssGameScene extends Phaser.Scene {
-  constructor() {
+  constructor(courseId, onGameComplete) {
     super({ key: "CssGameScene" });
+    this.courseId = courseId;
+    this.onGameComplete = onGameComplete;
     this.score = 0;
     this.matches = 0;
   }
@@ -26,6 +28,7 @@ class CssGameScene extends Phaser.Scene {
       let text = this.add
         .text(property.x, property.y, `${property.key}: ${property.value};`, {
           font: "20px Arial",
+          color: "#000",
           backgroundColor: "#fff",
           padding: 10,
         })
@@ -57,21 +60,29 @@ class CssGameScene extends Phaser.Scene {
     });
 
     this.input.on("drop", (pointer, gameObject, dropZone) => {
-      if (gameObject.text.includes(dropZone.data.get("class"))) {
-        this.score += 10;
-        this.matches += 1;
-        gameObject.x = dropZone.x;
-        gameObject.y = dropZone.y;
-        gameObject.input.enabled = false;
-        gameObject.setBackgroundColor("#0f0");
+      // Debugging: Check the state of dropZone and its data
+      console.log("Drop Zone:", dropZone);
+      if (dropZone && dropZone.data) {
+        console.log("Drop Zone Data:", dropZone.data.getAll());
+
+        if (gameObject.text.includes(dropZone.data.get("class"))) {
+          this.score += 10;
+          this.matches += 1;
+          gameObject.x = dropZone.x;
+          gameObject.y = dropZone.y;
+          gameObject.input.enabled = false;
+          gameObject.setBackgroundColor("#0f0");
+        } else {
+          this.score -= 5;
+          gameObject.x = gameObject.input.dragStartX;
+          gameObject.y = gameObject.input.dragStartY;
+        }
+        this.updateScore();
+        if (this.matches === htmlTargets.length) {
+          this.endGame();
+        }
       } else {
-        this.score -= 5;
-        gameObject.x = gameObject.input.dragStartX;
-        gameObject.y = gameObject.input.dragStartY;
-      }
-      this.scoreText.setText(`Score: ${this.score}`);
-      if (this.matches === htmlTargets.length) {
-        this.endGame();
+        console.error("Drop Zone is null or has no data");
       }
     });
   }
@@ -83,7 +94,13 @@ class CssGameScene extends Phaser.Scene {
     });
   }
 
+  updateScore() {
+    this.scoreText.setText(`Score: ${this.score}`);
+  }
+
   endGame() {
+    this.onGameComplete(this.score);
+
     this.add
       .text(this.scale.width / 2, this.scale.height / 2, "Game Over!", {
         fontSize: "64px",

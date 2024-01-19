@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Phaser from "phaser";
 import GameScene from "./GameScene";
+import CssGameScene from "./CssGameScene";
 import { submitScore } from "../../actions/gameActions";
 
 const GameComponent = ({ courseId }) => {
@@ -21,12 +22,18 @@ const GameComponent = ({ courseId }) => {
   );
 
   useEffect(() => {
+    let scene;
+    if (courseId === 1) {
+      scene = GameScene;
+    } else if (courseId === 2) {
+      scene = CssGameScene;
+    }
     const config = {
       type: Phaser.AUTO,
       parent: "phaser-container",
       width: 800,
       height: 600,
-      scene: [new GameScene(courseId, onGameComplete)],
+      scene: [new scene(courseId)],
     };
 
     gameRef.current = new Phaser.Game(config);
