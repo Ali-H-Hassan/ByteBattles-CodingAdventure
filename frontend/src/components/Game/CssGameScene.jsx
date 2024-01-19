@@ -24,19 +24,29 @@ class CssGameScene extends Phaser.Scene {
       { key: "font-size", value: "16px", x: 300, y: 150 },
       { key: "background", value: "red", x: 500, y: 150 },
       { key: "margin", value: "10px", x: 700, y: 150 },
+      // Add additional properties here
     ];
 
     cssProperties.forEach((property) => {
       let text = this.add
         .text(property.x, property.y, `${property.key}: ${property.value};`, {
           font: "20px Arial",
-          color: "#000",
-          backgroundColor: "#fff",
+          color: "#00ff00",
+          backgroundColor: "transparent",
           padding: 10,
+          borderRadius: "5px",
         })
-        .setInteractive();
+        .setInteractive()
+        .setOrigin(0.5);
+
+      text.setStyle({
+        backgroundColor: "transparent",
+        border: "2px solid #00ff00",
+        borderRadius: "10px",
+      });
 
       this.input.setDraggable(text);
+      this.add.existing(text);
     });
 
     this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
@@ -51,6 +61,7 @@ class CssGameScene extends Phaser.Scene {
       { key: "font-size", x: 300, y: 400 },
       { key: "background", x: 500, y: 400 },
       { key: "margin", x: 700, y: 400 },
+      // Add additional targets here
     ];
 
     htmlTargets.forEach((target) => {
@@ -63,6 +74,7 @@ class CssGameScene extends Phaser.Scene {
       graphics.lineStyle(2, 0x00ff00);
       graphics.strokeRect(target.x - 75, target.y - 25, 150, 50);
 
+      // Label the drop zone
       this.add
         .text(target.x, target.y - 60, target.key, {
           font: "18px Arial",
@@ -75,14 +87,19 @@ class CssGameScene extends Phaser.Scene {
       if (gameObject.text.includes(dropZone.data.get("class"))) {
         this.score += 10;
         this.matches += 1;
-        gameObject.x = dropZone.x - gameObject.width / 2;
-        gameObject.y = dropZone.y - gameObject.height / 2;
+        gameObject.x = dropZone.x;
+        gameObject.y = dropZone.y;
         gameObject.input.enabled = false;
-        gameObject.setBackgroundColor("#0f0");
+        gameObject.setStyle({
+          color: "#ffffff",
+          stroke: "#00ff00",
+          strokeThickness: 2,
+        });
       } else {
         this.score -= 5;
         gameObject.x = gameObject.input.dragStartX;
         gameObject.y = gameObject.input.dragStartY;
+        gameObject.setStyle({ color: "#ff0000" }); // Indicate incorrect placement
       }
       this.updateScore();
       if (this.matches === htmlTargets.length) {
@@ -93,8 +110,10 @@ class CssGameScene extends Phaser.Scene {
 
   createScoreText() {
     this.scoreText = this.add.text(16, 16, "Score: 0", {
-      fontSize: "32px",
+      font: "32px Arial",
       fill: "#FFF",
+      stroke: "#00ff00",
+      strokeThickness: 2,
     });
   }
 
@@ -103,12 +122,14 @@ class CssGameScene extends Phaser.Scene {
   }
 
   endGame() {
+    // Call onGameComplete when the game ends, if it's a function
     if (typeof this.onGameComplete === "function") {
       this.onGameComplete(this.score);
     }
 
+    // Display the game over message with animation
     let completionText = this.add
-      .text(this.scale.width / 2, this.scale.height / 2 - 100, "Great Job!", {
+      .text(this.scale.width / 2, this.scale.height / 2, "Great Job!", {
         font: "64px Arial",
         fill: "#00ff00",
         stroke: "#ffffff",
@@ -116,11 +137,22 @@ class CssGameScene extends Phaser.Scene {
       })
       .setOrigin(0.5);
 
+    // Add a particle effect for visual flair
+    let particles = this.add.particles("spark");
+
+    let emitter = particles.createEmitter({
+      speed: 100,
+      scale: { start: 1, end: 0 },
+      blendMode: "ADD",
+    });
+
+    emitter.startFollow(completionText);
+
     this.tweens.add({
       targets: completionText,
-      y: this.scale.height / 2,
-      duration: 1500,
-      ease: "Bounce.easeOut",
+      y: "+=10",
+      ease: "Power1",
+      duration: 800,
       yoyo: true,
       repeat: -1,
     });
