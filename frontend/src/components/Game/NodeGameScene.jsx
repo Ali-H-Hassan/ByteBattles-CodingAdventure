@@ -5,87 +5,141 @@ class NodeGameScene extends Phaser.Scene {
     super({ key: "NodeGameScene" });
     this.courseId = courseId;
     this.onGameComplete = onGameComplete;
-    this.nodes = [];
-    this.lines = [];
-  }
+    this.score = 0;
+    this.matches = 0;
 
-  preload() {}
+    // Define nodeMethods at the class level
+    this.nodeMethods = [
+      {
+        key: "readFile",
+        value: "Asynchronously reads the contents of a file.",
+        x: 100,
+        y: 150,
+      },
+      {
+        key: "writeFile",
+        value: "Asynchronously writes data to a file.",
+        x: 300,
+        y: 150,
+      },
+      // Add other methods and their descriptions here
+    ];
+  }
 
   create() {
-    this.cameras.main.setBackgroundColor("#282c34");
-    this.createNodes();
+    this.cameras.main.setBackgroundColor("#242424");
+    this.createNodeMethods();
+    this.createMethodDescriptions();
+    this.createScoreText();
   }
 
-  createNodes() {
-    const positions = [
-      { x: 100, y: 200 },
-      { x: 400, y: 200 },
-      { x: 700, y: 200 },
-    ];
-    positions.forEach((pos, index) => {
-      let node = this.add.sprite(pos.x, pos.y, "node").setInteractive();
-      this.input.setDraggable(node);
-      node.data = { id: index, connectedTo: null };
+  createNodeMethods() {
+    // Use this.nodeMethods here
+    this.nodeMethods.forEach((method) => {
+      let text = this.add
+        .text(method.x, method.y, method.key, {
+          font: "20px Arial",
+          color: "#00ff00",
+          backgroundColor: "transparent",
+          padding: 10,
+          borderRadius: "5px",
+        })
+        .setInteractive()
+        .setOrigin(0.5);
 
-      node.on("drag", (pointer, dragX, dragY) => {
-        node.x = dragX;
-        node.y = dragY;
-        this.updateLines();
+      text.setStyle({
+        backgroundColor: "transparent",
+        border: "2px solid #00ff00",
+        borderRadius: "10px",
       });
 
-      node.on("dragend", () => {
-        this.checkConnections();
-      });
-
-      this.nodes.push(node);
+      this.input.setDraggable(text);
+      this.add.existing(text);
     });
   }
+  createScoreText() {
+    // Method to create the score text
+    this.scoreText = this.add.text(16, 16, "Score: 0", {
+      font: "32px Arial",
+      fill: "#FFF",
+      stroke: "#00ff00",
+      strokeThickness: 2,
+    });
+  }
+  createMethodDescriptions() {
+    // Now this.nodeMethods is available
+    this.nodeMethods.forEach((method) => {
+      let zone = this.add
+        .zone(method.x, method.y + 250, 150, 50) // Offset the y position for the drop zones
+        .setRectangleDropZone(150, 50)
+        .setData("key", method.key);
 
-  updateLines() {
-    this.lines.forEach((line) => line.destroy());
-    this.lines = [];
+      let graphics = this.add.graphics();
+      graphics.lineStyle(2, 0x00ff00);
+      graphics.strokeRect(zone.x - 75, zone.y - 25, 150, 50);
 
-    this.nodes.forEach((node) => {
-      if (node.data.connectedTo !== null) {
-        const targetNode = this.nodes[node.data.connectedTo];
-        const line = this.add
-          .line(0, 0, node.x, node.y, targetNode.x, targetNode.y, 0xffffff)
-          .setOrigin(0);
-        this.lines.push(line);
+      this.add
+        .text(zone.x, zone.y - 60, method.value, {
+          font: "18px Arial",
+          color: "#ffffff",
+          wordWrap: { width: 140, useAdvancedWrap: true },
+        })
+        .setOrigin(0.5);
+    });
+
+    this.input.on("drop", (pointer, gameObject, dropZone) => {
+      if (gameObject.text === dropZone.data.get("key")) {
+        this.score += 10;
+        this.matches += 1;
+        gameObject.x = dropZone.x;
+        gameObject.y = dropZone.y;
+        gameObject.input.enabled = false;
+        gameObject.setStyle({
+          color: "#ffffff",
+          stroke: "#00ff00",
+          strokeThickness: 2,
+        });
+      } else {
+        this.score -= 5;
+        gameObject.x = gameObject.input.dragStartX;
+        gameObject.y = gameObject.input.dragStartY;
+        gameObject.setStyle({ color: "#ff0000" });
+      }
+      this.updateScore();
+      if (this.matches === this.nodeMethods.length) {
+        this.endGame();
       }
     });
   }
 
-  checkConnections() {
-    let isCorrect = true;
-    for (let i = 0; i < this.nodes.length - 1; i++) {
-      if (this.nodes[i].data.connectedTo !== i + 1) {
-        isCorrect = false;
-        break;
-      }
+  endGame() {
+    if (typeof this.onGameComplete === "function") {
+      this.onGameComplete(this.score);
     }
-
-    if (isCorrect) {
-      this.onPuzzleSolved();
-    }
-  }
-
-  onPuzzleSolved() {
-    this.onGameComplete(100);
-    const text = this.add
-      .text(this.scale.width / 2, this.scale.height / 2, "Puzzle Solved!", {
-        font: "40px Arial",
+    let completionText = this.add
+      .text(this.scale.width / 2, this.scale.height / 2, "Great Job!", {
+        font: "bold 64px Arial",
         fill: "#00ff00",
+        stroke: "#ffffff",
+        strokeThickness: 6,
       })
-      .setOrigin(0.5);
+      .setOrigin(0.5)
+      .setAlpha(0);
 
+    let backdrop = this.add
+      .rectangle(0, 0, this.scale.width, this.scale.height, 0x000000, 0.7)
+      .setOrigin(0)
+      .setInteractive();
     this.tweens.add({
-      targets: text,
-      y: "-=50",
-      yoyo: true,
-      repeat: -1,
-      ease: "Sine.easeInOut",
+      targets: [completionText, backdrop],
+      alpha: 1,
       duration: 1000,
+      hold: 3000,
+      ease: "Cubic.easeIn",
+      onComplete: () => {
+        completionText.destroy();
+        backdrop.destroy();
+      },
     });
   }
 }
