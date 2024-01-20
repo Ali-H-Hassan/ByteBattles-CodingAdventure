@@ -1,27 +1,32 @@
-export const FETCH_TESTS_REQUEST = "FETCH_TESTS_REQUEST";
-export const FETCH_TESTS_SUCCESS = "FETCH_TESTS_SUCCESS";
-export const FETCH_TESTS_FAILURE = "FETCH_TESTS_FAILURE";
+import {
+  FETCH_TESTS_REQUEST,
+  FETCH_TESTS_SUCCESS,
+  FETCH_TESTS_FAILURE,
+} from "./actionTypes";
 
-export const fetchTestsRequest = () => ({
+const fetchTestsRequest = () => ({
   type: FETCH_TESTS_REQUEST,
 });
 
-export const fetchTestsSuccess = (tests) => ({
+const fetchTestsSuccess = (tests) => ({
   type: FETCH_TESTS_SUCCESS,
   payload: tests,
 });
 
-export const fetchTestsFailure = (error) => ({
+const fetchTestsFailure = (error) => ({
   type: FETCH_TESTS_FAILURE,
   payload: error,
 });
 
 export const fetchTests = () => {
-  return (dispatch) => {
+  return async (dispatch) => {
     dispatch(fetchTestsRequest());
-    fetch("/api/tests/all")
-      .then((response) => response.json())
-      .then((data) => dispatch(fetchTestsSuccess(data)))
-      .catch((error) => dispatch(fetchTestsFailure(error.message)));
+    try {
+      const response = await fetch("/api/tests/all");
+      const data = await response.json();
+      dispatch(fetchTestsSuccess(data));
+    } catch (error) {
+      dispatch(fetchTestsFailure(error.message));
+    }
   };
 };
