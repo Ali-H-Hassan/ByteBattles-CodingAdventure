@@ -1,8 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCourses } from "../../actions/gameActions";
 import { useNavigate } from "react-router-dom";
 import "./CoursesDisplay.css";
+import htmlImage from "../../assets/html_course_image.png";
+import cssImage from "../../assets/css_course_image.png";
+import nodejsImage from "../../assets/nodejs_course_image.png";
+import pythonImage from "../../assets/python_course_image.png";
 
 const GamepadSVG = () => (
   <svg
@@ -36,12 +40,26 @@ const CourseSection = ({ title, courses }) => {
   const startGame = (courseId) => {
     navigate("/game", { state: { courseId: courseId } });
   };
+  const updatedCourses = courses.map((course) => {
+    switch (course.title) {
+      case "HTML Basics":
+        return { ...course, imageUrl: htmlImage };
+      case "CSS Fundamentals":
+        return { ...course, imageUrl: cssImage };
+      case "NodeJs Basics":
+        return { ...course, imageUrl: nodejsImage };
+      case "Python Fundamentals":
+        return { ...course, imageUrl: pythonImage };
+      default:
+        return course;
+    }
+  });
 
   return (
     <>
       <h2>{title}</h2>
       <div className="courses-display-container">
-        {courses.map((course) => (
+        {updatedCourses.map((course) => (
           <div
             key={course._id}
             className={`courses-display-card ${
