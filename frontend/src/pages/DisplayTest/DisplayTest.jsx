@@ -1,58 +1,57 @@
-// import React, { useEffect } from "react";
-// import { useSelector, useDispatch } from "react-redux";
-// import { fetchChallenge } from "../../actions/testActions";
-// import "./DisplayTest.css";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTests } from "../../actions/testActions";
 
-// const DisplayTest = ({ testId }) => {
-//   const dispatch = useDispatch();
-//   const {
-//     loading,
-//     challenge: testData,
-//     error,
-//   } = useSelector((state) => state.challenge);
+const TestDisplay = () => {
+  const dispatch = useDispatch();
+  const testState = useSelector((state) => state.testReducer);
+  const { loading, tests, error } = testState;
 
-//   useEffect(() => {
-//     dispatch(fetchChallenge(testId));
-//   }, [dispatch, testId]);
+  useEffect(() => {
+    dispatch(fetchTests());
+  }, [dispatch]);
 
-//   if (loading) return <div className="test-loading">Loading test...</div>;
-//   if (error)
-//     return <div className="test-error">Error loading test: {error}</div>;
-//   if (!testData)
-//     return <div className="test-no-data">No test data available.</div>;
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
-//   return (
-//     <div className="test-display-container">
-//       <h1 className="test-display-title">{testData.title}</h1>
-//       <p className="test-display-description">{testData.description}</p>
-//       <div className="test-display-questions">
-//         {testData.questions.map((question, index) => (
-//           <div key={index} className="test-display-question">
-//             <h3>Question {index + 1}</h3>
-//             <p className="test-display-question-text">
-//               {question.questionText}
-//             </p>
-//             {question.options && (
-//               <ul className="test-display-options">
-//                 {question.options.map((option, idx) => (
-//                   <li
-//                     key={idx}
-//                     className={
-//                       option.isCorrect
-//                         ? "test-display-option-correct"
-//                         : "test-display-option"
-//                     }
-//                   >
-//                     {option.text}
-//                   </li>
-//                 ))}
-//               </ul>
-//             )}
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
+  return (
+    <div>
+      {tests.map((test) => (
+        <div key={test._id} className="test-container">
+          <h2 className="test-title">{test.title}</h2>
+          <ul className="mcq-list">
+            {test.mcqQuestions.map((mcq, index) => (
+              <li key={index} className="mcq-question">
+                <p className="mcq-text">{mcq.questionText}</p>
+                <ul className="mcq-options">
+                  {mcq.options.map((option, optionIndex) => (
+                    <li key={optionIndex} className="mcq-option">
+                      <input type="radio" disabled className="mcq-radio" />
+                      <label className="mcq-label">{option.text}</label>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            ))}
+          </ul>
+          <p className="programming-question">
+            Programming Question: {test.programmingQuestion.questionText}
+          </p>
+          <p className="starter-code">
+            Starter Code: {test.programmingQuestion.starterCode}
+          </p>
+          <ul className="test-cases">
+            {test.programmingQuestion.testCases.map((testCase, caseIndex) => (
+              <li key={caseIndex} className="test-case">
+                <p className="input">Input: {testCase.input}</p>
+                <p className="output">Output: {testCase.output}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+  );
+};
 
-// export default DisplayTest;
+export default TestDisplay;

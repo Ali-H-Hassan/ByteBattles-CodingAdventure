@@ -1,20 +1,16 @@
-import {
-  FETCH_TESTS_REQUEST,
-  FETCH_TESTS_SUCCESS,
-  FETCH_TESTS_FAILURE,
-} from "./actionTypes";
+import * as actionTypes from "./actionTypes";
 
 const fetchTestsRequest = () => ({
-  type: FETCH_TESTS_REQUEST,
+  type: actionTypes.FETCH_TESTS_REQUEST,
 });
 
 const fetchTestsSuccess = (tests) => ({
-  type: FETCH_TESTS_SUCCESS,
+  type: actionTypes.FETCH_TESTS_SUCCESS,
   payload: tests,
 });
 
 const fetchTestsFailure = (error) => ({
-  type: FETCH_TESTS_FAILURE,
+  type: actionTypes.FETCH_TESTS_FAILURE,
   payload: error,
 });
 

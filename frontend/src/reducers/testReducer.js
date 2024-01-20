@@ -1,8 +1,4 @@
-import {
-  FETCH_TESTS_REQUEST,
-  FETCH_TESTS_SUCCESS,
-  FETCH_TESTS_FAILURE,
-} from "../actions/testActions";
+import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
   loading: false,
@@ -12,18 +8,18 @@ const initialState = {
 
 const testReducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_TESTS_REQUEST:
+    case actionTypes.FETCH_TESTS_REQUEST:
       return {
         ...state,
         loading: true,
       };
-    case FETCH_TESTS_SUCCESS:
+    case actionTypes.FETCH_TESTS_SUCCESS:
       return {
         loading: false,
         tests: action.payload,
         error: "",
       };
-    case FETCH_TESTS_FAILURE:
+    case actionTypes.FETCH_TESTS_FAILURE:
       return {
         loading: false,
         tests: [],
