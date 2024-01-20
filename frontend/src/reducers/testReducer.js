@@ -1,55 +1,32 @@
 import {
-  CREATE_CHALLENGE_REQUEST,
-  CREATE_CHALLENGE_SUCCESS,
-  CREATE_CHALLENGE_FAILURE,
-  FETCH_CHALLENGE_REQUEST,
-  FETCH_CHALLENGE_SUCCESS,
-  FETCH_CHALLENGE_FAILURE,
-} from "../actions/actionTypes";
+  FETCH_TESTS_REQUEST,
+  FETCH_TESTS_SUCCESS,
+  FETCH_TESTS_FAILURE,
+} from "../actions/testActions";
 
 const initialState = {
-  creating: false,
-  challenge: null,
-  error: null,
+  loading: false,
+  tests: [],
+  error: "",
 };
 
-const challengeReducer = (state = initialState, action) => {
+const testReducer = (state = initialState, action) => {
   switch (action.type) {
-    case CREATE_CHALLENGE_REQUEST:
-      return {
-        ...state,
-        creating: true,
-      };
-    case CREATE_CHALLENGE_SUCCESS:
-      return {
-        ...state,
-        creating: false,
-        challenge: action.payload,
-        error: null,
-      };
-    case CREATE_CHALLENGE_FAILURE:
-      return {
-        ...state,
-        creating: false,
-        error: action.payload,
-      };
-    case FETCH_CHALLENGE_REQUEST:
+    case FETCH_TESTS_REQUEST:
       return {
         ...state,
         loading: true,
-        error: null,
       };
-    case FETCH_CHALLENGE_SUCCESS:
+    case FETCH_TESTS_SUCCESS:
       return {
-        ...state,
         loading: false,
-        challenge: action.payload,
-        error: null,
+        tests: action.payload,
+        error: "",
       };
-    case FETCH_CHALLENGE_FAILURE:
+    case FETCH_TESTS_FAILURE:
       return {
-        ...state,
         loading: false,
+        tests: [],
         error: action.payload,
       };
     default:
@@ -57,4 +34,4 @@ const challengeReducer = (state = initialState, action) => {
   }
 };
 
-export default challengeReducer;
+export default testReducer;
