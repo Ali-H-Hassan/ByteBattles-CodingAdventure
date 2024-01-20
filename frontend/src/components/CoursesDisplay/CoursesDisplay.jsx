@@ -1,9 +1,8 @@
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCourses } from "../../actions/gameActions";
-import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./CoursesDisplay.css";
-import Display from "../../assets/HTML.jpeg";
 
 const GamepadSVG = () => (
   <svg
@@ -26,16 +25,6 @@ const GamepadSVG = () => (
   </svg>
 );
 
-const frontendCourses = [
-  { id: 1, imageUrl: Display, title: "HTML" },
-  { id: 2, imageUrl: Display, title: "CSS" },
-];
-
-const backendCourses = [
-  { id: 3, imageUrl: Display, title: "Node.js" },
-  { id: 4, imageUrl: Display, title: "Python" },
-];
-
 const CourseSection = ({ title, courses }) => {
   const [activeCourse, setActiveCourse] = useState(null);
   const navigate = useNavigate();
@@ -54,11 +43,11 @@ const CourseSection = ({ title, courses }) => {
       <div className="courses-display-container">
         {courses.map((course) => (
           <div
-            key={course.id}
+            key={course._id}
             className={`courses-display-card ${
-              activeCourse === course.id ? "courses-display-card-active" : ""
+              activeCourse === course._id ? "courses-display-card-active" : ""
             }`}
-            onClick={() => handleCardClick(course.id)}
+            onClick={() => handleCardClick(course._id)}
           >
             <img
               className="courses-display-background"
@@ -70,15 +59,11 @@ const CourseSection = ({ title, courses }) => {
                 <GamepadSVG />
               </div>
               <h3 className="courses-display-title">{course.title}</h3>
-              {activeCourse === course.id && (
+              {activeCourse === course._id && (
                 <button
                   className="new-neon-button"
-                  onClick={() => startGame(course.id)}
+                  onClick={() => startGame(course._id)}
                 >
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                  <span></span>
                   Start Adventure
                 </button>
               )}
@@ -98,31 +83,26 @@ const CoursesDisplay = () => {
   useEffect(() => {
     dispatch(fetchCourses());
   }, [dispatch]);
-  console.log(courses);
 
   if (!courses.length) {
     return <div>Loading courses...</div>;
   }
+
+  const frontendCourses = courses.filter(
+    (course) => course.title.includes("HTML") || course.title.includes("CSS")
+  );
+  const backendCourses = courses.filter(
+    (course) =>
+      course.title.includes("NodeJs") || course.title.includes("Python")
+  );
 
   return (
     <div className="courses-grid-container">
       <div className="courses-header">
         <h1>Select a course to embark on your gamified learning adventure!</h1>
       </div>
-      <CourseSection
-        title="Frontend"
-        courses={courses.filter(
-          (course) =>
-            course.title.includes("HTML") || course.title.includes("CSS")
-        )}
-      />
-      <CourseSection
-        title="Backend"
-        courses={courses.filter(
-          (course) =>
-            course.title.includes("NodeJs") || course.title.includes("Python")
-        )}
-      />
+      <CourseSection title="Frontend" courses={frontendCourses} />
+      <CourseSection title="Backend" courses={backendCourses} />
     </div>
   );
 };
