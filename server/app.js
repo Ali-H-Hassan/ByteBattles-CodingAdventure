@@ -8,6 +8,7 @@ const profileRoutes = require("./routes/profile");
 const oauthRouter = require("./routes/oauth");
 const requestRouter = require("./routes/request");
 const battleRoutes = require("./routes/battle");
+const testRoutes = require("./routes/testRoutes");
 require("./db");
 const cors = require("cors");
 const app = express();
@@ -26,6 +27,7 @@ app.use("/api/profile", profileRoutes);
 app.use("/request", requestRouter);
 app.use("/api/battle", battleRoutes);
 app.get("/auth/google/callback", oauthRouter);
+app.use("/api/tests", testRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
