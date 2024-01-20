@@ -3,6 +3,7 @@ import MCQQuestion from "../../components/MCQQuestion/MCQQuestion";
 import ProgrammingQuestion from "../../components/ProgrammingQuestion/ProgrammingQuestion";
 import TestSidebar from "../../components/TestSidebar/TestSidebar";
 import TestHeader from "../../components/TestHeader/TestHeader";
+import ThankYouPage from "../../components/ThankYouPage/ThankYouPage";
 
 import "./DisplayTest.css";
 
@@ -25,7 +26,7 @@ const dummyProgrammingQuestion = {
 
 const Test = () => {
   const [currentSection, setCurrentSection] = useState("mcq");
-
+  const [testSubmitted, setTestSubmitted] = useState(false);
   const handleOptionSelect = (event) => {
     console.log(event.target.value);
   };
@@ -33,7 +34,9 @@ const Test = () => {
   const handleSelectSection = (section) => {
     setCurrentSection(section);
   };
-
+  const handleSubmitTest = () => {
+    setTestSubmitted(true);
+  };
   const renderSection = () => {
     switch (currentSection) {
       case "mcq":
@@ -50,13 +53,16 @@ const Test = () => {
           <ProgrammingQuestion
             problemStatement={dummyProgrammingQuestion.problemStatement}
             starterCode={dummyProgrammingQuestion.starterCode}
+            onTestSubmit={handleSubmitTest}
           />
         );
       default:
         return null;
     }
   };
-
+  if (testSubmitted) {
+    return <ThankYouPage />;
+  }
   return (
     <div className="test-container">
       <TestHeader timeLeft={timeLeft} />

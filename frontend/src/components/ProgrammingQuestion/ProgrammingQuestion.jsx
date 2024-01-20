@@ -6,12 +6,15 @@ const ProgrammingQuestion = ({
   problemStatement,
   starterCode,
   handleCodeChange,
+  onTestSubmit,
 }) => {
   return (
     <div className="test-programming-container">
       <div className="test-problem-statement">{problemStatement}</div>
       <CodingEditor code={starterCode} handleCodeChange={handleCodeChange} />
-      <button className="test-submit-button">Submit Test</button>
+      <button className="test-submit-button" onClick={onTestSubmit}>
+        Submit Test
+      </button>
     </div>
   );
 };
