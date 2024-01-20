@@ -13,9 +13,10 @@ class NodeGameScene extends Phaser.Scene {
   preload() {}
 
   create() {
-    this.cameras.main.setBackgroundColor(this.courseData.backgroundColor);
-    this.createNodeMethods(this.courseData.nodeMethods);
-    this.createMethodDescriptions(this.courseData.nodeMethods);
+    const { backgroundColor, nodeMethods } = this.courseData.gameSceneConfig;
+    this.cameras.main.setBackgroundColor(backgroundColor);
+    this.createNodeMethods(nodeMethods);
+    this.createMethodDescriptions(nodeMethods);
     this.createScoreText();
   }
 
@@ -83,7 +84,7 @@ class NodeGameScene extends Phaser.Scene {
         gameObject.setColor("#ff0000");
       }
       this.updateScore();
-      if (this.matches === this.nodeMethods.length) {
+      if (this.matches === nodeMethods.length) {
         this.endGame();
       }
     });
