@@ -5,6 +5,7 @@
   overflow-y: auto;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 20px;
+  font-size: 20px;
 }
 
 .test-display-title {
@@ -28,6 +29,7 @@
   background-color: #fff;
   border: 1px solid #eaeaea;
   border-radius: 4px;
+  font-size: 24px;
 }
 
 .test-display-question-text {

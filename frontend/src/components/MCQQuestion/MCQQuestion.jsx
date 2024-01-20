@@ -14,7 +14,7 @@ const MCQQuestion = ({ question, options, onOptionSelect }) => {
               value={option}
               onChange={onOptionSelect}
             />
-            {option}
+            <span>{option}</span>
           </label>
         ))}
       </form>
