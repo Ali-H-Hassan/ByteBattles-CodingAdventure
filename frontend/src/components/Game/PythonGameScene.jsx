@@ -13,14 +13,17 @@ class PythonGameScene extends Phaser.Scene {
   preload() {}
 
   create() {
-    this.cameras.main.setBackgroundColor(this.courseData.backgroundColor);
-    this.createPythonSnippets(this.courseData.pythonSnippets);
-    this.createTargets(this.courseData.targets);
+    const { backgroundColor, pythonSnippets, targets } =
+      this.courseData.gameSceneConfig;
+
+    this.cameras.main.setBackgroundColor(backgroundColor);
+    this.createPythonSnippets(pythonSnippets);
+    this.createTargets(targets);
     this.createScoreText();
   }
 
-  createPythonSnippets() {
-    this.courseData.pythonSnippets.forEach((snippet) => {
+  createPythonSnippets(pythonSnippets) {
+    pythonSnippets.forEach((snippet) => {
       let text = this.add
         .text(snippet.x, snippet.y, snippet.code, {
           font: "18px Courier",
@@ -41,8 +44,8 @@ class PythonGameScene extends Phaser.Scene {
     });
   }
 
-  createTargets() {
-    this.courseData.targets.forEach((target) => {
+  createTargets(targets) {
+    targets.forEach((target) => {
       let zone = this.add
         .zone(target.x, target.y, 200, 50)
         .setRectangleDropZone(200, 50)
@@ -58,6 +61,26 @@ class PythonGameScene extends Phaser.Scene {
           color: "#FFFFFF",
         })
         .setOrigin(0.5);
+    });
+
+    this.input.on("drop", (pointer, gameObject, dropZone) => {
+      if (gameObject.data.get("type") === dropZone.data.get("type")) {
+        this.score += 10;
+        this.matches += 1;
+        gameObject.x = dropZone.x;
+        gameObject.y = dropZone.y;
+        gameObject.input.enabled = false;
+        gameObject.setStyle({ color: "#00FF00" });
+      } else {
+        this.score -= 5;
+        gameObject.x = gameObject.input.dragStartX;
+        gameObject.y = gameObject.input.dragStartY;
+        gameObject.setStyle({ color: "#FF0000" });
+      }
+      this.updateScore();
+      if (this.matches === targets.length) {
+        this.endGame();
+      }
     });
   }
 
