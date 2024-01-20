@@ -1,0 +1,29 @@
+.test-sidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100vh;
+  width: 80px;
+  background-color: #333;
+  color: white;
+  padding-top: 20px;
+}
+
+.sidebar-button {
+  background: none;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+  transition: 0.3s;
+  font-size: 16px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.sidebar-button:hover {
+  background-color: #555;
+}
