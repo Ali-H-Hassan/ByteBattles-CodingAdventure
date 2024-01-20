@@ -25,6 +25,11 @@ const testSchema = new mongoose.Schema({
   title: String,
   mcqQuestions: [mcqQuestionSchema],
   programmingQuestion: programmingQuestionSchema,
+  createdBy: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 
 const Test = mongoose.model("Test", testSchema);
