@@ -30,3 +30,6 @@
 .sidebar-button:hover {
   color: #00c354;
 }
+.sidebar-button.selected {
+  color: #00c354;
+}
