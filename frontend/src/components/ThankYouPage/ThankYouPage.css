@@ -1,0 +1,20 @@
+.thank-you-page-container {
+  text-align: center;
+  padding: 20px;
+}
+
+.thank-you-content h1 {
+  margin-top: 50px;
+  font-size: 24px;
+}
+
+.thank-you-content p {
+  font-size: 1em;
+  margin-top: 20px;
+}
+
+.thank-you-image {
+  max-width: 100%;
+  height: auto;
+  margin: 40px 0;
+}
