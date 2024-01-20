@@ -24,19 +24,17 @@ const dummyProgrammingQuestion = {
 };
 
 const Test = () => {
-  const [currentSection, setCurrentSection] = useState("mcq"); // Added state for current section
+  const [currentSection, setCurrentSection] = useState("mcq");
 
   const handleOptionSelect = (event) => {
     console.log(event.target.value);
   };
 
   const handleSelectSection = (section) => {
-    // Navigation function
     setCurrentSection(section);
   };
 
   const renderSection = () => {
-    // Function to render sections based on the current state
     switch (currentSection) {
       case "mcq":
         return dummyMCQQuestions.map((mcq, index) => (
