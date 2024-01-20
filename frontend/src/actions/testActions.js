@@ -1,66 +1,27 @@
-import axios from "axios";
-import {
-  CREATE_CHALLENGE_REQUEST,
-  CREATE_CHALLENGE_SUCCESS,
-  CREATE_CHALLENGE_FAILURE,
-  FETCH_CHALLENGE_REQUEST,
-  FETCH_CHALLENGE_SUCCESS,
-  FETCH_CHALLENGE_FAILURE,
-} from "./actionTypes";
+export const FETCH_TESTS_REQUEST = "FETCH_TESTS_REQUEST";
+export const FETCH_TESTS_SUCCESS = "FETCH_TESTS_SUCCESS";
+export const FETCH_TESTS_FAILURE = "FETCH_TESTS_FAILURE";
 
-const createChallengeRequest = () => ({
-  type: CREATE_CHALLENGE_REQUEST,
+export const fetchTestsRequest = () => ({
+  type: FETCH_TESTS_REQUEST,
 });
 
-const createChallengeSuccess = (challenge) => ({
-  type: CREATE_CHALLENGE_SUCCESS,
-  payload: challenge,
+export const fetchTestsSuccess = (tests) => ({
+  type: FETCH_TESTS_SUCCESS,
+  payload: tests,
 });
 
-const createChallengeFailure = (error) => ({
-  type: CREATE_CHALLENGE_FAILURE,
+export const fetchTestsFailure = (error) => ({
+  type: FETCH_TESTS_FAILURE,
   payload: error,
 });
 
-export const createChallenge = (challengeData, token) => async (dispatch) => {
-  dispatch(createChallengeRequest());
-  try {
-    const response = await axios.post(
-      "http://localhost:3000/api/company/create-challenge",
-      challengeData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    dispatch(createChallengeSuccess(response.data));
-  } catch (error) {
-    dispatch(createChallengeFailure(error.response.data));
-  }
-};
-export const fetchChallengeRequest = () => ({
-  type: FETCH_CHALLENGE_REQUEST,
-});
-
-export const fetchChallengeSuccess = (challengeData) => ({
-  type: FETCH_CHALLENGE_SUCCESS,
-  payload: challengeData,
-});
-
-export const fetchChallengeFailure = (error) => ({
-  type: FETCH_CHALLENGE_FAILURE,
-  payload: error,
-});
-
-export const fetchChallenge = (challengeId) => async (dispatch) => {
-  dispatch(fetchChallengeRequest());
-  try {
-    const response = await axios.get(
-      `http://localhost:3000/api/challenges/${challengeId}`
-    );
-    dispatch(fetchChallengeSuccess(response.data));
-  } catch (error) {
-    dispatch(fetchChallengeFailure(error.response.data));
-  }
+export const fetchTests = () => {
+  return (dispatch) => {
+    dispatch(fetchTestsRequest());
+    fetch("/api/tests/all")
+      .then((response) => response.json())
+      .then((data) => dispatch(fetchTestsSuccess(data)))
+      .catch((error) => dispatch(fetchTestsFailure(error.message)));
+  };
 };
