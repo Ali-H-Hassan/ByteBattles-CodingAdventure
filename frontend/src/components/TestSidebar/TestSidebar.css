@@ -4,10 +4,10 @@
   align-items: center;
   justify-content: flex-start;
   height: 80vh;
-  width: 130px;
+  width: 150px;
   background-color: #333;
   color: white;
-  padding-top: 20px;
+  padding-top: 30px;
   margin-left: 100px;
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
@@ -17,12 +17,12 @@
   background: none;
   border: none;
   color: white;
-  padding: 10px 20px;
+  padding: 20px 20px;
   text-align: center;
   text-decoration: none;
   display: block;
   transition: 0.3s;
-  font-size: 16px;
+  font-size: 20px;
   width: 100%;
   cursor: pointer;
 }
