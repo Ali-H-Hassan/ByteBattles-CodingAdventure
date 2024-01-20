@@ -11,13 +11,15 @@ class GameScene extends Phaser.Scene {
   preload() {}
 
   create() {
-    console.log(this.courseData);
-    this.cameras.main.setBackgroundColor(this.courseData.backgroundColor);
+    const { backgroundColor, titleText, tags, categories } =
+      this.courseData.gameSceneConfig;
+
+    this.cameras.main.setBackgroundColor(backgroundColor);
     this.score = 0;
-    this.createTitle(this.courseData.title);
-    this.createTagsAndZones(this.courseData.tags, this.courseData.categories);
+    this.createTitle(titleText);
+    this.createTagsAndZones(tags, categories);
     this.createScoreText();
-    this.totalTags = this.courseData.tags?.length || 0;
+    this.totalTags = tags.length;
     this.correctlyPlacedTags = 0;
   }
 
@@ -31,7 +33,6 @@ class GameScene extends Phaser.Scene {
   }
 
   createTagsAndZones(tags, categories) {
-    // Check if tags and categories are correctly defined
     if (!Array.isArray(tags) || typeof categories !== "object") {
       console.error("Missing or incorrect tags/categories in courseData", {
         tags,

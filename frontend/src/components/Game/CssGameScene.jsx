@@ -13,9 +13,13 @@ class CssGameScene extends Phaser.Scene {
   preload() {}
 
   create() {
-    this.cameras.main.setBackgroundColor(this.courseData.backgroundColor);
-    this.createCSSProperties(this.courseData.cssProperties);
-    this.createHTMLTargets(this.courseData.htmlTargets);
+    // Use the values from gameSceneConfig
+    const { backgroundColor, cssProperties, htmlTargets } =
+      this.courseData.gameSceneConfig;
+
+    this.cameras.main.setBackgroundColor(backgroundColor);
+    this.createCSSProperties(cssProperties);
+    this.createHTMLTargets(htmlTargets);
     this.createScoreText();
   }
 
@@ -45,7 +49,6 @@ class CssGameScene extends Phaser.Scene {
       gameObject.y = dragY;
     });
   }
-
   createHTMLTargets(htmlTargets) {
     htmlTargets.forEach((target) => {
       let zone = this.add
