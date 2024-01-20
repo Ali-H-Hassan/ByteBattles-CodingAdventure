@@ -1,57 +1,50 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchTests } from "../../actions/testActions";
+import React from "react";
+import MCQQuestion from "../../components/MCQQuestion/MCQQuestion";
+import ProgrammingQuestion from "../../components/ProgrammingQuestion/ProgrammingQuestion";
+import "./DisplayTest.css";
 
-const TestDisplay = () => {
-  const dispatch = useDispatch();
-  const testState = useSelector((state) => state.testReducer);
-  const { loading, tests, error } = testState;
+const dummyMCQQuestions = [
+  {
+    question: "What is the capital of France?",
+    options: ["New York", "London", "Paris", "Tokyo"],
+  },
+  {
+    question: "What is 2 + 2?",
+    options: ["3", "4", "22", "None of the above"],
+  },
+];
 
-  useEffect(() => {
-    dispatch(fetchTests());
-  }, [dispatch]);
+const dummyProgrammingQuestion = {
+  problemStatement: "Write a function to reverse a string.",
+  starterCode:
+    "// Your starter code here\nfunction reverseString(str) {\n  // Code\n}",
+};
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+const Test = () => {
+  const handleOptionSelect = (event) => {
+    console.log(event.target.value);
+  };
 
   return (
-    <div>
-      {tests.map((test) => (
-        <div key={test._id} className="test-container">
-          <h2 className="test-title">{test.title}</h2>
-          <ul className="mcq-list">
-            {test.mcqQuestions.map((mcq, index) => (
-              <li key={index} className="mcq-question">
-                <p className="mcq-text">{mcq.questionText}</p>
-                <ul className="mcq-options">
-                  {mcq.options.map((option, optionIndex) => (
-                    <li key={optionIndex} className="mcq-option">
-                      <input type="radio" disabled className="mcq-radio" />
-                      <label className="mcq-label">{option.text}</label>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ul>
-          <p className="programming-question">
-            Programming Question: {test.programmingQuestion.questionText}
-          </p>
-          <p className="starter-code">
-            Starter Code: {test.programmingQuestion.starterCode}
-          </p>
-          <ul className="test-cases">
-            {test.programmingQuestion.testCases.map((testCase, caseIndex) => (
-              <li key={caseIndex} className="test-case">
-                <p className="input">Input: {testCase.input}</p>
-                <p className="output">Output: {testCase.output}</p>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
+    <div className="test-container">
+      <div className="test-mcq-section">
+        {dummyMCQQuestions.map((mcq, index) => (
+          <MCQQuestion
+            key={index}
+            question={mcq.question}
+            options={mcq.options}
+            onOptionSelect={handleOptionSelect}
+          />
+        ))}
+      </div>
+      <div className="test-programming-section">
+        <ProgrammingQuestion
+          problemStatement={dummyProgrammingQuestion.problemStatement}
+          starterCode={dummyProgrammingQuestion.starterCode}
+        />
+      </div>
     </div>
   );
 };
 
-export default TestDisplay;
+export default Test;
