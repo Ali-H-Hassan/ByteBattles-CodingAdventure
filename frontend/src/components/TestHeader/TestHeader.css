@@ -1,0 +1,28 @@
+.test-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.test-header-logo {
+  display: flex;
+  align-items: center;
+}
+
+.test-logo {
+  width: 50px;
+  margin-right: 10px;
+}
+
+.timer-icon {
+  margin-right: 5px;
+}
+
+.test-header-timer {
+  display: flex;
+  align-items: center;
+  font-size: 1.2em;
+}
