@@ -13,7 +13,28 @@
 }
 
 .thank-you-image {
-  max-width: 450px;
+  max-width: 350px;
   height: auto;
   margin: 40px 0;
+}
+.thank-you-content {
+  background-color: #f1f3f9;
+  margin: 0px 269px;
+  border-radius: 20px;
+  padding: 20px;
+}
+.thank-you-return-button {
+  background-color: #00c354;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  font-size: 20px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  margin: 0;
+  transition: background-color 0.3s;
+  box-shadow: 0px 2px 4px rgba(0, 128, 0, 0.24);
+  align-self: end;
 }
