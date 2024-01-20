@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./TestSidebar.css";
 
 const TestSidebar = ({ onSelectSection }) => {
-  const [selectedSection, setSelectedSection] = useState(null);
+  const [selectedSection, setSelectedSection] = useState("mcq");
 
   const handleSelect = (section) => {
     setSelectedSection(section);

@@ -23,9 +23,6 @@ const MCQQuestion = ({
           </label>
         ))}
       </form>
-      <button className="test-next-button" onClick={onNavigateToProgramming}>
-        Next to Programming
-      </button>
     </div>
   );
 };

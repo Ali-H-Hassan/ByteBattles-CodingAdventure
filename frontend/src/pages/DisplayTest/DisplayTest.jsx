@@ -27,42 +27,56 @@ const dummyProgrammingQuestion = {
 const Test = () => {
   const [currentSection, setCurrentSection] = useState("mcq");
   const [testSubmitted, setTestSubmitted] = useState(false);
+
   const handleOptionSelect = (event) => {
     console.log(event.target.value);
+  };
+
+  const navigateToProgramming = () => {
+    setCurrentSection("programming");
   };
 
   const handleSelectSection = (section) => {
     setCurrentSection(section);
   };
+
   const handleSubmitTest = () => {
     setTestSubmitted(true);
   };
-  const renderSection = () => {
-    switch (currentSection) {
-      case "mcq":
-        return dummyMCQQuestions.map((mcq, index) => (
+
+  const renderMCQSection = () => {
+    return (
+      <>
+        {dummyMCQQuestions.map((mcq, index) => (
           <MCQQuestion
             key={index}
             question={mcq.question}
             options={mcq.options}
             onOptionSelect={handleOptionSelect}
           />
-        ));
-      case "programming":
-        return (
-          <ProgrammingQuestion
-            problemStatement={dummyProgrammingQuestion.problemStatement}
-            starterCode={dummyProgrammingQuestion.starterCode}
-            onTestSubmit={handleSubmitTest}
-          />
-        );
-      default:
-        return null;
-    }
+        ))}
+        <button className="test-next-button" onClick={navigateToProgramming}>
+          Next to Programming
+        </button>
+      </>
+    );
   };
-  if (testSubmitted) {
-    return <ThankYouPage />;
-  }
+
+  const renderSection = () => {
+    if (testSubmitted) {
+      return <ThankYouPage />;
+    }
+    return currentSection === "mcq" ? (
+      renderMCQSection()
+    ) : (
+      <ProgrammingQuestion
+        problemStatement={dummyProgrammingQuestion.problemStatement}
+        starterCode={dummyProgrammingQuestion.starterCode}
+        onTestSubmit={handleSubmitTest}
+      />
+    );
+  };
+
   return (
     <div className="test-container">
       <TestHeader timeLeft={timeLeft} />
