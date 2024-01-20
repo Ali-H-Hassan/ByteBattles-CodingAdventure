@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import MCQQuestion from "../../components/MCQQuestion/MCQQuestion";
 import ProgrammingQuestion from "../../components/ProgrammingQuestion/ProgrammingQuestion";
+import TestSidebar from "../../components/TestSidebar/TestSidebar";
 import TestHeader from "../../components/TestHeader/TestHeader";
+
 import "./DisplayTest.css";
 
 const dummyMCQQuestions = [
@@ -22,29 +24,46 @@ const dummyProgrammingQuestion = {
 };
 
 const Test = () => {
+  const [currentSection, setCurrentSection] = useState("mcq"); // Added state for current section
+
   const handleOptionSelect = (event) => {
     console.log(event.target.value);
   };
 
-  return (
-    <div className="test-container">
-      <TestHeader timeLeft={timeLeft} />
-      <div className="test-mcq-section">
-        {dummyMCQQuestions.map((mcq, index) => (
+  const handleSelectSection = (section) => {
+    // Navigation function
+    setCurrentSection(section);
+  };
+
+  const renderSection = () => {
+    // Function to render sections based on the current state
+    switch (currentSection) {
+      case "mcq":
+        return dummyMCQQuestions.map((mcq, index) => (
           <MCQQuestion
             key={index}
             question={mcq.question}
             options={mcq.options}
             onOptionSelect={handleOptionSelect}
           />
-        ))}
-      </div>
-      <div className="test-programming-section">
-        <ProgrammingQuestion
-          problemStatement={dummyProgrammingQuestion.problemStatement}
-          starterCode={dummyProgrammingQuestion.starterCode}
-        />
-      </div>
+        ));
+      case "programming":
+        return (
+          <ProgrammingQuestion
+            problemStatement={dummyProgrammingQuestion.problemStatement}
+            starterCode={dummyProgrammingQuestion.starterCode}
+          />
+        );
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="test-container">
+      <TestHeader timeLeft={timeLeft} />
+      <TestSidebar onSelectSection={handleSelectSection} />
+      <div className="test-content">{renderSection()}</div>
     </div>
   );
 };
