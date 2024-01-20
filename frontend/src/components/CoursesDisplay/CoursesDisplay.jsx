@@ -82,6 +82,10 @@ const CourseSection = ({ title, courses }) => {
                   className="new-neon-button"
                   onClick={() => startGame(course._id)}
                 >
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
                   Start Adventure
                 </button>
               )}

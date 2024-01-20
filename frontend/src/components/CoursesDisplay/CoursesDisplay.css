@@ -130,6 +130,7 @@
   font-family: sans-serif;
   margin: 5px;
   border-radius: 5px;
+  cursor: pointer;
 }
 .new-neon-button span {
   position: absolute;
