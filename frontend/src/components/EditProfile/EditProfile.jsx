@@ -37,7 +37,15 @@ const EditProfile = () => {
         name: user.name,
         username: user.username,
         email: user.email,
+        address: user.address || "",
+        contactNumber: user.contactNumber || "",
+        country: user.country || "",
+        city: user.city || "",
+        password: "", // Do not autofill password for security reasons
       });
+      if (user.profilePictureUrl) {
+        setProfilePicture(user.profilePictureUrl);
+      }
     }
   }, [user]);
 
@@ -55,14 +63,16 @@ const EditProfile = () => {
 
   const handleProfilePictureChange = (e) => {
     const file = e.target.files[0];
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setProfilePicture(reader.result);
-    };
-    reader.readAsDataURL(file);
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfilePicture(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const formData = new FormData();
@@ -74,24 +84,8 @@ const EditProfile = () => {
     if (file) {
       formData.append("profilePicture", file);
     }
-    try {
-      const response = await fetch("http://localhost:3000/api/profile/update", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-        body: formData,
-      });
 
-      if (response.ok) {
-        navigate("/dashboard");
-      } else {
-        const errorText = await response.text();
-        console.error("Update failed:", errorText);
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    dispatch(updateProfile(formData, authToken));
   };
 
   const handleCancel = () => {
@@ -174,12 +168,13 @@ const EditProfile = () => {
             disabled={!profile.country}
           >
             <option value="">Select a city</option>
-            {profile.country &&
-              cities[profile.country].map((city) => (
-                <option key={city} value={city}>
-                  {city}
-                </option>
-              ))}
+            {profile.country && cities[profile.country]
+              ? cities[profile.country].map((city) => (
+                  <option key={city} value={city}>
+                    {city}
+                  </option>
+                ))
+              : null}
           </select>
         </div>
         <div className="form-group">
