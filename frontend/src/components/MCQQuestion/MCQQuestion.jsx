@@ -3,11 +3,11 @@ import "./MCQQuestion.css";
 
 const MCQQuestion = ({ question, options, onOptionSelect }) => {
   return (
-    <div className="mcq-container">
-      <div className="mcq-question">{question}</div>
-      <form className="mcq-options">
+    <div className="test-mcq-container">
+      <div className="test-mcq-question">{question}</div>
+      <form className="test-mcq-options-form">
         {options.map((option, index) => (
-          <label key={index} className="mcq-option">
+          <label key={index} className="test-mcq-option-label">
             <input
               type="radio"
               name="option"

@@ -3,10 +3,13 @@ import "./ProgrammingQuestion.css";
 
 const ProgrammingQuestion = ({ problemStatement, starterCode }) => {
   return (
-    <div className="programming-container">
-      <div className="problem-statement">{problemStatement}</div>
-      <textarea className="code-editor" defaultValue={starterCode}></textarea>
-      <button className="submit-button">Submit Test</button>
+    <div className="test-programming-container">
+      <div className="test-problem-statement">{problemStatement}</div>
+      <textarea
+        className="test-code-editor"
+        defaultValue={starterCode}
+      ></textarea>
+      <button className="test-submit-button">Submit Test</button>
     </div>
   );
 };
