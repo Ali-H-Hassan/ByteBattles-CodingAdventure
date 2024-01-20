@@ -4,6 +4,9 @@ import UserAvatar from "../../assets/Profile (1).png";
 import "./DashHeader.css";
 
 function HeaderDashboard({ username, profilePic }) {
+  const profileImageSrc = profilePic
+    ? `http://localhost:3000/${profilePic}`
+    : UserAvatar;
   return (
     <header className="main-header">
       <div className="welcome-message">
@@ -15,10 +18,7 @@ function HeaderDashboard({ username, profilePic }) {
         <img src={SearchIcon} alt="Search" />
       </div>
       <div className="profile-icon">
-        <img
-          src={`http://localhost:3000/${profilePic || UserAvatar}`}
-          alt="User Profile"
-        />
+        <img src={profileImageSrc} alt="User Profile" />
       </div>
     </header>
   );

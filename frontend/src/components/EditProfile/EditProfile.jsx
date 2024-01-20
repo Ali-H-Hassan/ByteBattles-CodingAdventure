@@ -41,7 +41,7 @@ const EditProfile = () => {
         contactNumber: user.contactNumber || "",
         country: user.country || "",
         city: user.city || "",
-        password: "", // Do not autofill password for security reasons
+        password: "",
       });
       if (user.profilePictureUrl) {
         setProfilePicture(user.profilePictureUrl);
