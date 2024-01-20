@@ -60,8 +60,10 @@ const Test = () => {
   return (
     <div className="test-container">
       <TestHeader timeLeft={timeLeft} />
-      <TestSidebar onSelectSection={handleSelectSection} />
-      <div className="test-content">{renderSection()}</div>
+      <div className="test-display-flex-container">
+        <TestSidebar onSelectSection={handleSelectSection} />
+        <div className="test-display-container">{renderSection()}</div>
+      </div>
     </div>
   );
 };
