@@ -1,6 +1,7 @@
 import React from "react";
 import MCQQuestion from "../../components/MCQQuestion/MCQQuestion";
 import ProgrammingQuestion from "../../components/ProgrammingQuestion/ProgrammingQuestion";
+import TestHeader from "../../components/TestHeader/TestHeader";
 import "./DisplayTest.css";
 
 const dummyMCQQuestions = [
@@ -13,7 +14,7 @@ const dummyMCQQuestions = [
     options: ["3", "4", "22", "None of the above"],
   },
 ];
-
+const timeLeft = "00:20:30";
 const dummyProgrammingQuestion = {
   problemStatement: "Write a function to reverse a string.",
   starterCode:
@@ -27,6 +28,7 @@ const Test = () => {
 
   return (
     <div className="test-container">
+      <TestHeader timeLeft={timeLeft} />
       <div className="test-mcq-section">
         {dummyMCQQuestions.map((mcq, index) => (
           <MCQQuestion
