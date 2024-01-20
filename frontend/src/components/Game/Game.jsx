@@ -25,25 +25,35 @@ const GameComponent = ({ courseId }) => {
   );
 
   useEffect(() => {
-    let scene;
-    if (courseId === 1) {
-      scene = GameScene;
-    } else if (courseId === 2) {
-      scene = CssGameScene;
-    } else if (courseId === 3) {
-      scene = NodeGame;
-    } else if (courseId === 4) {
-      scene = Python;
+    let sceneClass;
+    switch (courseId) {
+      case 1:
+        sceneClass = GameScene;
+        break;
+      case 2:
+        sceneClass = CssGameScene;
+        break;
+      case 3:
+        sceneClass = NodeGame;
+        break;
+      case 4:
+        sceneClass = Python;
+        break;
+      default:
     }
-    const config = {
-      type: Phaser.AUTO,
-      parent: "phaser-container",
-      width: 800,
-      height: 600,
-      scene: [new scene(courseId, onGameComplete)],
-    };
 
-    gameRef.current = new Phaser.Game(config);
+    if (sceneClass) {
+      const scene = new sceneClass(courseId, onGameComplete);
+      const config = {
+        type: Phaser.AUTO,
+        parent: "phaser-container",
+        width: 800,
+        height: 600,
+        scene: scene,
+      };
+
+      gameRef.current = new Phaser.Game(config);
+    }
 
     return () => {
       if (gameRef.current) {
