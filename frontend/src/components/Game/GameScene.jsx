@@ -11,12 +11,13 @@ class GameScene extends Phaser.Scene {
   preload() {}
 
   create() {
+    console.log(this.courseData);
     this.cameras.main.setBackgroundColor(this.courseData.backgroundColor);
     this.score = 0;
     this.createTitle(this.courseData.title);
     this.createTagsAndZones(this.courseData.tags, this.courseData.categories);
     this.createScoreText();
-    this.totalTags = this.courseData.tags.length;
+    this.totalTags = this.courseData.tags?.length || 0;
     this.correctlyPlacedTags = 0;
   }
 
@@ -30,6 +31,15 @@ class GameScene extends Phaser.Scene {
   }
 
   createTagsAndZones(tags, categories) {
+    // Check if tags and categories are correctly defined
+    if (!Array.isArray(tags) || typeof categories !== "object") {
+      console.error("Missing or incorrect tags/categories in courseData", {
+        tags,
+        categories,
+      });
+      return;
+    }
+
     Object.entries(categories).forEach(
       ([category, { x, y, width, height }]) => {
         let zone = this.add
@@ -110,6 +120,7 @@ class GameScene extends Phaser.Scene {
     this.score += points;
     this.scoreText.setText(`Score: ${this.score}`);
   }
+
   showCompletionMessage() {
     const messageY = this.scale.height / 2 - 100;
 
