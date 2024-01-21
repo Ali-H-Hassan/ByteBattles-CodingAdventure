@@ -9,11 +9,11 @@ import GoogleCallbackHandler from "./pages/GoogleCallbackHandler";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import GamePage from "./pages/GamePage";
 import CreateChallengePage from "./pages/CreateChallengePage/CreateChallengePage";
+import DisplayTest from "./pages/DisplayTest/DisplayTest";
+import ProtectedRoute from "./ProtectedRoute";
 import { Provider } from "react-redux";
 import store from "./store";
 import "./App.css";
-import DisplayTest from "./pages/DisplayTest/DisplayTest";
-import ProtectedRoute from "./ProtectedRoute";
 
 function App() {
   return (
@@ -27,13 +27,12 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/game" element={<GamePage />} />
-              <Route path="/test" element={<DisplayTest />} />
-              <Route element={<ProtectedRoute />}>
-                <Route
-                  path="/create-challenge"
-                  element={<CreateChallengePage />}
-                />
-              </Route>
+              <Route
+                path="/create-challenge"
+                element={<CreateChallengePage />}
+              />
+              <Route path="/tests/:testId" element={<DisplayTest />} />{" "}
+              <Route element={<ProtectedRoute />}></Route>
             </Routes>
           </div>
         </Router>
