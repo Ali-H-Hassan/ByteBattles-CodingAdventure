@@ -5,14 +5,14 @@ import Header from "../../components/DashHeader/DashHeader";
 import TestCard from "../../components/TestCard/TestCard";
 import "./Test.css";
 import Amazon from "../../assets/amazon.png";
-
+import { useNavigate } from "react-router-dom";
 const TestsPage = () => {
   const dispatch = useDispatch();
   const { loading, tests, error } = useSelector((state) => state.test);
   const user = useSelector((state) => state.auth.user);
   const username = user ? user.username : "User";
   const profilePic = user?.profilePictureUrl;
-
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(fetchTests());
   }, [dispatch]);
@@ -29,13 +29,15 @@ const TestsPage = () => {
     <div className="tests-page-container">
       <Header username={username} profilePic={profilePic} />
       <div className="tests-container">
-        {tests.map((test, index) => (
+        {tests.map((test) => (
           <TestCard
             key={test._id}
+            id={test._id}
             logo={test.logo || Amazon}
             title={test.title}
             subtitle={test.subtitle}
             status={test.status}
+            onClick={() => navigate(`/test/${test._id}`)}
           />
         ))}
       </div>
