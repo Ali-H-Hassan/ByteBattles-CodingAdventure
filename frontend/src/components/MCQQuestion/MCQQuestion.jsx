@@ -1,12 +1,7 @@
 import React from "react";
 import "./MCQQuestion.css";
 
-const MCQQuestion = ({
-  question,
-  options,
-  onOptionSelect,
-  onNavigateToProgramming,
-}) => {
+const MCQQuestion = ({ question, options, onOptionSelect, onNextClick }) => {
   return (
     <div className="test-mcq-container">
       <div className="test-mcq-question">{question}</div>
@@ -23,6 +18,9 @@ const MCQQuestion = ({
           </label>
         ))}
       </form>
+      <button className="test-next-button" onClick={onNextClick}>
+        Next
+      </button>{" "}
     </div>
   );
 };
