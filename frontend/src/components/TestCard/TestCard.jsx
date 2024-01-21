@@ -2,7 +2,7 @@ import React from "react";
 import "./TestCard.css";
 
 const TestCard = ({ logo, title, subtitle, status }) => {
-  const statusClass = status.toLowerCase().replace(" ", "");
+  const statusClass = status ? status.toLowerCase().replace(" ", "") : "";
 
   return (
     <div className={`test-card-main ${statusClass}`}>

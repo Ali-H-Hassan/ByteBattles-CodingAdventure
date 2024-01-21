@@ -3,7 +3,7 @@ import * as actionTypes from "../actions/actionTypes";
 const initialState = {
   loading: false,
   tests: [],
-  error: "",
+  error: null,
 };
 
 const testReducer = (state = initialState, action) => {
@@ -12,17 +12,18 @@ const testReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: true,
+        error: null,
       };
     case actionTypes.FETCH_TESTS_SUCCESS:
       return {
+        ...state,
         loading: false,
         tests: action.payload,
-        error: "",
       };
     case actionTypes.FETCH_TESTS_FAILURE:
       return {
+        ...state,
         loading: false,
-        tests: [],
         error: action.payload,
       };
     default:

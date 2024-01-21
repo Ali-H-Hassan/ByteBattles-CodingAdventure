@@ -1,4 +1,5 @@
 import * as actionTypes from "./actionTypes";
+import apiClient from "../services/apiConfig";
 
 const fetchTestsRequest = () => ({
   type: actionTypes.FETCH_TESTS_REQUEST,
@@ -18,10 +19,12 @@ export const fetchTests = () => {
   return async (dispatch) => {
     dispatch(fetchTestsRequest());
     try {
-      const response = await fetch("/api/tests/all");
-      const data = await response.json();
-      dispatch(fetchTestsSuccess(data));
+      // Corrected the endpoint from '/tests/all' to '/api/tests/all'
+      const response = await apiClient.get("/api/tests/all");
+      console.log("fetchTests response data:", response.data); // Log response data
+      dispatch(fetchTestsSuccess(response.data));
     } catch (error) {
+      console.error("fetchTests error:", error); // Log any errors
       dispatch(fetchTestsFailure(error.message));
     }
   };

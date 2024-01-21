@@ -63,9 +63,6 @@ const Test = () => {
   };
 
   const renderSection = () => {
-    if (testSubmitted) {
-      return <ThankYouPage />;
-    }
     return currentSection === "mcq" ? (
       renderMCQSection()
     ) : (
@@ -76,7 +73,9 @@ const Test = () => {
       />
     );
   };
-
+  if (testSubmitted) {
+    return <ThankYouPage />;
+  }
   return (
     <div className="test-container">
       <TestHeader timeLeft={timeLeft} />
