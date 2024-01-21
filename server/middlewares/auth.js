@@ -3,8 +3,10 @@ const User = require("../models/user");
 
 const authenticate = async (req, res, next) => {
   try {
+    console.log("Headers:", req.headers);
     const token = req.header("Authorization").replace("Bearer ", "").trim();
-    console.log("Received token:", token);
+    console.log("Token:", token);
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findOne({ _id: decoded._id });
 
@@ -17,6 +19,7 @@ const authenticate = async (req, res, next) => {
 
     next();
   } catch (error) {
+    console.error("Authentication error:", error.message);
     res.status(401).send({ error: "Please authenticate." });
   }
 };

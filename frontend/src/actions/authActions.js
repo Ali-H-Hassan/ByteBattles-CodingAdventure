@@ -97,14 +97,15 @@ export const profileUpdateFailure = (error) => ({
   payload: error,
 });
 
-export const updateProfile = (userData, authToken) => async (dispatch) => {
+export const updateProfile = (userData) => async (dispatch) => {
   dispatch(profileUpdateRequest());
   try {
-    const response = await apiClient.post("/api/profile/update", userData, {
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
+    const formData = new FormData();
+    Object.entries(userData).forEach(([key, value]) => {
+      formData.append(key, value);
     });
+
+    const response = await apiClient.post("/api/profile/update", formData);
     dispatch(profileUpdateSuccess(response.data));
   } catch (error) {
     dispatch(profileUpdateFailure(error.response.data));
