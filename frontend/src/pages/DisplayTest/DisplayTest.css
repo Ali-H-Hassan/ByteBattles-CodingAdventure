@@ -68,3 +68,7 @@
 .test-display-flex-container {
   display: flex;
 }
+.test-content {
+  width: -webkit-fill-available;
+  max-width: 1600px;
+}

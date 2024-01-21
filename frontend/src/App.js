@@ -14,7 +14,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import { Provider } from "react-redux";
 import store from "./store";
 import "./App.css";
-
+import ThankYouPage from "./components/ThankYouPage/ThankYouPage";
 function App() {
   return (
     <Provider store={store}>
@@ -32,6 +32,7 @@ function App() {
                 element={<CreateChallengePage />}
               />
               <Route path="/tests/:testId" element={<DisplayTest />} />{" "}
+              <Route path="/thank-you" element={<ThankYouPage />} />{" "}
               <Route element={<ProtectedRoute />}></Route>
             </Routes>
           </div>
