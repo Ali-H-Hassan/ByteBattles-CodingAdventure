@@ -19,12 +19,11 @@ export const fetchTests = () => {
   return async (dispatch) => {
     dispatch(fetchTestsRequest());
     try {
-      // Corrected the endpoint from '/tests/all' to '/api/tests/all'
       const response = await apiClient.get("/api/tests/all");
-      console.log("fetchTests response data:", response.data); // Log response data
+      console.log("fetchTests response data:", response.data);
       dispatch(fetchTestsSuccess(response.data));
     } catch (error) {
-      console.error("fetchTests error:", error); // Log any errors
+      console.error("fetchTests error:", error);
       dispatch(fetchTestsFailure(error.message));
     }
   };

@@ -1,90 +1,81 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchTestById, submitTestAnswers } from "../../actions/testActions";
 import MCQQuestion from "../../components/MCQQuestion/MCQQuestion";
 import ProgrammingQuestion from "../../components/ProgrammingQuestion/ProgrammingQuestion";
 import TestSidebar from "../../components/TestSidebar/TestSidebar";
 import TestHeader from "../../components/TestHeader/TestHeader";
 import ThankYouPage from "../../components/ThankYouPage/ThankYouPage";
 
-import "./DisplayTest.css";
-
-const dummyMCQQuestions = [
-  {
-    question: "What is the capital of France?",
-    options: ["New York", "London", "Paris", "Tokyo"],
-  },
-  {
-    question: "What is 2 + 2?",
-    options: ["3", "4", "22", "None of the above"],
-  },
-];
-const timeLeft = "00:20:30";
-const dummyProgrammingQuestion = {
-  problemStatement: "Write a function to reverse a string.",
-  starterCode:
-    "// Your starter code here\nfunction reverseString(str) {\n  // Code\n}",
-};
-
-const Test = () => {
+const DisplayTest = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { test, loading, error } = useSelector((state) => state.testDetails);
   const [currentSection, setCurrentSection] = useState("mcq");
-  const [testSubmitted, setTestSubmitted] = useState(false);
+  const [answers, setAnswers] = useState({ mcq: {}, programming: "" });
 
-  const handleOptionSelect = (event) => {
-    console.log(event.target.value);
+  useEffect(() => {
+    if (id) {
+      dispatch(fetchTestById(id));
+    }
+  }, [dispatch, id]);
+
+  const handleMCQAnswerChange = (questionId, selectedOption) => {
+    setAnswers({
+      ...answers,
+      mcq: { ...answers.mcq, [questionId]: selectedOption },
+    });
   };
 
-  const navigateToProgramming = () => {
-    setCurrentSection("programming");
+  const handleProgrammingAnswerChange = (code) => {
+    setAnswers({
+      ...answers,
+      programming: code,
+    });
   };
 
-  const handleSelectSection = (section) => {
-    setCurrentSection(section);
+  const handleSubmit = () => {
+    dispatch(submitTestAnswers(id, answers));
+    navigate("/thank-you");
   };
 
-  const handleSubmitTest = () => {
-    setTestSubmitted(true);
-  };
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
-  const renderMCQSection = () => {
-    return (
-      <>
-        {dummyMCQQuestions.map((mcq, index) => (
-          <MCQQuestion
-            key={index}
-            question={mcq.question}
-            options={mcq.options}
-            onOptionSelect={handleOptionSelect}
-          />
-        ))}
-        <button className="test-next-button" onClick={navigateToProgramming}>
-          Next to Programming
-        </button>
-      </>
-    );
-  };
-
-  const renderSection = () => {
-    return currentSection === "mcq" ? (
-      renderMCQSection()
-    ) : (
-      <ProgrammingQuestion
-        problemStatement={dummyProgrammingQuestion.problemStatement}
-        starterCode={dummyProgrammingQuestion.starterCode}
-        onTestSubmit={handleSubmitTest}
-      />
-    );
-  };
-  if (testSubmitted) {
-    return <ThankYouPage />;
-  }
   return (
-    <div className="test-container">
-      <TestHeader timeLeft={timeLeft} />
-      <div className="test-display-flex-container">
-        <TestSidebar onSelectSection={handleSelectSection} />
-        <div className="test-display-container">{renderSection()}</div>
+    <div className="display-test-container">
+      <TestHeader timeLeft="00:20:30" />
+      <TestSidebar
+        currentSection={currentSection}
+        setCurrentSection={setCurrentSection}
+      />
+      <div className="test-content">
+        {currentSection === "mcq" &&
+          test.mcqQuestions.map((question) => (
+            <MCQQuestion
+              key={question._id}
+              question={question.questionText}
+              options={question.options}
+              onAnswerChange={(optionId) =>
+                handleMCQAnswerChange(question._id, optionId)
+              }
+            />
+          ))}
+        {currentSection === "programming" && (
+          <ProgrammingQuestion
+            problemStatement={test.programmingQuestion.questionText}
+            starterCode={test.programmingQuestion.starterCode}
+            onCodeChange={handleProgrammingAnswerChange}
+          />
+        )}
       </div>
+      <button onClick={handleSubmit} className="submit-test-btn">
+        Submit Test
+      </button>
     </div>
   );
 };
 
-export default Test;
+export default DisplayTest;
