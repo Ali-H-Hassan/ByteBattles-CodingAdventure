@@ -6,7 +6,11 @@ const TestSidebar = ({ onSelectSection }) => {
 
   const handleSelect = (section) => {
     setSelectedSection(section);
-    onSelectSection(section);
+    if (typeof onSelectSection === "function") {
+      onSelectSection(section);
+    } else {
+      console.error("onSelectSection prop is not a function", onSelectSection);
+    }
   };
 
   return (
