@@ -16,10 +16,10 @@ const MCQQuestion = ({
             <input
               type="radio"
               name="option"
-              value={option}
+              value={option.text}
               onChange={onOptionSelect}
             />
-            <span>{option}</span>
+            <span>{option.text}</span>
           </label>
         ))}
       </form>
