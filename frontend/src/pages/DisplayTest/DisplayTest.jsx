@@ -6,7 +6,7 @@ import MCQQuestion from "../../components/MCQQuestion/MCQQuestion";
 import ProgrammingQuestion from "../../components/ProgrammingQuestion/ProgrammingQuestion";
 import TestSidebar from "../../components/TestSidebar/TestSidebar";
 import TestHeader from "../../components/TestHeader/TestHeader";
-import ThankYouPage from "../../components/ThankYouPage/ThankYouPage";
+import "./DisplayTest.css";
 
 const DisplayTest = () => {
   const { testId } = useParams();
@@ -36,6 +36,10 @@ const DisplayTest = () => {
     }));
   };
 
+  const handleSectionChange = (section) => {
+    setCurrentSection(section);
+  };
+
   const handleSubmit = () => {
     dispatch(submitTestAnswers(testId, answers));
     navigate("/thank-you");
@@ -48,31 +52,32 @@ const DisplayTest = () => {
   return (
     <div className="display-test-container">
       <TestHeader timeLeft="00:20:30" />
-      <TestSidebar
-        currentSection={currentSection}
-        setCurrentSection={setCurrentSection}
-      />
-      <div className="test-content">
-        {currentSection === "mcq" &&
-          test.mcqQuestions.map((question) => (
-            <MCQQuestion
-              key={question._id}
-              question={question.questionText}
-              options={question.options}
-              onAnswerChange={handleMCQAnswerChange}
+      <div className="test-display-flex-container">
+        <TestSidebar
+          currentSection={currentSection}
+          onSelectSection={handleSectionChange}
+        />
+        <div className="test-content">
+          {currentSection === "mcq" &&
+            test.mcqQuestions.map((question) => (
+              <MCQQuestion
+                key={question._id}
+                question={question.questionText}
+                options={question.options} // Pass the entire options object array
+                onOptionSelect={(e) =>
+                  handleMCQAnswerChange(question._id, e.target.value)
+                }
+              />
+            ))}
+          {currentSection === "programming" && (
+            <ProgrammingQuestion
+              problemStatement={test.programmingQuestion.questionText}
+              starterCode={test.programmingQuestion.starterCode}
+              onCodeChange={handleProgrammingAnswerChange}
             />
-          ))}
-        {currentSection === "programming" && (
-          <ProgrammingQuestion
-            problemStatement={test.programmingQuestion.questionText}
-            starterCode={test.programmingQuestion.starterCode}
-            onCodeChange={handleProgrammingAnswerChange}
-          />
-        )}
+          )}
+        </div>
       </div>
-      <button onClick={handleSubmit} className="submit-test-btn">
-        Submit Test
-      </button>
     </div>
   );
 };
