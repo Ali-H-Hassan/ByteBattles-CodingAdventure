@@ -28,3 +28,21 @@ export const fetchTests = () => {
     }
   };
 };
+const fetchTestById = (testId) => async (dispatch) => {
+  dispatch(fetchTestsRequest());
+  try {
+    const response = await apiClient.get(`/tests/${testId}`);
+    dispatch({ type: actionTypes.FETCH_TEST_SUCCESS, payload: response.data });
+  } catch (error) {
+    dispatch({ type: actionTypes.FETCH_TEST_FAILURE, payload: error.message });
+  }
+};
+const submitTestAnswers = (testId, answers) => async (dispatch) => {
+  dispatch({ type: actionTypes.SUBMIT_TEST_REQUEST });
+  try {
+    const response = await apiClient.post(`/tests/${testId}/submit`, answers);
+    dispatch({ type: actionTypes.SUBMIT_TEST_SUCCESS, payload: response.data });
+  } catch (error) {
+    dispatch({ type: actionTypes.SUBMIT_TEST_FAILURE, payload: error.message });
+  }
+};
