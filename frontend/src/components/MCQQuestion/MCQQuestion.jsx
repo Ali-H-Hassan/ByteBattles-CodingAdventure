@@ -11,16 +11,13 @@ const MCQQuestion = ({ question, options, onOptionSelect, onNextClick }) => {
             <input
               type="radio"
               name="option"
-              value={option.text}
+              value={option}
               onChange={onOptionSelect}
             />
-            <span>{option.text}</span>
+            <span>{option}</span>
           </label>
         ))}
       </form>
-      <button className="test-next-button" onClick={onNextClick}>
-        Next
-      </button>{" "}
     </div>
   );
 };

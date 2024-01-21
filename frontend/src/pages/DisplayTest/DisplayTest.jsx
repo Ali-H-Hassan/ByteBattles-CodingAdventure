@@ -44,7 +44,9 @@ const DisplayTest = () => {
     dispatch(submitTestAnswers(testId, answers));
     navigate("/thank-you");
   };
-
+  const navigateToProgramming = () => {
+    setCurrentSection("programming");
+  };
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!test) return <div>Test not found</div>;
@@ -58,17 +60,26 @@ const DisplayTest = () => {
           onSelectSection={handleSectionChange}
         />
         <div className="test-content">
-          {currentSection === "mcq" &&
-            test.mcqQuestions.map((question) => (
-              <MCQQuestion
-                key={question._id}
-                question={question.questionText}
-                options={question.options} // Pass the entire options object array
-                onOptionSelect={(e) =>
-                  handleMCQAnswerChange(question._id, e.target.value)
-                }
-              />
-            ))}
+          {currentSection === "mcq" && (
+            <>
+              {test.mcqQuestions.map((question) => (
+                <MCQQuestion
+                  key={question._id}
+                  question={question.questionText}
+                  options={question.options.map((option) => option.text)}
+                  onAnswerChange={(e) =>
+                    handleMCQAnswerChange(question._id, e.target.value)
+                  }
+                />
+              ))}
+              <button
+                className="test-next-button"
+                onClick={() => setCurrentSection("programming")}
+              >
+                Next to Programming
+              </button>
+            </>
+          )}
           {currentSection === "programming" && (
             <ProgrammingQuestion
               problemStatement={test.programmingQuestion.questionText}
