@@ -1,6 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import apiClient from "../services/apiConfig";
-
+export const SET_CURRENT_TEST_ID = "SET_CURRENT_TEST_ID";
 const fetchTestsRequest = () => ({
   type: actionTypes.FETCH_TESTS_REQUEST,
 });
@@ -28,11 +28,17 @@ export const fetchTests = () => {
 };
 
 export const fetchTestById = (testId) => async (dispatch) => {
-  dispatch(fetchTestsRequest());
+  console.log(`[Debug] Attempting to fetch test with ID: ${testId}`);
+  dispatch({ type: actionTypes.FETCH_TEST_REQUEST });
+
   try {
+    console.log(`[Debug] Making API request to /api/tests/${testId}`);
     const response = await apiClient.get(`/api/tests/${testId}`);
+    console.log("[Debug] API response:", response.data);
+
     dispatch({ type: actionTypes.FETCH_TEST_SUCCESS, payload: response.data });
   } catch (error) {
+    console.error("[Debug] Error in API request:", error);
     dispatch({ type: actionTypes.FETCH_TEST_FAILURE, payload: error.message });
   }
 };
@@ -49,3 +55,7 @@ export const submitTestAnswers = (testId, answers) => async (dispatch) => {
     dispatch({ type: actionTypes.SUBMIT_TEST_FAILURE, payload: error.message });
   }
 };
+export const setCurrentTestId = (testId) => ({
+  type: SET_CURRENT_TEST_ID,
+  payload: testId,
+});

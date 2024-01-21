@@ -1,6 +1,4 @@
-export const FETCH_TEST_BY_ID_REQUEST = "FETCH_TEST_BY_ID_REQUEST";
-export const FETCH_TEST_BY_ID_SUCCESS = "FETCH_TEST_BY_ID_SUCCESS";
-export const FETCH_TEST_BY_ID_FAILURE = "FETCH_TEST_BY_ID_FAILURE";
+import * as actionTypes from "../actions/actionTypes";
 
 const initialTestDetailsState = {
   loading: false,
@@ -10,19 +8,19 @@ const initialTestDetailsState = {
 
 const testDetailsReducer = (state = initialTestDetailsState, action) => {
   switch (action.type) {
-    case actionTypes.FETCH_TEST_BY_ID_REQUEST:
+    case actionTypes.FETCH_TEST_REQUEST:
       return {
         ...state,
         loading: true,
         error: null,
       };
-    case actionTypes.FETCH_TEST_BY_ID_SUCCESS:
+    case actionTypes.FETCH_TEST_SUCCESS:
       return {
         ...state,
         loading: false,
         test: action.payload,
       };
-    case actionTypes.FETCH_TEST_BY_ID_FAILURE:
+    case actionTypes.FETCH_TEST_FAILURE:
       return {
         ...state,
         loading: false,

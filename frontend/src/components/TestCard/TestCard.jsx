@@ -1,11 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux"; // Corrected import for useDispatch
+import { setCurrentTestId } from "../../actions/testActions";
 import "./TestCard.css";
 
 const TestCard = ({ id, logo, title, subtitle, status }) => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch(); // useDispatch is now correctly imported from react-redux
   const handleTestClick = () => {
+    dispatch(setCurrentTestId(id));
     navigate(`/tests/${id}`);
   };
 

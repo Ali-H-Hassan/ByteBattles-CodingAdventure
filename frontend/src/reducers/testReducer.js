@@ -4,6 +4,7 @@ const initialState = {
   loading: false,
   tests: [],
   error: null,
+  currentTestId: null,
 };
 
 const testReducer = (state = initialState, action) => {

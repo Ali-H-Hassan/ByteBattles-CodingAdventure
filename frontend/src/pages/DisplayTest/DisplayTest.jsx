@@ -9,7 +9,7 @@ import TestHeader from "../../components/TestHeader/TestHeader";
 import ThankYouPage from "../../components/ThankYouPage/ThankYouPage";
 
 const DisplayTest = () => {
-  const { id } = useParams();
+  const { testId } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { test, loading, error } = useSelector((state) => state.testDetails);
@@ -17,32 +17,33 @@ const DisplayTest = () => {
   const [answers, setAnswers] = useState({ mcq: {}, programming: "" });
 
   useEffect(() => {
-    if (id) {
-      dispatch(fetchTestById(id));
+    if (testId) {
+      dispatch(fetchTestById(testId));
     }
-  }, [dispatch, id]);
+  }, [dispatch, testId]);
 
   const handleMCQAnswerChange = (questionId, selectedOption) => {
-    setAnswers({
-      ...answers,
-      mcq: { ...answers.mcq, [questionId]: selectedOption },
-    });
+    setAnswers((prevAnswers) => ({
+      ...prevAnswers,
+      mcq: { ...prevAnswers.mcq, [questionId]: selectedOption },
+    }));
   };
 
   const handleProgrammingAnswerChange = (code) => {
-    setAnswers({
-      ...answers,
+    setAnswers((prevAnswers) => ({
+      ...prevAnswers,
       programming: code,
-    });
+    }));
   };
 
   const handleSubmit = () => {
-    dispatch(submitTestAnswers(id, answers));
+    dispatch(submitTestAnswers(testId, answers));
     navigate("/thank-you");
   };
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+  if (!test) return <div>Test not found</div>;
 
   return (
     <div className="display-test-container">
@@ -58,9 +59,7 @@ const DisplayTest = () => {
               key={question._id}
               question={question.questionText}
               options={question.options}
-              onAnswerChange={(optionId) =>
-                handleMCQAnswerChange(question._id, optionId)
-              }
+              onAnswerChange={handleMCQAnswerChange}
             />
           ))}
         {currentSection === "programming" && (
