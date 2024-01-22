@@ -1,6 +1,7 @@
 import React from "react";
 import "./TotalTests.css";
 import Tests from "../../assets/Edit 1.png";
+import { useNavigate } from "react-router-dom";
 
 function TotalTests() {
   return (

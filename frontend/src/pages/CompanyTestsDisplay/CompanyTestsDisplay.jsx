@@ -6,7 +6,6 @@ import TestCard from "../../components/TestCard/TestCard";
 const CompanyTestsDisplay = () => {
   const dispatch = useDispatch();
 
-  // Use 'state.test' to match your rootReducer configuration
   const { companyTests, loading, error } = useSelector((state) => state.test);
 
   useEffect(() => {
