@@ -12,6 +12,7 @@ import "./CompanyDashboard.css";
 function CompanyDashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const totalTests = 10; // Placeholder value
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);
@@ -42,9 +43,7 @@ function CompanyDashboard() {
         {selectedOption !== "profile" && <Header username={username} />}
         {selectedOption !== "profile" && (
           <div className="content-grid">
-            {selectedOption === "dashboard" && (
-              <div>Welcome to Company Dashboard!</div>
-            )}
+            {selectedOption === "dashboard"}
             {selectedOption === "tests" && <CompanyTestsDisplay />}
           </div>
         )}

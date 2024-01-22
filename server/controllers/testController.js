@@ -45,11 +45,9 @@ exports.updateTestById = async (req, res) => {
 };
 exports.getTestsByCompanyId = async (req, res) => {
   try {
-    console.log("Company ID from params:", req.params.companyId);
     const companyTests = await Test.find({
       createdBy: req.params.companyId.trim(),
     });
-    console.log("Tests found:", companyTests);
     res.status(200).json(companyTests);
   } catch (error) {
     console.error("Error fetching company tests:", error);
