@@ -59,7 +59,6 @@ export const setCurrentTestId = (testId) => ({
   type: SET_CURRENT_TEST_ID,
   payload: testId,
 });
-export const FETCH_COMPANY_TESTS_SUCCESS = "FETCH_COMPANY_TESTS_SUCCESS";
 
 export const fetchCompanyTests = () => async (dispatch) => {
   try {

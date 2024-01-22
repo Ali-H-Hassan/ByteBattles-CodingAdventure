@@ -21,6 +21,12 @@ const testReducer = (state = initialState, action) => {
         loading: false,
         tests: action.payload,
       };
+    case FETCH_COMPANY_TESTS_SUCCESS:
+      return {
+        ...state,
+        companyTests: action.payload,
+        loading: false,
+      };
     case actionTypes.FETCH_TESTS_FAILURE:
       return {
         ...state,
