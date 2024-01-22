@@ -34,7 +34,7 @@ function CompanyDashboard() {
 
   return (
     <div className="company-dashboard">
-      <Sidebar onOptionSelect={handleOptionSelect} />
+      <Sidebar onOptionSelect={handleOptionSelect} userType="company" />
 
       <div className="main-content">
         <Header username={username} />
