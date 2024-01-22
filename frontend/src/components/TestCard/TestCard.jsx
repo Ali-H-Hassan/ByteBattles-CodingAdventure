@@ -14,9 +14,7 @@ const TestCard = ({ id, logo, title, subtitle, status }) => {
 
   return (
     <div className={`test-card-main ${status}`} onClick={handleTestClick}>
-      <div className="test-card-header">
-        <span className="test-status">{status}</span>
-      </div>
+      <div className="test-card-header"></div>
       <div className="test-card-body">
         <img src={logo} alt={`${title} logo`} className="test-logo" />
         <h3 className="test-title">{title}</h3>

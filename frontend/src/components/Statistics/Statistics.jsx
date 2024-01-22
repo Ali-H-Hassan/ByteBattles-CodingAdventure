@@ -36,7 +36,7 @@ function Statistics() {
           className="statistic-icon"
         />
         <div className="statistic-info">
-          <span className="statistic-number">%80</span>
+          <span className="statistic-number">80 %</span>
           <span className="statistic-text">Overall Average</span>
         </div>
       </div>

@@ -14,8 +14,9 @@
 }
 
 .test-logo {
-  width: 100px;
+  width: 150px;
   margin-right: 10px;
+  height: auto;
 }
 
 .timer-icon {

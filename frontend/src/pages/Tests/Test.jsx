@@ -4,7 +4,7 @@ import { fetchTests } from "../../actions/testActions";
 import Header from "../../components/DashHeader/DashHeader";
 import TestCard from "../../components/TestCard/TestCard";
 import "./Test.css";
-import Amazon from "../../assets/amazon.png";
+import Amazon from "../../assets/DefaultLogo.jpeg";
 import { useNavigate } from "react-router-dom";
 const TestsPage = () => {
   const dispatch = useDispatch();

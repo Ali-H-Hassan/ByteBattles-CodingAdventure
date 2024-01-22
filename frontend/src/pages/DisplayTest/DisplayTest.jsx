@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTestById, submitTestAnswers } from "../../actions/testActions";
+import { fetchTestById } from "../../actions/testActions";
 import MCQQuestion from "../../components/MCQQuestion/MCQQuestion";
 import ProgrammingQuestion from "../../components/ProgrammingQuestion/ProgrammingQuestion";
 import TestSidebar from "../../components/TestSidebar/TestSidebar";
@@ -10,11 +10,10 @@ import "./DisplayTest.css";
 
 const DisplayTest = () => {
   const { testId } = useParams();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { test, loading, error } = useSelector((state) => state.testDetails);
   const [currentSection, setCurrentSection] = useState("mcq");
-  const [answers, setAnswers] = useState({ mcq: {}, programming: "" });
+  const [setAnswers] = useState({ mcq: {}, programming: "" });
 
   useEffect(() => {
     if (testId) {
@@ -40,13 +39,6 @@ const DisplayTest = () => {
     setCurrentSection(section);
   };
 
-  const handleSubmit = () => {
-    dispatch(submitTestAnswers(testId, answers));
-    navigate("/thank-you");
-  };
-  const navigateToProgramming = () => {
-    setCurrentSection("programming");
-  };
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!test) return <div>Test not found</div>;
