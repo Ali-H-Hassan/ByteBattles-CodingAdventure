@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createTest } from "../../actions/testActions";
 import "./CreateTestPage.css";
 
 function CreateTestPage() {
@@ -12,6 +14,24 @@ function CreateTestPage() {
     starterCode: "",
     testCases: [{ input: "", output: "" }],
   });
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const testToCreate = {
+      mcqQuestions: mcqQuestions.map(({ options, ...rest }) => ({
+        ...rest,
+        options: options.map((text, index) => ({
+          text,
+          isCorrect: index === rest.correctOptionIndex,
+        })),
+      })),
+      programmingQuestion,
+    };
+
+    dispatch(createTest(testToCreate));
+  };
+
   const handleMcqChange = (questionIndex, type, value, optionIndex) => {
     setMcqQuestions((currentMcqs) => {
       return currentMcqs.map((mcq, index) => {
@@ -65,7 +85,7 @@ function CreateTestPage() {
     <div className="create-test-page">
       <h1 className="create-test-title">Create New Test</h1>
 
-      <form className="create-test-form">
+      <form className="create-test-form" onSubmit={handleSubmit}>
         {mcqQuestions.map((mcq, index) => (
           <div key={index} className="mcq-question-block">
             <label className="form-label">
