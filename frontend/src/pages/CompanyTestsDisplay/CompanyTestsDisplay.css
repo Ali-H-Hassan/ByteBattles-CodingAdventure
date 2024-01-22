@@ -1,0 +1,44 @@
+.company-tests-display {
+  flex-grow: 1;
+  margin-right: 100px;
+  background-color: #f9f9f9;
+  overflow-y: auto;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+.test-card-container {
+  margin-top: 20px;
+  padding: 10px;
+  background-color: #fff;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.test-card-title {
+  font-size: 24px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.test-card-description {
+  font-size: 1rem;
+  margin-bottom: 15px;
+  text-align: justify;
+}
+
+.test-card-details {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.test-loading,
+.test-error,
+.test-no-data {
+  text-align: center;
+  font-size: 1rem;
+  margin-top: 20px;
+}
