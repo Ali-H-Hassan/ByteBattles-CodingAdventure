@@ -1,0 +1,23 @@
+* {
+  box-sizing: border-box;
+}
+
+.company-dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  padding-left: 50px;
+  padding-right: 50px;
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto;
+  gap: 70px;
+  margin-top: 20px;
+}
