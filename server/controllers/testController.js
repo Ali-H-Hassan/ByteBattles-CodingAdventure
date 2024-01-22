@@ -43,7 +43,15 @@ exports.updateTestById = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
-
+exports.getCompanyTests = async (req, res) => {
+  try {
+    const companyTests = await Test.find({ createdBy: req.user._id });
+    res.status(200).json(companyTests);
+  } catch (error) {
+    console.error("Error fetching company tests:", error);
+    res.status(500).json({ message: error.message });
+  }
+};
 exports.deleteTestById = async (req, res) => {
   try {
     const deletedTest = await Test.findByIdAndDelete(req.params.id);
