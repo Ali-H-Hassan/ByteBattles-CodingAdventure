@@ -37,7 +37,7 @@ export const login = (credentials, navigate) => async (dispatch) => {
     localStorage.setItem("token", token);
     dispatch(loginSuccess({ user, token }));
     if (user.userType === "company") {
-      navigate("/create-challenge");
+      navigate("/company-dashboard");
     } else {
       navigate("/dashboard");
     }

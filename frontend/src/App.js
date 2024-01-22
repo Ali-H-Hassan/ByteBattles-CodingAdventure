@@ -7,6 +7,7 @@ import WelcomePage from "./pages/WelcomePage/WelcomePage";
 import GoogleAuthHandler from "./pages/GoogleAuthHandler";
 import GoogleCallbackHandler from "./pages/GoogleCallbackHandler";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import CompanyDashboard from "./pages/CompanyDashboard/CompanyDashboard";
 import GamePage from "./pages/GamePage";
 import CreateChallengePage from "./pages/CreateChallengePage/CreateChallengePage";
 import DisplayTest from "./pages/DisplayTest/DisplayTest";
@@ -26,6 +27,7 @@ function App() {
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
               <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/company-dashboard" element={<CompanyDashboard />} />
               <Route path="/game" element={<GamePage />} />
               <Route
                 path="/create-challenge"

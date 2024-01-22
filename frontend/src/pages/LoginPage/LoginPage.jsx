@@ -21,7 +21,7 @@ const LoginPage = () => {
   useEffect(() => {
     if (isAuthenticated) {
       if (userType === "company") {
-        navigate("/create-challenge");
+        navigate("/company-dashboard");
       } else {
         navigate("/dashboard");
       }
