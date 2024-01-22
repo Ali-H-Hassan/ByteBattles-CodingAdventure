@@ -1,5 +1,5 @@
 import React from "react";
-import TotalTests from "./TotalTests";
+import TotalTests from "../TotalTests/TotalTests";
 import Leaderboard from "../Leaderboard/Leaderboard";
 import "./DashboardHome.css";
 

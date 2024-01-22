@@ -1,24 +1,58 @@
-.total-tests {
+.total-tests-container {
   background: #fff;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30px;
+  height: 100%;
+}
+
+.total-tests-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.total-tests-icon {
+  width: 50px;
+}
+
+.total-tests-body {
   text-align: center;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .tests-number {
-  font-size: 3em;
+  font-size: 4em;
   color: #00c354;
-  margin: 20px 0;
+  margin: 10px 0;
+}
+
+.tests-subtext {
+  color: #666;
+  font-size: 1.2em;
+}
+
+.total-tests-footer {
+  width: 100%;
 }
 
 .create-test-button {
   background-color: #00c354;
   color: white;
-  padding: 10px 20px;
+  padding: 15px 30px;
   border: none;
-  border-radius: 5px;
+  border-radius: 10px;
+  width: 100%;
   cursor: pointer;
+  font-size: 1.1em;
   transition: background-color 0.3s;
 }
 
