@@ -4,6 +4,11 @@ import Tests from "../../assets/Edit 1.png";
 import { useNavigate } from "react-router-dom";
 
 function TotalTests() {
+  const navigate = useNavigate();
+
+  const handleCreateTestClick = () => {
+    navigate("/create-test");
+  };
   return (
     <div className="total-tests-container">
       <div className="total-tests-header">
@@ -15,7 +20,9 @@ function TotalTests() {
         <p className="tests-subtext">Tests created by your company</p>
       </div>
       <div className="total-tests-footer">
-        <button className="create-test-button">Create New Test</button>
+        <button className="create-test-button" onClick={handleCreateTestClick}>
+          Create New Test
+        </button>
       </div>
     </div>
   );
