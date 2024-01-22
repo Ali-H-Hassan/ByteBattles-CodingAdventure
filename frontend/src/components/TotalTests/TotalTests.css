@@ -1,0 +1,27 @@
+.total-tests {
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  text-align: center;
+}
+
+.tests-number {
+  font-size: 3em;
+  color: #00c354;
+  margin: 20px 0;
+}
+
+.create-test-button {
+  background-color: #00c354;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.create-test-button:hover {
+  background-color: #009f48;
+}
