@@ -6,7 +6,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import Header from "../../components/DashHeader/DashHeader";
 import CompanyTestsDisplay from "../CompanyTestsDisplay/CompanyTestsDisplay";
 import EditProfile from "../../components/EditProfile/EditProfile";
-
+import DashboardHome from "../../components/DashboardHome/DashboardHome";
 import "./CompanyDashboard.css";
 
 function CompanyDashboard() {
@@ -43,7 +43,7 @@ function CompanyDashboard() {
         {selectedOption !== "profile" && <Header username={username} />}
         {selectedOption !== "profile" && (
           <div className="content-grid">
-            {selectedOption === "dashboard"}
+            {selectedOption === "dashboard" && <DashboardHome />}
             {selectedOption === "tests" && <CompanyTestsDisplay />}
           </div>
         )}
