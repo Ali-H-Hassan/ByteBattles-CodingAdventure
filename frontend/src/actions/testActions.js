@@ -71,3 +71,27 @@ export const fetchCompanyTests = () => async (dispatch) => {
     console.error("Error fetching company tests:", error);
   }
 };
+
+const createTestRequest = () => ({
+  type: actionTypes.CREATE_TEST_REQUEST,
+});
+
+const createTestSuccess = (test) => ({
+  type: actionTypes.CREATE_TEST_SUCCESS,
+  payload: test,
+});
+
+const createTestFailure = (error) => ({
+  type: actionTypes.CREATE_TEST_FAILURE,
+  payload: error,
+});
+
+export const createTest = (testData) => async (dispatch) => {
+  dispatch(createTestRequest());
+  try {
+    const response = await apiClient.post("/api/tests/create", testData);
+    dispatch(createTestSuccess(response.data));
+  } catch (error) {
+    dispatch(createTestFailure(error.message));
+  }
+};
