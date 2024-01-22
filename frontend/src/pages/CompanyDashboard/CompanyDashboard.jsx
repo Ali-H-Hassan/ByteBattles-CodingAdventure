@@ -4,6 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { logout } from "../../actions/authActions";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Header from "../../components/DashHeader/DashHeader";
+import CompanyTestsDisplay from "../CompanyTestsDisplay/CompanyTestsDisplay";
+import EditProfile from "../../components/EditProfile/EditProfile";
 
 import "./CompanyDashboard.css";
 
@@ -38,7 +40,13 @@ function CompanyDashboard() {
 
       <div className="main-content">
         <Header username={username} />
-        <div className="content-grid"></div>
+        <div className="content-grid">
+          {selectedOption === "dashboard" && (
+            <div>Welcome to Company Dashboard!</div>
+          )}
+          {selectedOption === "tests" && <CompanyTestsDisplay />}
+          {selectedOption === "profile" && <EditProfile />}
+        </div>
       </div>
     </div>
   );
