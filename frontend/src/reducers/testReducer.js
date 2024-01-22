@@ -28,6 +28,24 @@ const testReducer = (state = initialState, action) => {
         companyTests: action.payload,
         loading: false,
       };
+    case actionTypes.CREATE_TEST_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case actionTypes.CREATE_TEST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        tests: [...state.tests, action.payload],
+      };
+    case actionTypes.CREATE_TEST_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
     case actionTypes.FETCH_TESTS_FAILURE:
       return {
         ...state,
