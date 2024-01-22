@@ -1,13 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const testController = require("../controllers/testController");
-const { authenticate } = require("../middlewares/auth");
 
-router.post("/create", authenticate, testController.createTest);
-router.get("/all", authenticate, testController.getAllTests);
-router.get("/company", authenticate, testController.getCompanyTests);
-router.get("/:id", authenticate, testController.getTestById);
-router.put("/:id", authenticate, testController.updateTestById);
-router.delete("/:id", authenticate, testController.deleteTestById);
+router.post("/create", testController.createTest);
+
+router.get("/all", testController.getAllTests);
+
+router.get("/:id", testController.getTestById);
+
+router.put("/:id", testController.updateTestById);
+
+router.delete("/:id", testController.deleteTestById);
+
+router.get("/company/:companyId", testController.getTestsByCompanyId);
 
 module.exports = router;

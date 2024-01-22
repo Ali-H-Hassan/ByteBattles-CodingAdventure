@@ -39,14 +39,16 @@ function CompanyDashboard() {
       <Sidebar onOptionSelect={handleOptionSelect} userType="company" />
 
       <div className="main-content">
-        <Header username={username} />
-        <div className="content-grid">
-          {selectedOption === "dashboard" && (
-            <div>Welcome to Company Dashboard!</div>
-          )}
-          {selectedOption === "tests" && <CompanyTestsDisplay />}
-          {selectedOption === "profile" && <EditProfile />}
-        </div>
+        {selectedOption !== "profile" && <Header username={username} />}
+        {selectedOption !== "profile" && (
+          <div className="content-grid">
+            {selectedOption === "dashboard" && (
+              <div>Welcome to Company Dashboard!</div>
+            )}
+            {selectedOption === "tests" && <CompanyTestsDisplay />}
+          </div>
+        )}
+        {selectedOption === "profile" && <EditProfile />}
       </div>
     </div>
   );
