@@ -45,17 +45,14 @@ exports.updateTestById = async (req, res) => {
 };
 exports.getTestsByCompanyId = async (req, res) => {
   try {
-    const companyId = req.params.companyId; // Make sure this matches the route parameter
-    console.log("Received companyId:", companyId); // Log the received ID
-
-    // Temporarily comment out the validation check
-    // if (!mongoose.Types.ObjectId.isValid(companyId)) {
-    //   return res.status(400).json({ message: "Invalid company ID" });
-    // }
-
-    const companyTests = await Test.find({ createdBy: companyId });
+    console.log("Company ID from params:", req.params.companyId);
+    const companyTests = await Test.find({
+      createdBy: req.params.companyId.trim(),
+    });
+    console.log("Tests found:", companyTests);
     res.status(200).json(companyTests);
   } catch (error) {
+    console.error("Error fetching company tests:", error);
     res.status(500).json({ message: error.message });
   }
 };
