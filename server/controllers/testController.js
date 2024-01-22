@@ -13,10 +13,10 @@ exports.createTest = async (req, res) => {
 exports.getAllTests = async (req, res) => {
   try {
     const tests = await Test.find();
-    console.log("Fetched tests:", tests); // Log the fetched tests to the console
+    console.log("Fetched tests:", tests);
     res.status(200).json(tests);
   } catch (error) {
-    console.error("Error fetching tests:", error); // Log any errors that occur
+    console.error("Error fetching tests:", error);
     res.status(404).json({ message: error.message });
   }
 };

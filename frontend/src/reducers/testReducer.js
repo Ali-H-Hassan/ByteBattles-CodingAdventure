@@ -5,6 +5,7 @@ const initialState = {
   tests: [],
   error: null,
   currentTestId: null,
+  companyTests: [],
 };
 
 const testReducer = (state = initialState, action) => {
@@ -21,7 +22,7 @@ const testReducer = (state = initialState, action) => {
         loading: false,
         tests: action.payload,
       };
-    case FETCH_COMPANY_TESTS_SUCCESS:
+    case actionTypes.FETCH_COMPANY_TESTS_SUCCESS:
       return {
         ...state,
         companyTests: action.payload,

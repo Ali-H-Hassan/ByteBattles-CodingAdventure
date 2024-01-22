@@ -18,8 +18,9 @@
   width: 100%;
   display: flex;
   align-items: center;
-  padding: 10px 30px;
+  padding: 17px 47px;
   cursor: pointer;
+  gap: 15px;
 }
 
 .menu-text:hover {
