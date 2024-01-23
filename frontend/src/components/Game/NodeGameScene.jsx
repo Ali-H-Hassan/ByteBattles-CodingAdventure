@@ -65,20 +65,21 @@ class NodeMazeScene extends Phaser.Scene {
   }
 
   createPlayer() {
-    let player = this.physics.add.sprite(50, 50, "player").setScale(0.5);
-    player.setCollideWorldBounds(true); // Player can't move beyond the world bounds
+    let player = this.physics.add.sprite(50, 50, "player");
+    player.setCollideWorldBounds(true);
+    player.setScale(0.05);
     return player;
   }
-
+  Scaling;
   createCollectibles() {
     const modules = this.physics.add.group({
       key: "module",
-      repeat: 5, // Number of modules to scatter - adjust as necessary
-      setXY: { x: 100, y: 100, stepX: 70, stepY: 70 }, // Adjust positioning as needed
+      repeat: 3,
+      setXY: { x: 100, y: 100, stepX: 70, stepY: 70 },
     });
 
-    modules.children.iterate(function (module) {
-      module.setScale(0.5);
+    modules.children.iterate((module) => {
+      module.setScale(0.05);
     });
 
     return modules;
@@ -87,19 +88,12 @@ class NodeMazeScene extends Phaser.Scene {
   createObstacles() {
     const bugs = this.physics.add.group({
       key: "bug",
-      repeat: 5, // Number of bugs - adjust as necessary
-      setXY: { x: 100, y: 300, stepX: 100, stepY: 100 }, // Adjust positioning as needed
+      repeat: 1,
+      setXY: { x: 100, y: 300, stepX: 100, stepY: 100 },
     });
 
-    bugs.children.iterate(function (bug) {
-      bug
-        .setScale(0.5)
-        .setBounce(1)
-        .setCollideWorldBounds(true)
-        .setVelocity(
-          Phaser.Math.Between(-200, 200),
-          Phaser.Math.Between(-200, 200)
-        );
+    bugs.children.iterate((bug) => {
+      bug.setScale(0.05);
     });
 
     return bugs;
@@ -125,6 +119,11 @@ class NodeMazeScene extends Phaser.Scene {
     module.disableBody(true, true); // Disable the module that was collected
     this.score += 10; // Update the score
     this.scoreText.setText(`Score: ${this.score}`);
+
+    // Check if all modules have been collected
+    if (this.modulesGroup.countActive(true) === 0) {
+      this.endGame();
+    }
   }
 
   hitBug(player, bug) {
@@ -137,6 +136,28 @@ class NodeMazeScene extends Phaser.Scene {
     this.scoreText = this.add
       .text(16, 16, "Score: 0", { fontSize: "32px", fill: "#FFF" })
       .setScrollFactor(0);
+  }
+  endGame() {
+    // Stop player movement
+    this.player.setVelocity(0, 0);
+    this.player.setActive(false);
+    this.player.setVisible(false);
+
+    // Display endgame text
+    let endText = this.add
+      .text(
+        this.scale.width / 2,
+        this.scale.height / 2,
+        "Game Over! Your score: " + this.score,
+        {
+          fontSize: "32px",
+          fill: "#FFF",
+        }
+      )
+      .setOrigin(0.5);
+
+    // Optionally, add a button or click event to restart or go back to menu
+    // this.input.on('pointerdown', () => this.scene.start('MenuScene')); // Example
   }
 }
 
