@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createTest } from "../../actions/testActions";
 import "./CreateTestPage.css";
+import { useNavigate } from "react-router-dom";
 
 function CreateTestPage() {
   const [mcqQuestions, setMcqQuestions] = useState([
@@ -13,11 +14,11 @@ function CreateTestPage() {
     starterCode: "",
     testCases: [{ input: "", output: "" }],
   });
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth.user._id);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!userId) {
@@ -39,7 +40,12 @@ function CreateTestPage() {
       createdBy: userId,
     };
 
-    dispatch(createTest(testToCreate));
+    try {
+      await dispatch(createTest(testToCreate));
+      navigate("/company-dashboard");
+    } catch (error) {
+      console.error("Error creating the test:", error);
+    }
   };
 
   const handleMcqChange = (questionIndex, type, value, optionIndex) => {
