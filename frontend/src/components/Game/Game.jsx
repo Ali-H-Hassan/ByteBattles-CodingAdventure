@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Phaser from "phaser";
 import GameScene from "./GameScene";
 import CssGameScene from "./CssGameScene";
-import NodeGame from "./NodeGameScene";
+import NodeMazeScene from "./NodeGameScene";
 import Python from "./PythonGameScene";
 import { submitScore } from "../../actions/gameActions";
 import "./Game.css";
@@ -35,7 +35,7 @@ const GameComponent = ({ courseId }) => {
     } else if (courseData.title === "CSS Fundamentals") {
       sceneClass = CssGameScene;
     } else if (courseData.title === "NodeJs Basics") {
-      sceneClass = NodeGame;
+      sceneClass = NodeMazeScene;
     } else if (courseData.title === "Python Fundamentals") {
       sceneClass = Python;
     }
