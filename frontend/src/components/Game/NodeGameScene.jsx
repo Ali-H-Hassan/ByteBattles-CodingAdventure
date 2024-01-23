@@ -1,131 +1,143 @@
 import Phaser from "phaser";
 
-class NodeGameScene extends Phaser.Scene {
-  constructor(courseId, courseData, onGameComplete) {
-    super({ key: "NodeGameScene" });
-    this.courseId = courseId;
-    this.courseData = courseData;
-    this.onGameComplete = onGameComplete;
+class NodeMazeScene extends Phaser.Scene {
+  constructor() {
+    super({ key: "NodeMazeScene" });
+    this.player = null;
+    this.cursors = null;
+    this.modulesGroup = null;
+    this.bugsGroup = null;
     this.score = 0;
-    this.matches = 0;
+    this.scoreText = null;
   }
 
-  preload() {}
+  preload() {
+    this.load.image("player", "assets/player.png");
+    this.load.image("module", "assets/module.png");
+    this.load.image("bug", "assets/bug.png");
+  }
 
   create() {
-    const { backgroundColor, nodeMethods } = this.courseData.gameSceneConfig;
-    this.cameras.main.setBackgroundColor(backgroundColor);
-    this.createNodeMethods(nodeMethods);
-    this.createMethodDescriptions(nodeMethods);
+    this.createMaze();
+    this.player = this.createPlayer();
+    this.modulesGroup = this.createCollectibles();
+    this.bugsGroup = this.createObstacles();
+    this.cursors = this.input.keyboard.createCursorKeys();
     this.createScoreText();
   }
 
-  createNodeMethods(nodeMethods) {
-    nodeMethods.forEach((method) => {
-      let text = this.add
-        .text(method.x, method.y, method.key, {
-          font: "20px Arial",
-          color: "#00ff00",
-          backgroundColor: "transparent",
-          padding: 10,
-          borderRadius: "5px",
-        })
-        .setInteractive()
-        .setOrigin(0.5)
-        .setStyle({
-          backgroundColor: "transparent",
-          border: "2px solid #00ff00",
-          borderRadius: "10px",
-        });
+  update() {
+    this.handlePlayerMovement();
+    this.physics.overlap(
+      this.player,
+      this.modulesGroup,
+      this.collectModule,
+      null,
+      this
+    );
+    this.physics.overlap(this.player, this.bugsGroup, this.hitBug, null, this);
+  }
 
-      this.input.setDraggable(text);
+  createMaze() {
+    const graphics = this.add.graphics({
+      lineStyle: { width: 2, color: 0xffffff },
+    });
+    const maze = [
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 0, 0, 0, 1, 0, 1, 0, 0, 1],
+      [1, 0, 1, 0, 0, 0, 1, 0, 1, 1],
+      [1, 0, 1, 1, 1, 0, 0, 0, 0, 1],
+      [1, 0, 0, 0, 1, 1, 1, 1, 0, 1],
+      [1, 1, 1, 0, 0, 0, 0, 1, 0, 1],
+      [1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
+      [1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
+      [1, 1, 1, 0, 1, 1, 1, 1, 1, 1],
+    ];
 
-      text.on("drag", (pointer, dragX, dragY) => {
-        text.x = dragX;
-        text.y = dragY;
+    const tileSize = 64;
+    maze.forEach((row, y) => {
+      row.forEach((cell, x) => {
+        if (cell === 1) {
+          graphics.strokeRect(x * tileSize, y * tileSize, tileSize, tileSize);
+        }
       });
     });
   }
 
-  createMethodDescriptions(nodeMethods) {
-    nodeMethods.forEach((method, index) => {
-      let zoneY = method.y + 300 + index * 60;
-      let zone = this.add
-        .zone(method.x, zoneY, 200, 50)
-        .setRectangleDropZone(200, 50)
-        .setData("key", method.key);
-
-      this.add
-        .graphics()
-        .lineStyle(2, 0x00ff00)
-        .strokeRect(zone.x - 100, zone.y - 25, 200, 50);
-
-      this.add
-        .text(zone.x, zone.y - 60, method.value, {
-          font: "18px Arial",
-          color: "#ffffff",
-          wordWrap: { width: 190, useAdvancedWrap: true },
-        })
-        .setOrigin(0.5);
-    });
-
-    this.input.on("drop", (pointer, gameObject, dropZone) => {
-      if (gameObject.text === dropZone.data.get("key")) {
-        this.score += 10;
-        this.matches += 1;
-        gameObject.x = dropZone.x;
-        gameObject.y = dropZone.y;
-        gameObject.input.enabled = false;
-        gameObject.setColor("#ffffff");
-      } else {
-        this.score -= 5;
-        gameObject.x = gameObject.input.dragStartX;
-        gameObject.y = gameObject.input.dragStartY;
-        gameObject.setColor("#ff0000");
-      }
-      this.updateScore();
-      if (this.matches === nodeMethods.length) {
-        this.endGame();
-      }
-    });
+  createPlayer() {
+    let player = this.physics.add.sprite(50, 50, "player").setScale(0.5);
+    player.setCollideWorldBounds(true); // Player can't move beyond the world bounds
+    return player;
   }
 
-  createScoreText() {
-    this.scoreText = this.add.text(16, 16, "Score: 0", {
-      font: "32px Arial",
-      fill: "#FFF",
-      stroke: "#00ff00",
-      strokeThickness: 2,
+  createCollectibles() {
+    const modules = this.physics.add.group({
+      key: "module",
+      repeat: 5, // Number of modules to scatter - adjust as necessary
+      setXY: { x: 100, y: 100, stepX: 70, stepY: 70 }, // Adjust positioning as needed
     });
+
+    modules.children.iterate(function (module) {
+      module.setScale(0.5);
+    });
+
+    return modules;
   }
 
-  updateScore() {
+  createObstacles() {
+    const bugs = this.physics.add.group({
+      key: "bug",
+      repeat: 5, // Number of bugs - adjust as necessary
+      setXY: { x: 100, y: 300, stepX: 100, stepY: 100 }, // Adjust positioning as needed
+    });
+
+    bugs.children.iterate(function (bug) {
+      bug
+        .setScale(0.5)
+        .setBounce(1)
+        .setCollideWorldBounds(true)
+        .setVelocity(
+          Phaser.Math.Between(-200, 200),
+          Phaser.Math.Between(-200, 200)
+        );
+    });
+
+    return bugs;
+  }
+
+  handlePlayerMovement() {
+    this.player.setVelocity(0);
+
+    if (this.cursors.left.isDown) {
+      this.player.setVelocityX(-160);
+    } else if (this.cursors.right.isDown) {
+      this.player.setVelocityX(160);
+    }
+
+    if (this.cursors.up.isDown) {
+      this.player.setVelocityY(-160);
+    } else if (this.cursors.down.isDown) {
+      this.player.setVelocityY(160);
+    }
+  }
+
+  collectModule(player, module) {
+    module.disableBody(true, true); // Disable the module that was collected
+    this.score += 10; // Update the score
     this.scoreText.setText(`Score: ${this.score}`);
   }
 
-  endGame() {
-    if (typeof this.onGameComplete === "function") {
-      this.onGameComplete(this.score);
-    }
+  hitBug(player, bug) {
+    this.score -= 15; // Update the score negatively
+    this.scoreText.setText(`Score: ${this.score}`);
+    // You can add logic here to end the game or damage the player
+  }
 
-    let completionText = this.add
-      .text(this.scale.width / 2, this.scale.height / 2, "Great Job!", {
-        font: "bold 64px Arial",
-        fill: "#00ff00",
-        stroke: "#ffffff",
-        strokeThickness: 6,
-      })
-      .setOrigin(0.5);
-
-    this.tweens.add({
-      targets: completionText,
-      scale: { from: 1, to: 1.2 },
-      ease: "Cubic.easeOut",
-      duration: 800,
-      yoyo: true,
-      repeat: -1,
-    });
+  createScoreText() {
+    this.scoreText = this.add
+      .text(16, 16, "Score: 0", { fontSize: "32px", fill: "#FFF" })
+      .setScrollFactor(0);
   }
 }
 
-export default NodeGameScene;
+export default NodeMazeScene;
