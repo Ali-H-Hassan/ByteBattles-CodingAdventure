@@ -1,13 +1,13 @@
 const Test = require("../models/test");
 const mongoose = require("mongoose");
 exports.createTest = async (req, res) => {
-  console.log("Request body:", req.body); // Log the incoming request body
+  console.log("Request body:", req.body);
   try {
     const newTest = new Test(req.body);
     const savedTest = await newTest.save();
     res.status(201).json(savedTest);
   } catch (error) {
-    console.error("Error in createTest:", error); // Log the error
+    console.error("Error in createTest:", error);
     res.status(400).json({ message: error.message });
   }
 };

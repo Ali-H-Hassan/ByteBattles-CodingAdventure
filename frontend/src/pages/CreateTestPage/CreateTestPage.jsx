@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createTest } from "../../actions/testActions";
+import { useSelector } from "react-redux";
 import "./CreateTestPage.css";
 
 function CreateTestPage() {
   const [mcqCount, setMcqCount] = useState(1);
+  const userId = useSelector((state) => state.auth.user._id);
   const [mcqQuestions, setMcqQuestions] = useState([
     { questionText: "", options: ["", "", "", ""], correctOptionIndex: 0 },
   ]);
@@ -18,6 +20,14 @@ function CreateTestPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (!userId) {
+      console.error(
+        "User ID is not available, user must be logged in to create a test."
+      );
+      return;
+    }
+
     const testToCreate = {
       mcqQuestions: mcqQuestions.map(({ options, ...rest }) => ({
         ...rest,
@@ -27,6 +37,7 @@ function CreateTestPage() {
         })),
       })),
       programmingQuestion,
+      createdBy: userId,
     };
 
     dispatch(createTest(testToCreate));
