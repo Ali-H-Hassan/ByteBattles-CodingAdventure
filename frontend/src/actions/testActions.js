@@ -62,10 +62,12 @@ export const setCurrentTestId = (testId) => ({
 
 export const fetchCompanyTests = (companyId) => async (dispatch) => {
   dispatch({ type: actionTypes.FETCH_TESTS_REQUEST });
+  console.log("Fetching company tests for ID:", companyId);
   try {
     const response = await apiClient.get(
       `/api/tests/company?companyId=${companyId}`
     );
+    console.log("Company tests response:", response.data);
     dispatch({
       type: actionTypes.FETCH_COMPANY_TESTS_SUCCESS,
       payload: response.data,

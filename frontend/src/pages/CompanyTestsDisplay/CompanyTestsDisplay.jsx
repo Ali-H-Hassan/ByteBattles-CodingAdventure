@@ -5,12 +5,15 @@ import TestCard from "../../components/TestCard/TestCard";
 
 const CompanyTestsDisplay = () => {
   const dispatch = useDispatch();
-
+  const companyId = useSelector((state) => state.auth.user._id);
   const { companyTests, loading, error } = useSelector((state) => state.test);
 
   useEffect(() => {
-    dispatch(fetchCompanyTests());
-  }, [dispatch]);
+    console.log("Company ID:", companyId);
+    if (companyId) {
+      dispatch(fetchCompanyTests(companyId));
+    }
+  }, [dispatch, companyId]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;

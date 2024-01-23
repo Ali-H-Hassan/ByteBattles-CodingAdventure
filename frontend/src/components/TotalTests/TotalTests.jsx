@@ -1,14 +1,28 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchCompanyTests } from "../../actions/testActions";
 import "./TotalTests.css";
 import Tests from "../../assets/Edit 1.png";
 import { useNavigate } from "react-router-dom";
 
 function TotalTests() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const companyId = useSelector((state) => state.auth.user?.companyId);
+
+  const companyTests = useSelector((state) => state.test.companyTests);
+  const totalTests = companyTests.length;
+
+  useEffect(() => {
+    if (companyId) {
+      dispatch(fetchCompanyTests(companyId));
+    }
+  }, [dispatch, companyId]);
 
   const handleCreateTestClick = () => {
     navigate("/create-test");
   };
+
   return (
     <div className="total-tests-container">
       <div className="total-tests-header">
@@ -16,7 +30,7 @@ function TotalTests() {
         <h2>Total Tests Created</h2>
       </div>
       <div className="total-tests-body">
-        <p className="tests-number">34</p>
+        <p className="tests-number">{totalTests}</p>
         <p className="tests-subtext">Tests created by your company</p>
       </div>
       <div className="total-tests-footer">
