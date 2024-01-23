@@ -1,12 +1,9 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createTest } from "../../actions/testActions";
-import { useSelector } from "react-redux";
 import "./CreateTestPage.css";
 
 function CreateTestPage() {
-  const [mcqCount, setMcqCount] = useState(1);
-  const userId = useSelector((state) => state.auth.user._id);
   const [mcqQuestions, setMcqQuestions] = useState([
     { questionText: "", options: ["", "", "", ""], correctOptionIndex: 0 },
   ]);
@@ -16,7 +13,9 @@ function CreateTestPage() {
     starterCode: "",
     testCases: [{ input: "", output: "" }],
   });
+
   const dispatch = useDispatch();
+  const userId = useSelector((state) => state.auth.user._id);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -95,7 +94,6 @@ function CreateTestPage() {
   return (
     <div className="create-test-page">
       <h1 className="create-test-title">Create New Test</h1>
-
       <form className="create-test-form" onSubmit={handleSubmit}>
         {mcqQuestions.map((mcq, index) => (
           <div key={index} className="mcq-question-block">
@@ -109,6 +107,7 @@ function CreateTestPage() {
                 onChange={(e) =>
                   handleMcqChange(index, "questionText", e.target.value)
                 }
+                required={index === 0}
               />
             </label>
             <div className="mcq-options-container">
@@ -130,13 +129,13 @@ function CreateTestPage() {
                     onChange={(e) =>
                       handleMcqChange(index, "option", e.target.value, optIndex)
                     }
+                    required={index === 0}
                   />
                 </label>
               ))}
             </div>
           </div>
         ))}
-
         <button
           type="button"
           onClick={addMcqQuestion}
@@ -154,6 +153,7 @@ function CreateTestPage() {
               onChange={(e) =>
                 handleProgrammingChange("questionText", e.target.value)
               }
+              required
             />
           </label>
           <label className="form-label">
@@ -165,6 +165,7 @@ function CreateTestPage() {
               onChange={(e) =>
                 handleProgrammingChange("starterCode", e.target.value)
               }
+              required
             />
           </label>
           {programmingQuestion.testCases.map((testCase, index) => (
@@ -183,6 +184,7 @@ function CreateTestPage() {
                       index
                     )
                   }
+                  required
                 />
               </label>
               <label className="form-label">
@@ -199,6 +201,7 @@ function CreateTestPage() {
                       index
                     )
                   }
+                  required
                 />
               </label>
             </div>
