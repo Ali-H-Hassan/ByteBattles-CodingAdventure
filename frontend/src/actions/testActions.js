@@ -60,15 +60,22 @@ export const setCurrentTestId = (testId) => ({
   payload: testId,
 });
 
-export const fetchCompanyTests = () => async (dispatch) => {
+export const fetchCompanyTests = (companyId) => async (dispatch) => {
+  dispatch({ type: actionTypes.FETCH_TESTS_REQUEST });
   try {
-    const response = await apiClient.get("/api/tests/company");
+    const response = await apiClient.get(
+      `/api/tests/company?companyId=${companyId}`
+    );
     dispatch({
       type: actionTypes.FETCH_COMPANY_TESTS_SUCCESS,
       payload: response.data,
     });
   } catch (error) {
     console.error("Error fetching company tests:", error);
+    dispatch({
+      type: actionTypes.FETCH_COMPANY_TESTS_FAILURE,
+      payload: error.response ? error.response.data : error.message,
+    });
   }
 };
 
