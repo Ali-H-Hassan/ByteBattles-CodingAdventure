@@ -12,17 +12,14 @@ export const login = createAsyncThunk(
       );
       const { user, token } = response.data;
       localStorage.setItem("token", token);
-      // Dispatch the action directly with the payload
       dispatch(loginSuccess({ user, token }));
       navigate(
         user.userType === "company" ? "/company-dashboard" : "/dashboard"
       );
-      // No need to return anything as the action is dispatched directly
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data
         : "Login failed";
-      // Dispatch directly the failure action
       dispatch(profileRequestFailure(errorMessage));
     }
   }
@@ -38,7 +35,6 @@ export const registerUser = createAsyncThunk(
       );
       const { user, token } = response.data;
       localStorage.setItem("token", token);
-      // Use the same success action if the structure of the data is the same
       dispatch(loginSuccess({ user, token }));
       navigate("/dashboard");
     } catch (error) {
@@ -57,5 +53,3 @@ export const performLogout = createAsyncThunk(
     dispatch(logout());
   }
 );
-
-// Add other actions similarly using createAsyncThunk
