@@ -60,26 +60,33 @@ export const setCurrentTestId = (testId) => ({
   payload: testId,
 });
 
-export const fetchCompanyTests = (companyId) => async (dispatch) => {
-  dispatch({ type: actionTypes.FETCH_TESTS_REQUEST });
-  console.log("Fetching company tests for ID:", companyId);
-  try {
-    const response = await apiClient.get(
-      `/api/tests/company?companyId=${companyId}`
-    );
-    console.log("Company tests response:", response.data);
-    dispatch({
-      type: actionTypes.FETCH_COMPANY_TESTS_SUCCESS,
-      payload: response.data,
-    });
-  } catch (error) {
-    console.error("Error fetching company tests:", error);
-    dispatch({
-      type: actionTypes.FETCH_COMPANY_TESTS_FAILURE,
-      payload: error.response ? error.response.data : error.message,
-    });
-  }
-};
+// Add a limit parameter with a default value
+export const fetchCompanyTests =
+  (companyId, limit = null) =>
+  async (dispatch) => {
+    dispatch({ type: actionTypes.FETCH_TESTS_REQUEST });
+    console.log("Fetching company tests for ID:", companyId);
+
+    let endpoint = `/api/tests/company?companyId=${companyId}`;
+    if (limit) {
+      endpoint += `&limit=${limit}`;
+    }
+
+    try {
+      const response = await apiClient.get(endpoint);
+      console.log("Company tests response:", response.data);
+      dispatch({
+        type: actionTypes.FETCH_COMPANY_TESTS_SUCCESS,
+        payload: response.data,
+      });
+    } catch (error) {
+      console.error("Error fetching company tests:", error);
+      dispatch({
+        type: actionTypes.FETCH_COMPANY_TESTS_FAILURE,
+        payload: error.response ? error.response.data : error.message,
+      });
+    }
+  };
 
 const createTestRequest = () => ({
   type: actionTypes.CREATE_TEST_REQUEST,

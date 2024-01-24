@@ -75,5 +75,5 @@ h3 {
   align-items: center;
   gap: 10px;
   margin-bottom: 20px;
-  flex-direction: row; /* Ensuring the items are in a row */
+  flex-direction: row;
 }

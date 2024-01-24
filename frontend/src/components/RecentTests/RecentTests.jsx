@@ -11,7 +11,6 @@ function RecentTests() {
         <h2 className="section-title">Recent Tests</h2>
       </div>
       <div className="test-cards-container">
-        {/* First Test Card */}
         <div className="test-card">
           <img
             src={TestCardImage}
@@ -29,7 +28,6 @@ function RecentTests() {
           </div>
         </div>
 
-        {/* Second Test Card */}
         <div className="test-card">
           <img
             src={TestCardImage}
