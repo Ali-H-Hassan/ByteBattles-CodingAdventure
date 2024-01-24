@@ -13,7 +13,11 @@ class CssGameScene extends Phaser.Scene {
   preload() {}
 
   create() {
-    // Use the values from gameSceneConfig
+    // Check for gameSceneConfig before trying to access its properties
+    if (!this.courseData || !this.courseData.gameSceneConfig) {
+      console.error("Game scene configuration is missing");
+      return; // Exit the function if gameSceneConfig is undefined
+    }
     const { backgroundColor, cssProperties, htmlTargets } =
       this.courseData.gameSceneConfig;
 

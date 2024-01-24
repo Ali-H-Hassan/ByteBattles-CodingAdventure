@@ -1,5 +1,5 @@
 #game-wrapper {
-  height: 94vh;
+  height: 87vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -21,14 +21,6 @@
   color: #fff;
   padding: 4px;
   text-align: center;
-}
-.game-title {
-  text-shadow: 0px 0px 10px rgba(0, 255, 255, 0.7);
-  transition: transform 0.2s;
-}
-
-.game-title:hover {
-  transform: scale(1.1);
 }
 
 .game-tag {

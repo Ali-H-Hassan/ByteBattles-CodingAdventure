@@ -21,14 +21,14 @@ const GamePage = () => {
   }, [courses, courseId]);
 
   const navigateToDashboard = () => {
-    navigate("/dashboard"); // Update this path to the actual dashboard route in your application
+    navigate("/dashboard");
   };
 
   return (
     <div className="Game">
       <h1>{courseName}</h1>
       <button className="return-home-button" onClick={navigateToDashboard}>
-        Return Home
+        <span>Return Home</span>
       </button>
       <Game courseId={courseId} />
     </div>
