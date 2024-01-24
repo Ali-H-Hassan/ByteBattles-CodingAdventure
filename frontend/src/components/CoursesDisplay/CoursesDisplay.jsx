@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCourses } from "../../actions/gameActions";
+import { fetchCoursesAsync } from "../../redux/game/gameActions";
 import { useNavigate } from "react-router-dom";
 import "./CoursesDisplay.css";
 import htmlImage from "../../assets/html_course_image.png";
@@ -100,10 +100,10 @@ const CourseSection = ({ title, courses }) => {
 
 const CoursesDisplay = () => {
   const dispatch = useDispatch();
-  const courses = useSelector((state) => state.game.courses);
+  const courses = useSelector((state) => state.game.courses); // Ensure this matches the state structure defined in your store
 
   useEffect(() => {
-    dispatch(fetchCourses());
+    dispatch(fetchCoursesAsync()); // Dispatch the updated async thunk action
   }, [dispatch]);
 
   if (!courses.length) {

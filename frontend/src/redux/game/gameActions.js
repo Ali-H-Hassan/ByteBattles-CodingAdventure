@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import apiClient from "../services/apiConfig";
+import apiClient from "../../services/apiConfig";
 import { fetchCourses } from "./gameSlice"; // Ensure you have a fetchCourses action in your gameSlice
 
 // This action is used to submit scores

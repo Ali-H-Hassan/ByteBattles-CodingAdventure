@@ -36,9 +36,9 @@ const LoginPage = () => {
     });
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
-    login(credentials, navigate, dispatch);
+    dispatch(login({ credentials, navigate }));
   };
 
   const handleSignUpClick = () => {
