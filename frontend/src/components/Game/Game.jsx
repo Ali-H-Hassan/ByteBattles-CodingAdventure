@@ -4,7 +4,7 @@ import Phaser from "phaser";
 import GameScene from "./GameScene";
 import CssGameScene from "./CssGameScene";
 import NodeMazeScene from "./NodeGameScene";
-import PythonGameScene from "./PythonGameScene"; // Assuming the class name is PythonGameScene
+import PythonGameScene from "./PythonGameScene";
 import { submitScore } from "../../actions/gameActions";
 import "./Game.css";
 
@@ -70,7 +70,6 @@ const GameComponent = ({ courseId }) => {
       );
     }
 
-    // Cleanup function to destroy the game instance when the component is unmounted
     return () => {
       if (gameRef.current) {
         gameRef.current.destroy(true);

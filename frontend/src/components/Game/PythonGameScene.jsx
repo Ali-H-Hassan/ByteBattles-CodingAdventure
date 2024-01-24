@@ -1,116 +1,169 @@
 import Phaser from "phaser";
 
-class PythonGameScene extends Phaser.Scene {
-  constructor(courseId, courseData, onGameComplete) {
-    super({ key: "PythonGameScene" });
-    this.courseId = courseId;
-    this.courseData = courseData;
-    this.onGameComplete = onGameComplete;
+class PythonMazeScene extends Phaser.Scene {
+  constructor() {
+    super({ key: "PythonMazeScene" });
+    this.player = null;
+    this.cursors = null;
+    this.correctCodeGroup = null;
+    this.incorrectCodeGroup = null;
     this.score = 0;
-    this.matches = 0;
+    this.scoreText = null;
   }
 
-  preload() {}
+  preload() {
+    // Using the same player image for consistency
+    this.load.image("player", "/assets/player.png");
+  }
 
   create() {
-    const { backgroundColor, pythonSnippets, targets } =
-      this.courseData.gameSceneConfig;
-
-    this.cameras.main.setBackgroundColor(backgroundColor);
-    this.createPythonSnippets(pythonSnippets);
-    this.createTargets(targets);
+    this.displayGameStartPrompt();
+    this.player = this.createPlayer();
+    this.correctCodeGroup = this.createCodeSnippets(true); // Python code snippets
+    this.incorrectCodeGroup = this.createCodeSnippets(false); // Non-Python code snippets
+    this.cursors = this.input.keyboard.createCursorKeys();
     this.createScoreText();
   }
 
-  createPythonSnippets(pythonSnippets) {
-    pythonSnippets.forEach((snippet) => {
-      let text = this.add
-        .text(snippet.x, snippet.y, snippet.code, {
-          font: "18px Courier",
-          color: "#FFD43B",
-          padding: { x: 10, y: 5 },
-          borderRadius: "5px",
-        })
-        .setInteractive()
-        .setOrigin(0.5)
-        .setData("type", snippet.type);
+  update() {
+    this.handlePlayerMovement();
+    this.physics.overlap(
+      this.player,
+      this.correctCodeGroup,
+      this.collectCode,
+      null,
+      this
+    );
+    this.physics.overlap(
+      this.player,
+      this.incorrectCodeGroup,
+      this.hitIncorrectCode,
+      null,
+      this
+    );
 
-      this.input.setDraggable(text);
-    });
-
-    this.input.on("drag", (pointer, gameObject, dragX, dragY) => {
-      gameObject.x = dragX;
-      gameObject.y = dragY;
-    });
+    if (this.shouldEndGame()) {
+      this.endGame();
+    }
   }
 
-  createTargets(targets) {
-    targets.forEach((target) => {
-      let zone = this.add
-        .zone(target.x, target.y, 200, 50)
-        .setRectangleDropZone(200, 50)
-        .setData("type", target.type);
+  createPlayer() {
+    let player = this.physics.add.sprite(50, 50, "player").setScale(0.1);
+    player.setCollideWorldBounds(true);
+    return player;
+  }
 
-      let graphics = this.add.graphics();
-      graphics.lineStyle(2, 0xffd43b);
-      graphics.strokeRect(target.x - 100, target.y - 25, 200, 50);
+  createCodeSnippets(isCorrect) {
+    const group = this.physics.add.group();
 
-      this.add
-        .text(target.x, target.y - 60, target.type, {
-          font: "20px Courier",
-          color: "#FFFFFF",
-        })
-        .setOrigin(0.5);
-    });
+    const codeTexts = isCorrect
+      ? ["def func():", "import numpy", "class MyClass:"] // Python snippets
+      : ["function myFunc() {}", "#include <iostream>", "<div></div>"]; // Non-Python snippets
 
-    this.input.on("drop", (pointer, gameObject, dropZone) => {
-      if (gameObject.data.get("type") === dropZone.data.get("type")) {
-        this.score += 10;
-        this.matches += 1;
-        gameObject.x = dropZone.x;
-        gameObject.y = dropZone.y;
-        gameObject.input.enabled = false;
-        gameObject.setStyle({ color: "#00FF00" });
-      } else {
-        this.score -= 5;
-        gameObject.x = gameObject.input.dragStartX;
-        gameObject.y = gameObject.input.dragStartY;
-        gameObject.setStyle({ color: "#FF0000" });
-      }
-      this.updateScore();
-      if (this.matches === targets.length) {
-        this.endGame();
-      }
-    });
+    for (let i = 0; i < codeTexts.length; i++) {
+      let x = Phaser.Math.Between(100, 700);
+      let y = Phaser.Math.Between(100, 500);
+
+      let text = this.add.text(x, y, codeTexts[i], {
+        font: "16px Arial",
+        fill: "#fff",
+        backgroundColor: "#000a",
+        padding: { x: 5, y: 3 },
+      });
+
+      let physicsBody = this.physics.add.sprite(x, y, null).setVisible(false);
+      physicsBody.setInteractive();
+      physicsBody.setData("isCorrect", isCorrect);
+      physicsBody.setData("text", text);
+
+      group.add(physicsBody);
+    }
+
+    return group;
+  }
+  handlePlayerMovement() {
+    this.player.setVelocity(0);
+
+    if (this.cursors.left.isDown) {
+      this.player.setVelocityX(-160);
+    } else if (this.cursors.right.isDown) {
+      this.player.setVelocityX(160);
+    }
+
+    if (this.cursors.up.isDown) {
+      this.player.setVelocityY(-160);
+    } else if (this.cursors.down.isDown) {
+      this.player.setVelocityY(160);
+    }
+  }
+
+  collectCode(player, physicsBody) {
+    let text = physicsBody.getData("text");
+    if (physicsBody.getData("isCorrect")) {
+      this.score += 10;
+    } else {
+      this.score -= 5;
+    }
+
+    text.destroy();
+    physicsBody.destroy();
+
+    this.scoreText.setText(`Score: ${this.score}`);
+  }
+
+  hitIncorrectCode(player, codeSnippet) {
+    this.collectCode(player, codeSnippet);
   }
 
   createScoreText() {
     this.scoreText = this.add.text(16, 16, "Score: 0", {
-      font: "32px Arial",
+      fontSize: "32px",
       fill: "#FFF",
-      stroke: "#FFD43B",
-      strokeThickness: 3,
     });
   }
 
-  updateScore() {
-    this.scoreText.setText(`Score: ${this.score}`);
+  displayGameStartPrompt() {
+    const prompt = this.add
+      .text(
+        this.scale.width / 2,
+        this.scale.height / 2,
+        "Collect correct Python snippets and avoid others!\nPress any key to start.",
+        { fontSize: "24px", fill: "#fff", align: "center" }
+      )
+      .setOrigin(0.5);
+
+    this.input.keyboard.once("keydown", () => {
+      prompt.destroy();
+    });
+  }
+
+  shouldEndGame() {
+    return this.correctCodeGroup.countActive(true) === 0;
   }
 
   endGame() {
-    if (typeof this.onGameComplete === "function") {
-      this.onGameComplete(this.score);
-    }
+    this.player.setVelocity(0, 0);
+    this.player.setActive(false);
+    this.player.setVisible(false);
 
-    let completionText = this.add
-      .text(this.scale.width / 2, this.scale.height / 2, "Great Job!", {
-        font: "bold 64px Arial",
-        fill: "#FFD43B",
-        stroke: "#306998",
-        strokeThickness: 6,
-      })
+    let endText = this.add
+      .text(
+        this.scale.width / 2,
+        this.scale.height / 2,
+        "Game Over! Your score: " + this.score,
+        { fontSize: "32px", fill: "#FFF", fontStyle: "italic" }
+      )
       .setOrigin(0.5);
+
+    endText.setAlpha(0);
+
+    this.tweens.add({
+      targets: endText,
+      alpha: 1,
+      duration: 2000,
+      ease: "Sine.easeInOut",
+    });
   }
 }
 
-export default PythonGameScene;
+export default PythonMazeScene;
