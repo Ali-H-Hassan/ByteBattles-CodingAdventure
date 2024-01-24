@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Phaser from "phaser";
 import GameScene from "./GameScene";
 import CssGameScene from "./CssGameScene";
-import NodeMazeScene from "./NodeGameScene"; // Make sure this import is correct
+import NodeMazeScene from "./NodeGameScene";
 import PythonGameScene from "./PythonGameScene"; // Assuming the class name is PythonGameScene
 import { submitScore } from "../../actions/gameActions";
 import "./Game.css";

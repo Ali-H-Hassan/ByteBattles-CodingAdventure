@@ -5,23 +5,21 @@ class NodeMazeScene extends Phaser.Scene {
     super({ key: "NodeMazeScene" });
     this.player = null;
     this.cursors = null;
-    this.modulesGroup = null;
-    this.bugsGroup = null;
+    this.correctCodeGroup = null;
+    this.incorrectCodeGroup = null;
     this.score = 0;
     this.scoreText = null;
   }
 
   preload() {
-    this.load.image("player", "assets/player.png");
-    this.load.image("module", "assets/module.png");
-    this.load.image("bug", "assets/bug.png");
+    this.load.image("player", "/assets/player.png");
   }
 
   create() {
-    this.createMaze();
+    this.displayGameStartPrompt();
     this.player = this.createPlayer();
-    this.modulesGroup = this.createCollectibles();
-    this.bugsGroup = this.createObstacles();
+    this.correctCodeGroup = this.createCodeSnippets(true);
+    this.incorrectCodeGroup = this.createCodeSnippets(false);
     this.cursors = this.input.keyboard.createCursorKeys();
     this.createScoreText();
   }
@@ -30,73 +28,57 @@ class NodeMazeScene extends Phaser.Scene {
     this.handlePlayerMovement();
     this.physics.overlap(
       this.player,
-      this.modulesGroup,
-      this.collectModule,
+      this.correctCodeGroup,
+      this.collectCode,
       null,
       this
     );
-    this.physics.overlap(this.player, this.bugsGroup, this.hitBug, null, this);
-  }
+    this.physics.overlap(
+      this.player,
+      this.incorrectCodeGroup,
+      this.hitIncorrectCode,
+      null,
+      this
+    );
 
-  createMaze() {
-    const graphics = this.add.graphics({
-      lineStyle: { width: 2, color: 0xffffff },
-    });
-    const maze = [
-      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-      [1, 0, 0, 0, 1, 0, 1, 0, 0, 1],
-      [1, 0, 1, 0, 0, 0, 1, 0, 1, 1],
-      [1, 0, 1, 1, 1, 0, 0, 0, 0, 1],
-      [1, 0, 0, 0, 1, 1, 1, 1, 0, 1],
-      [1, 1, 1, 0, 0, 0, 0, 1, 0, 1],
-      [1, 0, 1, 1, 1, 1, 0, 1, 0, 1],
-      [1, 0, 0, 0, 1, 0, 0, 0, 0, 1],
-      [1, 1, 1, 0, 1, 1, 1, 1, 1, 1],
-    ];
-
-    const tileSize = 64;
-    maze.forEach((row, y) => {
-      row.forEach((cell, x) => {
-        if (cell === 1) {
-          graphics.strokeRect(x * tileSize, y * tileSize, tileSize, tileSize);
-        }
-      });
-    });
+    if (this.shouldEndGame()) {
+      this.endGame();
+    }
   }
 
   createPlayer() {
-    let player = this.physics.add.sprite(50, 50, "player");
+    let player = this.physics.add.sprite(50, 50, "player").setScale(0.1);
     player.setCollideWorldBounds(true);
-    player.setScale(0.05);
     return player;
   }
-  Scaling;
-  createCollectibles() {
-    const modules = this.physics.add.group({
-      key: "module",
-      repeat: 3,
-      setXY: { x: 100, y: 100, stepX: 70, stepY: 70 },
-    });
 
-    modules.children.iterate((module) => {
-      module.setScale(0.05);
-    });
+  createCodeSnippets(isCorrect) {
+    const group = this.physics.add.group();
 
-    return modules;
-  }
+    const codeTexts = isCorrect
+      ? ["const a = 0;", "let b = 'Node';", "require('http');"]
+      : ["var x = 10;", "#include <iostream>", "<div></div>"];
 
-  createObstacles() {
-    const bugs = this.physics.add.group({
-      key: "bug",
-      repeat: 1,
-      setXY: { x: 100, y: 300, stepX: 100, stepY: 100 },
-    });
+    for (let i = 0; i < codeTexts.length; i++) {
+      let x = Phaser.Math.Between(100, 700);
+      let y = Phaser.Math.Between(100, 500);
 
-    bugs.children.iterate((bug) => {
-      bug.setScale(0.05);
-    });
+      let text = this.add.text(x, y, codeTexts[i], {
+        font: "16px Arial",
+        fill: "#fff",
+        backgroundColor: "#000a",
+        padding: { x: 5, y: 3 },
+      });
 
-    return bugs;
+      let physicsBody = this.physics.add.sprite(x, y, null).setVisible(false);
+      physicsBody.setInteractive();
+      physicsBody.setData("isCorrect", isCorrect);
+      physicsBody.setData("text", text);
+
+      group.add(physicsBody);
+    }
+
+    return group;
   }
 
   handlePlayerMovement() {
@@ -115,49 +97,72 @@ class NodeMazeScene extends Phaser.Scene {
     }
   }
 
-  collectModule(player, module) {
-    module.disableBody(true, true); // Disable the module that was collected
-    this.score += 10; // Update the score
-    this.scoreText.setText(`Score: ${this.score}`);
-
-    // Check if all modules have been collected
-    if (this.modulesGroup.countActive(true) === 0) {
-      this.endGame();
+  collectCode(player, physicsBody) {
+    let text = physicsBody.getData("text");
+    if (physicsBody.getData("isCorrect")) {
+      this.score += 10;
+    } else {
+      this.score -= 5;
     }
+
+    text.destroy();
+    physicsBody.destroy();
+
+    this.scoreText.setText(`Score: ${this.score}`);
   }
 
-  hitBug(player, bug) {
-    this.score -= 15; // Update the score negatively
-    this.scoreText.setText(`Score: ${this.score}`);
-    // You can add logic here to end the game or damage the player
+  hitIncorrectCode(player, codeSnippet) {
+    this.collectCode(player, codeSnippet);
   }
 
   createScoreText() {
-    this.scoreText = this.add
-      .text(16, 16, "Score: 0", { fontSize: "32px", fill: "#FFF" })
-      .setScrollFactor(0);
+    this.scoreText = this.add.text(16, 16, "Score: 0", {
+      fontSize: "32px",
+      fill: "#FFF",
+    });
   }
+
+  displayGameStartPrompt() {
+    const prompt = this.add
+      .text(
+        this.scale.width / 2,
+        this.scale.height / 2,
+        "Collect correct Node.js snippets and avoid others!\nPress any key to start.",
+        { fontSize: "24px", fill: "#fff", align: "center" }
+      )
+      .setOrigin(0.5);
+
+    this.input.keyboard.once("keydown", () => {
+      prompt.destroy();
+    });
+  }
+
+  shouldEndGame() {
+    return this.correctCodeGroup.countActive(true) === 0;
+  }
+
   endGame() {
-    // Stop player movement
     this.player.setVelocity(0, 0);
     this.player.setActive(false);
     this.player.setVisible(false);
 
-    // Display endgame text
     let endText = this.add
       .text(
         this.scale.width / 2,
         this.scale.height / 2,
         "Game Over! Your score: " + this.score,
-        {
-          fontSize: "32px",
-          fill: "#FFF",
-        }
+        { fontSize: "32px", fill: "#FFF", fontStyle: "italic" }
       )
       .setOrigin(0.5);
 
-    // Optionally, add a button or click event to restart or go back to menu
-    // this.input.on('pointerdown', () => this.scene.start('MenuScene')); // Example
+    endText.setAlpha(0);
+
+    this.tweens.add({
+      targets: endText,
+      alpha: 1,
+      duration: 2000,
+      ease: "Sine.easeInOut",
+    });
   }
 }
 
