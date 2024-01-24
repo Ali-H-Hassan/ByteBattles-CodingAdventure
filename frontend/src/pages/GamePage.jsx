@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Game from "../components/Game/Game";
 import { useSelector } from "react-redux";
 import "./GamePage.css";
+
 const GamePage = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { courseId } = location.state || {};
   const [courseName, setCourseName] = useState("Unknown Course");
   const courses = useSelector((state) => state.game.courses);
@@ -18,9 +20,16 @@ const GamePage = () => {
     }
   }, [courses, courseId]);
 
+  const navigateToDashboard = () => {
+    navigate("/dashboard"); // Update this path to the actual dashboard route in your application
+  };
+
   return (
     <div className="Game">
       <h1>{courseName}</h1>
+      <button className="return-home-button" onClick={navigateToDashboard}>
+        Return Home
+      </button>
       <Game courseId={courseId} />
     </div>
   );
