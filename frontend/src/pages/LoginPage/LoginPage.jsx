@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { login } from "../../actions/authActions";
+import { login } from "../../redux/auth/authActions";
 import Header from "../../components/Header/Header";
 import "./loginPage.css";
 import LoginImg from "../../assets/LoginImg.png";
@@ -38,7 +38,7 @@ const LoginPage = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    dispatch(login(credentials, navigate));
+    login(credentials, navigate, dispatch);
   };
 
   const handleSignUpClick = () => {
@@ -53,7 +53,7 @@ const LoginPage = () => {
           <img src={LoginImg} alt="Byte Battles Login" />
         </div>
         <div className="login-form-section">
-          <form onSubmit={handleSubmit} className="login-container">
+          <div onSubmit={handleSubmit} className="login-container">
             <h2 className="login-title">Byte Battle</h2>
             <div className="input-group">
               <input
@@ -85,7 +85,7 @@ const LoginPage = () => {
                 Password
               </label>
             </div>
-            <button type="submit" className="login-button">
+            <button className="login-button" onClick={handleSubmit}>
               Log In
             </button>
             <div className="login-options">
@@ -116,7 +116,7 @@ const LoginPage = () => {
                 Policy and Terms of Service apply.
               </p>
             </div>
-          </form>
+          </div>
         </div>
       </div>
     </div>

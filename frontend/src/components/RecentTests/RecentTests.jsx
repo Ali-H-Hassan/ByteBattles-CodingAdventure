@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTests } from "../../actions/testActions";
+import { fetchTests } from "../../redux/test/testActions";
 import TestCardImage from "../../assets/Test1.png";
 import TestsIcon from "../../assets/Edit 1.png";
 import { useNavigate } from "react-router-dom";
@@ -12,7 +12,7 @@ function RecentTests() {
   const { tests } = useSelector((state) => state.test);
 
   useEffect(() => {
-    dispatch(fetchTests());
+    fetchTests(dispatch);
   }, [dispatch]);
 
   const recentTests = tests.slice(-2);

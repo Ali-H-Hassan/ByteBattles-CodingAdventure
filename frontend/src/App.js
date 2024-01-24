@@ -13,7 +13,7 @@ import CreateTestPage from "./pages/CreateTestPage/CreateTestPage";
 import DisplayTest from "./pages/DisplayTest/DisplayTest";
 import ProtectedRoute from "./ProtectedRoute";
 import { Provider } from "react-redux";
-import store from "./store";
+import { store } from "./redux/store";
 import "./App.css";
 import ThankYouPage from "./components/ThankYouPage/ThankYouPage";
 function App() {

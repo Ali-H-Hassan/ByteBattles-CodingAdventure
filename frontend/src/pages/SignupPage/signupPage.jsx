@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { registerUser } from "../../actions/authActions";
+import { registerUser } from "../../redux/auth/authActions";
+
 import Header from "../../components/Header/Header";
 import "./signupPage.css";
 import SignUpImg from "../../assets/SignUpImg.png";

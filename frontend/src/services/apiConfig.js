@@ -1,5 +1,4 @@
 import axios from "axios";
-import store from "../store";
 
 const API_BASE_URL = process.env.REACT_APP_API_URL;
 
@@ -12,7 +11,7 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
   (config) => {
-    const token = store.getState().auth.token;
+    const token = localStorage.getItem("token");
     if (token) {
       config.headers["Authorization"] = `Bearer ${token}`;
     }

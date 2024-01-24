@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
-import testDetailsReducer from "../../reducers/testDetailsReducer";
+
 const initialTestDetailsState = {
   loading: false,
   test: null,
   error: null,
 };
-export const authSlice = createSlice({
-  initialState,
+
+export const testDetailsSlice = createSlice({
+  initialState: initialTestDetailsState,
   name: "testDetails",
   reducers: {
     fetchTestRequest: (state, action) => {
@@ -32,5 +33,8 @@ export const authSlice = createSlice({
     },
   },
 });
-export const {} = testDetailsReducer.actions;
-export default testDetailsReducer.reducer;
+
+export const { fetchTestSuccess, fetchTestFailure, fetchTestRequest } =
+  testDetailsSlice.actions;
+
+export default testDetailsSlice.reducer;

@@ -61,5 +61,14 @@ export const testSlice = createSlice({
     },
   },
 });
-export const {} = testSlice.reducer;
+export const {
+  fetchTestsRequest,
+  fetchTestsSuccess,
+  fetchTestsCompanySuccess,
+  createTestRequest,
+  createTestSuccess,
+  createTestFailure,
+  fetchTestFailure,
+} = testSlice.actions;
+
 export default testSlice.reducer;
