@@ -36,14 +36,25 @@ const GameComponent = ({ courseId }) => {
     console.log("Fetched course data:", courseData);
 
     let sceneClass;
-    if (courseData.title === "HTML Basics") {
-      sceneClass = GameScene;
-    } else if (courseData.title === "CSS Fundamentals") {
-      sceneClass = CssGameScene;
-    } else if (courseData.title === "NodeJs Basics") {
-      sceneClass = NodeMazeScene;
-    } else if (courseData.title === "Python Fundamentals") {
-      sceneClass = PythonGameScene;
+    switch (courseData.title) {
+      case "HTML Basics":
+        sceneClass = GameScene;
+        break;
+      case "CSS Fundamentals":
+        sceneClass = CssGameScene;
+        break;
+      case "NodeJs Basics":
+        sceneClass = NodeMazeScene;
+        break;
+      case "Python Fundamentals":
+        sceneClass = PythonGameScene;
+        break;
+      default:
+        console.error(
+          "No matching scene class for the course title:",
+          courseData.title
+        );
+        return;
     }
 
     if (sceneClass) {
@@ -59,7 +70,7 @@ const GameComponent = ({ courseId }) => {
             debug: false,
           },
         },
-        scene: [sceneClass],
+        scene: new sceneClass(courseId, courseData, onGameComplete),
       };
 
       gameRef.current = new Phaser.Game(config);
