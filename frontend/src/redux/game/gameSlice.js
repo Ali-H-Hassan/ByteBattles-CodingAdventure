@@ -1,18 +1,39 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import apiClient from "../../services/apiConfig";
+
+export const fetchCoursesAsync = createAsyncThunk(
+  "game/fetchCourses",
+  async () => {
+    const response = await apiClient.get("/api/games/courses");
+    return response.data;
+  }
+);
+
 const initialState = {
   courses: [],
+  isLoading: false,
+  error: null,
 };
+
 export const gameSlice = createSlice({
-  initialState,
   name: "game",
-  reducers: {
-    fetchCourses: (state, action) => {
-      return {
-        ...state,
-        courses: action.payload,
-      };
-    },
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchCoursesAsync.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(fetchCoursesAsync.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.courses = action.payload;
+      })
+      .addCase(fetchCoursesAsync.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.error.message;
+      });
   },
 });
-export const { fetchCourses } = gameSlice.actions;
+
 export default gameSlice.reducer;

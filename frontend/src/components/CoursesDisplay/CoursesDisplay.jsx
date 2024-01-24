@@ -100,10 +100,9 @@ const CourseSection = ({ title, courses }) => {
 
 const CoursesDisplay = () => {
   const dispatch = useDispatch();
-  const courses = useSelector((state) => state.game.courses); // Ensure this matches the state structure defined in your store
-
+  const courses = useSelector((state) => state.game.courses);
   useEffect(() => {
-    dispatch(fetchCoursesAsync()); // Dispatch the updated async thunk action
+    dispatch(fetchCoursesAsync());
   }, [dispatch]);
 
   if (!courses.length) {
