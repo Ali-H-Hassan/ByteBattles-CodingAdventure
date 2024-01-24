@@ -12,7 +12,6 @@ import "./CompanyDashboard.css";
 function CompanyDashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const totalTests = 10; // Placeholder value
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const user = useSelector((state) => state.auth.user);

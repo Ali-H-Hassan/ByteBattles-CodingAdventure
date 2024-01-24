@@ -36,7 +36,7 @@ function RecentTests() {
             />
             <div className="test-card-content">
               <div className="test-details">
-                <h3>{test.name}</h3>
+                <h3>{test.companyName}</h3>
                 <button
                   className="resume-button"
                   onClick={() => handleResumeClick(test._id)}
