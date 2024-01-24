@@ -59,7 +59,7 @@ const GameComponent = ({ courseId }) => {
             debug: false,
           },
         },
-        scene: [NodeMazeScene],
+        scene: [sceneClass],
       };
 
       gameRef.current = new Phaser.Game(config);
