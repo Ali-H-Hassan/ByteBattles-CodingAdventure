@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTests } from "../../actions/testActions";
+import { fetchTests } from "../../redux/test/testActions";
 import Header from "../../components/DashHeader/DashHeader";
 import TestCard from "../../components/TestCard/TestCard";
 import "./Test.css";
@@ -13,6 +13,7 @@ const TestsPage = () => {
   const username = user ? user.username : "User";
   const profilePic = user?.profilePictureUrl;
   const navigate = useNavigate();
+
   useEffect(() => {
     dispatch(fetchTests());
   }, [dispatch]);
