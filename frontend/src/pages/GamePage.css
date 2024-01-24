@@ -1,0 +1,10 @@
+.Game {
+  background-image: url("../../public/Assets/futuristic-background.webp");
+  background-size: cover;
+  background-position: center;
+}
+.Game h1 {
+  padding: 10px;
+  margin: 0;
+  color: white;
+}

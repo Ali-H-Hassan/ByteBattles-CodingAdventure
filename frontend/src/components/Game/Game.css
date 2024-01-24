@@ -1,3 +1,10 @@
+#game-wrapper {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 #phaser-container {
   max-width: 800px;
   margin: 40px auto;
@@ -5,10 +12,10 @@
   border-radius: 20px;
   overflow: hidden;
   position: relative;
-  canvas {
-    border-radius: 20px;
-  }
+  background-size: cover;
+  background-position: center;
 }
+
 .drop-zone-label {
   font-size: 18px;
   color: #fff;

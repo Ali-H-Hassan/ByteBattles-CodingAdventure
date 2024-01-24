@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import Game from "../components/Game/Game";
 import { useSelector } from "react-redux";
-
+import "./GamePage.css";
 const GamePage = () => {
   const location = useLocation();
   const { courseId } = location.state || {};
@@ -19,7 +19,7 @@ const GamePage = () => {
   }, [courses, courseId]);
 
   return (
-    <div>
+    <div className="Game">
       <h1>{courseName}</h1>
       <Game courseId={courseId} />
     </div>

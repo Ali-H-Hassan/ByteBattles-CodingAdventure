@@ -77,7 +77,11 @@ const GameComponent = ({ courseId }) => {
     };
   }, [courseId, onGameComplete, courses]);
 
-  return <div id="phaser-container"></div>;
+  return (
+    <div id="game-wrapper">
+      <div id="phaser-container"></div>
+    </div>
+  );
 };
 
 export default GameComponent;
