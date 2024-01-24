@@ -49,15 +49,14 @@ const SignupPage = () => {
     }
   };
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     const passwordValidationMessage = isPasswordValid(newUser.password);
     if (passwordValidationMessage) {
       setPasswordError(passwordValidationMessage);
       return;
     }
-
-    dispatch(registerUser(newUser));
+    dispatch(registerUser({ userData: newUser, navigate }));
   };
 
   const fetchGoogleAuthUrl = async () => {
