@@ -1,6 +1,31 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import apiClient from "../../services/apiConfig";
-import { loginSuccess, logout, profileRequestFailure } from "./authSlice";
+import {
+  loginSuccess,
+  logout,
+  profileRequestFailure,
+  profileRequestSuccess,
+  profileRequestUpdate,
+} from "./authSlice";
+
+export const updateProfile = createAsyncThunk(
+  "auth/updateProfile",
+  async (formData, { getState, rejectWithValue }) => {
+    const { auth } = getState();
+    try {
+      const response = await apiClient.post("/api/profile/update", formData, {
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response ? error.response.data : error.message
+      );
+    }
+  }
+);
 
 export const login = createAsyncThunk(
   "auth/login",

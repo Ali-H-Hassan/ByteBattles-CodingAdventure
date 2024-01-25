@@ -1,4 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import apiClient from "../../services/apiConfig";
+
+export const fetchTestById = createAsyncThunk(
+  "testDetails/fetchTestById",
+  async (testId, { rejectWithValue }) => {
+    try {
+      const response = await apiClient.get(`/api/tests/${testId}`);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(
+        error.response ? error.response.data : error.message
+      );
+    }
+  }
+);
 
 const initialTestDetailsState = {
   loading: false,
@@ -7,34 +22,23 @@ const initialTestDetailsState = {
 };
 
 export const testDetailsSlice = createSlice({
-  initialState: initialTestDetailsState,
   name: "testDetails",
-  reducers: {
-    fetchTestRequest: (state, action) => {
-      return {
-        ...state,
-        loading: true,
-        error: null,
-      };
-    },
-    fetchTestSuccess: (state, action) => {
-      return {
-        ...state,
-        loading: false,
-        test: action.payload,
-      };
-    },
-    fetchTestFailure: (state, action) => {
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-    },
+  initialState: initialTestDetailsState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTestById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchTestById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.test = action.payload;
+      })
+      .addCase(fetchTestById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
-
-export const { fetchTestSuccess, fetchTestFailure, fetchTestRequest } =
-  testDetailsSlice.actions;
 
 export default testDetailsSlice.reducer;

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import "./EditProfile.css";
 import Avatar from "../../assets/Profile (1).png";
-import { updateProfile } from "../../actions/authActions";
+import { updateProfile } from "../../redux/auth/authActions";
 
 const countries = ["United States", "United Kingdom", "Canada"];
 const cities = {
@@ -85,7 +85,7 @@ const EditProfile = () => {
       formData.append("profilePicture", file);
     }
 
-    dispatch(updateProfile(formData, authToken));
+    dispatch(updateProfile(formData));
   };
 
   const handleCancel = () => {

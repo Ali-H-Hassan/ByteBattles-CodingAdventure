@@ -1,4 +1,3 @@
-// testSlice.js
 import { createSlice } from "@reduxjs/toolkit";
 import {
   fetchTests,

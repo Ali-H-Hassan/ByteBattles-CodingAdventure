@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTestById } from "../../actions/testActions";
+import { fetchTestById } from "../../redux/testDetails/testDetailsActions";
 import MCQQuestion from "../../components/MCQQuestion/MCQQuestion";
 import ProgrammingQuestion from "../../components/ProgrammingQuestion/ProgrammingQuestion";
 import TestSidebar from "../../components/TestSidebar/TestSidebar";
@@ -13,7 +13,7 @@ const DisplayTest = () => {
   const dispatch = useDispatch();
   const { test, loading, error } = useSelector((state) => state.testDetails);
   const [currentSection, setCurrentSection] = useState("mcq");
-  const [setAnswers] = useState({ mcq: {}, programming: "" });
+  const [answers, setAnswers] = useState({ mcq: {}, programming: "" });
 
   useEffect(() => {
     if (testId) {

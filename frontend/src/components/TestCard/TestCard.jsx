@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setCurrentTestId } from "../../actions/testActions";
+import { setCurrentTestId } from "../../redux/test/testSlice";
 import "./TestCard.css";
 
 const TestCard = ({ id, logo, title, subtitle, status }) => {

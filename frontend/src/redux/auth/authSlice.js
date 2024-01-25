@@ -1,4 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
+import {
+  updateProfile,
+  login,
+  performLogout,
+  registerUser,
+} from "./authActions";
 const initialState = {
   isAuthenticated: false,
   user: null,
@@ -51,6 +57,31 @@ export const authSlice = createSlice({
         userType: null,
       };
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(updateProfile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateProfile.fulfilled, (state, action) => {
+        if (action.payload.user) {
+          // Make sure the payload includes the user object
+          state.loading = false;
+          state.user = action.payload.user;
+          state.isAuthenticated = true;
+          state.token = action.payload.token || state.token;
+          state.error = null;
+        } else {
+          // Handle the case where user is not part of the payload
+          console.error("User data is not present in the payload");
+          state.error = "User data is not present in the payload";
+        }
+      })
+      .addCase(updateProfile.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
 });
 export const {
