@@ -1,12 +1,12 @@
 import React from "react";
 import "./ProblemStatement.css";
 
-const ProblemStatement = () => {
-  const problemText = "Solve the following problem...";
+const ProblemStatement = ({ challenge }) => {
   return (
     <div className="problem-statement-container">
       <h2>Problem Statement</h2>
-      <p>{problemText}</p>
+      <p>{challenge.title}</p>
+      <p>{challenge.description}</p>
     </div>
   );
 };

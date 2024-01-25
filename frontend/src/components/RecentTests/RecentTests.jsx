@@ -34,7 +34,6 @@ function RecentTests() {
               alt={test.title}
               className="test-card-image"
             />
-            {/* <div className="test-card-content"> */}
             <h3 className="test-title">{test.title}</h3>{" "}
             <div className="test-details">
               <button
