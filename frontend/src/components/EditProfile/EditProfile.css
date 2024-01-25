@@ -55,6 +55,7 @@
   cursor: pointer;
   border: none;
   transition: background-color 0.2s, transform 0.2s;
+  font-weight: bold;
 }
 
 .edit-image-button:hover {
@@ -63,9 +64,13 @@
 }
 
 .form-group label {
-  font-size: 20px;
+  font-size: 24px;
   color: #333;
   margin-bottom: 15px;
+  text-align: left;
+  margin-left: 15px;
+  margin-right: 15px;
+  font-weight: bold;
 }
 
 .form-group input,
@@ -90,6 +95,7 @@
   cursor: pointer;
   font-size: 18px;
   transition: background-color 0.2s, transform 0.2s;
+  font-weight: bold;
 }
 
 .cancel-button {
