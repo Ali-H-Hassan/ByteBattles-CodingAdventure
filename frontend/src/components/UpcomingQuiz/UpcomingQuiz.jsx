@@ -11,7 +11,9 @@ const UpcomingQuiz = () => {
       </div>
       <div className="quiz-details">
         <p className="quiz-date">12th Aug, 2023</p>
-        <button className="register-button">Register Now</button>
+        {/* <button className="register-button" onClick={handleExploreClick}>
+          Explore
+        </button> */}
       </div>
     </section>
   );

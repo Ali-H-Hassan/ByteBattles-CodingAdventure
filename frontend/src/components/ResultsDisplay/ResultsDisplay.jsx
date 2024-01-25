@@ -7,20 +7,25 @@ const ResultsDisplay = ({ results }) => {
       <div className="results-display-container">No results to display.</div>
     );
   }
+
   return (
     <div className="results-display-container">
       <h3>Results</h3>
       <div className="result-user">
-        User Efficiency: {results.userResults.someProperty}%{" "}
+        User Execution Time: {results.userResults.executionTime}ms
       </div>
       <div className="result-user">
-        User Run Time: {results.userResults.someOtherProperty}
+        User Output: {results.userResults.output}
+      </div>
+      <div className="result-user">
+        User Passed: {results.userResults.passed ? "Yes" : "No"}
       </div>
       <div className="result-ai">
-        AI Efficiency: {results.aiResults.someProperty}%{" "}
+        AI Execution Time: {results.aiResults.executionTime}ms
       </div>
+      <div className="result-ai">AI Output: {results.aiResults.output}</div>
       <div className="result-ai">
-        AI Run Time: {results.aiResults.someOtherProperty}
+        AI Passed: {results.aiResults.passed ? "Yes" : "No"}
       </div>
     </div>
   );

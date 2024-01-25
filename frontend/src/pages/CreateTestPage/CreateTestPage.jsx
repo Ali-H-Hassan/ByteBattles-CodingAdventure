@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { createTest } from "../../actions/testActions";
+import { createTest } from "../../redux/test/testActions";
 import "./CreateTestPage.css";
 import { useNavigate } from "react-router-dom";
 
@@ -17,7 +17,7 @@ function CreateTestPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.auth.user._id);
-
+  const [testTitle, setTestTitle] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -29,6 +29,7 @@ function CreateTestPage() {
     }
 
     const testToCreate = {
+      title: testTitle,
       mcqQuestions: mcqQuestions.map(({ options, ...rest }) => ({
         ...rest,
         options: options.map((text, index) => ({
@@ -101,6 +102,17 @@ function CreateTestPage() {
     <div className="create-test-page">
       <h1 className="create-test-title">Create New Test</h1>
       <form className="create-test-form" onSubmit={handleSubmit}>
+        <label className="form-label">
+          Test Title:
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Enter test title"
+            value={testTitle}
+            onChange={(e) => setTestTitle(e.target.value)}
+            required
+          />
+        </label>
         {mcqQuestions.map((mcq, index) => (
           <div key={index} className="mcq-question-block">
             <label className="form-label">

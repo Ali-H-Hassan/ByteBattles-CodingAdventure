@@ -21,15 +21,15 @@
 }
 
 .test-card-content {
-  padding: 15px;
+  padding: 30px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 20px;
 }
 
 .test-details {
-  display: flex;
-  flex-direction: column;
+  justify-content: space-between;
 }
 
 h3 {
@@ -38,13 +38,14 @@ h3 {
 
 .resume-button {
   padding: 8px 16px;
-  margin-top: 10px;
   background: #00c354;
   color: white;
   border: none;
   border-radius: 20px;
   cursor: pointer;
   font-size: 17px;
+  align-self: flex-start;
+  margin-top: 15px;
 }
 
 .test-progress {
@@ -70,10 +71,14 @@ h3 {
 .test-progress.red span {
   color: #ff6b6b;
 }
+
 .section-header {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 20px;
   flex-direction: row;
+}
+.test-title {
+  margin-top: 15px;
 }

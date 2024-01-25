@@ -34,18 +34,18 @@ function RecentTests() {
               alt={test.title}
               className="test-card-image"
             />
-            <div className="test-card-content">
-              <div className="test-details">
-                <h3>{test.companyName}</h3>
-                <button
-                  className="resume-button"
-                  onClick={() => handleResumeClick(test._id)}
-                >
-                  Start
-                </button>
-              </div>
+            {/* <div className="test-card-content"> */}
+            <h3 className="test-title">{test.title}</h3>{" "}
+            <div className="test-details">
+              <button
+                className="resume-button"
+                onClick={() => handleResumeClick(test._id)}
+              >
+                Start
+              </button>
             </div>
           </div>
+          // </div>
         ))}
       </div>
     </section>

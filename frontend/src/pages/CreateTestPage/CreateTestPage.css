@@ -5,52 +5,62 @@
   border-radius: 15px;
   max-width: 800px;
   margin: 50px auto;
-  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  font-family: "Arial", sans-serif;
 }
 
 .create-test-title {
   color: #00c354;
   text-align: center;
-  margin-bottom: 40px;
-  font-size: 2.5rem;
+  margin-bottom: 50px;
+  font-size: 2.8rem;
+  font-weight: 700;
 }
 
 .create-test-form {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-gap: 30px;
 }
 
 .form-label {
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: #555;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #444;
+  font-size: 20px;
 }
 
 .form-control {
-  padding: 15px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  margin-bottom: 15px;
+  padding: 12px 20px;
+  border-radius: 6px;
+  border: 2px solid #ddd;
+  margin-bottom: 20px;
   font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  border-color: #00c354;
+  box-shadow: 0 0 8px rgba(0, 195, 84, 0.2);
 }
 
 .mcq-question-block,
 .programming-question-container {
-  background-color: #fafafa;
-  border: 1px solid #eee;
+  background-color: #f9f9f9;
   border-radius: 10px;
   padding: 20px;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .mcq-options-container {
+  display: grid;
+  grid-gap: 15px;
   margin-top: 20px;
 }
 
 .mcq-option-label {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
 }
 
 .mcq-option-label input[type="radio"] {
@@ -61,51 +71,86 @@
 
 .mcq-option-label input[type="text"] {
   flex-grow: 1;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #ddd;
-  font-size: 1rem;
+  padding: 10px 15px;
+  border: 2px solid #ddd;
+  border-radius: 6px;
+  transition: border-color 0.2s;
+}
+
+.mcq-option-label input[type="text"]:focus {
+  border-color: #00c354;
 }
 
 .add-mcq-button,
 .add-test-case-button {
-  background-color: #f4f4f4;
-  color: #00c354;
-  padding: 10px 25px;
-  border: 2px solid #00c354;
+  background-color: #00c354;
+  color: white;
+  padding: 12px 25px;
   border-radius: 8px;
   cursor: pointer;
   font-size: 1rem;
-  transition: all 0.3s ease;
-  outline: none;
+  transition: background-color 0.3s;
 }
 
 .add-mcq-button:hover,
 .add-test-case-button:hover {
-  background-color: #00c354;
-  color: white;
+  background-color: #008c3a;
 }
 
 .test-case-container {
-  background-color: #f9f9f9;
   border-radius: 8px;
   padding: 15px;
-  margin-top: 15px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .submit-test-button {
   background-color: #00c354;
   color: white;
   padding: 15px 30px;
-  border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 1.2rem;
-  font-weight: 600;
-  transition: background-color 0.3s ease;
-  outline: none;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background-color 0.3s;
+  box-shadow: 0 4px 12px rgba(0, 195, 84, 0.3);
+  margin-top: 30px;
 }
 
 .submit-test-button:hover {
-  background-color: #008c3a;
+  background-color: #007c2d;
+}
+
+.form-control.text-area {
+  min-height: 120px;
+  resize: vertical;
+  padding: 15px;
+  line-height: 1.5;
+  font-family: "Arial", sans-serif;
+}
+
+.form-control,
+.form-control.text-area {
+  width: 100%;
+  box-sizing: border-box;
+  border: 2px solid #ddd;
+  background: #f9f9f9;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus,
+.form-control.text-area:focus {
+  border-color: #00c354;
+  box-shadow: 0 1px 6px 0 rgba(0, 195, 84, 0.1);
+}
+
+.form-label.text-area-label {
+  display: block;
+  margin-top: 20px;
+}
+
+button {
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
