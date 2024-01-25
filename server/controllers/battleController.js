@@ -1,9 +1,7 @@
-const OpenAI = require("openai").default;
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 const Challenge = require("../models/challenge");
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const executeUserCode = async (code, language) => {
   return {
@@ -22,23 +20,12 @@ const runBattle = async (req, res) => {
       return res.status(404).json({ message: "Challenge not found" });
     }
 
-    const completion = await openai.completions.create({
-      model: "gpt-3.5-turbo-instruct",
-      prompt: challenge.description,
-      temperature: 0,
-      max_tokens: 150,
-    });
+    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const prompt = challenge.description;
 
-    if (
-      !completion ||
-      !completion.data ||
-      !completion.data.choices ||
-      completion.data.choices.length === 0
-    ) {
-      throw new Error("Invalid response from OpenAI API.");
-    }
-
-    const aiCode = completion.data.choices[0].text;
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    const aiCode = response.text();
 
     const userResults = await executeUserCode(userCode, language);
     const aiResults = await executeUserCode(aiCode, language);
