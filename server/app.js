@@ -20,7 +20,7 @@ app.use(cors());
 
 app.use("/uploads", express.static("uploads"));
 app.use("/users", userRoutes);
-app.use("/api/company", challengeRoutes);
+app.use("/api/challenges", challengeRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/games", gameRoutes);
 app.use("/api/profile", profileRoutes);

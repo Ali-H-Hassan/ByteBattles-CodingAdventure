@@ -9,10 +9,9 @@ router.get(
   authorize("admin"),
   challengeController.getAllChallenges
 );
+router.get("/random", challengeController.getRandomChallenge);
 
-router.get("/random", authenticate, challengeController.getRandomChallenge);
-
-router.get("/:id", authenticate, challengeController.getChallengeById);
+router.get("/:id", challengeController.getChallengeById);
 
 router.post(
   "/create-challenge",

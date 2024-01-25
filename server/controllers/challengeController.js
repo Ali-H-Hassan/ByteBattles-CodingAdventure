@@ -13,11 +13,11 @@ const getRandomChallenge = async (req, res) => {
   try {
     const count = await Challenge.countDocuments();
     const random = Math.floor(Math.random() * count);
-    const challenge = await Challenge.findOne().skip(random);
-    if (!challenge) {
-      return res.status(404).json({ message: "Challenge not found" });
+    const randomChallenge = await Challenge.findOne().skip(random);
+    if (!randomChallenge) {
+      return res.status(404).json({ message: "No challenges found" });
     }
-    res.json(challenge);
+    res.json(randomChallenge);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
