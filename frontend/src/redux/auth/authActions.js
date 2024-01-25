@@ -2,7 +2,6 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import apiClient from "../../services/apiConfig";
 import {
   loginSuccess,
-  logout,
   profileRequestFailure,
   profileRequestSuccess,
   profileRequestUpdate,
@@ -68,13 +67,5 @@ export const registerUser = createAsyncThunk(
         : "Registration failed";
       dispatch(profileRequestFailure(errorMessage));
     }
-  }
-);
-
-export const performLogout = createAsyncThunk(
-  "auth/logout",
-  async (_, { dispatch }) => {
-    localStorage.removeItem("token");
-    dispatch(logout());
   }
 );

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchCompanyTests } from "../../actions/testActions";
+import { fetchCompanyTests } from "../../redux/test/testActions";
 import "./TotalTests.css";
 import Tests from "../../assets/Edit 1.png";
 import { useNavigate } from "react-router-dom";

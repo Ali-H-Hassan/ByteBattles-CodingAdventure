@@ -5,7 +5,7 @@ import GameScene from "./GameScene";
 import CssGameScene from "./CssGameScene";
 import NodeMazeScene from "./NodeGameScene";
 import PythonGameScene from "./PythonGameScene";
-import { submitScore } from "../../actions/gameActions";
+import { submitScore } from "../../redux/game/gameActions";
 import "./Game.css";
 
 const GameComponent = ({ courseId }) => {

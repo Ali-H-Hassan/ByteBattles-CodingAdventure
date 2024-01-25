@@ -7,14 +7,22 @@ import ProfileIcon from "../../assets/Profile 1.png";
 import BattleIcon from "../../assets/Moon.png";
 import LeaderboardIcon from "../../assets/Award 5.png";
 import LogOutIcon from "../../assets/Unlock 2.png";
+import { useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 
 function Sidebar({ onOptionSelect, userType }) {
   const [selected, setSelected] = useState("dashboard");
+  const navigate = useNavigate();
 
   const handleOptionSelect = (option) => {
     setSelected(option);
-    onOptionSelect(option);
+
+    if (option === "logout") {
+      localStorage.removeItem("token");
+      navigate("/");
+    } else {
+      onOptionSelect(option);
+    }
   };
 
   return (

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCompanyTests } from "../../actions/testActions";
+import { fetchCompanyTests } from "../../redux/test/testActions";
 import TestCard from "../../components/TestCard/TestCard";
 
 const CompanyTestsDisplay = () => {

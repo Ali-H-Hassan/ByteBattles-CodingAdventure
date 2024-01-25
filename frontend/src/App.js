@@ -16,6 +16,7 @@ import { Provider } from "react-redux";
 import { store } from "./redux/store";
 import "./App.css";
 import ThankYouPage from "./components/ThankYouPage/ThankYouPage";
+
 function App() {
   return (
     <Provider store={store}>
@@ -26,13 +27,17 @@ function App() {
               <Route path="/" element={<WelcomePage />} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/company-dashboard" element={<CompanyDashboard />} />
-              <Route path="/game" element={<GamePage />} />
-              <Route path="/create-test" element={<CreateTestPage />} />
-              <Route path="/tests/:testId" element={<DisplayTest />} />{" "}
-              <Route path="/thank-you" element={<ThankYouPage />} />{" "}
-              <Route element={<ProtectedRoute />}></Route>
+              <Route element={<ProtectedRoute />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route
+                  path="/company-dashboard"
+                  element={<CompanyDashboard />}
+                />
+                <Route path="/game" element={<GamePage />} />
+                <Route path="/create-test" element={<CreateTestPage />} />
+                <Route path="/tests/:testId" element={<DisplayTest />} />
+              </Route>
+              <Route path="/thank-you" element={<ThankYouPage />} />
             </Routes>
           </div>
         </Router>
