@@ -1,92 +1,93 @@
-<img src="./Readme/title1.svg"/>
+<img src="./Readme/title1 (1).svg"/>
 
 <br><br>
 
 <!-- project philosophy -->
 <img src="./Readme/title2.svg"/>
 
-> An RPG game that teaches people how to program + companies can make a trial on it for entrance exams to be more interactive.
->
-> "ByteBattles: The Coding Adventure" aims to revolutionize programming education by combining the excitement of an RPG game with the practicality of real-world coding challenges. Embark on a thrilling coding journey, level up your skills, and compete with others to become a coding champion!
+ByteBattle is an interactive web platform designed to revolutionize the way we learn programming. By integrating education with entertainment, it offers a unique learning experience where users can engage in courses enhanced with gaming elements using Phaser Library.
+
+Our mission is to make programming accessible and enjoyable for everyone. ByteBattle allows users to learn HTML, CSS, Nodejs, and Python through courses and games, and to test their skills through challenges created by tech companies, fostering a practical understanding of programming concepts.
 
 ### User Stories
-
-- As a learner, I want to choose my coding path and progress through chapters to build my programming skills.
-- As a coder, I want an AI mentor to guide me in real time, providing tips and challenges to enhance my learning.
-- As a competitor, I want to engage in coding battles with fellow learners, testing my skills and speed.
-- As a job seeker, I want to use the platform to prepare for coding interviews and showcase my skills to potential employers.
-- As a recruiter, I want to create and publish coding challenges specific to my company’s needs so that I can identify and attract talented developers who have the skills we require.
-- As a hiring manager, I want to access a dashboard where I can review candidates’ performances in coding challenges and their progress through courses, to evaluate their skills and suitability for our open positions.
+- As a user, I want to play educational games while learning programming, to enhance my learning experience.
+- As a tech company, I want to create tests for potential hires, to evaluate their coding skills in a practical setting.
+- As a user, I want to battle with AI in coding challenges, to test my skills and receive feedback.
+- As a company user, I want to review the test results of candidates, to assess their coding skills and suitability for the job.
+- As a user, I want to compete in timed coding challenges, to test my ability to write efficient code under pressure.
+- As a company user, I want to customize tests with specific coding problems relevant to my industry, to find candidates with the right skill set.
+- As a company user, I want to track the number of applicants and their performance, so I can gauge the interest and talent pool available.
 
 <br><br>
 
 <!-- Prototyping -->
 <img src="./Readme/title3.svg"/>
 
-> We designed "ByteBattles: The Coding Adventure" using wireframes and mockups, iterating on the design until we achieved the ideal layout for an immersive and educational gaming experience.
+ByteBattle was developed using a series of wireframes and mockups, focusing on user-friendly interfaces and interactive gaming experiences within the educational content.
 
-### Wireframes
-
-| Chapter Selection                                               | AI Mentor Guidance                                                | Coding Battle Arena                                                 |
-| --------------------------------------------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------- |
-| ![Chapter Selection](./readme/wireframes/chapter_selection.png) | ![AI Mentor Guidance](./readme/wireframes/ai_mentor_guidance.png) | ![Coding Battle Arena](./readme/wireframes/coding_battle_arena.png) |
-
-### Mockups
-
-| Home Screen                                      | Leaderboard                                      | Coding Challenge Result                                           |
-| ------------------------------------------------ | ------------------------------------------------ | ----------------------------------------------------------------- |
-| ![Home Screen](./readme/mockups/home_screen.png) | ![Leaderboard](./readme/mockups/leaderboard.png) | ![Coding Challenge Result](./readme/mockups/challenge_result.png) |
+### Wireframes and Mockups
+Details and images of the wireframes and mockups can be inserted here
 
 <br><br>
 
 <!-- Implementation -->
 <img src="./Readme/title4.svg"/>
 
-> Bringing the vision to life, we implemented "ByteBattles: The Coding Adventure" with the following features:
+ByteBattle is implemented with the following features:
 
-### Player Screens (Web)
+### User Interfaces
+| Course Screen | Game Screen (Drag-and-Drop) | Game Screen (Code Collection) | Test Screen | Leaderboard Screen |
+| --- | --- | --- | --- | --- |
+*Insert appropriate screenshots or placeholders here*
 
-| Dashboard                                    | Coding Arena                                       | Profile                                  |
-| -------------------------------------------- | -------------------------------------------------- | ---------------------------------------- |
-| ![Dashboard](./readme/screens/dashboard.png) | ![Coding Arena](./readme/screens/coding_arena.png) | ![Profile](./readme/screens/profile.png) |
-
-### Admin Screens (Web)
-
-| Admin Dashboard                                          | Challenge Management                                               | User Analytics                                         |
-| -------------------------------------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------ |
-| ![Admin Dashboard](./readme/screens/admin_dashboard.png) | ![Challenge Management](./readme/screens/challenge_management.png) | ![User Analytics](./readme/screens/user_analytics.png) |
+### Company Interfaces
+| Test Creation Screen | Score Viewing Screen | Profile Management |
+| --- | --- | --- |
+*Insert appropriate screenshots or placeholders here*
 
 <br><br>
 
 <!-- Tech stack -->
 <img src="./Readme/title5.svg"/>
 
-### "ByteBattles: The Coding Adventure" is built using the following technologies:
+ByteBattle is built using the following technologies:
 
-- Frontend: [React](https://reactjs.org/), [Redux](https://redux.js.org/)
-- Backend: [Node.js](https://nodejs.org/), [Express](https://expressjs.com/)
-- Database: [MongoDB](https://www.mongodb.com/)
-- Real-time Communication: [Socket.io](https://socket.io/)
-- Authentication: [JWT](https://jwt.io/)
-- Hosting: [Heroku](https://www.heroku.com/)
+- Frontend: React and Redux for responsive UI development.
+- Backend: Node.js and ExpressJS for server-side logic.
+- Database: MongoDB for data persistence.
+- Gaming: Phaser Library for interactive game development.
+- Additional Libraries: Multer for file uploads, various React libraries for UI components.
+
+### Dependencies
+*List of dependencies from your package.json file*
 
 <br><br>
 
 <!-- How to run -->
 <img src="./Readme/title6.svg"/>
 
-> To set up "ByteBattles: The Coding Adventure" locally, follow these steps:
+To set up ByteBattle locally, follow these steps:
 
 ### Prerequisites
-
-Make sure you have the following installed:
-
-- [Node.js](https://nodejs.org/)
-- [MongoDB](https://www.mongodb.com/)
+*Instructions for prerequisites, such as Node.js and MongoDB setup*
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/your_username_/ByteBattles-CodingAdventure.git
+   [git clone https://github.com/your_username_/ByteBattles-CodingAdventure.git](https://github.com/Ali-H-Hassan/ByteBattles-CodingAdventure.git)
    ```
+2. Install NPM packages for both frontend and backend:
+   ```sh
+   npm install
+   ```
+3. Set up MongoDB and enter your database URI in config.js:
+   ```js
+   const MONGO_URI = 'ENTER YOUR MONGO URI';
+   ```
+4. Start the server:
+   ```sh
+   npm start
+   ```
+
+Now, you should be able to run ByteBattle locally and explore its features.
