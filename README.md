@@ -36,9 +36,11 @@ Details and images of the wireframes and mockups can be inserted here
 ByteBattle is implemented with the following features:
 
 ### User Interfaces
+
 | Course Screen | Game Screen (Drag-and-Drop) | Game Screen (Code Collection) | Test Screen | Leaderboard Screen |
 | --- | --- | --- | --- | --- |
-*Insert appropriate screenshots or placeholders here*
+| ![Course Screen](./Readme/Course%20Screen.png) | ![Drag-and-Drop Game](./Readme/Drag-and-Drop%20Game.png) | ![Code Collection Game](./Readme/Code%20Collection%20Game.png) | *Test Screen placeholder* | *Leaderboard Screen placeholder* |
+
 
 ### Company Interfaces
 | Test Creation Screen | Score Viewing Screen | Profile Management |
