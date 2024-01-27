@@ -45,7 +45,7 @@ ByteBattle is built using the following technologies:
 
 | Home screen  | Learning Module | Gaming Module |
 | --- | --- | --- |
-| ![Home Screen](./readme/demo/1440x1024.png) | ![Learning Module](./readme/demo/1440x1024.png) | ![Gaming Module](./readme/demo/1440x1024.png) |
+|![Home Screen](./Readme/Landing%20Page.svg)| ![Learning Module](./readme/demo/1440x1024.png) | ![Gaming Module](./readme/demo/1440x1024.png) |
 
 <!-- Database Design -->
 ## Database Design
