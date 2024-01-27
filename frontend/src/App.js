@@ -4,8 +4,6 @@ import { AuthProvider } from "./context/AuthContext";
 import Login from "./pages/LoginPage/LoginPage";
 import Signup from "./pages/SignupPage/signupPage";
 import WelcomePage from "./pages/WelcomePage/WelcomePage";
-import GoogleAuthHandler from "./pages/GoogleAuthHandler";
-import GoogleCallbackHandler from "./pages/GoogleCallbackHandler";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import CompanyDashboard from "./pages/CompanyDashboard/CompanyDashboard";
 import GamePage from "./pages/GamePage";

@@ -59,6 +59,7 @@ export const registerFailure = (error) => ({
 });
 export const updateProfile = (userData) => async (dispatch) => {
   dispatch(profileUpdateRequest());
+
   try {
     const formData = new FormData();
     Object.entries(userData).forEach(([key, value]) => {
@@ -66,8 +67,10 @@ export const updateProfile = (userData) => async (dispatch) => {
     });
 
     const response = await apiClient.post("/api/profile/update", formData);
+
     dispatch(profileUpdateSuccess(response.data));
   } catch (error) {
+    console.error("API request failed:", error);
     const errorMessage = error.response
       ? error.response.data
       : "Profile update failed";
