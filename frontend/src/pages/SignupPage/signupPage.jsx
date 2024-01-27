@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser } from "../../redux/auth/authActions";
-
 import Header from "../../components/Header/Header";
 import "./signupPage.css";
 import SignUpImg from "../../assets/SignUpImg.png";
@@ -56,7 +55,8 @@ const SignupPage = () => {
       setPasswordError(passwordValidationMessage);
       return;
     }
-    dispatch(registerUser(newUser, navigate));
+
+    dispatch(registerUser({ userData: newUser, navigate }));
   };
 
   const fetchGoogleAuthUrl = async () => {
