@@ -1,14 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setCurrentTestId } from "../../redux/test/testSlice";
+import { fetchTestById } from "../../redux/testDetails/testDetailsActions";
 import "./TestCard.css";
 
 const TestCard = ({ id, logo, title, subtitle, status }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleTestClick = () => {
-    dispatch(setCurrentTestId(id));
+    dispatch(fetchTestById(id));
     navigate(`/tests/${id}`);
   };
 

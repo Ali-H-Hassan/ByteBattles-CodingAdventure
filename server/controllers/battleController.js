@@ -1,34 +1,60 @@
-const { GoogleGenerativeAI } = require("@google/generative-ai");
 const Challenge = require("../models/challenge");
+const vm = require("vm");
+const now = require("performance-now");
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const executeUserCode = async (code, input) => {
+  if (!code) {
+    return {
+      executionTime: 0,
+      output: "No code provided",
+      passed: false,
+    };
+  }
 
-const executeUserCode = async (code, language) => {
-  return {
-    executionTime: 100,
-    output: "42",
-    passed: true,
-  };
+  try {
+    const sandbox = {
+      reverseString: (str) => str.split("").reverse().join(""),
+    };
+    const context = new vm.createContext(sandbox);
+
+    const script = new vm.Script(code);
+
+    const start = now();
+    script.runInContext(context);
+    const end = now();
+    const executionTime = (end - start).toFixed(2);
+    const result = sandbox.reverseString(input);
+
+    const isCorrect =
+      typeof result === "string" &&
+      result === input.split("").reverse().join("");
+
+    return {
+      executionTime: parseFloat(executionTime),
+      output: isCorrect ? "Correct" : "Incorrect",
+      passed: isCorrect,
+    };
+  } catch (error) {
+    return {
+      executionTime: 0,
+      output: error.message,
+      passed: false,
+    };
+  }
 };
 
 const runBattle = async (req, res) => {
   const { userId, challengeId, userCode, language } = req.body;
-
+  const input = "Hello";
   try {
     const challenge = await Challenge.findById(challengeId);
     if (!challenge) {
       return res.status(404).json({ message: "Challenge not found" });
     }
 
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
-    const prompt = challenge.description;
+    const userResults = await executeUserCode(userCode, input);
 
-    const result = await model.generateContent(prompt);
-    const response = await result.response;
-    const aiCode = response.text();
-
-    const userResults = await executeUserCode(userCode, language);
-    const aiResults = await executeUserCode(aiCode, language);
+    const aiResults = await executeUserCode("/* AI code here */", input);
 
     const winner =
       userResults.executionTime < aiResults.executionTime ? "user" : "ai";
@@ -37,7 +63,6 @@ const runBattle = async (req, res) => {
       winner,
       userResults,
       aiResults,
-      aiCode,
     });
   } catch (error) {
     console.error(error);

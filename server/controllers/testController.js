@@ -46,9 +46,10 @@ exports.updateTestById = async (req, res) => {
   }
 };
 exports.getTestsByCompanyId = async (req, res) => {
+  console.log(req.query);
   try {
     const companyTests = await Test.find({
-      createdBy: req.params.companyId.trim(),
+      createdBy: req.query.companyId.trim(),
     });
     res.status(200).json(companyTests);
   } catch (error) {

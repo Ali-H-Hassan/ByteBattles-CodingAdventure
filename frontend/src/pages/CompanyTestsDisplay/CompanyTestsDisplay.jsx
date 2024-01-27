@@ -13,7 +13,11 @@ const CompanyTestsDisplay = () => {
     if (companyId) {
       dispatch(fetchCompanyTests(companyId));
     }
-  }, [dispatch, companyId]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    console.log(companyTests);
+  }, [companyTests]);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;

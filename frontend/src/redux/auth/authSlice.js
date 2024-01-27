@@ -1,63 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import apiClient from "../../services/apiConfig";
-
-export const login = createAsyncThunk(
-  "auth/login",
-  async ({ credentials, navigate }, { dispatch }) => {
-    try {
-      const response = await apiClient.post("/api/auth/login", credentials);
-      const { user, token } = response.data;
-      localStorage.setItem("token", token);
-      dispatch(loginSuccess({ user, token }));
-      navigate(
-        user.userType === "company" ? "/company-dashboard" : "/dashboard"
-      );
-      return response.data;
-    } catch (error) {
-      return Promise.reject(
-        error.response ? error.response.data : "Login failed"
-      );
-    }
-  }
-);
-
-export const registerUser = createAsyncThunk(
-  "auth/register",
-  async ({ userData, navigate }, { dispatch }) => {
-    try {
-      const response = await apiClient.post("/api/auth/register", userData);
-      const { user, token } = response.data;
-      localStorage.setItem("token", token);
-      dispatch(loginSuccess({ user, token }));
-      navigate("/dashboard");
-      return response.data;
-    } catch (error) {
-      return Promise.reject(
-        error.response ? error.response.data : "Registration failed"
-      );
-    }
-  }
-);
-
-export const updateProfile = createAsyncThunk(
-  "auth/updateProfile",
-  async (formData, { getState }) => {
-    const { auth } = getState();
-    try {
-      const response = await apiClient.post("/api/profile/update", formData, {
-        headers: {
-          Authorization: `Bearer ${auth.token}`,
-        },
-      });
-      return response.data;
-    } catch (error) {
-      return Promise.reject(
-        error.response ? error.response.data : error.message
-      );
-    }
-  }
-);
-
+import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   isAuthenticated: false,
   user: null,
@@ -66,46 +7,57 @@ const initialState = {
   error: null,
   loading: false,
 };
-
 export const authSlice = createSlice({
-  name: "auth",
   initialState,
+  name: "auth",
   reducers: {
+    profileRequestUpdate: (state, action) => {
+      return { ...state, loading: true, error: null };
+    },
     loginSuccess: (state, action) => {
-      state.isAuthenticated = true;
-      state.user = action.payload.user;
-      state.userType = action.payload.user.userType;
-      state.token = action.payload.token;
-      state.error = null;
-      state.loading = false;
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: action.payload.user,
+        userType: action.payload.user.userType,
+        token: action.payload.token || state.token,
+        error: null,
+        loading: false,
+      };
+    },
+    profileRequestSuccess: (state, action) => {
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: action.payload.user,
+        token: action.payload.token || state.token,
+        error: null,
+        loading: false,
+      };
     },
     profileRequestFailure: (state, action) => {
-      state.isAuthenticated = false;
-      state.user = null;
-      state.token = null;
-      state.error = action.payload;
-      state.loading = false;
+      return {
+        ...state,
+        isAuthenticated: false,
+        user: null,
+        token: null,
+        error: action.payload,
+        loading: false,
+      };
+    },
+    logout: (state, action) => {
+      return {
+        ...initialState,
+        userType: null,
+      };
     },
   },
-  extraReducers: (builder) => {
-    builder
-      .addCase(updateProfile.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(updateProfile.fulfilled, (state, action) => {
-        state.user = action.payload.user;
-        state.isAuthenticated = true;
-        state.token = action.payload.token || state.token;
-        state.error = null;
-        state.loading = false;
-      })
-      .addCase(updateProfile.rejected, (state, action) => {
-        state.error = action.payload;
-        state.loading = false;
-      });
-  },
 });
-
-export const { loginSuccess, profileRequestFailure } = authSlice.actions;
-
+export const {
+  loginSuccess,
+  logout,
+  profileRequestFailure,
+  profileRequestSuccess,
+  profileRequestUpdate,
+} = authSlice.actions;
 export default authSlice.reducer;

@@ -38,7 +38,7 @@ const LoginPage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    dispatch(login({ credentials, navigate }));
+    dispatch(login(credentials, navigate, dispatch));
   };
 
   const handleSignUpClick = () => {

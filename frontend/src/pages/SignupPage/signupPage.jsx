@@ -56,7 +56,7 @@ const SignupPage = () => {
       setPasswordError(passwordValidationMessage);
       return;
     }
-    dispatch(registerUser({ userData: newUser, navigate }));
+    dispatch(registerUser(newUser, navigate));
   };
 
   const fetchGoogleAuthUrl = async () => {

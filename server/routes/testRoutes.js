@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const testController = require("../controllers/testController");
+router.get("/company", testController.getTestsByCompanyId);
 
 router.post("/create", testController.createTest);
 
@@ -11,7 +12,5 @@ router.get("/:id", testController.getTestById);
 router.put("/:id", testController.updateTestById);
 
 router.delete("/:id", testController.deleteTestById);
-
-router.get("/company/:companyId", testController.getTestsByCompanyId);
 
 module.exports = router;
