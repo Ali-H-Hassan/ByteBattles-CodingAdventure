@@ -47,15 +47,20 @@ ByteBattle is built using the following technologies:
 | --- | --- | --- |
 | ![Home Screen](./Readme/Landing%20Page.svg) | ![Game Screen](./Readme/Course%20Screen.png) | ![Test Screen](./Readme/Mcq.svg) |
 
+<br><br>
+
 <!-- Database Design -->
-## Database Design
+<img src="./Readme/title5.svg"/>
 
 The database schema is structured to support user data, educational content, game data, and test results.
 
 - Insert ER Diagram here
 
+<br><br>
+
+
 <!-- Implementation -->
-## Implementation
+<img src="./Readme/title6.svg"/>
 
 ### User Interface (Web)
 
