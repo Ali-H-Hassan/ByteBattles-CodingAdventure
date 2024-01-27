@@ -32,12 +32,14 @@ ByteBattle is built using the following technologies:
 - The application uses [MongoDB](https://www.mongodb.com/) for database management, offering scalable and flexible data storage.
 - Additional libraries and tools like [multer](https://www.npmjs.com/package/multer) for file uploads and various React and Redux dependencies enhance the functionality and user experience.
 
+<br><br>
 <!-- UI UX -->
-## UI/UX
+<img src="./Readme/title4.svg"/>
 
-ByteBattle's interface is designed for ease of use, with a focus on interactive learning. The layout facilitates easy navigation, allowing users to switch between educational content and gaming challenges seamlessly.
+>ByteBattle is designed for streamlined navigation and engaging user experience, balancing educational games and test-taking within a cohesive interface. 
 
-Project design details and mockups can be accessed here: [ByteBattle Design](https://www.figma.com/file/ByteBattleDesign)
+- Project design details and mockups can be accessed here: [ByteBattle Design](https://www.figma.com/file/Mdc8gQ2xi0AxRRoH5NYAw0/ByteBattles?type=design&mode=design&t=8vw1uRceK4v53QHN-1)
+
 
 ### Mockups
 
