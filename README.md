@@ -1,95 +1,76 @@
-<img src="./Readme/title1 (1).svg"/>
+<img src="./Readme/title1.svg"/>
 
 <br><br>
 
 <!-- project philosophy -->
 <img src="./Readme/title2.svg"/>
 
-ByteBattle is an interactive web platform designed to revolutionize the way we learn programming. By integrating education with entertainment, it offers a unique learning experience where users can engage in courses enhanced with gaming elements using Phaser Library.
-
-Our mission is to make programming accessible and enjoyable for everyone. ByteBattle allows users to learn HTML, CSS, Nodejs, and Python through courses and games, and to test their skills through challenges created by tech companies, fostering a practical understanding of programming concepts.
+>ByteBattle is an innovative web platform that merges learning and gaming with real-world career opportunities. It's designed to make programming education engaging and directly relevant to the tech industry. Our mission is to transform how programming is learned, making it both enjoyable and practical.
+>
+>The platform not only offers interactive games for learning programming concepts but also features tests created by tech companies for potential hiring. This unique approach allows users to not just learn and apply coding skills, but also to connect with employers, making ByteBattle a bridge between education and employment in the tech industry.
 
 ### User Stories
-- As a user, I want to play educational games while learning programming, to enhance my learning experience.
-- As a tech company, I want to create tests for potential hires, to evaluate their coding skills in a practical setting.
-- As a user, I want to battle with AI in coding challenges, to test my skills and receive feedback.
-- As a company user, I want to review the test results of candidates, to assess their coding skills and suitability for the job.
-- As a user, I want to compete in timed coding challenges, to test my ability to write efficient code under pressure.
-- As a company user, I want to customize tests with specific coding problems relevant to my industry, to find candidates with the right skill set.
-- As a company user, I want to track the number of applicants and their performance, so I can gauge the interest and talent pool available.
 
-<br><br>
+#### For the Learner:
+- As a learner, I want to play educational games, so I can engagingly learn programming concepts.
+- As a learner, I want to take part in coding challenges so that I can test and improve my coding skills.
+- As a learner, I want to compete against AI in coding battles, so I can gauge my skill level and get feedback.
 
-<!-- Prototyping -->
-<img src="./Readme/title3.svg"/>
-
-ByteBattle was developed using a series of wireframes and mockups, focusing on user-friendly interfaces and interactive gaming experiences within the educational content.
-
-### Wireframes and Mockups
-Details and images of the wireframes and mockups can be inserted here
-
-<br><br>
-
-<!-- Implementation -->
-<img src="./Readme/title4.svg"/>
-
-ByteBattle is implemented with the following features:
-
-### User Interfaces
-
-| Course Screen | Game Screen (Drag-and-Drop) | Game Screen (Code Collection) | Test Screen | Leaderboard Screen |
-| --- | --- | --- | --- | --- |
-| ![Course Screen](./Readme/Course%20Screen.png) | ![Drag-and-Drop Game](./Readme/Drag-and-Drop%20Game.png) | ![Code Collection Game](./Readme/Code%20Collection%20Game.png) | *Test Screen placeholder* | *Leaderboard Screen placeholder* |
-
-
-### Company Interfaces
-| Test Creation Screen | Score Viewing Screen | Profile Management |
-| --- | --- | --- |
-*Insert appropriate screenshots or placeholders here*
-
-<br><br>
+#### For the Company:
+- As a company, I want to create and post coding tests, so I can assess and potentially hire skilled programmers.
+- As a company, I want to view the leaderboard, so I can identify top-performing candidates.
+- As a company, I want to customize tests for specific programming roles, so I can effectively screen candidates for job-specific skills.
 
 <!-- Tech stack -->
-<img src="./Readme/title5.svg"/>
+<img src="./Readme/title3.svg"/>
 
 ByteBattle is built using the following technologies:
 
-- Frontend: React and Redux for responsive UI development.
-- Backend: Node.js and ExpressJS for server-side logic.
-- Database: MongoDB for data persistence.
-- Gaming: Phaser Library for interactive game development.
-- Additional Libraries: Multer for file uploads, various React libraries for UI components.
+- The frontend is developed with [React](https://reactjs.org/) and [Redux](https://redux.js.org/), providing a robust and responsive user interface.
+- Backend services are powered by [Node.js](https://nodejs.org/) and [ExpressJS](https://expressjs.com/), ensuring efficient server-side operations.
+- For game development, the [Phaser Library](https://phaser.io/) is used, enabling interactive and dynamic game experiences within the platform.
+- The application uses [MongoDB](https://www.mongodb.com/) for database management, offering scalable and flexible data storage.
+- Additional libraries and tools like [multer](https://www.npmjs.com/package/multer) for file uploads and various React and Redux dependencies enhance the functionality and user experience.
 
-### Dependencies
-*List of dependencies from your package.json file*
+<!-- UI UX -->
+## UI/UX
 
-<br><br>
+ByteBattle's interface is designed for ease of use, with a focus on interactive learning. The layout facilitates easy navigation, allowing users to switch between educational content and gaming challenges seamlessly.
+
+Project design details and mockups can be accessed here: [ByteBattle Design](https://www.figma.com/file/ByteBattleDesign)
+
+### Mockups
+
+| Home screen  | Learning Module | Gaming Module |
+| --- | --- | --- |
+| ![Home Screen](./readme/demo/1440x1024.png) | ![Learning Module](./readme/demo/1440x1024.png) | ![Gaming Module](./readme/demo/1440x1024.png) |
+
+<!-- Database Design -->
+## Database Design
+
+The database schema is structured to support user data, educational content, game data, and test results.
+
+- Insert ER Diagram here
+
+<!-- Implementation -->
+## Implementation
+
+### User Interface (Web)
+
+| Landing Page | Course Selection | Game Screen | Leaderboard |
+| --- | --- | --- | --- |
+| ![Landing Page](https://placehold.co/900x1600) | ![Course Selection](https://placehold.co/900x1600) | ![Game Screen](https://placehold.co/900x1600) | ![Leaderboard](https://placehold.co/900x1600) |
+
+<!-- Additional Sections -->
+<!-- Sections like Prompt Engineering, AWS Deployment, and Unit Testing can be added based on your project's specific features and technical aspects. -->
 
 <!-- How to run -->
-<img src="./Readme/title6.svg"/>
+## How to Run
 
 To set up ByteBattle locally, follow these steps:
 
 ### Prerequisites
-*Instructions for prerequisites, such as Node.js and MongoDB setup*
 
-### Installation
-
-1. Clone the repo
-   ```sh
-   [git clone https://github.com/your_username_/ByteBattles-CodingAdventure.git](https://github.com/Ali-H-Hassan/ByteBattles-CodingAdventure.git)
-   ```
-2. Install NPM packages for both frontend and backend:
-   ```sh
-   npm install
-   ```
-3. Set up MongoDB and enter your database URI in config.js:
-   ```js
-   const MONGO_URI = 'ENTER YOUR MONGO URI';
-   ```
-4. Start the server:
-   ```sh
-   npm start
-   ```
-
-Now, you should be able to run ByteBattle locally and explore its features.
+- Ensure you have Node.js and npm installed. MongoDB should also be set up for database management.
+  ```sh
+  npm install npm@latest -g
