@@ -13,9 +13,9 @@ const ProgrammingQuestion = ({
 
   const handleSubmit = () => {
     if (onTestSubmit) {
-      onTestSubmit(); // Call the submit handler passed as a prop
+      onTestSubmit();
     }
-    navigate("/thank-you"); // Navigate to the thank-you page
+    navigate("/thank-you");
   };
   return (
     <div className="test-programming-container">

@@ -47,6 +47,7 @@ const executeUserCode = async (code, input) => {
 const runBattle = async (req, res) => {
   const { userId, challengeId, userCode, language } = req.body;
   const input = "Hello";
+
   try {
     const challenge = await Challenge.findById(challengeId);
     if (!challenge) {
@@ -54,13 +55,26 @@ const runBattle = async (req, res) => {
     }
 
     const userResults = await executeUserCode(userCode, input);
-
     const aiResults = await executeUserCode("/* AI code here */", input);
 
-    const aiFeedback = await generateText("Analyze this code: " + userCode);
+    let aiFeedback;
+    if (!userCode.trim()) {
+      aiFeedback =
+        "No user code was provided. Please write your code solution.";
+      // If you have logic for generating AI code, add it here
+    } else {
+      aiFeedback = await generateText(
+        "Analyze this JavaScript code: " + userCode
+      );
+    }
 
-    const winner =
-      userResults.executionTime < aiResults.executionTime ? "user" : "ai";
+    let winner;
+    if (!userResults.passed) {
+      winner = "ai";
+    } else {
+      winner =
+        userResults.executionTime < aiResults.executionTime ? "user" : "ai";
+    }
 
     res.json({
       winner,
@@ -75,6 +89,11 @@ const runBattle = async (req, res) => {
       error: error.message,
     });
   }
+};
+
+module.exports = {
+  runBattle,
+  executeUserCode,
 };
 
 module.exports = {
