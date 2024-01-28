@@ -68,16 +68,56 @@ The database schema is structured to support user data, educational content, gam
 | --- | --- | --- | --- |
 | ![Landing Page](https://placehold.co/900x1600) | ![Course Selection](https://placehold.co/900x1600) | ![Game Screen](https://placehold.co/900x1600) | ![Leaderboard](https://placehold.co/900x1600) |
 
-<!-- Additional Sections -->
-<!-- Sections like Prompt Engineering, AWS Deployment, and Unit Testing can be added based on your project's specific features and technical aspects. -->
+<br><br>
+
+
+<!-- Prompt Engineering -->
+<img src="./Readme/title7.svg"/>
+
+###  Mastering AI Interaction: Unveiling the Power of Prompt Engineering:
+
+- This project uses advanced prompt engineering techniques to optimize the interaction with natural language processing models. By skillfully crafting input instructions, we tailor the behavior of the models to achieve precise and efficient language understanding and generation for various tasks and preferences.
+
+<br><br>
+
+<!-- AWS Deployment -->
+<img src="./Readme/title8.svg"/>
+
+###  Efficient AI Deployment: Unleashing the Potential with AWS Integration:
+
+- This project leverages AWS deployment strategies to seamlessly integrate and deploy natural language processing models. With a focus on scalability, reliability, and performance, we ensure that AI applications powered by these models deliver robust and responsive solutions for diverse use cases.
+
+<br><br>
+
+<!-- Unit Testing -->
+<img src="./Readme/title9.svg"/>
+
+###  Precision in Development: Harnessing the Power of Unit Testing:
+
+- This project employs rigorous unit testing methodologies to ensure the reliability and accuracy of code components. By systematically evaluating individual units of the software, we guarantee a robust foundation, identifying and addressing potential issues early in the development process.
+
+<br><br>
+
 
 <!-- How to run -->
-## How to Run
+<img src="./Readme/title10.svg"/>
+### Installation
 
-To set up ByteBattle locally, follow these steps:
+1. Clone the repo
+   ```sh
+   [git clone https://github.com/your_username_/ByteBattles-CodingAdventure.git](https://github.com/Ali-H-Hassan/ByteBattles-CodingAdventure.git)
+   ```
+2. Install NPM packages for both frontend and backend:
+   ```sh
+   npm install
+   ```
+3. Set up MongoDB and enter your database URI in config.js:
+   ```js
+   const MONGO_URI = 'ENTER YOUR MONGO URI';
+   ```
+4. Start the server:
+   ```sh
+   npm start
+   ```
 
-### Prerequisites
-
-- Ensure you have Node.js and npm installed. MongoDB should also be set up for database management.
-  ```sh
-  npm install npm@latest -g
+Now, you should be able to run ByteBattle locally and explore its features.
