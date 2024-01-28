@@ -27,6 +27,10 @@ const ResultsDisplay = ({ results }) => {
       <div className="result-ai">
         AI Passed: {results.aiResults.passed ? "Yes" : "No"}
       </div>
+      <div className="result-feedback">
+        <h3>AI Feedback</h3>
+        <p>{results.aiFeedback}</p>
+      </div>
     </div>
   );
 };

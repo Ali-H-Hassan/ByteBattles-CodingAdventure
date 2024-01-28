@@ -1,6 +1,7 @@
 const Challenge = require("../models/challenge");
 const vm = require("vm");
 const now = require("performance-now");
+const { generateText } = require("./geminiController");
 
 const executeUserCode = async (code, input) => {
   if (!code) {
