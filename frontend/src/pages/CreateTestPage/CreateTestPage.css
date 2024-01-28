@@ -90,6 +90,9 @@
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.3s;
+  border: none;
+  width: fit-content;
+  place-self: center;
 }
 
 .add-mcq-button:hover,
