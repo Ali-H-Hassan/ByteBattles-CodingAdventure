@@ -67,9 +67,17 @@ The database schema is structured to support user data, educational content, gam
 
 ### User Interface (Web)
 
-| AI Battle                           | Course Selection                                | Backend Game Screen                             | Frontend Game Screen                              |
-| ----------------------------------- | ----------------------------------------------- | ----------------------------------------------- | ------------------------------------------------- |
-| ![AI Battle](./Readme/AIBattle.gif) | ![Course Selection](./Readme/CourseDisplay.gif) | ![Backend Game Screen](./Readme/GameScene1.gif) | ![Frontend Game Screen](./Readme//GameScene2.gif) |
+| AI Battle                                          | Course Selection                                    |
+| -------------------------------------------------- | --------------------------------------------------- |
+| ![AI Battle](./Readme/AIBattle.gif)                | ![Course Selection](./Readme/CourseDisplay.gif)     |
+| Backend Game Screen                                | Frontend Game Screen                                |
+| ![Backend Game Screen](./Readme/GameScene1.gif)    | ![Frontend Game Screen](./Readme//GameScene2.gif)   |
+| Google Register                                    | Company Dashboard                                   |
+| ![Google Register](./Readme/GoogleRegister.gif)    | ![Company Dashboard](./Readme/CompanyDashboard.png) |
+| Test Landing Page                                  | User Dashboard                                      |
+| ![Test Landing Page](./Readme/TestLandingPage.png) | ![User Dashboard ](./Readme/UserDashboard.png)      |
+| Thank You Page                                     | Test Creation                                       |
+| ![Thank You Page](./Readme/ThankyouPage.png)       | ![Test Creation](./Readme/CreateTest.png)           |
 
 <br><br>
 
