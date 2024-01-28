@@ -45,9 +45,11 @@ ByteBattle is built using the following technologies:
 
 ### Mockups
 
-| Home Screen                                 | Game Screen                                  | Test Screen                      |
-| ------------------------------------------- | -------------------------------------------- | -------------------------------- |
-| ![Home Screen](./Readme/Landing%20Page.svg) | ![Game Screen](./Readme/Course%20Screen.png) | ![Test Screen](./Readme/Mcq.svg) |
+| Home Screen                                | Register Screen                             |
+| ------------------------------------------ | ------------------------------------------- |
+| ![Home Screen](./Readme/LandingPage.png)   | ![Register Screen](./Readme/Register.png)   |
+| Tests Screen                               | Dashboard                                   |
+| ![Tests Screen](./Readme/TestsDisplay.png) | ![Dashboard Screen](./Readme/Dashboard.png) |
 
 <br><br>
 
