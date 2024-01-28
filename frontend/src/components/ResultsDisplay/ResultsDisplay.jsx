@@ -7,7 +7,7 @@ const ResultsDisplay = ({ results }) => {
   useEffect(() => {
     if (results) {
       setAnimate(true);
-      setTimeout(() => setAnimate(false), 3000); // Duration of the entire animation
+      setTimeout(() => setAnimate(false), 3000);
     }
   }, [results]);
 

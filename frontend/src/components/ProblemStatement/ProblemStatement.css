@@ -1,21 +1,30 @@
 .problem-statement-container {
-  margin-bottom: 20px;
-  padding: 15px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 30px;
+  padding: 25px;
+  border: 2px solid #4a4a4a;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #ffffff, #e6e6e6);
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2),
+    -5px -5px 15px rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.problem-statement-container:hover {
+  background: linear-gradient(145deg, #e6e6e6, #ffffff);
+  border-color: #2a9d8f;
 }
 
 .problem-statement-container h2 {
-  margin-top: 0;
-  margin-bottom: 10px;
-  color: #333;
-  font-size: 1.5em;
+  color: #2c3e50;
+  font-size: 2em;
+  margin-bottom: 15px;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .problem-statement-container p {
-  color: #666;
-  font-size: 1em;
-  line-height: 1.4;
+  color: #333333;
+  font-size: 1.2em;
+  line-height: 1.8;
 }
