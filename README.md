@@ -57,8 +57,8 @@ ByteBattle is built using the following technologies:
 <img src="./Readme/title5.svg"/>
 
 The database schema is structured to support user data, educational content, game data, and test results.
-
-<img src="./Readme/ByteBattleDiagram.png>
+<br><br>
+<img src="./Readme/ByteBattleDiagram.png">
 
 <br><br>
 
