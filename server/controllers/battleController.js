@@ -56,6 +56,8 @@ const runBattle = async (req, res) => {
 
     const aiResults = await executeUserCode("/* AI code here */", input);
 
+    const aiFeedback = await generateText("Analyze this code: " + userCode);
+
     const winner =
       userResults.executionTime < aiResults.executionTime ? "user" : "ai";
 
@@ -63,6 +65,7 @@ const runBattle = async (req, res) => {
       winner,
       userResults,
       aiResults,
+      aiFeedback: aiFeedback,
     });
   } catch (error) {
     console.error(error);
@@ -75,4 +78,5 @@ const runBattle = async (req, res) => {
 
 module.exports = {
   runBattle,
+  executeUserCode,
 };

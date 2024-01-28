@@ -4,6 +4,4 @@ const battleController = require("../controllers/battleController");
 
 router.post("/run", battleController.runBattle);
 
-//router.get("/results", battleController.getBattleResults);
-
 module.exports = router;
