@@ -29,6 +29,10 @@
   align-items: center;
 }
 
+.input-group {
+  text-align: left;
+}
+
 .login-container {
   width: 100%;
   max-width: 500px;
@@ -125,5 +129,15 @@ p {
 
   .header {
     position: relative;
+  }
+
+  .login-container {
+    width: 100%;
+    padding: 20px;
+  }
+
+  .login-button,
+  .login-options {
+    width: 100%;
   }
 }

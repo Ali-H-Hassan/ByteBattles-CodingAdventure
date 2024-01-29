@@ -53,7 +53,7 @@ const LoginPage = () => {
           <img src={LoginImg} alt="Byte Battles Login" />
         </div>
         <div className="login-form-section">
-          <div onSubmit={handleSubmit} className="login-container">
+          <form onSubmit={handleSubmit} className="login-container">
             <h2 className="login-title">Byte Battle</h2>
             <div className="input-group">
               <input
@@ -86,11 +86,11 @@ const LoginPage = () => {
               </label>
             </div>
             <button className="login-button" onClick={handleSubmit}>
-              Log In
+              Login
             </button>
             <div className="login-options">
               <a href="#" className="forgot-password">
-                Forget Password?
+                Forgot Password?
               </a>
               <a href="#" className="signup-link" onClick={handleSignUpClick}>
                 Sign Up
@@ -116,7 +116,7 @@ const LoginPage = () => {
                 Policy and Terms of Service apply.
               </p>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
