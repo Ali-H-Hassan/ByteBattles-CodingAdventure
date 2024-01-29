@@ -105,42 +105,75 @@ The backend, built on Node.js, securely executes code and evaluates performance.
 <!-- AWS Deployment -->
 <img src="./Readme/title8.svg"/>
 
-### Efficient AI Deployment: Unleashing the Potential with AWS Integration:
+This section provides a step-by-step guide to get ByteBattle up and running on an Amazon EC2 instance.
 
-- We chose AWS for our project due to its scalability and reliability, essential for handling growing demands and ensuring consistent performance. AWS's tools accelerate development and enhance security, crucial for our AI applications. At the end, a list of commands used for deploying this project on AWS is provided.
+#### Pre-requisites:
 
-1.  Connecting to Your EC2 Instance:
-    sh
-    ssh -i /path/to/my-key.pem ec2-user@my-ec2-ip-address
-2.  Installing Node.js on EC2:
-    - Update the package repository:
-      sh
-      sudo yum update -y
-    - Install Node.js:
-      sh
-      sudo yum install -y nodejs
-3.  Setting Up MongoDB:
+Ensure you have an EC2 instance running and you have the private key (`.pem` file) for SSH access.
 
-    - Install MongoDB:
-      sh
-      sudo yum install -y mongodb-org
+#### Steps:
 
-    - Start MongoDB:
-      sh
-      sudo systemctl start mongod
+1. **Connecting to Your EC2 Instance:**
 
-4.  Install git , to clone the repo from github
-    sh
-    sudo yum install -y git
-5.  After cloning:
+   ```sh
+   ssh -i /path/to/my-key.pem ec2-user@my-ec2-ip-address
+   ```
 
-    - Navigate to my project directory and install dependencies:
-      sh
-      npm install
+2. **Installing Node.js on EC2:**
 
-    - Start my Node.js application:
-      sh
-      node index.js
+   - Update the package repository:
+     ```sh
+     sudo yum update -y
+     ```
+   - Install Node.js:
+     ```sh
+     sudo yum install -y nodejs
+     ```
+
+3. **Setting Up MongoDB:**
+
+   - Install MongoDB:
+     ```sh
+     sudo yum install -y mongodb-org
+     ```
+   - Start MongoDB:
+     ```sh
+     sudo systemctl start mongod
+     ```
+
+4. **Install Git:**
+
+   - To clone the repository from GitHub:
+     ```sh
+     sudo yum install -y git
+     ```
+
+5. **Cloning the Repository and Installing Dependencies:**
+
+   - Clone the repo and navigate to the project directory:
+     ```sh
+     git clone https://github.com/your_username/ByteBattles-CodingAdventure.git
+     cd ByteBattles-CodingAdventure
+     ```
+   - Install NPM packages for both frontend and backend:
+     ```sh
+     npm install
+     ```
+
+6. **Setting Up MongoDB URI:**
+
+   - Enter your MongoDB URI in the `config.js` file:
+     ```js
+     const MONGO_URI = "ENTER YOUR MONGO URI";
+     ```
+
+7. **Starting the Application:**
+   - Start the server:
+     ```sh
+     npm start
+     ```
+
+Replace `/path/to/my-key.pem`, `ec2-user@my-ec2-ip-address`, and `your_username/ByteBattles-CodingAdventure.git` with your specific details to connect to your EC2 instance, and update the MongoDB URI in the `config.js` file with your actual MongoDB credentials.
 
 <br><br>
 
