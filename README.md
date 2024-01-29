@@ -11,13 +11,13 @@
 
 ### User Stories
 
-#### For the Learner:
+#### For the User
 
-- As a learner, I want to play educational games, so I can engagingly learn programming concepts.
-- As a learner, I want to take part in coding challenges so that I can test and improve my coding skills.
-- As a learner, I want to compete against AI in coding battles, so I can gauge my skill level and get feedback.
+- As a user, I want to play educational games, so I can engagingly learn programming concepts.
+- As a user, I want to take part in coding challenges so that I can test and improve my coding skills.
+- As a user, I want to compete against AI in coding battles, so I can gauge my skill level and get feedback.
 
-#### For the Company:
+#### For the Company
 
 - As a company, I want to create and post coding tests, so I can assess and potentially hire skilled programmers.
 - As a company, I want to view the leaderboard, so I can identify top-performing candidates.
@@ -45,11 +45,9 @@ ByteBattle is built using the following technologies:
 
 ### Mockups
 
-| Home Screen                                | Register Screen                             |
+| Dashboard Screen                                | Register Screen                             |
 | ------------------------------------------ | ------------------------------------------- |
-| ![Home Screen](./Readme/LandingPage.png)   | ![Register Screen](./Readme/Register.png)   |
-| Tests Screen                               | Dashboard                                   |
-| ![Tests Screen](./Readme/TestsDisplay.png) | ![Dashboard Screen](./Readme/Dashboard.png) |
+| ![Dashboard Screen](./Readme/Dashboard.png)   | ![Register Screen](./Readme/Register.png)   |
 
 <br><br>
 
@@ -192,6 +190,7 @@ Replace `/path/to/my-key.pem`, `ec2-user@my-ec2-ip-address`, and `your_username/
 
 <!-- How to run -->
 <img src="./Readme/title10.svg"/>
+
 ### Installation
 
 1. Clone the repo
