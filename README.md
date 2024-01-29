@@ -84,9 +84,21 @@ The database schema is structured to support user data, educational content, gam
 <!-- Prompt Engineering -->
 <img src="./Readme/title7.svg"/>
 
-### Mastering AI Interaction: Unveiling the Power of Prompt Engineering:
+## AI-Powered Coding Duels
 
-- This project uses advanced prompt engineering techniques to optimize the interaction with natural language processing models. By skillfully crafting input instructions, we tailor the behavior of the models to achieve precise and efficient language understanding and generation for various tasks and preferences.
+ByteBattle introduces an interactive AI that users can challenge in coding duels. This feature not only benchmarks user code against AI solutions but also provides personalized feedback to improve coding skills.
+
+### Features:
+
+- **AI Solutions**: Utilizes the Gemini AI model for generating code solutions and natural language analysis.
+- **Performance Comparison**: Times user and AI code execution to foster efficient coding practices.
+- **Feedback System**: Offers automated feedback on user code, highlighting areas for optimization.
+
+### Implementation:
+
+The backend, built on Node.js, securely executes code and evaluates performance. The AI's feedback is generated through advanced natural language processing, assisting users in enhancing their coding prowess.
+
+![AI Code Snippet](./Readme/AISnippet.png)
 
 <br><br>
 
@@ -95,7 +107,40 @@ The database schema is structured to support user data, educational content, gam
 
 ### Efficient AI Deployment: Unleashing the Potential with AWS Integration:
 
-- This project leverages AWS deployment strategies to seamlessly integrate and deploy natural language processing models. With a focus on scalability, reliability, and performance, we ensure that AI applications powered by these models deliver robust and responsive solutions for diverse use cases.
+- We chose AWS for our project due to its scalability and reliability, essential for handling growing demands and ensuring consistent performance. AWS's tools accelerate development and enhance security, crucial for our AI applications. At the end, a list of commands used for deploying this project on AWS is provided.
+
+1.  Connecting to Your EC2 Instance:
+    sh
+    ssh -i /path/to/my-key.pem ec2-user@my-ec2-ip-address
+2.  Installing Node.js on EC2:
+    - Update the package repository:
+      sh
+      sudo yum update -y
+    - Install Node.js:
+      sh
+      sudo yum install -y nodejs
+3.  Setting Up MongoDB:
+
+    - Install MongoDB:
+      sh
+      sudo yum install -y mongodb-org
+
+    - Start MongoDB:
+      sh
+      sudo systemctl start mongod
+
+4.  Install git , to clone the repo from github
+    sh
+    sudo yum install -y git
+5.  After cloning:
+
+    - Navigate to my project directory and install dependencies:
+      sh
+      npm install
+
+    - Start my Node.js application:
+      sh
+      node index.js
 
 <br><br>
 
@@ -105,6 +150,10 @@ The database schema is structured to support user data, educational content, gam
 ### Precision in Development: Harnessing the Power of Unit Testing:
 
 - This project employs rigorous unit testing methodologies to ensure the reliability and accuracy of code components. By systematically evaluating individual units of the software, we guarantee a robust foundation, identifying and addressing potential issues early in the development process.
+
+| Features testing                              |
+| --------------------------------------------- |
+| ![Features testing](./Readme/UnitTesting.png) |
 
 <br><br>
 
