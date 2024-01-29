@@ -27,6 +27,9 @@
     "vm2": "^3.9.19"
   },
   "devDependencies": {
+    "chai": "^5.0.3",
+    "chai-http": "^4.4.0",
+    "mocha": "^10.2.0",
     "nodemon": "^3.0.3"
   }
 }

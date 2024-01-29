@@ -35,7 +35,9 @@ export const registerUser = (userData, navigate) => async (dispatch) => {
     );
     const { user, token } = response.data;
     localStorage.setItem("token", token);
-    dispatch(registerSuccess({ user, token }));
+
+    await dispatch(registerSuccess({ user, token }));
+    navigate("/dashboard");
   } catch (error) {
     const errorMessage = error.response
       ? error.response.data
