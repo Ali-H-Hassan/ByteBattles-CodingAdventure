@@ -105,7 +105,10 @@ The database schema is structured to support user data, educational content, gam
 ### Precision in Development: Harnessing the Power of Unit Testing:
 
 - This project employs rigorous unit testing methodologies to ensure the reliability and accuracy of code components. By systematically evaluating individual units of the software, we guarantee a robust foundation, identifying and addressing potential issues early in the development process.
-
+  
+| Features testing |
+| ---|
+| ![Features testing](./Readme/UnitTesting.png) |
 <br><br>
 
 <!-- How to run -->
