@@ -61,7 +61,6 @@ const runBattle = async (req, res) => {
     if (!userCode.trim()) {
       aiFeedback =
         "No user code was provided. Please write your code solution.";
-      // If you have logic for generating AI code, add it here
     } else {
       aiFeedback = await generateText(
         "Analyze this JavaScript code: " + userCode
@@ -89,11 +88,6 @@ const runBattle = async (req, res) => {
       error: error.message,
     });
   }
-};
-
-module.exports = {
-  runBattle,
-  executeUserCode,
 };
 
 module.exports = {
