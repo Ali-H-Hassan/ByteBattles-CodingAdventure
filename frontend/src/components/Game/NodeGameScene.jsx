@@ -47,7 +47,9 @@ class NodeMazeScene extends Phaser.Scene {
   }
 
   createPlayer() {
-    let player = this.physics.add.sprite(50, 50, "player").setScale(0.1);
+    let player = this.physics.add
+      .sprite(this.scale.width / 3, this.scale.height / 3, "player")
+      .setScale(0.1);
     player.setCollideWorldBounds(true);
     return player;
   }

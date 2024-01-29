@@ -12,15 +12,14 @@ class PythonMazeScene extends Phaser.Scene {
   }
 
   preload() {
-    // Using the same player image for consistency
     this.load.image("player", "/assets/player.png");
   }
 
   create() {
     this.displayGameStartPrompt();
     this.player = this.createPlayer();
-    this.correctCodeGroup = this.createCodeSnippets(true); // Python code snippets
-    this.incorrectCodeGroup = this.createCodeSnippets(false); // Non-Python code snippets
+    this.correctCodeGroup = this.createCodeSnippets(true);
+    this.incorrectCodeGroup = this.createCodeSnippets(false);
     this.cursors = this.input.keyboard.createCursorKeys();
     this.createScoreText();
   }
@@ -48,7 +47,9 @@ class PythonMazeScene extends Phaser.Scene {
   }
 
   createPlayer() {
-    let player = this.physics.add.sprite(50, 50, "player").setScale(0.1);
+    let player = this.physics.add
+      .sprite(this.scale.width / 3, this.scale.height / 3, "player")
+      .setScale(0.1);
     player.setCollideWorldBounds(true);
     return player;
   }
