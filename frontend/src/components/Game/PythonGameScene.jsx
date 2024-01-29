@@ -56,32 +56,54 @@ class PythonMazeScene extends Phaser.Scene {
 
   createCodeSnippets(isCorrect) {
     const group = this.physics.add.group();
-
     const codeTexts = isCorrect
-      ? ["def func():", "import numpy", "class MyClass:"] // Python snippets
-      : ["function myFunc() {}", "#include <iostream>", "<div></div>"]; // Non-Python snippets
+      ? ["const a = 0;", "let b = 'Node';", "require('http');"]
+      : ["var x = 10;", "#include <iostream>", "<div></div>"];
 
     for (let i = 0; i < codeTexts.length; i++) {
-      let x = Phaser.Math.Between(100, 700);
-      let y = Phaser.Math.Between(100, 500);
+      let text = this.add
+        .text(0, 0, codeTexts[i], {
+          font: "16px Arial",
+          fill: "#fff",
+          backgroundColor: "#000a",
+          padding: { x: 5, y: 3 },
+        })
+        .setOrigin(0.5, 0.5);
 
-      let text = this.add.text(x, y, codeTexts[i], {
-        font: "16px Arial",
-        fill: "#fff",
-        backgroundColor: "#000a",
-        padding: { x: 5, y: 3 },
-      });
+      let physicsBody;
+      let positionFound = false;
 
-      let physicsBody = this.physics.add.sprite(x, y, null).setVisible(false);
+      while (!positionFound) {
+        let x = Phaser.Math.Between(100, 700);
+        let y = Phaser.Math.Between(100, 500);
+
+        physicsBody = this.physics.add.sprite(x, y, null).setVisible(false);
+
+        const existingBodies = group.getChildren();
+        let overlap = existingBodies.some((body) => {
+          return (
+            Math.abs(body.x - x) < text.width &&
+            Math.abs(body.y - y) < text.height
+          );
+        });
+
+        if (!overlap) {
+          positionFound = true;
+          text.setPosition(x, y);
+        } else {
+          physicsBody.destroy();
+        }
+      }
+
       physicsBody.setInteractive();
       physicsBody.setData("isCorrect", isCorrect);
       physicsBody.setData("text", text);
-
       group.add(physicsBody);
     }
 
     return group;
   }
+
   handlePlayerMovement() {
     this.player.setVelocity(0);
 
@@ -147,13 +169,20 @@ class PythonMazeScene extends Phaser.Scene {
     this.player.setActive(false);
     this.player.setVisible(false);
 
+    let endMessage =
+      this.score > 20
+        ? " Congratulations, you passed! \nYour score: " + this.score
+        : "☠️ Game Over! You lose. ☠️\nYour score: " + this.score;
+
     let endText = this.add
-      .text(
-        this.scale.width / 2,
-        this.scale.height / 2,
-        "Game Over! Your score: " + this.score,
-        { fontSize: "32px", fill: "#FFF", fontStyle: "italic" }
-      )
+      .text(this.scale.width / 2, this.scale.height / 2, endMessage, {
+        fontSize: "40px",
+        fill: "#00FF00",
+        fontStyle: "bold",
+        stroke: "#000",
+        strokeThickness: 6,
+        align: "center",
+      })
       .setOrigin(0.5);
 
     endText.setAlpha(0);
@@ -161,8 +190,8 @@ class PythonMazeScene extends Phaser.Scene {
     this.tweens.add({
       targets: endText,
       alpha: 1,
-      duration: 2000,
-      ease: "Sine.easeInOut",
+      duration: 2500,
+      ease: "Power2",
     });
   }
 }

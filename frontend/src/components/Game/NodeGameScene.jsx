@@ -148,13 +148,20 @@ class NodeMazeScene extends Phaser.Scene {
     this.player.setActive(false);
     this.player.setVisible(false);
 
+    let endMessage =
+      this.score > 20
+        ? " Congratulations, you passed! \nYour score: " + this.score
+        : "☠️ Game Over! You lose. ☠️\nYour score: " + this.score;
+
     let endText = this.add
-      .text(
-        this.scale.width / 2,
-        this.scale.height / 2,
-        "Game Over! Your score: " + this.score,
-        { fontSize: "32px", fill: "#FFF", fontStyle: "italic" }
-      )
+      .text(this.scale.width / 2, this.scale.height / 2, endMessage, {
+        fontSize: "40px",
+        fill: "#00C354",
+        fontStyle: "bold",
+        stroke: "#000",
+        strokeThickness: 6,
+        align: "center",
+      })
       .setOrigin(0.5);
 
     endText.setAlpha(0);
@@ -162,8 +169,8 @@ class NodeMazeScene extends Phaser.Scene {
     this.tweens.add({
       targets: endText,
       alpha: 1,
-      duration: 2000,
-      ease: "Sine.easeInOut",
+      duration: 2500,
+      ease: "Power2",
     });
   }
 }
