@@ -26,13 +26,30 @@
 <!-- Tech stack -->
 <img src="./Readme/title3.svg"/>
 
-ByteBattle is built using the following technologies:
+ByteBattle is built using a variety of powerful technologies:
 
-- The frontend is developed with [React](https://reactjs.org/) and [Redux](https://redux.js.org/), providing a robust and responsive user interface.
-- Backend services are powered by [Node.js](https://nodejs.org/) and [ExpressJS](https://expressjs.com/), ensuring efficient server-side operations.
-- For game development, the [Phaser Library](https://phaser.io/) is used, enabling interactive and dynamic game experiences within the platform.
-- The application uses [MongoDB](https://www.mongodb.com/) for database management, offering scalable and flexible data storage.
-- Additional libraries and tools like [multer](https://www.npmjs.com/package/multer) for file uploads and various React and Redux dependencies enhance the functionality and user experience.
+### Frontend
+
+- **React**: A JavaScript library for building user interfaces. [Learn more](https://reactjs.org/)
+- **Redux**: A predictable state container for JavaScript apps. [Learn more](https://redux.js.org/)
+
+### Backend
+
+- **Node.js**: A JavaScript runtime built on Chrome's V8 JavaScript engine. [Learn more](https://nodejs.org/)
+- **ExpressJS**: A minimal and flexible Node.js web application framework. [Learn more](https://expressjs.com/)
+
+### Game Development
+
+- **Phaser Library**: A fast, free, and fun open source framework for Canvas and WebGL powered browser games. [Learn more](https://phaser.io/)
+
+### Database
+
+- **MongoDB**: A general purpose, document-based, distributed database built for modern application developers. [Learn more](https://www.mongodb.com/)
+
+### Additional Libraries and Tools
+
+- **multer**: A node.js middleware for handling `multipart/form-data`, primarily used for uploading files. [Learn more](https://www.npmjs.com/package/multer)
+- Various other React and Redux dependencies for enhanced functionality and user experience.
 
 <br><br>
 
@@ -45,9 +62,9 @@ ByteBattle is built using the following technologies:
 
 ### Mockups
 
-| Dashboard Screen                                | Register Screen                             |
-| ------------------------------------------ | ------------------------------------------- |
-| ![Dashboard Screen](./Readme/Dashboard.png)   | ![Register Screen](./Readme/Register.png)   |
+| Dashboard Screen                            | Register Screen                           |
+| ------------------------------------------- | ----------------------------------------- |
+| ![Dashboard Screen](./Readme/Dashboard.png) | ![Register Screen](./Readme/Register.png) |
 
 <br><br>
 
