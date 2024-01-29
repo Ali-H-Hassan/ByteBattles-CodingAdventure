@@ -30,25 +30,25 @@ ByteBattle is built using a variety of powerful technologies:
 
 ### Frontend
 
-- **React**: A JavaScript library for building user interfaces. [Learn more](https://reactjs.org/)
-- **Redux**: A predictable state container for JavaScript apps. [Learn more](https://redux.js.org/)
+- **[React](https://reactjs.org/)**: A JavaScript library for building user interfaces.
+- **[Redux](https://redux.js.org/)**: A predictable state container for JavaScript apps.
 
 ### Backend
 
-- **Node.js**: A JavaScript runtime built on Chrome's V8 JavaScript engine. [Learn more](https://nodejs.org/)
-- **ExpressJS**: A minimal and flexible Node.js web application framework. [Learn more](https://expressjs.com/)
+- **[Node.js](https://nodejs.org/)**: A JavaScript runtime built on Chrome's V8 JavaScript engine.
+- **[ExpressJS](https://expressjs.com/)**: A minimal and flexible Node.js web application framework.
 
 ### Game Development
 
-- **Phaser Library**: A fast, free, and fun open source framework for Canvas and WebGL powered browser games. [Learn more](https://phaser.io/)
+- **[Phaser Library](https://phaser.io/)**: A fast, free, and fun open source framework for Canvas and WebGL powered browser games.
 
 ### Database
 
-- **MongoDB**: A general purpose, document-based, distributed database built for modern application developers. [Learn more](https://www.mongodb.com/)
+- **[MongoDB](https://www.mongodb.com/)**: A general purpose, document-based, distributed database built for modern application developers.
 
 ### Additional Libraries and Tools
 
-- **multer**: A node.js middleware for handling `multipart/form-data`, primarily used for uploading files. [Learn more](https://www.npmjs.com/package/multer)
+- **[multer](https://www.npmjs.com/package/multer)**: A node.js middleware for handling `multipart/form-data`, primarily used for uploading files.
 - Various other React and Redux dependencies for enhanced functionality and user experience.
 
 <br><br>
