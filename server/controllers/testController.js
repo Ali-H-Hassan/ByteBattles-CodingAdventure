@@ -1,7 +1,6 @@
 const Test = require("../models/test");
 const mongoose = require("mongoose");
 exports.createTest = async (req, res) => {
-  console.log("Request body:", req.body);
   try {
     const newTest = new Test(req.body);
     const savedTest = await newTest.save();
@@ -46,7 +45,6 @@ exports.updateTestById = async (req, res) => {
   }
 };
 exports.getTestsByCompanyId = async (req, res) => {
-  console.log(req.query);
   try {
     const companyTests = await Test.find({
       createdBy: req.query.companyId.trim(),

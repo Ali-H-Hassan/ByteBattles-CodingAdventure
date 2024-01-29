@@ -31,6 +31,11 @@ app.use("/api/tests", testRoutes);
 app.get("/", (req, res) => {
   res.send("Welcome to my application");
 });
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+
+module.exports = app;
+
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}

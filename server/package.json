@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --require esm"
   },
   "keywords": [],
   "author": "",
@@ -27,8 +27,9 @@
     "vm2": "^3.9.19"
   },
   "devDependencies": {
-    "chai": "^5.0.3",
+    "chai": "^4.3.4",
     "chai-http": "^4.4.0",
+    "esm": "^3.2.25",
     "mocha": "^10.2.0",
     "nodemon": "^3.0.3"
   }
