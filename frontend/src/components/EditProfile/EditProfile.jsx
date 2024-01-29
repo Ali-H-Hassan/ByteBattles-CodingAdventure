@@ -94,26 +94,44 @@ const EditProfile = () => {
   return (
     <div className="edit-profile-container">
       <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <div className="form-group">
-          <label htmlFor="Name">Full Name</label>
+        <div className="profile-image-container">
+          <img src={profilePicture} alt="Profile" className="profile-image" />
+          <label htmlFor="profilePicture" className="edit-image-button">
+            Edit Image
+          </label>
           <input
-            type="text"
-            id="Name"
-            name="name"
-            value={profile.name}
-            onChange={handleChange}
-          />
-          <label htmlFor="lastName">Username</label>
-          <input
-            type="text"
-            id="Username"
-            name="username"
-            value={profile.username}
-            onChange={handleChange}
-            required
+            type="file"
+            id="profilePicture"
+            name="profilePicture"
+            ref={fileInputRef}
+            onChange={handleProfilePictureChange}
+            hidden
           />
         </div>
-        <div className="form-group">
+        <div className="form-group half-width">
+          <div>
+            <label htmlFor="Name">Full Name</label>
+            <input
+              type="text"
+              id="Name"
+              name="name"
+              value={profile.name}
+              onChange={handleChange}
+            />
+          </div>
+          <div>
+            <label htmlFor="Username">Username</label>
+            <input
+              type="text"
+              id="Username"
+              name="username"
+              value={profile.username}
+              onChange={handleChange}
+              required
+            />
+          </div>
+        </div>
+        <div className="form-group full-width">
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -124,7 +142,7 @@ const EditProfile = () => {
             required
           />
         </div>
-        <div className="form-group">
+        <div className="form-group full-width">
           <label htmlFor="address">Address</label>
           <input
             type="text"
@@ -134,7 +152,7 @@ const EditProfile = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="form-group">
+        <div className="form-group full-width">
           <label htmlFor="contactNumber">Contact Number</label>
           <input
             type="tel"
@@ -144,40 +162,45 @@ const EditProfile = () => {
             onChange={handleChange}
           />
         </div>
-        <div className="form-group">
-          <label htmlFor="country">Country</label>
-          <select
-            id="country"
-            name="country"
-            value={profile.country}
-            onChange={handleChange}
-          >
-            <option value="">Select a country</option>
-            {countries.map((country) => (
-              <option key={country} value={country}>
-                {country}
-              </option>
-            ))}
-          </select>
-          <label htmlFor="city">City</label>
-          <select
-            id="city"
-            name="city"
-            value={profile.city}
-            onChange={handleChange}
-            disabled={!profile.country}
-          >
-            <option value="">Select a city</option>
-            {profile.country && cities[profile.country]
-              ? cities[profile.country].map((city) => (
+        <div className="form-group half-width">
+          <div>
+            <label htmlFor="country">Country</label>
+            <select
+              id="country"
+              name="country"
+              value={profile.country}
+              onChange={handleChange}
+            >
+              <option value="">Select a country</option>
+              {countries.map((country) => (
+                <option key={country} value={country}>
+                  {country}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="city">City</label>
+            <select
+              id="city"
+              name="city"
+              value={profile.city}
+              onChange={handleChange}
+              disabled={!profile.country}
+            >
+              <option value="">Select a city</option>
+              {profile.country &&
+                Array.isArray(cities[profile.country]) &&
+                cities[profile.country].map((city) => (
                   <option key={city} value={city}>
                     {city}
                   </option>
-                ))
-              : null}
-          </select>
+                ))}
+            </select>
+          </div>
         </div>
-        <div className="form-group">
+
+        <div className="form-group full-width">
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -201,20 +224,6 @@ const EditProfile = () => {
           </button>
         </div>
       </form>
-      <div className="profile-image-container">
-        <img src={Avatar} alt="Profile" className="profile-image" />
-        <label htmlFor="profilePicture" className="edit-image-button">
-          Edit Image
-        </label>
-        <input
-          type="file"
-          id="profilePicture"
-          name="profilePicture"
-          ref={fileInputRef}
-          onChange={handleProfilePictureChange}
-          hidden
-        />
-      </div>
     </div>
   );
 };

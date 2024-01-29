@@ -1,138 +1,122 @@
 .edit-profile-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  padding: 60px;
-  background: linear-gradient(145deg, #ffffff, #e6e6e6);
-  border-radius: 20px;
-  max-width: 1200px;
-  box-shadow: 5px 5px 20px #aaaaaa;
-  margin: auto;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-  gap: 50px;
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 40px;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  font-family: "Poppins", sans-serif;
 }
 
-.edit-profile-container:hover {
-  transform: translateY(-10px);
-  box-shadow: 10px 10px 25px #888888;
-}
-
-.form-section,
-.profile-section {
-  flex-basis: calc(50% - 40px);
-  margin: 20px;
+.edit-profile-container .form-group {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  margin-bottom: 25px;
 }
 
-.profile-image-container {
+.edit-profile-container .form-group.half-width {
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.edit-profile-container .form-group.half-width > div {
+  flex: 1;
+}
+
+.edit-profile-container input,
+.edit-profile-container select {
+  width: calc(50% - 10px);
+  margin: 0 5px;
+  padding: 15px;
+  border: none;
+  border-bottom: 2px solid #eaeaea;
+  font-size: 14px;
+}
+
+.edit-profile-container input:focus,
+.edit-profile-container select:focus {
+  border-bottom-color: #00c354;
+  outline: none;
+}
+
+.edit-profile-container .form-group.full-width > input,
+.edit-profile-container .form-group.full-width > select {
+  width: 100%;
+  margin: 0;
+}
+
+.edit-profile-container .profile-image-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 30px;
-  transition: all 0.3s ease;
 }
 
-.profile-image-container:hover {
-  transform: scale(1.1);
-}
-
-.profile-image {
-  width: 220px;
-  height: 220px;
+.edit-profile-container .profile-image {
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 5px solid #e0e0e0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.edit-image-button {
-  background-color: #007bff;
+.edit-profile-container .edit-image-button {
+  background-color: #00c354;
   color: white;
-  border-radius: 10px;
-  padding: 12px 18px;
-  margin-top: 20px;
+  padding: 8px 16px;
+  border-radius: 20px;
   cursor: pointer;
-  border: none;
-  transition: background-color 0.2s, transform 0.2s;
-  font-weight: bold;
+  font-weight: 500;
+  margin-top: 10px;
 }
 
-.edit-image-button:hover {
-  background-color: #0056b3;
-  transform: translateY(-3px);
-}
-
-.form-group label {
-  font-size: 24px;
-  color: #333;
-  margin-bottom: 15px;
-  text-align: left;
-  margin-left: 15px;
-  margin-right: 15px;
-  font-weight: bold;
-}
-
-.form-group input,
-.form-group select {
-  padding: 15px 18px;
-  margin-bottom: 25px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  font-size: 18px;
-  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.form-buttons {
+.edit-profile-container .form-buttons {
   display: flex;
   justify-content: space-between;
+  gap: 20px;
+  margin-top: 30px;
 }
 
-.cancel-button,
-.save-button {
-  padding: 15px 25px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 18px;
-  transition: background-color 0.2s, transform 0.2s;
-  font-weight: bold;
-}
-
-.cancel-button {
-  color: #ff6b6b;
-  border: 2px solid transparent;
-  background-color: transparent;
-}
-
-.cancel-button:hover {
-  background-color: #ff6b6b;
-  color: white;
-  transform: translateY(-3px);
-}
-
-.save-button {
-  background-color: #28a745;
-  color: white;
+.edit-profile-container .cancel-button,
+.edit-profile-container .save-button {
+  flex: 1;
+  padding: 15px 20px;
   border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 16px;
 }
 
-.save-button:hover {
-  background-color: #218838;
-  transform: translateY(-3px);
+.edit-profile-container .cancel-button {
+  background-color: #eaeaea;
+  color: #333;
 }
 
+.edit-profile-container .save-button {
+  background-color: #00c354;
+  color: white;
+}
+.edit-profile-container label {
+  font-size: 20px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
 @media (max-width: 768px) {
   .edit-profile-container {
+    padding: 20px;
+  }
+
+  .edit-profile-container .form-group.half-width {
     flex-direction: column;
-    padding: 30px;
   }
 
-  .form-section,
-  .profile-section {
-    flex-basis: 100%;
+  .edit-profile-container .form-buttons {
+    flex-direction: column;
   }
 
-  .form-buttons button {
+  .edit-profile-container .cancel-button,
+  .edit-profile-container .save-button {
     width: 100%;
     margin-bottom: 15px;
   }
