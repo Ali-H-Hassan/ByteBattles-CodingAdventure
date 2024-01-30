@@ -36,7 +36,7 @@ ByteBattle is built using a variety of powerful technologies:
 ### Backend
 
 - **[Node.js](https://nodejs.org/)**: A JavaScript runtime built on Chrome's V8 JavaScript engine.
-- **[ExpressJS](https://expressjs.com/)**: A minimal and flexible Node.js web application framework.
+- **[Express.js](https://expressjs.com/)**: A minimal and flexible Node.js web application framework.
 
 ### Game Development
 
@@ -73,7 +73,10 @@ ByteBattle is built using a variety of powerful technologies:
 
 The database schema is structured to support user data, educational content, game data, and test results.
 <br><br>
-<img src="./Readme/ByteBattleDiagram.png">
+
+| MongoDB Database Design                                    |
+| ---------------------------------------------------------- |
+| ![MongoDB Database Design](./Readme/ByteBattleDiagram.png) |
 
 <br><br>
 
