@@ -34,7 +34,7 @@ const TestHeader = ({ initialTime }) => {
     <div className="test-header">
       <div className="test-header-logo">
         <img src={Amazon} alt="Logo" className="test-logo" />
-        <span>TCS Quiz Competition</span>
+        <span>Amazon Quiz Competition</span>
       </div>
       <div className="test-header-timer">
         <div className="timer-icon">

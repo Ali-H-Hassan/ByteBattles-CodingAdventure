@@ -25,6 +25,9 @@
   font-size: 20px;
   width: 100%;
   cursor: pointer;
+  text-transform: none;
+  font-weight: normal;
+  letter-spacing: normal;
 }
 
 .sidebar-button:hover {
