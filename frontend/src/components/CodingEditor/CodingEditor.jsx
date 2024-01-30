@@ -17,6 +17,7 @@ const CodingEditor = ({ code, handleCodeChange }) => {
     readOnly: false,
     cursorStyle: "line",
     automaticLayout: true,
+    fontSize: 18,
   };
 
   return (
