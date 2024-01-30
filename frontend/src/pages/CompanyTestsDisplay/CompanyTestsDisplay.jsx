@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCompanyTests } from "../../redux/test/testActions";
 import TestCard from "../../components/TestCard/TestCard";
-
+import "./CompanyTestsDisplay.css";
 const CompanyTestsDisplay = () => {
   const dispatch = useDispatch();
   const companyId = useSelector((state) => state.auth.user._id);

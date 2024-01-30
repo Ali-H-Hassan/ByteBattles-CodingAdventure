@@ -4,7 +4,7 @@ import { fetchTests } from "../../redux/test/testActions";
 import Header from "../../components/DashHeader/DashHeader";
 import TestCard from "../../components/TestCard/TestCard";
 import "./Test.css";
-import Amazon from "../../assets/DefaultLogo.jpeg";
+import DefaultLogo from "../../assets/DefaultLogo.jpeg";
 import { useNavigate } from "react-router-dom";
 const TestsPage = () => {
   const dispatch = useDispatch();
@@ -34,7 +34,7 @@ const TestsPage = () => {
           <TestCard
             key={test._id}
             id={test._id}
-            logo={test.logo || Amazon}
+            logo={test.logo || DefaultLogo}
             title={test.title}
             subtitle={test.subtitle}
             status={test.status}

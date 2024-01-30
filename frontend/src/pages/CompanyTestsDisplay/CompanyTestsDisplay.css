@@ -1,10 +1,9 @@
 .company-tests-display {
-  flex-grow: 1;
-  margin-right: 100px;
-  background-color: #f9f9f9;
-  overflow-y: auto;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
+  margin-top: 40px;
 }
 
 .test-card-container {
@@ -27,18 +26,4 @@
   font-size: 1rem;
   margin-bottom: 15px;
   text-align: justify;
-}
-
-.test-card-details {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-}
-
-.test-loading,
-.test-error,
-.test-no-data {
-  text-align: center;
-  font-size: 1rem;
-  margin-top: 20px;
 }

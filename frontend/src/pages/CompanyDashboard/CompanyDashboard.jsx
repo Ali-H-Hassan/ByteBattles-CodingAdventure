@@ -40,10 +40,8 @@ function CompanyDashboard() {
 
       <div className="main-content">
         {selectedOption !== "profile" && <Header username={username} />}
-        {selectedOption !== "profile" && (
-          <div className="content-grid">
-            {selectedOption === "tests" && <CompanyTestsDisplay />}
-          </div>
+        {selectedOption !== "profile" && selectedOption === "tests" && (
+          <CompanyTestsDisplay />
         )}
         {selectedOption === "profile" && <EditProfile />}
         {selectedOption === "dashboard" && <DashboardHome />}
