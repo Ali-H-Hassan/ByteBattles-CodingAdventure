@@ -45,7 +45,7 @@ const DisplayTest = () => {
 
   return (
     <div className="display-test-container">
-      <TestHeader timeLeft="00:20:30" />
+      <TestHeader initialTime={1230} />
       <div className="test-display-flex-container">
         <TestSidebar
           currentSection={currentSection}
@@ -76,7 +76,7 @@ const DisplayTest = () => {
             <ProgrammingQuestion
               problemStatement={test.programmingQuestion.questionText}
               starterCode={test.programmingQuestion.starterCode}
-              onCodeChange={handleProgrammingAnswerChange}
+              handleCodeChange={handleProgrammingAnswerChange}
             />
           )}
         </div>

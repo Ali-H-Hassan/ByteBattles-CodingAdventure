@@ -8,15 +8,17 @@ const ProgrammingQuestion = ({
   starterCode,
   handleCodeChange,
   onTestSubmit,
+  onSubmitCode,
 }) => {
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
-    if (onTestSubmit) {
-      onTestSubmit();
+  const handleSubmit = async () => {
+    if (onSubmitCode) {
+      await onSubmitCode();
     }
     navigate("/thank-you");
   };
+
   return (
     <div className="test-programming-container">
       <div className="test-problem-statement">{problemStatement}</div>
