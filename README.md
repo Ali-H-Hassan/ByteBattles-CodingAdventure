@@ -85,6 +85,9 @@ The database schema is structured to support user data, educational content, gam
 
 ### User Interface (Web)
 
+https://github.com/Ali-H-Hassan/ByteBattles-CodingAdventure/assets/64877225/b4b522d1-81db-4cc9-bdd0-f8b6fd7a9df4
+
+
 | AI Battle                                          | Course Selection                                    |
 | -------------------------------------------------- | --------------------------------------------------- |
 | ![AI Battle](./Readme/AIBattle.gif)                | ![Course Selection](./Readme/CourseDisplay.gif)     |
