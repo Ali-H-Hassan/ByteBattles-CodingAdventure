@@ -31,15 +31,7 @@ const TestsPage = () => {
       <Header username={username} profilePic={profilePic} />
       <div className="tests-container">
         {tests.map((test) => (
-          <TestCard
-            key={test._id}
-            id={test._id}
-            logo={test.logo || DefaultLogo}
-            title={test.title}
-            subtitle={test.subtitle}
-            status={test.status}
-            onClick={() => navigate(`/test/${test._id}`)}
-          />
+          <TestCard key={test._id} test={test} />
         ))}
       </div>
     </div>

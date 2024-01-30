@@ -6,24 +6,33 @@ import "./TestCard.css";
 import defaultLogo from "../../assets/DefaultLogo.jpeg";
 
 const TestCard = ({ test }) => {
-  const { _id: id, logo, title, subtitle, status } = test;
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleTestClick = () => {
-    dispatch(fetchTestById(id));
-    navigate(`/tests/${id}`);
-  };
+  if (!test) {
+    return null;
+  }
 
-  const displayedLogo = logo || defaultLogo;
+  const {
+    _id: id,
+    logo = defaultLogo,
+    title = "No Title",
+    status = "defaultStatus",
+  } = test;
+
+  const handleTestClick = () => {
+    if (id) {
+      dispatch(fetchTestById(id));
+      navigate(`/tests/${id}`);
+    }
+  };
 
   return (
     <div className={`test-card-main ${status}`} onClick={handleTestClick}>
       <div className="test-card-header"></div>
       <div className="test-card-body">
-        <img src={displayedLogo} alt={`${title} logo`} className="test-logo" />
+        <img src={logo} alt={`${title} logo`} className="test-logo" />
         <h3 className="test-title">{title}</h3>
-        <p className="test-subtitle">{subtitle}</p>
       </div>
     </div>
   );
