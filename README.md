@@ -113,7 +113,9 @@ ByteBattle introduces an interactive AI that users can challenge in coding duels
 
 The backend, built on Node.js, securely executes code and evaluates performance. The AI's feedback is generated through advanced natural language processing, assisting users in enhancing their coding prowess.
 
-![AI Code Snippet](./Readme/AISnippet.png)
+| Google Gemini AI                           |
+| ------------------------------------------ |
+| ![AI Code Snippet](./Readme/AISnippet.png) |
 
 <br><br>
 
