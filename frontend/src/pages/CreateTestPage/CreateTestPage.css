@@ -1,94 +1,103 @@
 .create-test-page {
   background-color: #fff;
   color: #333;
-  padding: 40px;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
   border-radius: 15px;
+  width: 100%;
   max-width: 800px;
-  margin: 50px auto;
+  margin: clamp(1.5rem, 4vw, 3rem) auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   font-family: "Arial", sans-serif;
+  box-sizing: border-box;
 }
 
 .create-test-title {
   color: #00c354;
   text-align: center;
-  margin-bottom: 50px;
-  font-size: 2.8rem;
+  margin-bottom: clamp(1.5rem, 4vw, 3rem);
+  font-size: clamp(1.5rem, 4vw, 2.8rem);
   font-weight: 700;
 }
 
 .create-test-form {
   display: grid;
-  grid-gap: 30px;
+  grid-gap: clamp(1rem, 3vw, 1.875rem);
 }
 
 .form-label {
   font-weight: 600;
-  margin-bottom: 15px;
+  margin-bottom: clamp(0.5rem, 1.5vw, 0.9rem);
   color: #444;
-  font-size: 20px;
+  font-size: clamp(1rem, 2vw, 1.25rem);
 }
 
 .form-control {
-  padding: 12px 20px;
+  padding: clamp(0.625rem, 2vw, 0.75rem) clamp(1rem, 2vw, 1.25rem);
   border-radius: 6px;
   border: 2px solid #ddd;
-  margin-bottom: 20px;
-  font-size: 1rem;
+  margin-bottom: clamp(0.75rem, 2vw, 1.25rem);
+  font-size: clamp(0.875rem, 2vw, 1rem);
   transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .form-control:focus {
   border-color: #00c354;
   box-shadow: 0 0 8px rgba(0, 195, 84, 0.2);
+  outline: none;
 }
 
 .mcq-question-block,
 .programming-question-container {
   background-color: #f9f9f9;
   border-radius: 10px;
-  padding: 20px;
-  margin-bottom: 30px;
+  padding: clamp(1rem, 2.5vw, 1.25rem);
+  margin-bottom: clamp(1rem, 3vw, 1.875rem);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .mcq-options-container {
   display: grid;
-  grid-gap: 15px;
-  margin-top: 20px;
+  grid-gap: clamp(0.75rem, 2vw, 1rem);
+  margin-top: clamp(1rem, 2vw, 1.25rem);
 }
 
 .mcq-option-label {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .mcq-option-label input[type="radio"] {
-  margin-right: 15px;
+  margin-right: clamp(0.5rem, 1.5vw, 0.9rem);
   cursor: pointer;
   accent-color: #00c354;
+  flex-shrink: 0;
 }
 
 .mcq-option-label input[type="text"] {
   flex-grow: 1;
-  padding: 10px 15px;
+  padding: clamp(0.5rem, 1.5vw, 0.625rem) clamp(0.75rem, 2vw, 1rem);
   border: 2px solid #ddd;
   border-radius: 6px;
   transition: border-color 0.2s;
+  font-size: clamp(0.875rem, 2vw, 1rem);
 }
 
 .mcq-option-label input[type="text"]:focus {
   border-color: #00c354;
+  outline: none;
 }
 
 .add-mcq-button,
 .add-test-case-button {
   background-color: #00c354;
   color: white;
-  padding: 12px 25px;
+  padding: clamp(0.625rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
   border-radius: 8px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: clamp(0.875rem, 2vw, 1rem);
   transition: background-color 0.3s;
   border: none;
   width: fit-content;
@@ -102,7 +111,7 @@
 
 .test-case-container {
   border-radius: 8px;
-  padding: 15px;
+  padding: clamp(0.75rem, 2vw, 1rem);
   background-color: #f9f9f9;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
@@ -110,14 +119,20 @@
 .submit-test-button {
   background-color: #00c354;
   color: white;
-  padding: 15px 30px;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem);
   border-radius: 8px;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
   font-weight: bold;
   transition: background-color 0.3s;
   box-shadow: 0 4px 12px rgba(0, 195, 84, 0.3);
-  margin-top: 30px;
+  margin-top: clamp(1rem, 3vw, 1.875rem);
+  border: none;
+  width: 100%;
+  max-width: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
 }
 
 .submit-test-button:hover {
@@ -125,9 +140,9 @@
 }
 
 .form-control.text-area {
-  min-height: 120px;
+  min-height: clamp(80px, 15vw, 120px);
   resize: vertical;
-  padding: 15px;
+  padding: clamp(0.75rem, 2vw, 1rem);
   line-height: 1.5;
   font-family: "Arial", sans-serif;
 }
@@ -149,11 +164,41 @@
 
 .form-label.text-area-label {
   display: block;
-  margin-top: 20px;
+  margin-top: clamp(1rem, 2vw, 1.25rem);
 }
 
 button {
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .create-test-page {
+    margin: var(--spacing-sm, 1rem);
+    padding: var(--spacing-md, 1.5rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .create-test-page {
+    margin: 0.5rem;
+    padding: 1rem;
+    border-radius: 10px;
+  }
+
+  .mcq-option-label {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .mcq-option-label input[type="radio"] {
+    margin-right: 0;
+  }
+
+  .mcq-option-label input[type="text"] {
+    width: 100%;
+  }
 }

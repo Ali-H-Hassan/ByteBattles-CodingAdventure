@@ -2,7 +2,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 20px;
+  padding-bottom: clamp(1rem, 2vw, 1.25rem);
+  flex-wrap: wrap;
+  gap: var(--spacing-sm, 1rem);
 }
 
 .welcome-message h1,
@@ -10,38 +12,96 @@
   margin: 0;
 }
 
+.welcome-message h1 {
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.welcome-message p {
+  font-size: clamp(0.875rem, 2vw, 1.25rem);
+}
+
 .search-bar {
   position: relative;
-  padding-left: 235px;
+  flex: 1;
+  max-width: 400px;
+  min-width: 200px;
 }
 
 .search-bar input {
-  width: 400px;
-  height: 50px;
-  padding: 8px 32px 8px 8px;
+  width: 100%;
+  height: clamp(2.5rem, 5vw, 3rem);
+  padding: 0.5rem 2.5rem 0.5rem 1rem;
   border-radius: 20px;
   border: 1px solid #ccc;
-  font-size: 20px;
+  font-size: clamp(0.875rem, 2vw, 1.125rem);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-bar input:focus {
+  border-color: #00c354;
+  box-shadow: 0 0 0 3px rgba(0, 195, 84, 0.2);
+  outline: none;
 }
 
 .search-bar img {
   position: absolute;
-  right: 8px;
+  right: 12px;
   top: 50%;
   transform: translateY(-50%);
   cursor: pointer;
+  width: clamp(1rem, 2vw, 1.25rem);
+  height: auto;
 }
 
 .profile-icon img {
-  width: 70px;
+  width: clamp(2.5rem, 5vw, 4rem);
   height: auto;
   border-radius: 50%;
+  flex-shrink: 0;
 }
 
-.welcome-message h1 {
-  font-size: 44px;
+/* Tablet */
+@media (max-width: 1024px) {
+  .main-header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--spacing-sm, 1rem);
+  }
+
+  .search-bar {
+    max-width: 100%;
+    order: 3;
+  }
+
+  .profile-icon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
 }
 
-.welcome-message p {
-  font-size: 20px;
+/* Mobile */
+@media (max-width: 768px) {
+  .main-header {
+    position: relative;
+    padding-top: 3rem;
+  }
+
+  .welcome-message {
+    text-align: center;
+  }
+
+  .search-bar {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .welcome-message h1 {
+    font-size: 1.5rem;
+  }
+
+  .welcome-message p {
+    font-size: 0.875rem;
+  }
 }

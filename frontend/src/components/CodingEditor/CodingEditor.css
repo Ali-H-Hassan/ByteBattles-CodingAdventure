@@ -1,7 +1,18 @@
 .coding-editor-container {
-  margin-bottom: 20px;
+  margin-bottom: clamp(1rem, 2vw, 1.25rem);
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #1e1e1e;
   text-align: left;
+  overflow: hidden;
+}
+
+.coding-editor-container .monaco-editor {
+  min-height: 300px;
+}
+
+@media (max-width: 768px) {
+  .coding-editor-container {
+    border-radius: 6px;
+  }
 }

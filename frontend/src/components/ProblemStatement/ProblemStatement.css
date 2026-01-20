@@ -1,6 +1,6 @@
 .problem-statement-container {
-  margin-bottom: 30px;
-  padding: 25px;
+  margin-bottom: clamp(1rem, 3vw, 1.875rem);
+  padding: clamp(1rem, 3vw, 1.5rem);
   border: 2px solid #4a4a4a;
   border-radius: 12px;
   background: linear-gradient(145deg, #ffffff, #e6e6e6);
@@ -16,8 +16,8 @@
 
 .problem-statement-container h2 {
   color: #2c3e50;
-  font-size: 2em;
-  margin-bottom: 15px;
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  margin-bottom: clamp(0.75rem, 2vw, 1rem);
   text-align: center;
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -25,6 +25,12 @@
 
 .problem-statement-container p {
   color: #333333;
-  font-size: 1.2em;
+  font-size: clamp(1rem, 2vw, 1.2rem);
   line-height: 1.8;
+}
+
+@media (max-width: 768px) {
+  .problem-statement-container {
+    border-radius: 8px;
+  }
 }

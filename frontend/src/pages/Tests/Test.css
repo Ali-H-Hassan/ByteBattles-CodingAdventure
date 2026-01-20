@@ -1,19 +1,24 @@
 .tests-container {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-  padding: 20px;
-  margin-top: 40px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: clamp(1rem, 3vw, 1.5rem);
+  padding: clamp(1rem, 3vw, 1.5rem);
+  margin-top: clamp(1.5rem, 4vw, 2.5rem);
 }
 
+/* Tablet */
 @media (max-width: 768px) {
   .tests-container {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    padding: var(--spacing-sm, 1rem);
+    gap: var(--spacing-md, 1.5rem);
   }
 }
 
+/* Mobile */
 @media (max-width: 480px) {
   .tests-container {
     grid-template-columns: 1fr;
+    padding: 0.75rem;
   }
 }

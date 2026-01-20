@@ -1,6 +1,8 @@
 .aibattle-mode-container {
-  max-width: 90%;
-  padding: 50px;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 4vw, 3rem);
   box-sizing: border-box;
   background: #ffffff;
   border-radius: 20px;
@@ -15,8 +17,8 @@
 
 .aibattle-mode-container h1 {
   text-align: center;
-  margin-bottom: 40px;
-  font-size: 2.5rem;
+  margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   color: #2c3e50;
   font-weight: 800;
   letter-spacing: -1px;
@@ -24,17 +26,17 @@
 }
 
 .aibattle-mode-container h1:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
 .aibattle-mode-submit-btn {
   display: block;
   width: auto;
-  padding: 20px 40px;
-  margin-top: 30px;
+  padding: clamp(1rem, 2.5vw, 1.25rem) clamp(1.5rem, 4vw, 2.5rem);
+  margin-top: clamp(1rem, 3vw, 1.875rem);
   margin-left: auto;
   margin-right: auto;
-  font-size: 1.125rem;
+  font-size: clamp(0.9rem, 2vw, 1.125rem);
   font-weight: 700;
   text-transform: uppercase;
   color: #fff;
@@ -47,7 +49,7 @@
 }
 
 .aibattle-mode-submit-btn:hover {
-  background-color: #00c354;
+  background-color: #009f48;
   box-shadow: 0 6px 20px rgba(90, 103, 216, 0.5);
   transform: translatey(-3px) scale(1.02);
 }
@@ -69,36 +71,62 @@
   box-shadow: 0 0 0 4px rgba(103, 126, 234, 0.5);
 }
 
-input,
-textarea,
-select {
+.aibattle-mode-container input,
+.aibattle-mode-container textarea,
+.aibattle-mode-container select {
   border: 1px solid #d1d1d1;
   border-radius: 8px;
-  padding: 12px;
-  font-size: 1rem;
+  padding: clamp(0.625rem, 2vw, 0.75rem);
+  font-size: clamp(0.875rem, 2vw, 1rem);
   transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-input:focus,
-textarea:focus,
-select:focus {
+.aibattle-mode-container input:focus,
+.aibattle-mode-container textarea:focus,
+.aibattle-mode-container select:focus {
   border-color: #667eea;
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.25);
+  outline: none;
 }
 
+/* Tablet */
+@media (max-width: 1024px) {
+  .aibattle-mode-container {
+    margin: clamp(1rem, 3vw, 2rem);
+  }
+}
+
+/* Mobile */
 @media (max-width: 768px) {
   .aibattle-mode-container {
-    margin: 30px;
-    padding: 30px;
+    margin: var(--spacing-md, 1.5rem);
+    padding: var(--spacing-md, 1.5rem);
+    border-radius: 15px;
   }
 
   .aibattle-mode-container h1 {
-    margin-bottom: 30px;
-    font-size: 2rem;
+    margin-bottom: var(--spacing-md, 1.5rem);
+    font-size: 1.75rem;
   }
 
   .aibattle-mode-submit-btn {
-    padding: 15px 30px;
-    margin-top: 20px;
+    padding: 1rem 2rem;
+    margin-top: var(--spacing-md, 1.5rem);
+    width: 100%;
+    max-width: 280px;
+  }
+}
+
+@media (max-width: 480px) {
+  .aibattle-mode-container {
+    margin: 0.5rem;
+    padding: 1rem;
+    border-radius: 10px;
+  }
+
+  .aibattle-mode-container h1 {
+    font-size: 1.5rem;
   }
 }

@@ -2,8 +2,13 @@
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.1);
-  padding: 30px;
+  padding: clamp(1rem, 3vw, 2rem);
   transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.leaderboard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08), 0 10px 10px rgba(0, 0, 0, 0.1);
 }
 
 .leaderboard-list {
@@ -14,52 +19,57 @@
   flex-direction: column;
   text-align: left;
 }
+
 .section-header {
   display: flex;
   align-items: center;
-  gap: 15px;
-  margin-bottom: 30px;
+  gap: clamp(0.75rem, 2vw, 1rem);
+  margin-bottom: clamp(1rem, 3vw, 1.875rem);
 }
+
 .section-icon {
-  width: 35px;
+  width: clamp(24px, 4vw, 35px);
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
+
 .leaderboard-entry {
   display: flex;
   align-items: center;
-  margin-bottom: 15px;
-  gap: 50px;
+  margin-bottom: clamp(0.75rem, 2vw, 1rem);
+  gap: clamp(1rem, 4vw, 2.5rem);
   transition: transform 0.2s;
   cursor: pointer;
+  padding: clamp(0.5rem, 1vw, 0.75rem);
+  border-radius: 10px;
 }
-.leaderboard-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
+
+.leaderboard-entry:hover {
+  transform: translateX(5px);
+  background-color: rgba(0, 195, 84, 0.05);
 }
+
 .leaderboard-avatar {
-  width: 60px;
+  width: clamp(40px, 6vw, 60px);
   height: auto;
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: clamp(0.5rem, 1vw, 0.625rem);
+  flex-shrink: 0;
 }
 
 .leaderboard-info h3 {
   margin: 0;
-  font-size: 1.2em;
+  font-size: clamp(0.875rem, 2vw, 1.2rem);
 }
 
 .leaderboard-info p {
   margin: 0;
   color: #666;
-  font-size: 0.9em;
+  font-size: clamp(0.75rem, 1.5vw, 0.9rem);
 }
 
 .leaderboard-rank {
-  font-size: 1.5em;
-  margin-right: 10px;
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  margin-right: clamp(0.5rem, 1vw, 0.625rem);
 }
 
 .gold {
@@ -73,11 +83,29 @@
 .bronze {
   color: #cd7f32;
 }
+
 .medal {
-  width: 60px;
+  width: clamp(40px, 6vw, 60px);
   height: auto;
-  margin-right: 10px;
+  margin-right: clamp(0.5rem, 1vw, 0.625rem);
+  flex-shrink: 0;
 }
-.leaderboard-entry:hover {
-  transform: translateX(10px);
+
+/* Mobile */
+@media (max-width: 768px) {
+  .leaderboard-entry {
+    gap: var(--spacing-sm, 1rem);
+  }
+}
+
+@media (max-width: 480px) {
+  .leaderboard-entry {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .leaderboard-info {
+    flex: 1;
+    min-width: 100px;
+  }
 }

@@ -3,15 +3,16 @@
 .courses-grid-container {
   display: grid;
   grid-template-rows: auto 1fr;
-  gap: 15px;
+  gap: clamp(0.75rem, 2vw, 1rem);
   width: 100%;
   max-width: 1000px;
   margin-inline: auto;
+  padding: clamp(0.5rem, 2vw, 1rem);
 }
 
 .courses-header h1 {
   font-family: "Montserrat", sans-serif;
-  font-size: 2rem;
+  font-size: clamp(1.25rem, 3vw, 2rem);
   font-weight: 900;
   margin-bottom: 1em;
   text-align: center;
@@ -20,7 +21,7 @@
 
 .courses-grid-container h2 {
   font-family: "Montserrat", sans-serif;
-  font-size: 1.5rem;
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-weight: 700;
   color: black;
   margin: 0;
@@ -30,13 +31,13 @@
 .courses-display-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: clamp(0.5rem, 1.5vw, 0.625rem);
 }
 
 .courses-display-card {
-  min-width: 100px;
-  min-height: 300px;
-  border-radius: 30px;
+  min-width: clamp(80px, 10vw, 100px);
+  min-height: clamp(200px, 30vw, 300px);
+  border-radius: clamp(15px, 3vw, 30px);
   overflow: hidden;
   display: flex;
   align-items: flex-end;
@@ -68,25 +69,24 @@
   position: absolute;
   left: 10px;
   right: 10px;
-  bottom: 20px;
+  bottom: clamp(10px, 2vw, 20px);
   overflow: hidden;
   transition: all 0.25s ease;
   z-index: 10;
-  justify-content: space-between;
   justify-content: center;
   align-items: center;
   flex-direction: column;
 }
 
 .courses-display-card-active > .courses-display-card-content {
-  inset: 20px;
+  inset: clamp(10px, 2vw, 20px);
   top: auto;
 }
 
 .courses-display-profile-image {
-  min-width: 50px;
-  max-width: 50px;
-  height: 50px;
+  min-width: clamp(35px, 5vw, 50px);
+  max-width: clamp(35px, 5vw, 50px);
+  height: clamp(35px, 5vw, 50px);
   border: 1px solid white;
   display: flex;
   justify-content: center;
@@ -97,8 +97,9 @@
 
 .courses-display-title {
   white-space: nowrap;
-  margin-left: 10px;
+  margin-left: clamp(0.5rem, 1vw, 0.625rem);
   color: rgb(110, 252, 205);
+  font-size: clamp(0.75rem, 1.5vw, 1rem);
 }
 
 .courses-display-backdrop {
@@ -106,7 +107,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 100px;
+  height: clamp(60px, 10vw, 100px);
   z-index: 5;
   background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.7));
 }
@@ -115,8 +116,8 @@
   position: relative;
   text-transform: uppercase;
   color: rgb(110, 252, 205);
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: clamp(0.5rem, 1.5vw, 0.625rem) clamp(0.75rem, 2vw, 1.25rem);
+  font-size: clamp(0.75rem, 1.5vw, 1rem);
   letter-spacing: 1px;
   text-decoration: none;
   box-shadow: 0 10px 30px rgba(255, 255, 255, 0.05);
@@ -126,7 +127,9 @@
   margin: 5px;
   border-radius: 5px;
   cursor: pointer;
+  border: none;
 }
+
 .new-neon-button span {
   position: absolute;
   display: block;
@@ -173,9 +176,11 @@
 .courses-display-card-active .courses-display-profile-image {
   border-color: rgb(110, 252, 205);
 }
+
 .courses-display-card-active .courses-display-profile-image > svg {
   stroke: rgb(110, 252, 205);
 }
+
 @keyframes animate1 {
   0% {
     transform: translateX(-100%);
@@ -209,5 +214,21 @@
   }
   100% {
     transform: translateY(-100%);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .courses-display-container {
+    flex-direction: column;
+  }
+
+  .courses-display-card {
+    min-height: 150px;
+    flex-grow: 1 !important;
+  }
+
+  .courses-display-card-active {
+    flex-grow: 1 !important;
   }
 }

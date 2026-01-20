@@ -4,7 +4,7 @@
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05), 0 6px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  padding: 30px;
+  padding: clamp(1rem, 3vw, 2rem);
   align-items: flex-start;
   transition: transform 0.3s, box-shadow 0.3s;
 }
@@ -18,12 +18,12 @@
   display: flex;
   align-items: center;
   width: 100%;
-  margin-bottom: 30px;
+  margin-bottom: clamp(1rem, 3vw, 1.875rem);
 }
 
 .total-tests-icon {
-  width: 35px;
-  margin-right: 15px;
+  width: clamp(24px, 4vw, 35px);
+  margin-right: clamp(0.75rem, 2vw, 1rem);
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
 }
 
@@ -33,7 +33,7 @@
 }
 
 .tests-number {
-  font-size: 4em;
+  font-size: clamp(2.5rem, 6vw, 4rem);
   color: #00c354;
   font-weight: bold;
   line-height: 1;
@@ -41,13 +41,13 @@
 
 .tests-subtext {
   color: #666;
-  font-size: 24px;
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
   margin-top: 5px;
 }
 
 .total-tests-footer {
   width: 100%;
-  margin-top: 30px;
+  margin-top: clamp(1rem, 3vw, 1.875rem);
   display: flex;
   justify-content: center;
 }
@@ -55,12 +55,12 @@
 .create-test-button {
   background-color: #00c354;
   color: white;
-  padding: 15px 40px;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 4vw, 2.5rem);
   border: none;
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.3s;
-  font-size: 1.1em;
+  font-size: clamp(0.875rem, 2vw, 1.1rem);
   font-weight: bold;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }

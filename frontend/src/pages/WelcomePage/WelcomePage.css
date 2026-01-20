@@ -1,70 +1,81 @@
 .welcome-page {
   text-align: left;
+  overflow-x: hidden;
 }
+
 .welcome-section-one {
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #fff;
-  padding-top: 100px;
+  padding-top: clamp(2rem, 5vw, 4rem);
+  padding-bottom: clamp(2rem, 5vw, 4rem);
 }
 
 .content-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 180px;
-  margin-right: 180px;
-  padding: 50px 100px;
+  width: 100%;
+  max-width: var(--max-width, 1400px);
+  margin-inline: auto;
+  padding: clamp(1rem, 3vw, 2.5rem) clamp(1rem, 5vw, 4rem);
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.text-content {
+  text-align: left;
+  flex: 1;
+  min-width: 0;
 }
 
 .text-content h1 {
-  font-size: 93px;
+  font-size: clamp(2rem, 6vw, 4.5rem);
   color: #2c3e50;
-  margin-bottom: 20px;
+  margin-bottom: clamp(0.75rem, 2vw, 1.25rem);
+  line-height: 1.1;
 }
-.text-content {
-  text-align: left;
-  margin-right: 50px;
-}
+
 .text-content p {
-  font-size: 24px;
+  font-size: clamp(1rem, 2vw, 1.375rem);
   color: #34495e;
-  margin-bottom: 30px;
+  margin-bottom: clamp(1rem, 3vw, 1.875rem);
+  line-height: 1.6;
 }
 
 .cta-button {
   background-color: #4caf50;
   color: #fff;
   border: none;
-  padding: 15px 30px;
-  font-size: 28px;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(1rem, 2vw, 1.5rem);
   cursor: pointer;
   border-radius: 25px;
   text-transform: uppercase;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
 
 .cta-button:hover {
   background-color: #43a047;
+  transform: translateY(-2px);
+}
+
+.image-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
 }
 
 .image-content img {
-  max-width: 550px;
+  max-width: 100%;
+  width: clamp(250px, 40vw, 500px);
   height: auto;
 }
 
-@media (max-width: 768px) {
-  .content-container {
-    flex-direction: column;
-    text-align: center;
-  }
-
-  .image-content img {
-    margin-top: 30px;
-  }
-}
 .green-text {
   color: #00c354;
 }
@@ -73,66 +84,132 @@
   color: grey;
 }
 
+/* Section Two */
 .welcome-section-two {
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #f8f9fa;
+  padding: clamp(2rem, 5vw, 4rem) 0;
 }
 
 .section-two-content-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 100px 180px;
-  padding: 50px 100px;
+  width: 100%;
+  max-width: var(--max-width, 1400px);
+  margin-inline: auto;
+  padding: clamp(1rem, 3vw, 2.5rem) clamp(1rem, 5vw, 4rem);
   flex-direction: row-reverse;
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+
+.section-two-text-content {
+  text-align: left;
+  flex: 1;
+  min-width: 0;
 }
 
 .section-two-text-content h1 {
-  font-size: 48px;
-  color: #2c3e50;
-  margin-bottom: 20px;
-  font-size: 73px;
+  font-size: clamp(1.75rem, 5vw, 3.5rem);
   color: grey;
+  margin-bottom: clamp(0.75rem, 2vw, 1.25rem);
+  line-height: 1.2;
 }
 
 .section-two-text-content p {
-  font-size: 24px;
+  font-size: clamp(1rem, 2vw, 1.375rem);
   color: #34495e;
-  margin-bottom: 30px;
+  margin-bottom: clamp(1rem, 3vw, 1.875rem);
+  line-height: 1.6;
 }
-.section-two-text-content {
-  text-align: left;
-  padding-left: 100px;
-}
+
 .section-two-cta-button {
   background-color: #4caf50;
   color: white;
   border: none;
-  padding: 15px 30px;
-  font-size: 28px;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(1rem, 2vw, 1.5rem);
   cursor: pointer;
   border-radius: 25px;
   text-transform: uppercase;
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
+
 .section-two-cta-button:hover {
   background-color: #43a047;
+  transform: translateY(-2px);
+}
+
+.section-two-image-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
 }
 
 .section-two-image-content img {
-  max-width: 600px;
+  max-width: 100%;
+  width: clamp(250px, 40vw, 500px);
   height: auto;
 }
 
+/* Tablet */
+@media (max-width: 1024px) {
+  .content-container,
+  .section-two-content-container {
+    padding: clamp(1rem, 3vw, 2rem) clamp(1.5rem, 4vw, 3rem);
+  }
+}
+
+/* Mobile */
 @media (max-width: 768px) {
+  .content-container,
   .section-two-content-container {
     flex-direction: column;
     text-align: center;
+    padding: var(--spacing-md, 1.5rem);
   }
 
+  .text-content,
+  .section-two-text-content {
+    text-align: center;
+  }
+
+  .image-content,
+  .section-two-image-content {
+    margin-top: var(--spacing-md, 1.5rem);
+  }
+
+  .image-content img,
   .section-two-image-content img {
-    margin-top: 30px;
+    width: clamp(200px, 70vw, 350px);
+  }
+
+  .cta-button,
+  .section-two-cta-button {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-content h1,
+  .section-two-text-content h1 {
+    font-size: 1.75rem;
+  }
+
+  .text-content p,
+  .section-two-text-content p {
+    font-size: 1rem;
+  }
+
+  .cta-button,
+  .section-two-cta-button {
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
   }
 }

@@ -2,13 +2,16 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 40px 200px;
+  padding: var(--spacing-md, 1.5rem) var(--spacing-lg, 2rem);
   width: 100%;
+  max-width: var(--max-width, 1400px);
+  margin-inline: auto;
+  box-sizing: border-box;
 }
 
 .logo {
   color: #00c354;
-  font-size: 40px;
+  font-size: clamp(1.5rem, 4vw, 2.5rem);
   font-family: "Syne", sans-serif;
   font-weight: 700;
   text-transform: capitalize;
@@ -19,20 +22,26 @@
 .navigation {
   display: flex;
   align-items: center;
+  gap: var(--spacing-sm, 1rem);
 }
 
 .nav-link {
   color: rgba(0, 0, 0, 0.7);
-  font-size: 20px;
+  font-size: clamp(0.875rem, 2vw, 1.125rem);
   font-family: "Syne", sans-serif;
   font-weight: 400;
   text-transform: capitalize;
   word-wrap: break-word;
-  margin-left: 20px; /* Adjust the margin as needed */
-  text-decoration: none; /* Removes underline from links */
+  text-decoration: none;
   background: none;
   border: none;
   cursor: pointer;
+  padding: 0.5rem 1rem;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: #00c354;
 }
 
 .nav-link.login {
@@ -42,34 +51,55 @@
 .nav-link.signup {
   color: white;
   background-color: #00c354;
-  padding: 10px 20px; /* Adjust the padding as needed */
-  border-radius: 5px; /* Adjust the border-radius as needed */
+  padding: 0.625rem 1.25rem;
+  border-radius: 5px;
   text-decoration: none;
-  transition: background-color 0.3s; /* Adds a transition effect for background color */
+  transition: background-color 0.3s;
 }
 
 .nav-link.signup:hover {
-  background-color: #009f48; /* Darkens the button on hover */
+  background-color: #009f48;
 }
 
-/* Responsive design adjustments */
+/* Tablet */
+@media (max-width: 1024px) {
+  .header {
+    padding: var(--spacing-sm, 1rem) var(--spacing-md, 1.5rem);
+  }
+}
+
+/* Mobile */
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
+    gap: var(--spacing-sm, 1rem);
+    padding: var(--spacing-sm, 1rem);
   }
 
   .navigation {
     width: 100%;
-    margin-top: 10px; /* Adjust the margin as needed */
-    justify-content: space-around;
+    justify-content: center;
+    flex-wrap: wrap;
   }
 
   .nav-link {
-    font-size: 16px; /* Adjust font size for smaller screens */
+    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
   }
 
   .logo {
-    font-size: 30px; /* Adjust logo size for smaller screens */
+    font-size: 1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-link {
+    font-size: 0.875rem;
+    padding: 0.5rem;
+  }
+  
+  .nav-link.signup {
+    padding: 0.5rem 1rem;
   }
 }

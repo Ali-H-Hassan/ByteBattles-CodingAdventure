@@ -1,6 +1,6 @@
 .problem-statement-container {
-  margin-bottom: 20px;
-  padding: 15px;
+  margin-bottom: clamp(1rem, 2vw, 1.25rem);
+  padding: clamp(0.75rem, 2vw, 1rem);
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #f9f9f9;
@@ -9,14 +9,14 @@
 
 .problem-statement-container h2 {
   margin-top: 0;
-  margin-bottom: 10px;
+  margin-bottom: clamp(0.5rem, 1.5vw, 0.625rem);
   color: #333;
-  font-size: 1.5em;
+  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
 }
 
 .problem-statement-container p {
   color: #666;
-  font-size: 1em;
+  font-size: clamp(0.875rem, 2vw, 1rem);
   line-height: 1.4;
 }
 
@@ -45,8 +45,8 @@
 }
 
 .results-display-container {
-  margin-top: 20px;
-  padding: 15px;
+  margin-top: clamp(1rem, 2vw, 1.25rem);
+  padding: clamp(0.75rem, 2vw, 1rem);
   border: 1px solid #ddd;
   border-radius: 8px;
   background-color: #f9f9f9;
@@ -56,14 +56,15 @@
 
 .results-display-container h3 {
   margin-top: 0;
-  margin-bottom: 15px;
+  margin-bottom: clamp(0.75rem, 2vw, 1rem);
   color: #333;
-  font-size: 1.4em;
+  font-size: clamp(1rem, 2vw, 1.4rem);
 }
 
 .result-user,
 .result-ai {
   font-weight: bold;
+  font-size: clamp(0.875rem, 2vw, 1rem);
 }
 
 .result-user {
@@ -75,8 +76,8 @@
 }
 
 .winner-announcement {
-  margin-top: 20px;
-  font-size: 2em;
+  margin-top: clamp(1rem, 2vw, 1.25rem);
+  font-size: clamp(1.25rem, 3vw, 2rem);
   font-weight: bold;
   text-align: center;
   animation: popIn 1s ease-out forwards, winnerTextChange 2s infinite alternate;

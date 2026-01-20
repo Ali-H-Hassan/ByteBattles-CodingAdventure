@@ -1,23 +1,26 @@
 .edit-profile-container {
-  max-width: 1000px;
+  width: 100%;
+  max-width: 900px;
   margin: auto;
-  padding: 40px;
+  padding: clamp(1.5rem, 4vw, 2.5rem);
   background: #fff;
   border-radius: 12px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
   font-family: "Poppins", sans-serif;
+  box-sizing: border-box;
 }
 
 .edit-profile-container .form-group {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 25px;
+  margin-bottom: clamp(1rem, 3vw, 1.5rem);
 }
 
 .edit-profile-container .form-group.half-width {
   flex-direction: row;
   justify-content: space-between;
+  gap: 1rem;
 }
 
 .edit-profile-container .form-group.half-width > div {
@@ -26,12 +29,15 @@
 
 .edit-profile-container input,
 .edit-profile-container select {
-  width: calc(50% - 10px);
-  margin: 0 5px;
-  padding: 15px;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: clamp(0.75rem, 2vw, 1rem);
   border: none;
   border-bottom: 2px solid #eaeaea;
-  font-size: 14px;
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  transition: border-color 0.3s;
+  box-sizing: border-box;
 }
 
 .edit-profile-container input:focus,
@@ -43,6 +49,7 @@
 .edit-profile-container .form-group.full-width > input,
 .edit-profile-container .form-group.full-width > select {
   width: 100%;
+  max-width: 100%;
   margin: 0;
 }
 
@@ -50,12 +57,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-bottom: 30px;
+  margin-bottom: clamp(1.5rem, 4vw, 2rem);
 }
 
 .edit-profile-container .profile-image {
-  width: 120px;
-  height: 120px;
+  width: clamp(80px, 15vw, 120px);
+  height: clamp(80px, 15vw, 120px);
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -64,28 +71,36 @@
 .edit-profile-container .edit-image-button {
   background-color: #00c354;
   color: white;
-  padding: 8px 16px;
+  padding: clamp(0.5rem, 1.5vw, 0.625rem) clamp(1rem, 2vw, 1.25rem);
   border-radius: 20px;
   cursor: pointer;
   font-weight: 500;
-  margin-top: 10px;
+  margin-top: clamp(0.5rem, 1.5vw, 0.625rem);
+  border: none;
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  transition: background-color 0.3s;
+}
+
+.edit-profile-container .edit-image-button:hover {
+  background-color: #009f48;
 }
 
 .edit-profile-container .form-buttons {
   display: flex;
   justify-content: space-between;
-  gap: 20px;
-  margin-top: 30px;
+  gap: clamp(1rem, 3vw, 1.25rem);
+  margin-top: clamp(1.5rem, 4vw, 2rem);
 }
 
 .edit-profile-container .cancel-button,
 .edit-profile-container .save-button {
   flex: 1;
-  padding: 15px 20px;
+  padding: clamp(0.75rem, 2vw, 1rem) clamp(1rem, 2.5vw, 1.25rem);
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .edit-profile-container .cancel-button {
@@ -93,31 +108,56 @@
   color: #333;
 }
 
+.edit-profile-container .cancel-button:hover {
+  background-color: #d0d0d0;
+}
+
 .edit-profile-container .save-button {
   background-color: #00c354;
   color: white;
 }
-.edit-profile-container label {
-  font-size: 20px;
-  margin-left: 15px;
-  margin-right: 15px;
+
+.edit-profile-container .save-button:hover {
+  background-color: #009f48;
 }
+
+.edit-profile-container label {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  margin-left: clamp(0.5rem, 1.5vw, 1rem);
+  margin-right: clamp(0.5rem, 1.5vw, 1rem);
+}
+
 @media (max-width: 768px) {
   .edit-profile-container {
-    padding: 20px;
+    padding: 1.25rem;
+    margin: 1rem;
   }
 
   .edit-profile-container .form-group.half-width {
     flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .edit-profile-container input,
+  .edit-profile-container select {
+    max-width: 100%;
   }
 
   .edit-profile-container .form-buttons {
     flex-direction: column;
+    gap: 0.75rem;
   }
 
   .edit-profile-container .cancel-button,
   .edit-profile-container .save-button {
     width: 100%;
-    margin-bottom: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .edit-profile-container {
+    padding: 1rem;
+    margin: 0.5rem;
+    border-radius: 8px;
   }
 }

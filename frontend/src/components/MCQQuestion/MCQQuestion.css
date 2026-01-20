@@ -1,34 +1,37 @@
 .test-mcq-container {
-  margin-bottom: 20px;
-  padding: 20px;
+  margin-bottom: clamp(1rem, 2vw, 1.25rem);
+  padding: clamp(1rem, 2.5vw, 1.5rem);
   background-color: #f1f3f9;
   border: 1px solid #eaeaea;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
 }
 
 .test-mcq-question {
-  margin-bottom: 15px;
+  margin-bottom: clamp(0.75rem, 2vw, 1rem);
   font-weight: 500;
+  font-size: clamp(1rem, 2vw, 1.25rem);
 }
 
 .test-mcq-options-form {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  gap: clamp(0.625rem, 1.5vw, 0.75rem);
 }
 
 .test-mcq-option-label {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
-  padding: 10px;
+  margin-bottom: clamp(0.5rem, 1.5vw, 0.625rem);
+  padding: clamp(0.625rem, 1.5vw, 0.75rem);
   cursor: pointer;
   border-radius: 4px;
+  transition: background-color 0.3s;
+  font-size: clamp(0.875rem, 2vw, 1rem);
 }
 
-input[type="radio"] {
-  margin-right: 10px;
-  cursor: pointer;
+.test-mcq-option-label:hover {
+  background-color: rgba(0, 195, 84, 0.1);
 }
 
 input[type="radio"] {
@@ -40,7 +43,7 @@ input[type="radio"] {
 input[type="radio"] + span {
   display: inline-block;
   vertical-align: middle;
-  padding-left: 25px;
+  padding-left: clamp(1.25rem, 3vw, 1.75rem);
   position: relative;
 }
 
@@ -50,53 +53,64 @@ input[type="radio"] + span::before {
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  width: 18px;
-  height: 18px;
+  width: clamp(14px, 2vw, 18px);
+  height: clamp(14px, 2vw, 18px);
   border: 1px solid #ddd;
   border-radius: 50%;
   background-color: #fff;
+  transition: border-color 0.3s;
+}
+
+input[type="radio"]:checked + span::before {
+  border-color: #00c354;
 }
 
 input[type="radio"]:checked + span::after {
   content: "";
   position: absolute;
-  left: 5px;
+  left: clamp(3px, 0.5vw, 5px);
   top: 50%;
   transform: translateY(-50%);
-  width: 10px;
-  height: 10px;
+  width: clamp(8px, 1vw, 10px);
+  height: clamp(8px, 1vw, 10px);
   border-radius: 50%;
-  background-color: #555;
+  background-color: #00c354;
 }
+
 .test-next-button {
   background-color: #00c354;
   color: white;
-  padding: 10px 20px;
+  padding: clamp(0.625rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.5rem);
   border: none;
   border-radius: 20px;
-  font-size: 20px;
+  font-size: clamp(1rem, 2vw, 1.25rem);
   text-align: center;
   cursor: pointer;
   outline: none;
-  display: inline-;
+  display: inline-block;
   margin: 0;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, transform 0.3s;
   box-shadow: 0px 2px 4px rgba(0, 128, 0, 0.24);
-  align-self: end;
 }
-.test-next-button {
-  background-color: #00c354;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 20px;
-  font-size: 20px;
-  text-align: center;
-  cursor: pointer;
-  outline: none;
-  display: inline-;
-  margin: 0;
-  transition: background-color 0.3s;
-  box-shadow: 0px 2px 4px rgba(0, 128, 0, 0.24);
-  align-self: end;
+
+.test-next-button:hover {
+  background-color: #009f48;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .test-mcq-options-form {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .test-mcq-option-label {
+    padding: 0.5rem;
+  }
+
+  .test-next-button {
+    width: 100%;
+    max-width: 250px;
+  }
 }

@@ -66,7 +66,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="footer-bottom">
-        <p>Copyright © 2024 BYTEBATTLES. All right reserved.</p>
+        <p>Copyright © {new Date().getFullYear()} BYTEBATTLES. All rights reserved.</p>
         <div className="footer-legal-links">
           <a href="#">Privacy Policy</a>
           <a href="#">Terms of Service</a>

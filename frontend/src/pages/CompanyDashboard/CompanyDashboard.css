@@ -4,12 +4,27 @@
 
 .company-dashboard {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .main-content {
   flex-grow: 1;
-  padding: 20px;
-  padding-left: 50px;
-  padding-right: 50px;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  padding-left: clamp(1rem, 4vw, 2.5rem);
+  padding-right: clamp(1rem, 4vw, 2.5rem);
+  overflow-x: hidden;
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .company-dashboard {
+    flex-direction: column;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .main-content {
+    padding: var(--spacing-sm, 1rem);
+  }
 }

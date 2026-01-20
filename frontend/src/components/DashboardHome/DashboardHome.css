@@ -1,7 +1,25 @@
 .dashboard-home {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  margin: 50px;
-  margin-top: 150px;
+  gap: clamp(1rem, 3vw, 1.5rem);
+  margin: clamp(1rem, 3vw, 2rem);
+  margin-top: clamp(2rem, 8vw, 6rem);
+}
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .dashboard-home {
+    grid-template-columns: 1fr;
+    margin: var(--spacing-md, 1.5rem);
+    margin-top: clamp(1.5rem, 5vw, 3rem);
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .dashboard-home {
+    margin: var(--spacing-sm, 1rem);
+    margin-top: var(--spacing-lg, 2rem);
+    gap: var(--spacing-md, 1.5rem);
+  }
 }

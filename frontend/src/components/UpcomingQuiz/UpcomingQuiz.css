@@ -2,7 +2,7 @@
   background: #fff;
   border-radius: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: clamp(1rem, 3vw, 1.5rem);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -13,19 +13,20 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 20px;
+  margin-bottom: clamp(1rem, 2vw, 1.25rem);
   flex-direction: column;
 }
 
 .section-title {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: clamp(0.5rem, 1vw, 0.625rem);
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
 }
 
 .calendar-icon {
-  width: 120px;
+  width: clamp(80px, 12vw, 120px);
   height: auto;
-  margin-bottom: 10px;
+  margin-bottom: clamp(0.5rem, 1vw, 0.625rem);
 }
 
 .quiz-details {
@@ -33,18 +34,24 @@
 }
 
 .quiz-date {
-  font-size: 1.2em;
+  font-size: clamp(1rem, 2vw, 1.2rem);
   color: #666;
-  margin-bottom: 20px;
+  margin-bottom: clamp(1rem, 2vw, 1.25rem);
 }
 
 .register-button {
-  padding: 10px 20px;
+  padding: clamp(0.625rem, 2vw, 0.75rem) clamp(1rem, 3vw, 1.25rem);
   background: #8a2be2;
   color: white;
   border: none;
   border-radius: 20px;
   cursor: pointer;
-  font-size: 1em;
+  font-size: clamp(0.875rem, 2vw, 1rem);
   font-weight: bold;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.register-button:hover {
+  background-color: #7a1fd2;
+  transform: translateY(-2px);
 }
