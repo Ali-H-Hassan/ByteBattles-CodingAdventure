@@ -1,0 +1,35 @@
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    platform: linux/amd64
+    container_name: bytebattles-sqlserver
+    user: root
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=ByteBattles@2024!
+    ports:
+      - "1433:1433"
+    networks:
+      - bytebattles-network
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bytebattles-api
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__DefaultConnection=Data Source=sqlserver,1433;Initial Catalog=ByteBattlesDb;User ID=SA;Password=ByteBattles@2024!;TrustServerCertificate=True;Encrypt=False;
+    ports:
+      - "5057:5057"
+    depends_on:
+      - sqlserver
+    networks:
+      - bytebattles-network
+
+networks:
+  bytebattles-network:
+    driver: bridge
+
+volumes:
+  sqlserver-data:
+

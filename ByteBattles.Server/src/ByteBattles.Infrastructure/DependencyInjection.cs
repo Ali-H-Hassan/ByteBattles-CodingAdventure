@@ -20,18 +20,31 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // Register DbContext with SQL Server
-        var connectionString = configuration.GetConnectionString("DefaultConnection");
+        // Register DbContext - supports both SQLite (local dev) and SQL Server (production)
+        var connectionString = configuration.GetConnectionString("DefaultConnection") ?? "";
+        var useSqliteConfig = configuration["UseSqlite"];
+        var useSqlite = useSqliteConfig == "true" || useSqliteConfig == "True" || 
+                        connectionString.EndsWith(".db") ||
+                        connectionString.StartsWith("Data Source=") && !connectionString.Contains(",");
         
         services.AddDbContext<ByteBattlesDbContext>(options =>
         {
-            options.UseSqlServer(connectionString, sqlOptions =>
+            if (useSqlite)
             {
-                sqlOptions.EnableRetryOnFailure(
-                    maxRetryCount: 3,
-                    maxRetryDelay: TimeSpan.FromSeconds(30),
-                    errorNumbersToAdd: null);
-            });
+                // Use SQLite for local development (works on macOS without issues)
+                options.UseSqlite(connectionString);
+            }
+            else
+            {
+                // Use SQL Server for production
+                options.UseSqlServer(connectionString, sqlOptions =>
+                {
+                    sqlOptions.EnableRetryOnFailure(
+                        maxRetryCount: 3,
+                        maxRetryDelay: TimeSpan.FromSeconds(30),
+                        errorNumbersToAdd: null);
+                });
+            }
         });
 
         // Register SQL Server Repositories
