@@ -1,4 +1,5 @@
 using System.Text;
+using ByteBattles.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -102,14 +103,12 @@ builder.Services.AddCors(options =>
 });
 
 // ===========================================
-// TODO: Add DbContext and Repository registrations in Phase 2
-// builder.Services.AddDbContext<ByteBattlesDbContext>(options =>
-//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Register Infrastructure Services (DbContext, Repositories)
 // ===========================================
+builder.Services.AddInfrastructure(builder.Configuration);
 
 // ===========================================
-// TODO: Add Service registrations in Phase 3
-// builder.Services.AddScoped<IUserRepository, UserRepository>();
+// TODO: Add Application Services in Phase 3
 // builder.Services.AddScoped<IAuthService, AuthService>();
 // ===========================================
 
