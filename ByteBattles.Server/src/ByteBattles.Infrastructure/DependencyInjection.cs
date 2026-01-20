@@ -1,5 +1,6 @@
 using ByteBattles.Core.Interfaces;
 using ByteBattles.Infrastructure.Data;
+using ByteBattles.Infrastructure.MongoDB;
 using ByteBattles.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -33,11 +34,14 @@ public static class DependencyInjection
             });
         });
 
-        // Register Repositories
+        // Register SQL Server Repositories
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<ITestRepository, TestRepository>();
         services.AddScoped<IChallengeRepository, ChallengeRepository>();
         services.AddScoped<ICourseRepository, CourseRepository>();
+        
+        // Register MongoDB Repositories (optional - for game data)
+        services.AddSingleton<IGameDataRepository, GameDataRepository>();
 
         return services;
     }
