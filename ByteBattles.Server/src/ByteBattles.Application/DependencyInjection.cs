@@ -19,6 +19,13 @@ public static class DependencyInjection
         services.AddScoped<ITestService, TestService>();
         services.AddScoped<IGameService, GameService>();
         services.AddScoped<IProfileService, ProfileService>();
+        
+        // AI Battle Services
+        services.AddScoped<IGeminiService, GeminiService>();
+        services.AddScoped<IBattleService, BattleService>();
+        
+        // Register HttpClient for Gemini API
+        services.AddHttpClient();
 
         return services;
     }
