@@ -1,4 +1,5 @@
 using System.Text;
+using ByteBattles.Application;
 using ByteBattles.Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -108,9 +109,9 @@ builder.Services.AddCors(options =>
 builder.Services.AddInfrastructure(builder.Configuration);
 
 // ===========================================
-// TODO: Add Application Services in Phase 3
-// builder.Services.AddScoped<IAuthService, AuthService>();
+// Register Application Services (Auth, Test, Game, Profile)
 // ===========================================
+builder.Services.AddApplication();
 
 var app = builder.Build();
 
