@@ -1,3 +1,17 @@
+/**
+ * ============================================================================
+ * DEPRECATED - Node.js/Express Backend
+ * ============================================================================
+ * This Node.js backend is being replaced by .NET 8 + SQL Server.
+ * The new backend is located at: /ByteBattles.Server/
+ * 
+ * This file is kept for reference during the migration process.
+ * Once migration is complete and tested, this can be removed.
+ * 
+ * Migration Date: January 2026
+ * ============================================================================
+ */
+
 require("dotenv").config();
 const express = require("express");
 const session = require("express-session");
