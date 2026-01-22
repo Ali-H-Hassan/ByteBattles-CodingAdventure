@@ -23,7 +23,7 @@ const CodingEditor = ({ code, handleCodeChange }) => {
   return (
     <div className="coding-editor-container">
       <MonacoEditor
-        height="400"
+        height="100%"
         language="javascript"
         theme="vs-dark"
         value={code}

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import "./TestHeader.css";
-import Amazon from "../../assets/amazon.png";
-import Timer from "../../assets/Time Circle 3.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock } from "@fortawesome/free-solid-svg-icons";
 
-const TestHeader = ({ initialTime }) => {
+const TestHeader = ({ initialTime, onTimeUp, testTitle, companyName }) => {
   const [timeLeft, setTimeLeft] = useState(initialTime);
 
   useEffect(() => {
@@ -12,6 +12,9 @@ const TestHeader = ({ initialTime }) => {
         const updatedTime = prevTime - 1;
         if (updatedTime <= 0) {
           clearInterval(countdown);
+          if (onTimeUp) {
+            onTimeUp();
+          }
           return 0;
         }
         return updatedTime;
@@ -19,7 +22,7 @@ const TestHeader = ({ initialTime }) => {
     }, 1000);
 
     return () => clearInterval(countdown);
-  }, []);
+  }, [onTimeUp]);
 
   const formatTime = (time) => {
     const hours = Math.floor(time / 3600);
@@ -30,17 +33,17 @@ const TestHeader = ({ initialTime }) => {
       .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   };
 
+  const isTimeLow = timeLeft <= 300; // Less than 5 minutes
+
   return (
     <div className="test-header">
-      <div className="test-header-logo">
-        <img src={Amazon} alt="Logo" className="test-logo" />
-        <span>Amazon Quiz Competition</span>
+      <div className="test-header-info">
+        <h2 className="test-header-title">{testTitle || "Test"}</h2>
+        {companyName && <span className="test-header-company">{companyName}</span>}
       </div>
-      <div className="test-header-timer">
-        <div className="timer-icon">
-          <img src={Timer} alt="Timer Icon" className="timer" />
-        </div>
-        <span>{formatTime(timeLeft)}</span>
+      <div className={`test-header-timer ${isTimeLow ? "timer-low" : ""}`}>
+        <FontAwesomeIcon icon={faClock} className="timer-icon" />
+        <span className="timer-text">{formatTime(timeLeft)}</span>
       </div>
     </div>
   );

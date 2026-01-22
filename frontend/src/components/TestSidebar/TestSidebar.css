@@ -1,70 +1,53 @@
 .test-sidebar {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  min-height: 80vh;
-  width: clamp(100px, 12vw, 150px);
-  background-color: #333;
-  color: white;
-  padding-top: clamp(1rem, 3vw, 1.875rem);
-  margin-left: clamp(1rem, 6vw, 4rem);
-  border-top-left-radius: 20px;
-  border-bottom-left-radius: 20px;
+  gap: 0.75rem;
+  width: 140px;
   flex-shrink: 0;
+  padding: 1rem;
+  background: var(--bg-white, #fff);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  height: fit-content;
 }
 
 .sidebar-button {
-  background: none;
-  border: none;
-  color: white;
-  padding: clamp(1rem, 2vw, 1.25rem) clamp(0.75rem, 2vw, 1.25rem);
-  text-align: center;
-  text-decoration: none;
-  display: block;
-  transition: color 0.3s, background-color 0.3s;
-  font-size: clamp(0.875rem, 2vw, 1.25rem);
-  width: 100%;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-dark, #2c3e50);
   cursor: pointer;
-  text-transform: none;
-  font-weight: normal;
-  letter-spacing: normal;
+  transition: all 0.2s ease;
+  text-align: center;
 }
 
 .sidebar-button:hover {
-  color: #00c354;
-  background-color: rgba(0, 195, 84, 0.1);
+  border-color: var(--primary, #00c354);
+  color: var(--primary, #00c354);
+  background: rgba(0, 195, 84, 0.05);
 }
 
 .sidebar-button.selected {
-  color: #00c354;
-  background-color: rgba(0, 195, 84, 0.15);
+  background: var(--primary, #00c354);
+  border-color: var(--primary, #00c354);
+  color: #fff;
 }
 
-/* Tablet */
+/* Responsive */
 @media (max-width: 1024px) {
   .test-sidebar {
-    width: 100%;
-    min-height: auto;
     flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-left: 0;
-    margin-bottom: 1rem;
-    border-radius: 0 0 20px 20px;
-    padding: 1rem;
+    width: 100%;
+    padding: 0.75rem;
+    gap: 0.5rem;
   }
 
   .sidebar-button {
-    width: auto;
-    padding: 0.75rem 1.5rem;
-  }
-}
-
-/* Mobile */
-@media (max-width: 768px) {
-  .sidebar-button {
-    padding: 0.625rem 1rem;
-    font-size: 0.875rem;
+    flex: 1;
+    padding: 0.625rem;
+    font-size: 0.8125rem;
   }
 }

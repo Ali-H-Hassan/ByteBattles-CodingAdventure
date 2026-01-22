@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import TestHeader from "../../components/TestHeader/TestHeader";
-import Thanks from "../../assets/illustration.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import "./ThankYouPage.css";
 
 const ThankYouPage = () => {
@@ -13,14 +13,15 @@ const ThankYouPage = () => {
 
   return (
     <div className="thank-you-page-container">
-      <TestHeader initialTime={0} />
       <div className="thank-you-content">
-        <h1>Thanks For Participating</h1>
-        <p>Your Test Has Completed!</p>
-        <img src={Thanks} alt="Completed" className="thank-you-image" />
-        <p>You will be notified when your test results are released</p>
+        <div className="thank-you-icon-wrapper">
+          <FontAwesomeIcon icon={faCheckCircle} className="thank-you-icon" />
+        </div>
+        <h1 className="thank-you-title">Thank You!</h1>
+        <p className="thank-you-subtitle">Your test has been submitted successfully</p>
+        <p className="thank-you-message">You will be notified when your results are available</p>
         <button className="thank-you-return-button" onClick={returnToDashboard}>
-          Return Home
+          Return to Dashboard
         </button>
       </div>
     </div>

@@ -1,15 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import "./TestSidebar.css";
 
-const TestSidebar = ({ onSelectSection }) => {
-  const [selectedSection, setSelectedSection] = useState("mcq");
-
+const TestSidebar = ({ currentSection, onSelectSection }) => {
   const handleSelect = (section) => {
-    setSelectedSection(section);
     if (typeof onSelectSection === "function") {
       onSelectSection(section);
-    } else {
-      console.error("onSelectSection prop is not a function", onSelectSection);
     }
   };
 
@@ -17,7 +12,7 @@ const TestSidebar = ({ onSelectSection }) => {
     <div className="test-sidebar">
       <button
         className={`sidebar-button ${
-          selectedSection === "mcq" ? "selected" : ""
+          currentSection === "mcq" ? "selected" : ""
         }`}
         onClick={() => handleSelect("mcq")}
       >
@@ -25,11 +20,11 @@ const TestSidebar = ({ onSelectSection }) => {
       </button>
       <button
         className={`sidebar-button ${
-          selectedSection === "programming" ? "selected" : ""
+          currentSection === "programming" ? "selected" : ""
         }`}
         onClick={() => handleSelect("programming")}
       >
-        Programming
+        Coding
       </button>
     </div>
   );
