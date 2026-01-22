@@ -1,36 +1,44 @@
 .problem-statement-container {
-  margin-bottom: clamp(1rem, 3vw, 1.875rem);
-  padding: clamp(1rem, 3vw, 1.5rem);
-  border: 2px solid #4a4a4a;
+  padding: 1.25rem;
+  background: var(--bg-white, #fff);
+  border: 1px solid #e5e5e5;
   border-radius: 12px;
-  background: linear-gradient(145deg, #ffffff, #e6e6e6);
-  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2),
-    -5px -5px 15px rgba(255, 255, 255, 0.1);
-  transition: all 0.3s ease;
-}
-
-.problem-statement-container:hover {
-  background: linear-gradient(145deg, #e6e6e6, #ffffff);
-  border-color: #2a9d8f;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .problem-statement-container h2 {
-  color: #2c3e50;
-  font-size: clamp(1.25rem, 3vw, 2rem);
-  margin-bottom: clamp(0.75rem, 2vw, 1rem);
-  text-align: center;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-dark, #2c3e50);
+  margin: 0 0 0.75rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e5e5e5;
 }
 
 .problem-statement-container p {
-  color: #333333;
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  line-height: 1.8;
+  color: var(--text-dark, #2c3e50);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  margin: 0.5rem 0;
 }
 
+.problem-statement-container p:first-of-type {
+  font-weight: 600;
+  color: var(--text-dark, #2c3e50);
+  margin-top: 0;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .problem-statement-container {
-    border-radius: 8px;
+    padding: 1rem;
+  }
+
+  .problem-statement-container h2 {
+    font-size: 0.9375rem;
+  }
+
+  .problem-statement-container p {
+    font-size: 0.875rem;
   }
 }

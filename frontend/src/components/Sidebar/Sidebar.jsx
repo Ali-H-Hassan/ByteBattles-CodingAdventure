@@ -1,18 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Logo from "../../assets/FullLogo.png";
-import DashboardIcon from "../../assets/Chart.png";
-import TestsIcon from "../../assets/Edit 1.png";
-import CoursesIcon from "../../assets/Document Align Left 1.png";
-import ProfileIcon from "../../assets/Profile 1.png";
-import BattleIcon from "../../assets/Moon.png";
-import LeaderboardIcon from "../../assets/Award 5.png";
-import LogOutIcon from "../../assets/Unlock 2.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChartLine,
+  faFileAlt,
+  faBook,
+  faUser,
+  faClipboardCheck,
+  faRobot,
+  faSignOutAlt,
+  faChevronLeft,
+  faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import "./Sidebar.css";
 
-function Sidebar({ onOptionSelect, userType }) {
-  const [selected, setSelected] = useState("dashboard");
+function Sidebar({ onOptionSelect, userType, selectedOption, onCollapseChange }) {
+  const [selected, setSelected] = useState(selectedOption || "dashboard");
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate();
+
+  // Sync with parent component's selected option
+  useEffect(() => {
+    if (selectedOption) {
+      setSelected(selectedOption);
+    }
+  }, [selectedOption]);
+
+  // Notify parent of collapse state change
+  useEffect(() => {
+    if (onCollapseChange) {
+      onCollapseChange(isCollapsed);
+    }
+  }, [isCollapsed, onCollapseChange]);
 
   const handleOptionSelect = (option) => {
     setSelected(option);
@@ -25,72 +45,90 @@ function Sidebar({ onOptionSelect, userType }) {
     }
   };
 
+  const toggleSidebar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
   return (
-    <div className="menu">
+    <div className={`menu ${isCollapsed ? "collapsed" : ""}`}>
       <div className="logo-section">
-        <img src={Logo} alt="Byte Battle Logo" />
+        {!isCollapsed && <img src={Logo} alt="Byte Battle Logo" />}
+        <button className="toggle-button" onClick={toggleSidebar} title={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}>
+          <FontAwesomeIcon icon={isCollapsed ? faChevronRight : faChevronLeft} />
+        </button>
       </div>
 
-      <div
-        className={`menu-item ${selected === "dashboard" ? "selected" : ""}`}
-        onClick={() => handleOptionSelect("dashboard")}
-      >
-        <img src={DashboardIcon} alt="Dashboard Icon" />
-        <div className="menu-text">Dashboard</div>
+      <div className="menu-items-container">
+        <div
+          className={`menu-item ${selected === "dashboard" ? "selected" : ""}`}
+          onClick={() => handleOptionSelect("dashboard")}
+          title={isCollapsed ? "Dashboard" : ""}
+        >
+          <FontAwesomeIcon icon={faChartLine} className="menu-icon" />
+          {!isCollapsed && <div className="menu-text">Dashboard</div>}
+        </div>
+
+        <div
+          className={`menu-item ${selected === "tests" ? "selected" : ""}`}
+          onClick={() => handleOptionSelect("tests")}
+          title={isCollapsed ? "Tests" : ""}
+        >
+          <FontAwesomeIcon icon={faFileAlt} className="menu-icon" />
+          {!isCollapsed && <div className="menu-text">Tests</div>}
+        </div>
+
+        <div
+          className={`menu-item ${selected === "profile" ? "selected" : ""}`}
+          onClick={() => handleOptionSelect("profile")}
+          title={isCollapsed ? "Profile" : ""}
+        >
+          <FontAwesomeIcon icon={faUser} className="menu-icon" />
+          {!isCollapsed && <div className="menu-text">Profile</div>}
+        </div>
+
+        {userType !== "company" && (
+          <>
+            <div
+              className={`menu-item ${selected === "courses" ? "selected" : ""}`}
+              onClick={() => handleOptionSelect("courses")}
+              title={isCollapsed ? "Courses" : ""}
+            >
+              <FontAwesomeIcon icon={faBook} className="menu-icon" />
+              {!isCollapsed && <div className="menu-text">Courses</div>}
+            </div>
+
+            <div
+              className={`menu-item ${
+                selected === "results" || selected === "leaderboard" ? "selected" : ""
+              }`}
+              onClick={() => handleOptionSelect("results")}
+              title={isCollapsed ? "Results" : ""}
+            >
+              <FontAwesomeIcon icon={faClipboardCheck} className="menu-icon" />
+              {!isCollapsed && <div className="menu-text">Results</div>}
+            </div>
+
+            <div
+              className={`menu-item ${selected === "battle" ? "selected" : ""}`}
+              onClick={() => handleOptionSelect("battle")}
+              title={isCollapsed ? "AI Battle Mode" : ""}
+            >
+              <FontAwesomeIcon icon={faRobot} className="menu-icon" />
+              {!isCollapsed && <div className="menu-text">AI Battle Mode</div>}
+            </div>
+          </>
+        )}
       </div>
 
-      <div
-        className={`menu-item ${selected === "tests" ? "selected" : ""}`}
-        onClick={() => handleOptionSelect("tests")}
-      >
-        <img src={TestsIcon} alt="Tests Icon" />
-        <div className="menu-text">Tests</div>
-      </div>
-
-      <div
-        className={`menu-item ${selected === "profile" ? "selected" : ""}`}
-        onClick={() => handleOptionSelect("profile")}
-      >
-        <img src={ProfileIcon} alt="Profile Icon" />
-        <div className="menu-text">Profile</div>
-      </div>
-
-      {userType !== "company" && (
-        <>
-          <div
-            className={`menu-item ${selected === "courses" ? "selected" : ""}`}
-            onClick={() => handleOptionSelect("courses")}
-          >
-            <img src={CoursesIcon} alt="Courses Icon" />
-            <div className="menu-text">Courses</div>
-          </div>
-
-          <div
-            className={`menu-item ${
-              selected === "leaderboard" ? "selected" : ""
-            }`}
-            onClick={() => handleOptionSelect("leaderboard")}
-          >
-            <img src={LeaderboardIcon} alt="Leaderboard Icon" />
-            <div className="menu-text">Leaderboard</div>
-          </div>
-
-          <div
-            className={`menu-item ${selected === "battle" ? "selected" : ""}`}
-            onClick={() => handleOptionSelect("battle")}
-          >
-            <img src={BattleIcon} alt="Battle Icon" />
-            <div className="menu-text">AI Battle Mode</div>
-          </div>
-        </>
-      )}
-
-      <div
-        className={`menu-item ${selected === "logout" ? "selected" : ""}`}
-        onClick={() => handleOptionSelect("logout")}
-      >
-        <img src={LogOutIcon} alt="Log Out Icon" />
-        <div className="menu-text">Log Out</div>
+      <div className="menu-footer">
+        <div
+          className={`menu-item menu-item-logout ${selected === "logout" ? "selected" : ""}`}
+          onClick={() => handleOptionSelect("logout")}
+          title={isCollapsed ? "Log Out" : ""}
+        >
+          <FontAwesomeIcon icon={faSignOutAlt} className="menu-icon" />
+          {!isCollapsed && <div className="menu-text">Log Out</div>}
+        </div>
       </div>
     </div>
   );
