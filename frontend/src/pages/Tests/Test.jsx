@@ -1,38 +1,50 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTests } from "../../redux/test/testActions";
-import Header from "../../components/DashHeader/DashHeader";
 import TestCard from "../../components/TestCard/TestCard";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileAlt, faClipboardList } from "@fortawesome/free-solid-svg-icons";
 import "./Test.css";
-import DefaultLogo from "../../assets/DefaultLogo.jpeg";
-import { useNavigate } from "react-router-dom";
+
 const TestsPage = () => {
   const dispatch = useDispatch();
   const { loading, tests, error } = useSelector((state) => state.test);
-  const user = useSelector((state) => state.auth.user);
-  const username = user ? user.username : "User";
-  const profilePic = user?.profilePictureUrl;
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchTests());
   }, [dispatch]);
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <div className="tests-loading">Loading tests...</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div className="tests-error">Error: {error}</div>;
   }
 
   return (
     <div className="tests-page-container">
-      <Header username={username} profilePic={profilePic} />
+      <div className="tests-header">
+        <div className="tests-header-content">
+          <FontAwesomeIcon icon={faClipboardList} className="tests-header-icon" />
+          <div>
+            <h1 className="tests-header-title">Available Tests</h1>
+            <p className="tests-header-subtitle">Select a test to begin your assessment</p>
+          </div>
+        </div>
+      </div>
       <div className="tests-container">
-        {tests.map((test) => (
-          <TestCard key={test._id} test={test} />
-        ))}
+        {tests.length > 0 ? (
+          tests.map((test) => {
+            const testId = test.id || test._id; // Support both id (SQL) and _id (MongoDB)
+            return <TestCard key={testId} test={test} />;
+          })
+        ) : (
+          <div className="no-tests-message">
+            <FontAwesomeIcon icon={faFileAlt} />
+            <p>No tests available at the moment</p>
+          </div>
+        )}
       </div>
     </div>
   );
