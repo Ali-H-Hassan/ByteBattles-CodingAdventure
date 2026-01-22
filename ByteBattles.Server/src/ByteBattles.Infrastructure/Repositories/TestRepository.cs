@@ -20,6 +20,7 @@ public class TestRepository : ITestRepository
     public async Task<Test?> GetByIdAsync(int id)
     {
         return await _context.Tests
+            .Include(t => t.CreatedBy)
             .Include(t => t.McqQuestions)
                 .ThenInclude(mq => mq.Options)
             .Include(t => t.ProgrammingQuestion)
@@ -30,6 +31,7 @@ public class TestRepository : ITestRepository
     public async Task<IEnumerable<Test>> GetAllAsync()
     {
         return await _context.Tests
+            .Include(t => t.CreatedBy)
             .Include(t => t.McqQuestions)
                 .ThenInclude(mq => mq.Options)
             .Include(t => t.ProgrammingQuestion)
@@ -41,6 +43,7 @@ public class TestRepository : ITestRepository
     {
         return await _context.Tests
             .Where(t => t.CreatedById == companyId)
+            .Include(t => t.CreatedBy)
             .Include(t => t.McqQuestions)
                 .ThenInclude(mq => mq.Options)
             .Include(t => t.ProgrammingQuestion)

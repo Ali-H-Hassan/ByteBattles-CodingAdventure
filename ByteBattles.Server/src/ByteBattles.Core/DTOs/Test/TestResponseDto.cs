@@ -8,6 +8,7 @@ public class TestResponseDto
     public int Id { get; set; }
     public string Title { get; set; } = null!;
     public int CreatedBy { get; set; }
+    public string? CompanyName { get; set; }
     public DateTime CreatedAt { get; set; }
     public List<McqQuestionResponseDto> McqQuestions { get; set; } = new();
     public ProgrammingQuestionResponseDto? ProgrammingQuestion { get; set; }

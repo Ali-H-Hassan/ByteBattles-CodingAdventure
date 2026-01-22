@@ -166,6 +166,7 @@ public class TestService : ITestService
             Id = test.Id,
             Title = test.Title,
             CreatedBy = test.CreatedById,
+            CompanyName = test.CreatedBy?.CompanyName,
             CreatedAt = test.CreatedAt,
             McqQuestions = test.McqQuestions.Select(mq => new McqQuestionResponseDto
             {
