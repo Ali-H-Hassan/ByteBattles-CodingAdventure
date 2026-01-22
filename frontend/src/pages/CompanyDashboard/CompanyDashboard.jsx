@@ -5,7 +5,7 @@ import { logout } from "../../redux/auth/authSlice";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Header from "../../components/DashHeader/DashHeader";
 import CompanyTestsDisplay from "../CompanyTestsDisplay/CompanyTestsDisplay";
-import EditProfile from "../../components/EditProfile/EditProfile";
+import Profile from "../../components/Profile/Profile";
 import DashboardHome from "../../components/DashboardHome/DashboardHome";
 import "./CompanyDashboard.css";
 
@@ -43,7 +43,7 @@ function CompanyDashboard() {
         {selectedOption !== "profile" && selectedOption === "tests" && (
           <CompanyTestsDisplay />
         )}
-        {selectedOption === "profile" && <EditProfile />}
+        {selectedOption === "profile" && <Profile />}
         {selectedOption === "dashboard" && <DashboardHome />}
       </div>
     </div>

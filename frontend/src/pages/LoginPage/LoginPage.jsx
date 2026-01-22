@@ -14,6 +14,8 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const userType = useSelector((state) => state.auth.userType);
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const error = useSelector((state) => state.auth.error);
+  const loading = useSelector((state) => state.auth.loading);
   const [credentials, setCredentials] = useState({
     email: "",
     password: "",
@@ -85,8 +87,27 @@ const LoginPage = () => {
                 Password
               </label>
             </div>
-            <button className="login-button" onClick={handleSubmit}>
-              Login
+            {error && (
+              <div className="error-message" style={{
+                color: "#d32f2f",
+                fontSize: "0.875rem",
+                marginTop: "0.5rem",
+                marginBottom: "0.5rem",
+                textAlign: "center",
+                padding: "0.5rem",
+                backgroundColor: "#ffebee",
+                borderRadius: "4px",
+                width: "100%"
+              }}>
+                {error}
+              </div>
+            )}
+            <button 
+              className="login-button" 
+              onClick={handleSubmit}
+              disabled={loading}
+            >
+              {loading ? "Logging in..." : "Login"}
             </button>
             <div className="login-options">
               <a href="#" className="forgot-password">

@@ -37,6 +37,37 @@ public class GameSceneConfig
     /// Drop zone categories
     /// </summary>
     public Dictionary<string, DropZone> Categories { get; set; } = new();
+    
+    /// <summary>
+    /// CSS properties for CSS game scene
+    /// </summary>
+    public List<CssProperty> CssProperties { get; set; } = new();
+    
+    /// <summary>
+    /// HTML targets for CSS game scene
+    /// </summary>
+    public List<HtmlTarget> HtmlTargets { get; set; } = new();
+}
+
+/// <summary>
+/// Represents a CSS property in the CSS game scene
+/// </summary>
+public class CssProperty
+{
+    public string Key { get; set; } = string.Empty;
+    public string Value { get; set; } = string.Empty;
+    public int X { get; set; }
+    public int Y { get; set; }
+}
+
+/// <summary>
+/// Represents an HTML target in the CSS game scene
+/// </summary>
+public class HtmlTarget
+{
+    public string Key { get; set; } = string.Empty;
+    public int X { get; set; }
+    public int Y { get; set; }
 }
 
 /// <summary>

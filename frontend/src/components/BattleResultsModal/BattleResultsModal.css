@@ -198,11 +198,13 @@
 .battle-result-status {
   display: flex;
   align-items: center;
+  justify-content: center;
   font-size: 0.875rem;
   font-weight: 600;
   padding: 0.375rem 0.75rem;
   border-radius: 6px;
-  width: fit-content;
+  width: 100%;
+  text-align: center;
 }
 
 .battle-result-status.passed {

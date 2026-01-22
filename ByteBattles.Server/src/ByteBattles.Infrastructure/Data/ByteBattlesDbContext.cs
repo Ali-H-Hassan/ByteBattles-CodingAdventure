@@ -33,6 +33,7 @@ public class ByteBattlesDbContext : DbContext
     public DbSet<McqOption> McqOptions => Set<McqOption>();
     public DbSet<ProgrammingQuestion> ProgrammingQuestions => Set<ProgrammingQuestion>();
     public DbSet<ProgrammingTestCase> ProgrammingTestCases => Set<ProgrammingTestCase>();
+    public DbSet<TestResult> TestResults => Set<TestResult>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -5,13 +5,13 @@ import { logout } from "../../redux/auth/authSlice";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import Header from "../../components/DashHeader/DashHeader";
 import RecentTests from "../../components/RecentTests/RecentTests";
-import Leaderboard from "../../components/Leaderboard/Leaderboard";
+import Results from "../../components/Results/Results";
 import UpcomingQuiz from "../../components/UpcomingQuiz/UpcomingQuiz";
 import Statistics from "../../components/Statistics/Statistics";
 import CoursesDisplay from "../../components/CoursesDisplay/CoursesDisplay";
-import EditProfile from "../../components/EditProfile/EditProfile";
+import Profile from "../../components/Profile/Profile";
 import Tests from "../../pages/Tests/Test";
-import FullLeaderboard from "../Leaderboard/LeaderboardPage";
+import ResultsPage from "../Results/ResultsPage";
 import AIBattleMode from "../../pages/AIBattleMode/AIBattleMode";
 import "./Dashboard.css";
 
@@ -23,10 +23,8 @@ function Dashboard() {
   const user = useSelector((state) => state.auth.user);
   const username = user ? user.username : "User";
   const profilePic = user?.profilePictureUrl;
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
   const [selectedOption, setSelectedOption] = useState("dashboard");
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -45,9 +43,14 @@ function Dashboard() {
 
   return (
     <div className="dashboard">
-      <Sidebar onOptionSelect={handleOptionSelect} />
+      <Sidebar 
+        onOptionSelect={handleOptionSelect} 
+        selectedOption={selectedOption} 
+        userType={user?.userType}
+        onCollapseChange={setIsSidebarCollapsed}
+      />
 
-      <div className="main-content">
+      <div className={`main-content ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`}>
         {selectedOption === "dashboard" && (
           <Header username={username} profilePic={profilePic} />
         )}
@@ -55,16 +58,17 @@ function Dashboard() {
           {selectedOption === "dashboard" && (
             <>
               <RecentTests />
-              <Leaderboard />
+              <Results />
               <UpcomingQuiz />
               <Statistics />
             </>
           )}
         </div>
         {selectedOption === "courses" && <CoursesDisplay />}
-        {selectedOption === "profile" && <EditProfile />}
+        {selectedOption === "profile" && <Profile />}
         {selectedOption === "tests" && <Tests />}
-        {selectedOption === "leaderboard" && <FullLeaderboard />}
+        {selectedOption === "results" && <ResultsPage />}
+        {selectedOption === "leaderboard" && <ResultsPage />}
         {selectedOption === "battle" && <AIBattleMode />}
       </div>
     </div>

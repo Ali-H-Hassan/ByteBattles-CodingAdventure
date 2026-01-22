@@ -59,13 +59,15 @@ const CourseSection = ({ title, courses }) => {
     <>
       <h2>{title}</h2>
       <div className="courses-display-container">
-        {updatedCourses.map((course) => (
+        {updatedCourses.map((course) => {
+          const courseId = course.id || course._id; // Support both id and _id
+          return (
           <div
-            key={course._id}
+            key={courseId}
             className={`courses-display-card ${
-              activeCourse === course._id ? "courses-display-card-active" : ""
+              activeCourse === courseId ? "courses-display-card-active" : ""
             }`}
-            onClick={() => handleCardClick(course._id)}
+            onClick={() => handleCardClick(courseId)}
           >
             <img
               className="courses-display-background"
@@ -77,10 +79,10 @@ const CourseSection = ({ title, courses }) => {
                 <GamepadSVG />
               </div>
               <h3 className="courses-display-title">{course.title}</h3>
-              {activeCourse === course._id && (
+              {activeCourse === courseId && (
                 <button
                   className="new-neon-button"
-                  onClick={() => startGame(course._id)}
+                  onClick={() => startGame(courseId)}
                 >
                   <span></span>
                   <span></span>
@@ -92,7 +94,8 @@ const CourseSection = ({ title, courses }) => {
             </div>
             <div className="courses-display-backdrop"></div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </>
   );

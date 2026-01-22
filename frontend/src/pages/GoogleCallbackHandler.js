@@ -1,7 +1,7 @@
 import React, { useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-import axios from "axios";
+import apiClient from "../services/apiConfig";
 
 const GoogleCallbackHandler = () => {
   const navigate = useNavigate();
@@ -12,8 +12,8 @@ const GoogleCallbackHandler = () => {
     const code = urlParams.get("code");
 
     if (code) {
-      axios
-        .post("http://localhost:3000/api/auth/google/callback", { code })
+      apiClient
+        .post("/api/auth/google/callback", { code })
         .then((response) => {
           setAuthState({
             isAuthenticated: true,

@@ -1,6 +1,7 @@
 using System.Text;
 using ByteBattles.Application;
 using ByteBattles.Infrastructure;
+using ByteBattles.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -11,8 +12,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Configure Services
 // ===========================================
 
-// Add controllers
-builder.Services.AddControllers();
+// Add controllers with camelCase JSON serialization
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
+    });
 
 // Configure Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
@@ -130,14 +135,17 @@ if (app.Environment.IsDevelopment())
     });
 }
 
-// Enable HTTPS redirection in production
-if (!app.Environment.IsDevelopment())
-{
-    app.UseHttpsRedirection();
-}
+  // Enable HTTPS redirection in production
+  if (!app.Environment.IsDevelopment())
+  {
+      app.UseHttpsRedirection();
+  }
 
-// Enable CORS
-app.UseCors("AllowReactApp");
+  // Enable static files for uploads
+  app.UseStaticFiles();
+
+  // Enable CORS
+  app.UseCors("AllowReactApp");
 
 // Enable Authentication & Authorization
 app.UseAuthentication();
@@ -153,6 +161,24 @@ app.MapGet("/api", () => new
     version = "1.0.0",
     documentation = "/swagger"
 });
+
+// Seed database in development
+if (app.Environment.IsDevelopment())
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var context = scope.ServiceProvider.GetRequiredService<ByteBattlesDbContext>();
+        try
+        {
+            await DataSeeder.SeedAsync(context);
+            app.Logger.LogInformation("Database seeded successfully");
+        }
+        catch (Exception ex)
+        {
+            app.Logger.LogError(ex, "An error occurred while seeding the database");
+        }
+    }
+}
 
 app.Run();
 

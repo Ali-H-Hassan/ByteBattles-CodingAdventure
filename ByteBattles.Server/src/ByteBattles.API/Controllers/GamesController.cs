@@ -42,6 +42,25 @@ public class GamesController : ControllerBase
     }
 
     /// <summary>
+    /// Get game scene configuration for a course.
+    /// </summary>
+    [HttpGet("config/{courseId}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetGameConfig(int courseId)
+    {
+        try
+        {
+            var config = await _gameService.GetGameConfigAsync(courseId);
+            return Ok(config);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error fetching game config for course {CourseId}", courseId);
+            return StatusCode(500, new { message = "An error occurred while fetching game config", error = ex.Message });
+        }
+    }
+
+    /// <summary>
     /// Submit game score.
     /// </summary>
     [HttpPost("submit-score")]

@@ -1,15 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { fetchTestById } from "../../redux/testDetails/testDetailsActions";
+import { checkIfTestTaken } from "../../redux/testResults/testResultsActions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBuilding } from "@fortawesome/free-solid-svg-icons";
+import { faBuilding, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import "./TestCard.css";
 import defaultLogo from "../../assets/DefaultLogo.jpeg";
 
 const TestCard = ({ test }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [isTaken, setIsTaken] = useState(false);
+  const [checking, setChecking] = useState(true);
+  const userId = useSelector((state) => state.auth.user?.id || state.auth.user?._id);
+
+  useEffect(() => {
+    const checkTestStatus = async () => {
+      if (!test || !userId) {
+        setChecking(false);
+        return;
+      }
+
+      const testId = test.id || test._id;
+      if (!testId) {
+        setChecking(false);
+        return;
+      }
+
+      try {
+        const taken = await dispatch(checkIfTestTaken(testId));
+        setIsTaken(taken);
+      } catch (error) {
+        console.error("Error checking test status:", error);
+      } finally {
+        setChecking(false);
+      }
+    };
+
+    checkTestStatus();
+  }, [test, userId, dispatch]);
 
   if (!test) {
     return null;
@@ -26,7 +56,7 @@ const TestCard = ({ test }) => {
 
   const handleTakeTest = (e) => {
     e.stopPropagation();
-    if (id) {
+    if (id && !isTaken) {
       dispatch(fetchTestById(id));
       navigate(`/tests/${id}`);
     }
@@ -45,8 +75,21 @@ const TestCard = ({ test }) => {
             </div>
           )}
         </div>
-        <button className="test-take-button" onClick={handleTakeTest}>
-          Take Test
+        <button 
+          className={`test-take-button ${isTaken ? "test-taken-button" : ""}`}
+          onClick={handleTakeTest}
+          disabled={isTaken || checking}
+        >
+          {checking ? (
+            "Checking..."
+          ) : isTaken ? (
+            <>
+              <FontAwesomeIcon icon={faCheckCircle} style={{ marginRight: "0.5rem" }} />
+              Already Taken
+            </>
+          ) : (
+            "Take Test"
+          )}
         </button>
       </div>
     </div>

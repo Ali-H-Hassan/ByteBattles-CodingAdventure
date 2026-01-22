@@ -1,6 +1,7 @@
 using ByteBattles.Application.Interfaces;
 using ByteBattles.Core.DTOs.Game;
 using ByteBattles.Core.Interfaces;
+using ByteBattles.Infrastructure.MongoDB;
 
 namespace ByteBattles.Application.Services;
 
@@ -12,11 +13,16 @@ public class GameService : IGameService
 {
     private readonly ICourseRepository _courseRepository;
     private readonly IUserRepository _userRepository;
+    private readonly IGameDataRepository _gameDataRepository;
 
-    public GameService(ICourseRepository courseRepository, IUserRepository userRepository)
+    public GameService(
+        ICourseRepository courseRepository, 
+        IUserRepository userRepository,
+        IGameDataRepository gameDataRepository)
     {
         _courseRepository = courseRepository;
         _userRepository = userRepository;
+        _gameDataRepository = gameDataRepository;
     }
 
     public async Task<IEnumerable<CourseResponseDto>> GetCoursesAsync()
@@ -55,6 +61,12 @@ public class GameService : IGameService
             HighScore = isNewHighScore ? dto.Score : user.HighScore,
             IsNewHighScore = isNewHighScore
         };
+    }
+
+    public async Task<GameSceneConfig> GetGameConfigAsync(int courseId)
+    {
+        var config = await _gameDataRepository.GetGameConfigAsync(courseId);
+        return config ?? throw new InvalidOperationException($"Game config not found for course {courseId}");
     }
 }
 

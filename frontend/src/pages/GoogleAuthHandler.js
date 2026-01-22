@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
-import axios from "axios";
+import apiClient from "../services/apiConfig";
 
 const GoogleAuthHandler = () => {
   const navigate = useNavigate();
@@ -14,8 +14,8 @@ const GoogleAuthHandler = () => {
 
       if (code) {
         try {
-          const response = await axios.post(
-            "http://localhost:3000/auth/google/callback",
+          const response = await apiClient.post(
+            "/auth/google/callback",
             { code }
           );
           setAuthState({

@@ -3,11 +3,15 @@
   background-size: cover;
   background-position: center;
   min-height: 100vh;
-  padding: clamp(1rem, 3vw, 2rem);
+  height: 100vh;
+  padding: clamp(0.5rem, 1.5vw, 1rem);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .Game h1 {
-  font-size: clamp(1.5rem, 4vw, 3rem);
+  font-size: clamp(1rem, 2vw, 1.5rem);
   color: #fff;
   text-align: center;
   text-transform: uppercase;
@@ -15,10 +19,11 @@
     0 0 20px #2e9cca;
   font-family: "Orbitron", sans-serif;
   margin-top: 0;
-  margin-bottom: 1rem;
+  margin-bottom: clamp(0.25rem, 1vw, 0.5rem);
   user-select: none;
   -webkit-tap-highlight-color: transparent;
   position: relative;
+  flex-shrink: 0;
 }
 
 .Game h1::after {
@@ -46,13 +51,13 @@
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
 
 .return-home-button {
-  padding: clamp(0.75rem, 2vw, 1rem) clamp(1.5rem, 3vw, 2rem);
-  margin-top: clamp(1rem, 2vw, 1.25rem);
+  padding: clamp(0.5rem, 1.5vw, 0.75rem) clamp(1rem, 2vw, 1.5rem);
+  margin: clamp(0.25rem, 1vw, 0.5rem) auto clamp(0.25rem, 1vw, 0.5rem) auto;
   color: #fff;
   background-color: #1e3c72;
   border: 1px solid #2e9cca;
   border-radius: 25px;
-  font-size: clamp(0.875rem, 2vw, 1.125rem);
+  font-size: clamp(0.75rem, 1.5vw, 1rem);
   font-weight: bold;
   text-transform: uppercase;
   cursor: pointer;
@@ -63,6 +68,8 @@
   transition: all 0.3s ease-in-out;
   user-select: none;
   -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+  display: block;
 }
 
 .return-home-button::after {

@@ -31,24 +31,89 @@ public class ProfileService : IProfileService
         if (user == null)
             return null;
 
-        // Update only provided fields
-        if (dto.Name != null) user.Name = dto.Name;
-        if (dto.ContactNumber != null) user.ContactNumber = dto.ContactNumber;
-        if (dto.Address != null) user.Address = dto.Address;
-        if (dto.Country != null) user.Country = dto.Country;
-        if (dto.City != null) user.City = dto.City;
-        if (dto.ProfilePictureUrl != null) user.ProfilePictureUrl = dto.ProfilePictureUrl;
-        if (dto.LearningPath != null) user.LearningPath = dto.LearningPath;
+        // Track what fields are being updated
+        var updatedFields = new List<string>();
+
+        // Update only provided fields (including empty strings to allow clearing)
+        // Check if property was explicitly set (not null) - empty string means clear the field
+        if (dto.Name != null)
+        {
+            user.Name = dto.Name;
+            updatedFields.Add("Name");
+        }
+        if (dto.Username != null)
+        {
+            user.Username = dto.Username;
+            updatedFields.Add("Username");
+        }
+        if (dto.Email != null)
+        {
+            user.Email = dto.Email;
+            updatedFields.Add("Email");
+        }
+        if (dto.Password != null && !string.IsNullOrEmpty(dto.Password))
+        {
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+            updatedFields.Add("Password");
+        }
+        if (dto.ContactNumber != null)
+        {
+            user.ContactNumber = dto.ContactNumber;
+            updatedFields.Add("ContactNumber");
+        }
+        if (dto.Address != null)
+        {
+            user.Address = dto.Address;
+            updatedFields.Add("Address");
+        }
+        if (dto.Country != null)
+        {
+            user.Country = dto.Country;
+            updatedFields.Add("Country");
+        }
+        if (dto.City != null)
+        {
+            user.City = dto.City;
+            updatedFields.Add("City");
+        }
+        if (dto.ProfilePictureUrl != null)
+        {
+            user.ProfilePictureUrl = dto.ProfilePictureUrl;
+            updatedFields.Add("ProfilePictureUrl");
+        }
+        if (dto.LearningPath != null)
+        {
+            user.LearningPath = dto.LearningPath;
+            updatedFields.Add("LearningPath");
+        }
 
         // Company-specific fields
         if (user.UserType == "company")
         {
-            if (dto.CompanyName != null) user.CompanyName = dto.CompanyName;
-            if (dto.CompanyAddress != null) user.CompanyAddress = dto.CompanyAddress;
-            if (dto.CompanyContactNumber != null) user.CompanyContactNumber = dto.CompanyContactNumber;
+            if (dto.CompanyName != null)
+            {
+                user.CompanyName = dto.CompanyName;
+                updatedFields.Add("CompanyName");
+            }
+            if (dto.CompanyAddress != null)
+            {
+                user.CompanyAddress = dto.CompanyAddress;
+                updatedFields.Add("CompanyAddress");
+            }
+            if (dto.CompanyContactNumber != null)
+            {
+                user.CompanyContactNumber = dto.CompanyContactNumber;
+                updatedFields.Add("CompanyContactNumber");
+            }
         }
 
-        await _userRepository.UpdateAsync(user);
+        // Only save if there are changes
+        if (updatedFields.Count > 0)
+        {
+            // Save all changes in one transaction
+            await _userRepository.UpdateAsync(user);
+        }
+
         return MapToUserDto(user);
     }
 

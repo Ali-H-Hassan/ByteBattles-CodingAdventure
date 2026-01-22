@@ -13,12 +13,17 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logout } from "../../redux/auth/authSlice";
+import LogoutConfirmModal from "../LogoutConfirmModal/LogoutConfirmModal";
 import "./Sidebar.css";
 
 function Sidebar({ onOptionSelect, userType, selectedOption, onCollapseChange }) {
   const [selected, setSelected] = useState(selectedOption || "dashboard");
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   // Sync with parent component's selected option
   useEffect(() => {
@@ -38,11 +43,20 @@ function Sidebar({ onOptionSelect, userType, selectedOption, onCollapseChange })
     setSelected(option);
 
     if (option === "logout") {
-      localStorage.removeItem("token");
-      navigate("/");
+      setShowLogoutConfirm(true);
     } else {
       onOptionSelect(option);
     }
+  };
+
+  const handleLogoutConfirm = () => {
+    dispatch(logout());
+    navigate("/");
+  };
+
+  const handleLogoutCancel = () => {
+    setShowLogoutConfirm(false);
+    setSelected(selectedOption || "dashboard");
   };
 
   const toggleSidebar = () => {
@@ -130,6 +144,13 @@ function Sidebar({ onOptionSelect, userType, selectedOption, onCollapseChange })
           {!isCollapsed && <div className="menu-text">Log Out</div>}
         </div>
       </div>
+
+      {showLogoutConfirm && (
+        <LogoutConfirmModal
+          onConfirm={handleLogoutConfirm}
+          onCancel={handleLogoutCancel}
+        />
+      )}
     </div>
   );
 }

@@ -292,6 +292,57 @@ namespace ByteBattles.Infrastructure.Migrations
                     b.ToTable("Tests", (string)null);
                 });
 
+            modelBuilder.Entity("ByteBattles.Core.Entities.TestResult", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasAnnotation("SqlServer:IdentityIncrement", 1)
+                        .HasAnnotation("SqlServer:IdentitySeed", 1L)
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CompletedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("McqAnswers")
+                        .HasMaxLength(2000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("McqCorrectCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("McqTotalCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ProgrammingAnswer")
+                        .HasMaxLength(10000)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("ProgrammingCorrect")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Score")
+                        .HasPrecision(5, 2)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("TestId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("TestId", "UserId")
+                        .IsUnique();
+
+                    b.ToTable("TestResults", (string)null);
+                });
+
             modelBuilder.Entity("ByteBattles.Core.Entities.User", b =>
                 {
                     b.Property<int>("Id")
@@ -550,6 +601,25 @@ namespace ByteBattles.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("ByteBattles.Core.Entities.TestResult", b =>
+                {
+                    b.HasOne("ByteBattles.Core.Entities.Test", "Test")
+                        .WithMany()
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ByteBattles.Core.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Test");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ByteBattles.Core.Entities.UserCompletedChallenge", b =>

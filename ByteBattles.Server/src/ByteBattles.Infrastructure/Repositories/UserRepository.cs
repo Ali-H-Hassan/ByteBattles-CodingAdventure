@@ -61,7 +61,18 @@ public class UserRepository : IUserRepository
 
     public async Task UpdateAsync(User user)
     {
-        _context.Users.Update(user);
+        // The user entity is already tracked from GetByIdAsync
+        // EF Core change tracker will detect property changes automatically
+        // We just need to save the changes
+        var entry = _context.Entry(user);
+        
+        // Ensure the entity is being tracked
+        if (entry.State == EntityState.Detached)
+        {
+            _context.Users.Update(user);
+        }
+        
+        // Save all changes (EF Core will detect which properties were modified)
         await _context.SaveChangesAsync();
     }
 

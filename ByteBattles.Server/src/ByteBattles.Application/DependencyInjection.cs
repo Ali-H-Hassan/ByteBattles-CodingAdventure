@@ -17,6 +17,7 @@ public static class DependencyInjection
         // Register Application Services
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITestService, TestService>();
+        services.AddScoped<ITestResultService, TestResultService>();
         services.AddScoped<IGameService, GameService>();
         services.AddScoped<IProfileService, ProfileService>();
         

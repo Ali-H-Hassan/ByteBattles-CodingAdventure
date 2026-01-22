@@ -3,6 +3,7 @@ import authReducer from "./auth/authSlice";
 import gameReducer from "./game/gameSlice";
 import testReducer from "./test/testSlice";
 import testDetailsReducer from "./testDetails/testDetailsSlice";
+import testResultsReducer from "./testResults/testResultsSlice";
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     game: gameReducer,
     test: testReducer,
     testDetails: testDetailsReducer,
+    testResults: testResultsReducer,
   },
 });

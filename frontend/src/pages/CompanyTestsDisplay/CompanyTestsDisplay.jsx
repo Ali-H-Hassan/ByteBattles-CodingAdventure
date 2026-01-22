@@ -5,7 +5,8 @@ import TestCard from "../../components/TestCard/TestCard";
 import "./CompanyTestsDisplay.css";
 const CompanyTestsDisplay = () => {
   const dispatch = useDispatch();
-  const companyId = useSelector((state) => state.auth.user._id);
+  const user = useSelector((state) => state.auth.user);
+  const companyId = user?.id || user?._id; // Support both id (SQL) and _id (MongoDB)
   const { companyTests, loading, error } = useSelector((state) => state.test);
 
   useEffect(() => {
@@ -26,9 +27,10 @@ const CompanyTestsDisplay = () => {
 
   return (
     <div className="company-tests-display">
-      {companyTests.map((test) => (
-        <TestCard key={test._id} test={test} />
-      ))}
+      {companyTests.map((test) => {
+        const testId = test.id || test._id; // Support both id (SQL) and _id (MongoDB)
+        return <TestCard key={testId} test={test} />;
+      })}
     </div>
   );
 };

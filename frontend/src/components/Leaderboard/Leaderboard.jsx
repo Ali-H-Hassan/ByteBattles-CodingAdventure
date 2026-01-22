@@ -1,25 +1,19 @@
 import React from "react";
 import "./Leaderboard.css";
-import GoldMedal from "../../assets/gold-medal.png";
-import SilverMedal from "../../assets/silver-medal.png";
-import BronzeMedal from "../../assets/bronze-medal.png";
 import UserAvatar from "../../assets/Profile (1).png";
-import LeaderboardIcon from "../../assets/Award 5.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrophy } from "@fortawesome/free-solid-svg-icons";
 
 function Leaderboard() {
   return (
     <section className="leaderboard">
       <div className="section-header">
-        <img
-          src={LeaderboardIcon}
-          alt="Leaderboard Icon"
-          className="section-icon"
-        />
+        <FontAwesomeIcon icon={faTrophy} className="section-icon" />
         <h2 className="section-title">Leader Board</h2>
       </div>
       <ul className="leaderboard-list">
         <li className="leaderboard-entry">
-          <img src={GoldMedal} alt="Gold Medal" className="medal" />
+          <FontAwesomeIcon icon={faTrophy} className="medal medal-gold" />
           <img
             src={UserAvatar}
             alt="First Place User"
@@ -31,7 +25,7 @@ function Leaderboard() {
           </div>
         </li>
         <li className="leaderboard-entry">
-          <img src={SilverMedal} alt="Silver Medal" className="medal" />
+          <FontAwesomeIcon icon={faTrophy} className="medal medal-silver" />
           <img
             src={UserAvatar}
             alt="Second Place User"
@@ -43,7 +37,7 @@ function Leaderboard() {
           </div>
         </li>
         <li className="leaderboard-entry">
-          <img src={BronzeMedal} alt="Bronze Medal" className="medal" />
+          <FontAwesomeIcon icon={faTrophy} className="medal medal-bronze" />
           <img
             src={UserAvatar}
             alt="Third Place User"

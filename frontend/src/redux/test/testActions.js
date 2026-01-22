@@ -12,7 +12,7 @@ import apiClient from "../../services/apiConfig";
 export const fetchTests = () => async (dispatch) => {
   dispatch(fetchTestsRequest());
   try {
-    const response = await apiClient.get("/api/tests/all?limit=2");
+    const response = await apiClient.get("/api/tests/all");
     dispatch(fetchTestsSuccess(response.data));
   } catch (error) {
     dispatch(fetchTestFailure(error.message));

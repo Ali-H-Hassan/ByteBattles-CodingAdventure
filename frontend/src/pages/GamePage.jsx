@@ -13,7 +13,7 @@ const GamePage = () => {
 
   useEffect(() => {
     if (courses.length > 0 && courseId) {
-      const course = courses.find((c) => c._id === courseId);
+      const course = courses.find((c) => (c.id || c._id) === courseId);
       if (course) {
         setCourseName(course.title);
       }
