@@ -4,6 +4,7 @@ using ByteBattles.Core.DTOs.Test;
 using ByteBattles.Core.Entities;
 using ByteBattles.Core.Interfaces;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 
 namespace ByteBattles.Application.Services;
 
@@ -138,6 +139,66 @@ public class TestResultService : ITestResultService
             FailedTests = failedTests,
             AverageScore = (decimal)averageScore
         };
+    }
+
+    public async Task<IEnumerable<LeaderboardEntryDto>> GetTopTestTakersAsync(int topCount = 3)
+    {
+        var allResults = await _testResultRepository.GetAllAsync();
+        var resultsList = allResults.ToList();
+
+        // Group by user and calculate average score
+        var userStats = resultsList
+            .GroupBy(r => r.UserId)
+            .Select(g => new
+            {
+                UserId = g.Key,
+                User = g.First().User,
+                AverageScore = g.Average(r => (double)r.Score),
+                TotalTestsTaken = g.Count()
+            })
+            .OrderByDescending(x => x.AverageScore)
+            .ThenByDescending(x => x.TotalTestsTaken)
+            .Take(topCount)
+            .ToList();
+
+        return userStats.Select(x => new LeaderboardEntryDto
+        {
+            UserId = x.UserId,
+            Username = x.User.Username,
+            ProfilePictureUrl = x.User.ProfilePictureUrl,
+            AverageScore = x.AverageScore,
+            TotalTestsTaken = x.TotalTestsTaken
+        });
+    }
+
+    public async Task<IEnumerable<LeaderboardEntryDto>> GetTopTestTakersByCompanyAsync(int companyId, int topCount = 3)
+    {
+        var companyResults = await _testResultRepository.GetByCompanyIdAsync(companyId);
+        var resultsList = companyResults.ToList();
+
+        // Group by user and calculate average score for this company's tests only
+        var userStats = resultsList
+            .GroupBy(r => r.UserId)
+            .Select(g => new
+            {
+                UserId = g.Key,
+                User = g.First().User,
+                AverageScore = g.Average(r => (double)r.Score),
+                TotalTestsTaken = g.Count()
+            })
+            .OrderByDescending(x => x.AverageScore)
+            .ThenByDescending(x => x.TotalTestsTaken)
+            .Take(topCount)
+            .ToList();
+
+        return userStats.Select(x => new LeaderboardEntryDto
+        {
+            UserId = x.UserId,
+            Username = x.User.Username,
+            ProfilePictureUrl = x.User.ProfilePictureUrl,
+            AverageScore = x.AverageScore,
+            TotalTestsTaken = x.TotalTestsTaken
+        });
     }
 
     private static bool EvaluateProgrammingSolution(string code, List<ProgrammingTestCase> testCases)

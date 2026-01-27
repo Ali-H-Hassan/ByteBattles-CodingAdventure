@@ -1,16 +1,16 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes, faTrophy, faUser, faRobot, faCheckCircle, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
+import { faTimes, faTrophy, faUser, faRobot, faCheckCircle, faTimesCircle, faCode } from "@fortawesome/free-solid-svg-icons";
 import "./BattleResultsModal.css";
 
-const BattleResultsModal = ({ results, onClose }) => {
+const BattleResultsModal = ({ results, userCode, onClose }) => {
   if (!results || !results.userResults || !results.aiResults) {
     return null;
   }
 
-  const winnerClass = results.winner === "user" ? "winner-user" : "winner-ai";
-  const winnerText = results.winner === "user" ? "You Win!" : "AI Wins!";
-  const winnerIcon = results.winner === "user" ? faTrophy : faRobot;
+  const winnerClass = results.winner === "user" ? "winner-user" : results.winner === "ai" ? "winner-ai" : "winner-tie";
+  const winnerText = results.winner === "user" ? "You Win!" : results.winner === "ai" ? "AI Wins!" : "It's a Tie!";
+  const winnerIcon = results.winner === "user" ? faTrophy : results.winner === "ai" ? faRobot : faTrophy;
 
   return (
     <div className="battle-results-modal-overlay" onClick={onClose}>
@@ -24,24 +24,30 @@ const BattleResultsModal = ({ results, onClose }) => {
           <h2 className={`battle-results-winner-text ${winnerClass}`}>{winnerText}</h2>
         </div>
 
-        <div className="battle-results-comparison">
-          <div className="battle-result-card battle-result-user">
-            <div className="battle-result-card-header">
-              <FontAwesomeIcon icon={faUser} className="battle-result-icon" />
-              <h3>Your Results</h3>
+        <div className="battle-results-comparison-grid">
+          {/* User Code Section */}
+          <div className="battle-code-section battle-code-user">
+            <div className="battle-code-header">
+              <FontAwesomeIcon icon={faUser} className="battle-code-icon" />
+              <h3>Your Solution</h3>
             </div>
-            <div className="battle-result-card-content">
-              <div className="battle-result-item">
-                <span className="battle-result-label">Execution Time:</span>
-                <span className="battle-result-value">{results.userResults.executionTime}ms</span>
+            <div className="battle-code-container">
+              <pre className="battle-code-display">
+                <code>{userCode || "No code submitted"}</code>
+              </pre>
+            </div>
+            <div className="battle-stats-container">
+              <div className="battle-stat-item">
+                <span className="battle-stat-label">Execution Time:</span>
+                <span className="battle-stat-value">{results.userResults.executionTime}ms</span>
               </div>
-              <div className="battle-result-item">
-                <span className="battle-result-label">Output:</span>
-                <span className="battle-result-value">{results.userResults.output || "N/A"}</span>
+              <div className="battle-stat-item">
+                <span className="battle-stat-label">Output:</span>
+                <span className="battle-stat-value">{results.userResults.output || "N/A"}</span>
               </div>
-              <div className="battle-result-item">
-                <span className="battle-result-label">Status:</span>
-                <span className={`battle-result-status ${results.userResults.passed ? "passed" : "failed"}`}>
+              <div className="battle-stat-item">
+                <span className="battle-stat-label">Status:</span>
+                <span className={`battle-stat-status ${results.userResults.passed ? "passed" : "failed"}`}>
                   <FontAwesomeIcon 
                     icon={results.userResults.passed ? faCheckCircle : faTimesCircle} 
                     style={{ marginRight: "0.5rem" }}
@@ -52,23 +58,29 @@ const BattleResultsModal = ({ results, onClose }) => {
             </div>
           </div>
 
-          <div className="battle-result-card battle-result-ai">
-            <div className="battle-result-card-header">
-              <FontAwesomeIcon icon={faRobot} className="battle-result-icon" />
-              <h3>AI Results</h3>
+          {/* AI Code Section */}
+          <div className="battle-code-section battle-code-ai">
+            <div className="battle-code-header">
+              <FontAwesomeIcon icon={faRobot} className="battle-code-icon" />
+              <h3>AI Solution</h3>
             </div>
-            <div className="battle-result-card-content">
-              <div className="battle-result-item">
-                <span className="battle-result-label">Execution Time:</span>
-                <span className="battle-result-value">{results.aiResults.executionTime}ms</span>
+            <div className="battle-code-container">
+              <pre className="battle-code-display">
+                <code>{results.aiSolutionCode || "/* AI solution not available */"}</code>
+              </pre>
+            </div>
+            <div className="battle-stats-container">
+              <div className="battle-stat-item">
+                <span className="battle-stat-label">Execution Time:</span>
+                <span className="battle-stat-value">{results.aiResults.executionTime}ms</span>
               </div>
-              <div className="battle-result-item">
-                <span className="battle-result-label">Output:</span>
-                <span className="battle-result-value">{results.aiResults.output || "N/A"}</span>
+              <div className="battle-stat-item">
+                <span className="battle-stat-label">Output:</span>
+                <span className="battle-stat-value">{results.aiResults.output || "N/A"}</span>
               </div>
-              <div className="battle-result-item">
-                <span className="battle-result-label">Status:</span>
-                <span className={`battle-result-status ${results.aiResults.passed ? "passed" : "failed"}`}>
+              <div className="battle-stat-item">
+                <span className="battle-stat-label">Status:</span>
+                <span className={`battle-stat-status ${results.aiResults.passed ? "passed" : "failed"}`}>
                   <FontAwesomeIcon 
                     icon={results.aiResults.passed ? faCheckCircle : faTimesCircle} 
                     style={{ marginRight: "0.5rem" }}
@@ -82,7 +94,7 @@ const BattleResultsModal = ({ results, onClose }) => {
 
         {results.aiFeedback && (
           <div className="battle-results-feedback">
-            <h4>AI Feedback</h4>
+            <h4>AI Feedback on Your Code</h4>
             <p>{results.aiFeedback}</p>
           </div>
         )}
@@ -96,4 +108,3 @@ const BattleResultsModal = ({ results, onClose }) => {
 };
 
 export default BattleResultsModal;
-

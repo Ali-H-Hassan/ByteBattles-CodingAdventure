@@ -36,8 +36,8 @@ const TestsPage = () => {
       <div className="tests-container">
         {tests.length > 0 ? (
           tests.map((test) => {
-            const testId = test.id || test._id; // Support both id (SQL) and _id (MongoDB)
-            return <TestCard key={testId} test={test} />;
+          const testId = test.id || test._id; // Support both id (SQL) and _id (MongoDB)
+          return <TestCard key={testId} test={test} />;
           })
         ) : (
           <div className="no-tests-message">

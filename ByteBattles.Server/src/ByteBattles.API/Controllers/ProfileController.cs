@@ -252,22 +252,22 @@ public class ProfileController : ControllerBase
                         return BadRequest(new { message = "File size exceeds the maximum limit of 5MB." });
                     }
 
-                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
-                    if (!Directory.Exists(uploadsFolder))
-                    {
-                        Directory.CreateDirectory(uploadsFolder);
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+                if (!Directory.Exists(uploadsFolder))
+                {
+                    Directory.CreateDirectory(uploadsFolder);
                         _logger.LogInformation("Created uploads directory: {UploadsFolder}", uploadsFolder);
-                    }
+                }
 
                     var fileName = $"{userId}_{Guid.NewGuid()}{fileExtension}";
-                    var filePath = Path.Combine(uploadsFolder, fileName);
-                    
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await profilePicture.CopyToAsync(stream);
-                    }
+                var filePath = Path.Combine(uploadsFolder, fileName);
+                
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await profilePicture.CopyToAsync(stream);
+                }
 
-                    dto.ProfilePictureUrl = $"/uploads/{fileName}";
+                dto.ProfilePictureUrl = $"/uploads/{fileName}";
                     _logger.LogInformation("Profile picture saved successfully: {FilePath}, URL: {ProfilePictureUrl}", filePath, dto.ProfilePictureUrl);
                 }
                 catch (Exception ex)

@@ -53,6 +53,7 @@ public static class DependencyInjection
         services.AddScoped<ITestResultRepository, TestResultRepository>();
         services.AddScoped<IChallengeRepository, ChallengeRepository>();
         services.AddScoped<ICourseRepository, CourseRepository>();
+        services.AddScoped<IBattleResultRepository, BattleResultRepository>();
         
         // Register MongoDB Repositories (optional - for game data)
         services.AddSingleton<IGameDataRepository, GameDataRepository>();

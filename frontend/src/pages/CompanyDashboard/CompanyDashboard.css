@@ -9,10 +9,15 @@
 
 .main-content {
   flex-grow: 1;
-  padding: clamp(1rem, 3vw, 1.5rem);
-  padding-left: clamp(1rem, 4vw, 2.5rem);
-  padding-right: clamp(1rem, 4vw, 2.5rem);
+  padding: 1rem 1.5rem;
   overflow-x: hidden;
+  overflow-y: auto;
+  margin-left: 240px;
+  transition: margin-left 0.3s ease;
+  width: calc(100% - 240px);
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Tablet */

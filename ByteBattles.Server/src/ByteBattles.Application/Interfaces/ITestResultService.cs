@@ -17,5 +17,9 @@ public interface ITestResultService
     Task<bool> HasUserTakenTestAsync(int testId, int userId);
     
     Task<UserStatisticsDto> GetUserStatisticsAsync(int userId);
+    
+    Task<IEnumerable<LeaderboardEntryDto>> GetTopTestTakersAsync(int topCount = 3);
+    
+    Task<IEnumerable<LeaderboardEntryDto>> GetTopTestTakersByCompanyAsync(int companyId, int topCount = 3);
 }
 

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRobot, faCode, faTrophy, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faRobot, faCode, faTrophy, faSpinner, faEye } from "@fortawesome/free-solid-svg-icons";
 import ProblemStatement from "../../components/ProblemStatement/ProblemStatement";
 import CodingEditor from "../../components/CodingEditor/CodingEditor";
 import BattleResultsModal from "../../components/BattleResultsModal/BattleResultsModal";
 import apiClient from "../../services/apiConfig";
 import "./AIBattleMode.css";
+
+const STORAGE_KEY = "aibattle_state";
 
 const AIBattleMode = () => {
   const user = useSelector((state) => state.auth.user);
@@ -16,35 +18,76 @@ const AIBattleMode = () => {
   const [fetchingChallenge, setFetchingChallenge] = useState(true);
   const [challenge, setChallenge] = useState(null);
   const [error, setError] = useState(null);
+  const [showResultsModal, setShowResultsModal] = useState(false);
 
+  // Load saved state on mount
   useEffect(() => {
-    const fetchRandomChallenge = async () => {
-      setFetchingChallenge(true);
-      setError(null);
+    const savedState = localStorage.getItem(STORAGE_KEY);
+    if (savedState) {
       try {
-        const response = await apiClient.get("/api/challenges/random");
-        const data = response.data;
-        setChallenge(data);
-        // Set starter code if available
-        if (data.templateCodes && data.templateCodes.javascript) {
-          setUserCode(data.templateCodes.javascript);
+        const parsed = JSON.parse(savedState);
+        if (parsed.challenge && parsed.userCode) {
+          setChallenge(parsed.challenge);
+          setUserCode(parsed.userCode);
+          if (parsed.results) {
+            setResults(parsed.results);
+          }
+          setFetchingChallenge(false);
+          return;
         }
-      } catch (error) {
-        console.error("Error fetching challenge:", error);
-        setError("Failed to load challenge. Please try again.");
-      } finally {
-        setFetchingChallenge(false);
+      } catch (e) {
+        console.error("Error loading saved state:", e);
       }
-    };
-
+    }
+    
+    // No saved state, fetch new challenge
     fetchRandomChallenge();
   }, []);
+
+  // Save state whenever challenge, userCode, or results change
+  useEffect(() => {
+    if (challenge && userCode) {
+      const stateToSave = {
+        challenge,
+        userCode,
+        results: results || null
+      };
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave));
+    }
+  }, [challenge, userCode, results]);
+
+  const fetchRandomChallenge = async () => {
+    setFetchingChallenge(true);
+    setError(null);
+    try {
+      const response = await apiClient.post("/api/challenges/generate");
+      const data = response.data;
+      setChallenge(data);
+      // Set starter code if available
+      if (data.templateCode) {
+        setUserCode(data.templateCode);
+      } else if (data.templateCodes && data.templateCodes.javascript) {
+        setUserCode(data.templateCodes.javascript);
+      }
+    } catch (error) {
+      console.error("Error fetching challenge:", error);
+      setError("Failed to load challenge. Please try again.");
+    } finally {
+      setFetchingChallenge(false);
+    }
+  };
 
   const handleCodeChange = (newCode) => {
     setUserCode(newCode);
   };
 
   const handleSubmit = async () => {
+    // If results exist, show them instead of submitting again
+    if (results) {
+      setShowResultsModal(true);
+      return;
+    }
+
     if (!user || !challenge) return;
 
     setLoading(true);
@@ -52,28 +95,27 @@ const AIBattleMode = () => {
     setResults(null);
 
     const userId = user.id || user._id;
-    const challengeId = challenge.id || challenge._id;
-
-    // Ensure userId and challengeId are integers
     const userIdInt = typeof userId === 'string' ? parseInt(userId, 10) : userId;
-    const challengeIdInt = typeof challengeId === 'string' ? parseInt(challengeId, 10) : challengeId;
 
-    if (isNaN(userIdInt) || isNaN(challengeIdInt)) {
-      setError("Invalid user or challenge ID");
+    if (isNaN(userIdInt)) {
+      setError("Invalid user ID");
       setLoading(false);
       return;
     }
 
     const requestBody = {
       userId: userIdInt,
-      challengeId: challengeIdInt,
+      challengeId: null,
       userCode: userCode,
       language: "javascript",
+      challengeTitle: challenge.title || "AI Challenge",
+      challengeDescription: challenge.description || `${challenge.title}\n\n${challenge.description || ""}`
     };
 
     try {
       const response = await apiClient.post("/api/battle/run", requestBody);
       setResults(response.data);
+      setShowResultsModal(true);
     } catch (error) {
       console.error("Error submitting code:", error);
       setError(error.response?.data?.message || "Failed to submit code. Please try again.");
@@ -83,15 +125,20 @@ const AIBattleMode = () => {
   };
 
   const handleNewChallenge = async () => {
+    // Clear saved state
+    localStorage.removeItem(STORAGE_KEY);
     setResults(null);
+    setShowResultsModal(false);
     setUserCode("");
     setError(null);
     setFetchingChallenge(true);
     try {
-      const response = await apiClient.get("/api/challenges/random");
+      const response = await apiClient.post("/api/challenges/generate");
       const data = response.data;
       setChallenge(data);
-      if (data.templateCodes && data.templateCodes.javascript) {
+      if (data.templateCode) {
+        setUserCode(data.templateCode);
+      } else if (data.templateCodes && data.templateCodes.javascript) {
         setUserCode(data.templateCodes.javascript);
       }
     } catch (error) {
@@ -101,6 +148,12 @@ const AIBattleMode = () => {
       setFetchingChallenge(false);
     }
   };
+
+  const handleCloseResults = () => {
+    setShowResultsModal(false);
+  };
+
+  const hasResults = results !== null;
 
   return (
     <div className="aibattle-mode-container">
@@ -143,14 +196,19 @@ const AIBattleMode = () => {
             </div>
           </div>
           <button
-            className="aibattle-submit-btn"
+            className={`aibattle-submit-btn ${hasResults ? "view-results-btn" : ""}`}
             onClick={handleSubmit}
-            disabled={loading || !challenge || !userCode.trim()}
+            disabled={loading || !challenge || (!hasResults && !userCode.trim())}
           >
             {loading ? (
               <>
                 <FontAwesomeIcon icon={faSpinner} spin style={{ marginRight: "0.5rem" }} />
                 Running Battle...
+              </>
+            ) : hasResults ? (
+              <>
+                <FontAwesomeIcon icon={faEye} style={{ marginRight: "0.5rem" }} />
+                View Results
               </>
             ) : (
               <>
@@ -167,10 +225,11 @@ const AIBattleMode = () => {
         </div>
       ) : null}
       
-      {results && (
+      {showResultsModal && results && (
         <BattleResultsModal 
           results={results} 
-          onClose={() => setResults(null)} 
+          userCode={userCode}
+          onClose={handleCloseResults} 
         />
       )}
     </div>

@@ -18,5 +18,9 @@ public interface ITestResultRepository
     Task<TestResult> CreateAsync(TestResult testResult);
     
     Task<bool> ExistsAsync(int testId, int userId);
+    
+    Task<IEnumerable<TestResult>> GetAllAsync();
+    
+    Task<IEnumerable<TestResult>> GetByCompanyIdAsync(int companyId);
 }
 

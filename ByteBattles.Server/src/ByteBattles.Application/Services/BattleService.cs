@@ -28,25 +28,40 @@ public class BattleService : IBattleService
 
     public async Task<BattleResponseDto> RunBattleAsync(BattleRequestDto request)
     {
-        // Get the challenge
-        var challenge = await _challengeRepository.GetByIdAsync(request.ChallengeId);
-        if (challenge == null)
+        // Get the challenge description
+        string challengeDescription = request.ChallengeDescription ?? "Solve the coding challenge";
+        
+        if (request.ChallengeId.HasValue && request.ChallengeId.Value > 0)
         {
-            throw new InvalidOperationException("Challenge not found");
+            var challenge = await _challengeRepository.GetByIdAsync(request.ChallengeId.Value);
+            if (challenge != null)
+            {
+                challengeDescription = $"{challenge.Title}\n\n{challenge.Description}";
+            }
         }
 
-        // Execute user code
-        var userResults = ExecuteCode(request.UserCode, "Hello");
+        // Generate AI solution
+        string aiSolutionCode = await _geminiService.GenerateSolutionAsync(challengeDescription, request.Language);
         
-        // Execute AI code (simulated)
-        var aiResults = ExecuteCode("/* AI solution */", "Hello");
-        // AI always passes for demo purposes
-        aiResults = new CodeExecutionResultDto
+        // Clean up AI solution (remove markdown code blocks if present)
+        aiSolutionCode = aiSolutionCode.Trim();
+        if (aiSolutionCode.StartsWith("```javascript") || aiSolutionCode.StartsWith("```js"))
         {
-            ExecutionTime = new Random().NextDouble() * 5, // Random 0-5ms
-            Output = "Correct",
-            Passed = true
-        };
+            var lines = aiSolutionCode.Split('\n');
+            aiSolutionCode = string.Join("\n", lines.Skip(1).TakeWhile(l => !l.Trim().StartsWith("```")));
+        }
+        else if (aiSolutionCode.StartsWith("```"))
+        {
+            var lines = aiSolutionCode.Split('\n');
+            aiSolutionCode = string.Join("\n", lines.Skip(1).TakeWhile(l => !l.Trim().StartsWith("```")));
+        }
+        aiSolutionCode = aiSolutionCode.Trim();
+
+        // Execute user code
+        var userResults = await ExecuteCodeAsync(request.UserCode, challengeDescription);
+        
+        // Execute AI code
+        var aiResults = await ExecuteCodeAsync(aiSolutionCode, challengeDescription);
 
         // Get AI feedback
         string aiFeedback;
@@ -61,12 +76,21 @@ public class BattleService : IBattleService
 
         // Determine winner
         string winner;
-        if (!userResults.Passed)
+        if (!userResults.Passed && !aiResults.Passed)
+        {
+            winner = "tie";
+        }
+        else if (!userResults.Passed)
         {
             winner = "ai";
         }
+        else if (!aiResults.Passed)
+        {
+            winner = "user";
+        }
         else
         {
+            // Both passed - compare execution time
             winner = userResults.ExecutionTime < aiResults.ExecutionTime ? "user" : "ai";
         }
 
@@ -75,8 +99,50 @@ public class BattleService : IBattleService
             Winner = winner,
             UserResults = userResults,
             AiResults = aiResults,
-            AiFeedback = aiFeedback
+            AiFeedback = aiFeedback,
+            AiSolutionCode = aiSolutionCode
         };
+    }
+
+    private async Task<CodeExecutionResultDto> ExecuteCodeAsync(string code, string challengeDescription)
+    {
+        if (string.IsNullOrEmpty(code))
+        {
+            return new CodeExecutionResultDto
+            {
+                ExecutionTime = 0,
+                Output = "No code provided",
+                Passed = false
+            };
+        }
+
+        try
+        {
+            var stopwatch = Stopwatch.StartNew();
+            
+            // Use AI to check if code is correct
+            var isCorrect = await _geminiService.IsCodeCorrectAsync(code, challengeDescription);
+            
+            stopwatch.Stop();
+            var executionTime = stopwatch.Elapsed.TotalMilliseconds + new Random().NextDouble() * 2;
+
+            return new CodeExecutionResultDto
+            {
+                ExecutionTime = Math.Round(executionTime, 2),
+                Output = isCorrect ? "Correct" : "Incorrect",
+                Passed = isCorrect
+            };
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error executing code");
+            return new CodeExecutionResultDto
+            {
+                ExecutionTime = 0,
+                Output = ex.Message,
+                Passed = false
+            };
+        }
     }
 
     private CodeExecutionResultDto ExecuteCode(string code, string input)

@@ -169,5 +169,32 @@ public class TestResultsController : ControllerBase
             return StatusCode(500, new { message = "An error occurred while fetching statistics" });
         }
     }
+
+    /// <summary>
+    /// Get top test takers by overall average score for the logged-in company's tests.
+    /// </summary>
+    [HttpGet("leaderboard")]
+    [ProducesResponseType(typeof(IEnumerable<LeaderboardEntryDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetTopTestTakers([FromQuery] int topCount = 3)
+    {
+        try
+        {
+            // Get company ID from claims (logged-in user is the company)
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var companyId))
+            {
+                return Unauthorized(new { message = "User ID not found in token" });
+            }
+
+            // Get leaderboard for this company's tests only
+            var leaderboard = await _testResultService.GetTopTestTakersByCompanyAsync(companyId, topCount);
+            return Ok(leaderboard);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error fetching leaderboard");
+            return StatusCode(500, new { message = "An error occurred while fetching the leaderboard" });
+        }
+    }
 }
 

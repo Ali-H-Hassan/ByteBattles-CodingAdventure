@@ -67,7 +67,7 @@ const TestCard = ({ test }) => {
       <div className="test-card-body">
         <img src={logo} alt={`${title} logo`} className="test-logo" />
         <div className="test-card-content">
-          <h3 className="test-title">{title}</h3>
+        <h3 className="test-title">{title}</h3>
           {companyName && (
             <div className="test-company">
               <FontAwesomeIcon icon={faBuilding} className="test-company-icon" />

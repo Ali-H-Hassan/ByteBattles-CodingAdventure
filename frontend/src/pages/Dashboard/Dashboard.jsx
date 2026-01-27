@@ -6,7 +6,7 @@ import Sidebar from "../../components/Sidebar/Sidebar";
 import Header from "../../components/DashHeader/DashHeader";
 import RecentTests from "../../components/RecentTests/RecentTests";
 import Results from "../../components/Results/Results";
-import UpcomingQuiz from "../../components/UpcomingQuiz/UpcomingQuiz";
+import AIBattleStats from "../../components/AIBattleStats/AIBattleStats";
 import Statistics from "../../components/Statistics/Statistics";
 import CoursesDisplay from "../../components/CoursesDisplay/CoursesDisplay";
 import Profile from "../../components/Profile/Profile";
@@ -31,6 +31,7 @@ function Dashboard() {
       navigate("/login");
     }
   }, [isAuthenticated, navigate]);
+
 
   const handleOptionSelect = (option) => {
     if (option === "logout") {
@@ -59,7 +60,7 @@ function Dashboard() {
             <>
               <RecentTests />
               <Results />
-              <UpcomingQuiz />
+              <AIBattleStats onNavigateToBattle={() => setSelectedOption("battle")} />
               <Statistics />
             </>
           )}

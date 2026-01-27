@@ -35,6 +35,9 @@ public class ByteBattlesDbContext : DbContext
     public DbSet<ProgrammingTestCase> ProgrammingTestCases => Set<ProgrammingTestCase>();
     public DbSet<TestResult> TestResults => Set<TestResult>();
 
+    // Battle-related entities
+    public DbSet<BattleResult> BattleResults => Set<BattleResult>();
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

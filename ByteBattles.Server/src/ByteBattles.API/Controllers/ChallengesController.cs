@@ -1,3 +1,5 @@
+using ByteBattles.Application.Interfaces;
+using ByteBattles.Core.DTOs.Battle;
 using ByteBattles.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +15,16 @@ namespace ByteBattles.API.Controllers;
 public class ChallengesController : ControllerBase
 {
     private readonly IChallengeRepository _challengeRepository;
+    private readonly IGeminiService _geminiService;
     private readonly ILogger<ChallengesController> _logger;
 
-    public ChallengesController(IChallengeRepository challengeRepository, ILogger<ChallengesController> logger)
+    public ChallengesController(
+        IChallengeRepository challengeRepository, 
+        IGeminiService geminiService,
+        ILogger<ChallengesController> logger)
     {
         _challengeRepository = challengeRepository;
+        _geminiService = geminiService;
         _logger = logger;
     }
 
@@ -125,6 +132,26 @@ public class ChallengesController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error fetching random challenge");
+            return StatusCode(500, new { message = ex.Message });
+        }
+    }
+
+    /// <summary>
+    /// Generate a new AI challenge.
+    /// </summary>
+    [HttpPost("generate")]
+    [Authorize]
+    [ProducesResponseType(typeof(GeneratedChallengeDto), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GenerateChallenge()
+    {
+        try
+        {
+            var challenge = await _geminiService.GenerateChallengeAsync();
+            return Ok(challenge);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error generating challenge");
             return StatusCode(500, new { message = ex.Message });
         }
     }

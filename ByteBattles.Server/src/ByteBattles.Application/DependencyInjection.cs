@@ -24,6 +24,7 @@ public static class DependencyInjection
         // AI Battle Services
         services.AddScoped<IGeminiService, GeminiService>();
         services.AddScoped<IBattleService, BattleService>();
+        services.AddScoped<IBattleResultService, BattleResultService>();
         
         // Register HttpClient for Gemini API
         services.AddHttpClient();

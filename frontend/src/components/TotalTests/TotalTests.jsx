@@ -8,10 +8,11 @@ import { useNavigate } from "react-router-dom";
 function TotalTests() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const companyId = useSelector((state) => state.auth.user?.companyId);
+  const user = useSelector((state) => state.auth.user);
+  const companyId = user?.id || user?._id; // Support both id (SQL) and _id (MongoDB)
 
   const companyTests = useSelector((state) => state.test.companyTests);
-  const totalTests = companyTests.length;
+  const totalTests = companyTests?.length || 0;
 
   useEffect(() => {
     if (companyId) {

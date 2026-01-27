@@ -70,5 +70,23 @@ public class TestResultRepository : ITestResultRepository
         return await _context.TestResults
             .AnyAsync(tr => tr.TestId == testId && tr.UserId == userId);
     }
+
+    public async Task<IEnumerable<TestResult>> GetAllAsync()
+    {
+        return await _context.TestResults
+            .Include(tr => tr.User)
+            .Include(tr => tr.Test)
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<TestResult>> GetByCompanyIdAsync(int companyId)
+    {
+        return await _context.TestResults
+            .Include(tr => tr.User)
+            .Include(tr => tr.Test)
+                .ThenInclude(t => t.CreatedBy)
+            .Where(tr => tr.Test.CreatedById == companyId)
+            .ToListAsync();
+    }
 }
 
