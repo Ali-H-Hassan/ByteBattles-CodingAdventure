@@ -8,12 +8,108 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faTrash, faPlus, faUsers, faUser } from "@fortawesome/free-solid-svg-icons";
 import "./CompanyTestsDisplay.css";
 
+// Helper function to evaluate code against a test case
+// Note: This is a simplified frontend evaluation. In production, code should be executed on the backend.
+const evaluateCodeForTestCase = (code, input, expectedOutput) => {
+  try {
+    if (!code || !code.trim()) {
+      return { output: "No code provided", passed: false };
+    }
+
+    // Try to execute the code with the input
+    // This is a simplified approach - in production, use backend execution with proper sandboxing
+    let result;
+    let outputStr = "";
+    
+    try {
+      // Create a sandboxed execution context
+      const sandbox = {
+        input: input,
+        console: {
+          log: (...args) => {
+            outputStr = args.map(arg => String(arg)).join(' ');
+          }
+        },
+        // Add common globals
+        Math: Math,
+        Array: Array,
+        String: String,
+        Number: Number,
+        Object: Object,
+        JSON: JSON,
+        Date: Date
+      };
+      
+      // Try to wrap and execute the code
+      // First, try to find if there's a function definition
+      const functionMatch = code.match(/(?:function\s+\w+\s*\([^)]*\)|const\s+\w+\s*=\s*(?:\([^)]*\)\s*=>|function)|let\s+\w+\s*=\s*(?:\([^)]*\)\s*=>|function)|var\s+\w+\s*=\s*(?:\([^)]*\)\s*=>|function))/);
+      
+      if (functionMatch) {
+        // Code has a function - try to execute it
+        const wrappedCode = `
+          (function() {
+            ${code}
+            // Try to find and call the function or capture return
+            if (typeof result !== 'undefined') return result;
+            // Try common function names
+            const funcNames = Object.keys(this).filter(k => typeof this[k] === 'function' && k !== 'console');
+            if (funcNames.length > 0) {
+              return this[funcNames[0]](input);
+            }
+            return null;
+          }).call(sandbox);
+        `;
+        
+        const func = new Function('sandbox', 'input', wrappedCode);
+        result = func(sandbox, input);
+      } else {
+        // No function found - try direct execution
+        const wrappedCode = `
+          (function() {
+            ${code}
+            return typeof result !== 'undefined' ? result : null;
+          }).call(sandbox);
+        `;
+        const func = new Function('sandbox', 'input', wrappedCode);
+        result = func(sandbox, input);
+      }
+      
+      // Use console output if available, otherwise use return value
+      if (outputStr) {
+        result = outputStr;
+      }
+      
+    } catch (execError) {
+      return {
+        output: `Execution error: ${execError.message}`,
+        passed: false
+      };
+    }
+    
+    // Compare result with expected output
+    const resultStr = String(result || outputStr || "No output").trim();
+    const expectedStr = String(expectedOutput || "").trim();
+    const passed = resultStr === expectedStr;
+    
+    return {
+      output: resultStr || "No output",
+      passed: passed
+    };
+  } catch (error) {
+    return {
+      output: `Error: ${error.message}`,
+      passed: false
+    };
+  }
+};
+
 const CompanyTestsDisplay = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.auth.user);
   const companyId = user?.id || user?._id; // Support both id (SQL) and _id (MongoDB)
   const { companyTests, loading, error } = useSelector((state) => state.test);
+  const { test: testDetails } = useSelector((state) => state.testDetails);
   const [deletingTestId, setDeletingTestId] = useState(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [testToDelete, setTestToDelete] = useState(null);
@@ -68,6 +164,11 @@ const CompanyTestsDisplay = () => {
     const testId = test.id || test._id;
     setSelectedTest(test);
     setShowTestTakersModal(true);
+    
+    // Fetch test details to get MCQ questions and options
+    if (testId) {
+      await dispatch(fetchTestById(testId));
+    }
     
     // Always load fresh data when opening modal
     const results = await loadTestResults(testId);
@@ -370,18 +471,66 @@ const CompanyTestsDisplay = () => {
                         ? JSON.parse(mcqAnswersJson) 
                         : mcqAnswersJson;
                       
+                      // Helper function to get option text and check if correct
+                      const getOptionInfo = (questionId, optionId) => {
+                        if (!testDetails || !testDetails.mcqQuestions) {
+                          return { text: `Option ${optionId}`, isCorrect: false };
+                        }
+                        
+                        const question = testDetails.mcqQuestions.find(
+                          q => (q.id || q._id).toString() === questionId.toString()
+                        );
+                        
+                        if (!question || !question.options) {
+                          return { text: `Option ${optionId}`, isCorrect: false };
+                        }
+                        
+                        const option = question.options.find(
+                          opt => (opt.id || opt._id).toString() === optionId.toString()
+                        );
+                        
+                        if (!option) {
+                          return { text: `Option ${optionId}`, isCorrect: false };
+                        }
+                        
+                        return {
+                          text: option.text || option.Text || `Option ${optionId}`,
+                          isCorrect: option.isCorrect || option.IsCorrect || false
+                        };
+                      };
+                      
                       return (
                         <div className="answers-section">
                           <h5>MCQ Answers</h5>
                           <div className="answers-content">
                             {Object.keys(mcqAnswers).length > 0 ? (
                               <div className="mcq-answers-list">
-                                {Object.entries(mcqAnswers).map(([questionId, optionId]) => (
-                                  <div key={questionId} className="mcq-answer-item">
-                                    <span className="answer-question-id">Question {questionId}:</span>
-                                    <span className="answer-option-id">Option {optionId}</span>
-                                  </div>
-                                ))}
+                                {Object.entries(mcqAnswers).map(([questionId, optionId]) => {
+                                  const optionInfo = getOptionInfo(questionId, optionId);
+                                  const question = testDetails?.mcqQuestions?.find(
+                                    q => (q.id || q._id).toString() === questionId.toString()
+                                  );
+                                  const questionText = question?.questionText || question?.QuestionText || `Question ${questionId}`;
+                                  
+                                  return (
+                                    <div 
+                                      key={questionId} 
+                                      className={`mcq-answer-item ${optionInfo.isCorrect ? 'correct-answer' : 'incorrect-answer'}`}
+                                    >
+                                      <div className="answer-question">
+                                        <span className="answer-question-label">{questionText}</span>
+                                      </div>
+                                      <div className={`answer-option ${optionInfo.isCorrect ? 'correct' : 'incorrect'}`}>
+                                        <span className="answer-option-text">{optionInfo.text}</span>
+                                        {optionInfo.isCorrect ? (
+                                          <span className="answer-status correct">✓ Correct</span>
+                                        ) : (
+                                          <span className="answer-status incorrect">✗ Incorrect</span>
+                                        )}
+                                      </div>
+                                    </div>
+                                  );
+                                })}
                               </div>
                             ) : (
                               <p className="no-answers">No MCQ answers submitted</p>
@@ -409,6 +558,103 @@ const CompanyTestsDisplay = () => {
                     <div className="code-answer">
                       <pre><code>{selectedTaker.programmingAnswer || selectedTaker.ProgrammingAnswer}</code></pre>
                     </div>
+                    
+                    {/* Test Case Results */}
+                    {testDetails?.programmingQuestion?.testCases && testDetails.programmingQuestion.testCases.length > 0 && (
+                      <div className="test-cases-results">
+                        <h6>Test Case Results</h6>
+                        <div className="test-cases-list">
+                          {(() => {
+                            const code = selectedTaker.programmingAnswer || selectedTaker.ProgrammingAnswer;
+                            const testCaseResults = testDetails.programmingQuestion.testCases.map((testCase, index) => {
+                              const expectedOutput = testCase.output || testCase.Output || testCase.expectedOutput || testCase.ExpectedOutput;
+                              const input = testCase.input || testCase.Input;
+                              
+                              // Try to evaluate the code against this test case
+                              let actualOutput = "Not executed";
+                              let passed = false;
+                              
+                              try {
+                                if (code) {
+                                  // Create a safe evaluation function
+                                  // Note: This is a simplified evaluation for display purposes
+                                  // In production, code should be executed on the backend in a sandboxed environment
+                                  const evalResult = evaluateCodeForTestCase(code, input, expectedOutput);
+                                  actualOutput = evalResult.output;
+                                  passed = evalResult.passed;
+                                } else {
+                                  actualOutput = "No code provided";
+                                  passed = false;
+                                }
+                              } catch (error) {
+                                actualOutput = `Error: ${error.message}`;
+                                passed = false;
+                              }
+                              
+                              return {
+                                testCase,
+                                index,
+                                input,
+                                expectedOutput,
+                                actualOutput,
+                                passed
+                              };
+                            });
+                            
+                            // Calculate overall status based on actual test case results
+                            const allPassed = testCaseResults.every(result => result.passed);
+                            const allFailed = testCaseResults.every(result => !result.passed);
+                            const passedCount = testCaseResults.filter(result => result.passed).length;
+                            const totalCount = testCaseResults.length;
+                            
+                            return (
+                              <>
+                                {testCaseResults.map(({ testCase, index, input, expectedOutput, actualOutput, passed }) => (
+                                  <div 
+                                    key={testCase.id || testCase.Id || index} 
+                                    className={`test-case-result ${passed ? 'passed' : 'failed'}`}
+                                  >
+                                    <div className="test-case-header">
+                                      <span className="test-case-number">Test Case {index + 1}</span>
+                                      {passed ? (
+                                        <span className="test-case-status passed">✓ Passed</span>
+                                      ) : (
+                                        <span className="test-case-status failed">✗ Failed</span>
+                                      )}
+                                    </div>
+                                    <div className="test-case-details">
+                                      <div className="test-case-input">
+                                        <span className="test-case-label">Input</span>
+                                        <code>{input || "N/A"}</code>
+                                      </div>
+                                      <div className="test-case-expected">
+                                        <span className="test-case-label">Expected</span>
+                                        <code>{expectedOutput || "N/A"}</code>
+                                      </div>
+                                      <div className="test-case-actual">
+                                        <span className="test-case-label">Actual</span>
+                                        <code className={passed ? 'output-correct' : 'output-incorrect'}>
+                                          {actualOutput}
+                                        </code>
+                                      </div>
+                                    </div>
+                                  </div>
+                                ))}
+                                <div className="overall-programming-status">
+                                  <span className={`status-badge ${allPassed ? 'correct' : 'incorrect'}`}>
+                                    {allPassed 
+                                      ? `✓ All test cases passed (${passedCount}/${totalCount})` 
+                                      : allFailed
+                                      ? `✗ All test cases failed (0/${totalCount} passed)`
+                                      : `✗ Some test cases failed (${passedCount}/${totalCount} passed)`}
+                                  </span>
+                                </div>
+                              </>
+                            );
+                          })()}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 ) : (
                   <div className="answers-section">
