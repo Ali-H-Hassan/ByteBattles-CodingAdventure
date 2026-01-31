@@ -14,14 +14,22 @@ function CompanyDashboard() {
   const navigate = useNavigate();
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const loading = useSelector((state) => state.auth.loading);
+  const token = useSelector((state) => state.auth.token);
   const user = useSelector((state) => state.auth.user);
   const username = user ? user.username : "Company";
+  const profilePic = user?.profilePictureUrl;
 
   useEffect(() => {
+    // Wait for session restoration to complete before redirecting
+    if (loading || (token && !isAuthenticated)) {
+      return; // Still loading/restoring session
+    }
+
     if (!isAuthenticated) {
       navigate("/login");
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, loading, token, navigate]);
 
   const [selectedOption, setSelectedOption] = useState("dashboard");
 
@@ -39,7 +47,13 @@ function CompanyDashboard() {
       <Sidebar onOptionSelect={handleOptionSelect} userType="company" />
 
       <div className="main-content">
-        {selectedOption !== "profile" && <Header username={username} />}
+        {selectedOption !== "profile" && selectedOption !== "tests" && (
+          <Header 
+            username={username} 
+            profilePic={profilePic}
+            onProfileClick={() => setSelectedOption("profile")}
+          />
+        )}
         {selectedOption !== "profile" && selectedOption === "tests" && (
           <CompanyTestsDisplay />
         )}

@@ -20,6 +20,8 @@ function Dashboard() {
   const navigate = useNavigate();
 
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
+  const loading = useSelector((state) => state.auth.loading);
+  const token = useSelector((state) => state.auth.token);
   const user = useSelector((state) => state.auth.user);
   const username = user ? user.username : "User";
   const profilePic = user?.profilePictureUrl;
@@ -27,10 +29,18 @@ function Dashboard() {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   useEffect(() => {
+    // Wait for session restoration to complete before redirecting
+    if (loading || (token && !isAuthenticated)) {
+      return; // Still loading/restoring session
+    }
+
     if (!isAuthenticated) {
       navigate("/login");
+    } else if (user?.userType === "company") {
+      // Redirect company users to their dashboard
+      navigate("/company-dashboard");
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, loading, token, navigate, user]);
 
 
   const handleOptionSelect = (option) => {
@@ -53,7 +63,11 @@ function Dashboard() {
 
       <div className={`main-content ${isSidebarCollapsed ? "sidebar-collapsed" : ""}`}>
         {selectedOption === "dashboard" && (
-          <Header username={username} profilePic={profilePic} />
+          <Header 
+            username={username} 
+            profilePic={profilePic} 
+            onProfileClick={() => setSelectedOption("profile")}
+          />
         )}
         <div className="content-grid">
           {selectedOption === "dashboard" && (
