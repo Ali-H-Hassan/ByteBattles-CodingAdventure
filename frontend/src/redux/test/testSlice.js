@@ -59,6 +59,14 @@ export const testSlice = createSlice({
         error: action.payload,
       };
     },
+    deleteTestSuccess: (state, action) => {
+      return {
+        ...state,
+        companyTests: state.companyTests.filter(
+          (test) => (test.id || test._id) !== action.payload
+        ),
+      };
+    },
   },
 });
 export const {
@@ -69,6 +77,7 @@ export const {
   createTestSuccess,
   createTestFailure,
   fetchTestFailure,
+  deleteTestSuccess,
 } = testSlice.actions;
 
 export default testSlice.reducer;

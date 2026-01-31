@@ -6,6 +6,7 @@ import {
   createTestSuccess,
   createTestFailure,
   fetchTestFailure,
+  deleteTestSuccess,
 } from "./testSlice";
 import apiClient from "../../services/apiConfig";
 
@@ -38,5 +39,16 @@ export const createTest = (testData) => async (dispatch) => {
     dispatch(createTestSuccess(response.data));
   } catch (error) {
     dispatch(createTestFailure(error.message));
+  }
+};
+
+export const deleteTest = (testId) => async (dispatch) => {
+  try {
+    await apiClient.delete(`/api/tests/${testId}`);
+    // Remove the test from the company tests list
+    dispatch(deleteTestSuccess(testId));
+    return { success: true };
+  } catch (error) {
+    throw new Error(error.response?.data?.message || error.message || "Failed to delete test");
   }
 };
