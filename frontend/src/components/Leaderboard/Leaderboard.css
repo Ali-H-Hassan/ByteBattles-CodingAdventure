@@ -72,6 +72,20 @@
   object-fit: cover;
 }
 
+.leaderboard-avatar-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  margin-right: 0.5rem;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e9ecef;
+  color: #6c757d;
+  font-size: 1.5rem;
+}
+
 .leaderboard-info h3 {
   margin: 0;
   font-size: 0.9375rem;

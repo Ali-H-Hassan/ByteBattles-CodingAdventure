@@ -10,7 +10,6 @@ import {
 import PhoneInput, { isValidPhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import "./EditProfile.css";
-import Avatar from "../../assets/Profile (1).png";
 import { updateProfile } from "../../redux/auth/authActions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -39,7 +38,7 @@ const EditProfile = ({ onSuccess, onCancel }) => {
   const [phoneError, setPhoneError] = useState("");
   const [selectedCountryId, setSelectedCountryId] = useState(null);
   const [selectedStateId, setSelectedStateId] = useState(null);
-  const [profilePicture, setProfilePicture] = useState(Avatar);
+  const [profilePicture, setProfilePicture] = useState(null);
   const fileInputRef = useRef();
   const [submitError, setSubmitError] = useState("");
   const [submitSuccess, setSubmitSuccess] = useState("");
@@ -212,7 +211,7 @@ const EditProfile = ({ onSuccess, onCancel }) => {
           setProfilePicture(`${apiBaseUrl}/${imageUrl}`);
         }
       } else {
-        setProfilePicture(Avatar);
+        setProfilePicture(null);
       }
     }
   }, [user, countries]);
@@ -481,6 +480,8 @@ const EditProfile = ({ onSuccess, onCancel }) => {
             ? `${apiBaseUrl}${result.user.profilePictureUrl}`
             : `${apiBaseUrl}/${result.user.profilePictureUrl}`;
           setProfilePicture(imageUrl);
+        } else {
+          setProfilePicture(null);
         }
         
         // Update local state and original profile
@@ -545,11 +546,17 @@ const EditProfile = ({ onSuccess, onCancel }) => {
         <div className="edit-profile-header">
           <div className="edit-profile-avatar-container">
             <div className="edit-profile-avatar-wrapper">
-              <img
-                src={profilePicture}
-                alt="Profile"
-                className="edit-profile-avatar"
-              />
+              {profilePicture ? (
+                <img
+                  src={profilePicture}
+                  alt="Profile"
+                  className="edit-profile-avatar"
+                />
+              ) : (
+                <div className="edit-profile-avatar-placeholder">
+                  <FontAwesomeIcon icon={faUser} />
+                </div>
+              )}
               <label
                 htmlFor="profilePicture"
                 className="edit-profile-avatar-overlay"

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import UserAvatar from "../../assets/Profile (1).png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import "./DashHeader.css";
@@ -9,7 +8,7 @@ function HeaderDashboard({ username, profilePic, onProfileClick }) {
   const [imageError, setImageError] = useState(false);
   
   // Handle different profile picture URL formats
-  let profileImageSrc = UserAvatar;
+  let profileImageSrc = null;
   if (profilePic && !imageError) {
     if (profilePic.startsWith('http')) {
       profileImageSrc = profilePic;

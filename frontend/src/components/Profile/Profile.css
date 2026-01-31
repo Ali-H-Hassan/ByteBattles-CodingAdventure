@@ -4,6 +4,7 @@
   height: fit-content;
   min-height: calc(100vh - 150px);
   box-sizing: border-box;
+  background: var(--bg-light, #f8f9fa);
 }
 
 .profile-success-message {
@@ -57,6 +58,49 @@
   object-fit: cover;
   border: 3px solid #fff;
   box-shadow: 0 4px 15px rgba(0, 195, 84, 0.2);
+}
+
+.profile-avatar-placeholder {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border: 3px solid #fff;
+  box-shadow: 0 4px 15px rgba(0, 195, 84, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-avatar-placeholder::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.profile-avatar-icon {
+  font-size: 2.5rem;
+  color: #00c354;
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
 }
 
 .profile-header-content {

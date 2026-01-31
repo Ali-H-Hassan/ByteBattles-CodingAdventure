@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./Leaderboard.css";
-import UserAvatar from "../../assets/Profile (1).png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrophy } from "@fortawesome/free-solid-svg-icons";
+import { faTrophy, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import apiClient from "../../services/apiConfig";
 
 function Leaderboard() {
@@ -87,14 +86,20 @@ function Leaderboard() {
         {topTestTakers.map((taker, index) => (
           <li key={taker.userId} className="leaderboard-entry">
             <FontAwesomeIcon icon={faTrophy} className={`medal ${getMedalClass(index)}`} />
-            <img
-              src={taker.profilePictureUrl || UserAvatar}
-              alt={taker.username}
-              className="leaderboard-avatar"
-              onError={(e) => {
-                e.target.src = UserAvatar;
-              }}
-            />
+            {taker.profilePictureUrl ? (
+              <img
+                src={taker.profilePictureUrl}
+                alt={taker.username}
+                className="leaderboard-avatar"
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  const icon = e.target.parentElement.querySelector('.leaderboard-avatar-icon');
+                  if (icon) icon.style.display = 'flex';
+                }}
+              />
+            ) : (
+              <FontAwesomeIcon icon={faUserCircle} className="leaderboard-avatar-icon" />
+            )}
             <div className="leaderboard-info">
               <h3>{taker.username}</h3>
               <p>

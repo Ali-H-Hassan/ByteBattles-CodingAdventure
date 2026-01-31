@@ -10,7 +10,6 @@ import {
   faCheckCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import EditProfile from "../EditProfile/EditProfile";
-import Avatar from "../../assets/Profile (1).png";
 import "./Profile.css";
 
 const Profile = () => {
@@ -58,7 +57,7 @@ const Profile = () => {
   }
 
   const apiBaseUrl = process.env.REACT_APP_API_URL || "http://localhost:5057";
-  let profileImageSrc = Avatar;
+  let profileImageSrc = null;
   if (user.profilePictureUrl) {
     if (user.profilePictureUrl.startsWith("http")) {
       profileImageSrc = user.profilePictureUrl;
@@ -80,7 +79,13 @@ const Profile = () => {
       
       <div className="profile-header-section">
         <div className="profile-avatar-wrapper">
-          <img src={profileImageSrc} alt="Profile" className="profile-avatar-image" />
+          {profileImageSrc ? (
+            <img src={profileImageSrc} alt="Profile" className="profile-avatar-image" />
+          ) : (
+            <div className="profile-avatar-placeholder">
+              <FontAwesomeIcon icon={faUser} className="profile-avatar-icon" />
+            </div>
+          )}
         </div>
         <div className="profile-header-content">
           <h1 className="profile-display-name">{user.name || user.username || "User"}</h1>
