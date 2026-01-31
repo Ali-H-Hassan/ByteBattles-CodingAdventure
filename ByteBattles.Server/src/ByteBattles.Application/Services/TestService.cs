@@ -155,6 +155,13 @@ public class TestService : ITestService
         if (!await _testRepository.ExistsAsync(id))
             return false;
 
+        // TODO: Before deleting, mark all related TestResults as having a deleted test.
+        // This requires:
+        // 1. Add an IsTestDeleted field to TestResult entity
+        // 2. Update all TestResults for this test to set IsTestDeleted = true
+        // 3. Update TestResultService to handle this logic
+        // This ensures users who took the test will see it marked as deleted in their history.
+        
         await _testRepository.DeleteAsync(id);
         return true;
     }
