@@ -9,7 +9,8 @@ const getInitialState = () => {
     userType: null,
     token: token,
     error: null,
-    loading: false,
+    // If token exists, we need to restore session, so set loading to true initially
+    loading: !!token,
   };
 };
 
