@@ -44,6 +44,63 @@
   cursor: not-allowed;
 }
 
+.test-cases-container {
+  margin-top: 1rem;
+  padding: 1.25rem;
+  background: var(--bg-white, #fff);
+  border: 1px solid #e5e5e5;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.test-cases-title {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-dark, #2c3e50);
+}
+
+.test-case-item {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background: #f8f9fa;
+  border-radius: 6px;
+  border-left: 3px solid #28a745;
+}
+
+.test-case-item:last-child {
+  margin-bottom: 0;
+}
+
+.test-case-input,
+.test-case-output {
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.test-case-input:last-child,
+.test-case-output:last-child {
+  margin-bottom: 0;
+}
+
+.test-case-input strong,
+.test-case-output strong {
+  color: var(--text-dark, #2c3e50);
+  margin-right: 0.5rem;
+}
+
+.test-case-input code,
+.test-case-output code {
+  background: #fff;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.8125rem;
+  color: #2c3e50;
+  border: 1px solid #dee2e6;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .test-problem-statement {
