@@ -3,6 +3,7 @@ using ByteBattles.Application;
 using ByteBattles.Infrastructure;
 using ByteBattles.Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -124,6 +125,25 @@ var app = builder.Build();
 // Configure HTTP Request Pipeline
 // ===========================================
 
+// Global exception handler for better error messages
+app.UseExceptionHandler(errorApp =>
+{
+    errorApp.Run(async context =>
+    {
+        context.Response.StatusCode = 500;
+        context.Response.ContentType = "application/json";
+        
+        var exceptionHandlerPathFeature = context.Features.Get<Microsoft.AspNetCore.Diagnostics.IExceptionHandlerPathFeature>();
+        var exception = exceptionHandlerPathFeature?.Error;
+        
+        var logger = context.RequestServices.GetRequiredService<ILogger<Program>>();
+        logger.LogError(exception, "Unhandled exception: {Message}", exception?.Message);
+        
+        var response = new { message = $"An error occurred: {exception?.Message}" };
+        await context.Response.WriteAsJsonAsync(response);
+    });
+});
+
 // Enable Swagger in development
 if (app.Environment.IsDevelopment())
 {
@@ -162,7 +182,23 @@ app.MapGet("/api", () => new
     documentation = "/swagger"
 });
 
-// Seed database in development
+// Ensure database is created before seeding
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ByteBattlesDbContext>();
+    try
+    {
+        // Ensure database is created (this creates all tables based on the model)
+        await context.Database.EnsureCreatedAsync();
+        app.Logger.LogInformation("Database ensured/created");
+    }
+    catch (Exception ex)
+    {
+        app.Logger.LogError(ex, "Error ensuring database is created");
+    }
+}
+
+// Seed database in development (only if no users exist)
 if (app.Environment.IsDevelopment())
 {
     using (var scope = app.Services.CreateScope())
@@ -170,8 +206,16 @@ if (app.Environment.IsDevelopment())
         var context = scope.ServiceProvider.GetRequiredService<ByteBattlesDbContext>();
         try
         {
-            await DataSeeder.SeedAsync(context);
-            app.Logger.LogInformation("Database seeded successfully");
+            // Only seed if database is empty
+            if (!context.Users.Any())
+            {
+                await DataSeeder.SeedAsync(context);
+                app.Logger.LogInformation("Database seeded successfully");
+            }
+            else
+            {
+                app.Logger.LogInformation("Database already contains data. Use POST /api/admin/seed-database to reseed.");
+            }
         }
         catch (Exception ex)
         {
