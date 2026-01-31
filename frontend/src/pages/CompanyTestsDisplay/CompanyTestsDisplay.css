@@ -1,6 +1,9 @@
 .company-tests-container {
   padding: clamp(1rem, 3vw, 1.5rem);
   margin-top: clamp(1rem, 2vw, 1.5rem);
+  min-height: 100vh;
+  background: var(--bg-light, #f8f9fa);
+  box-sizing: border-box;
 }
 
 .company-tests-header {

@@ -15,9 +15,10 @@
   margin-left: 240px;
   transition: margin-left 0.3s ease;
   width: calc(100% - 240px);
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background: var(--bg-light, #f8f9fa);
 }
 
 .main-content.sidebar-collapsed {

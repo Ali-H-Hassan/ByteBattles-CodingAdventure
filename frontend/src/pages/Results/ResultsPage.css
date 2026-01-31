@@ -1,10 +1,11 @@
 .results-page {
   width: 100%;
-  min-height: 100%;
+  min-height: 100vh;
   padding: 2rem;
   padding-bottom: 3rem;
   background: var(--bg-light, #f8f9fa);
   position: relative;
+  box-sizing: border-box;
 }
 
 .results-page-header {

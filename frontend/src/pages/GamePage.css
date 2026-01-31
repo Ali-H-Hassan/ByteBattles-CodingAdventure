@@ -3,11 +3,11 @@
   background-size: cover;
   background-position: center;
   min-height: 100vh;
-  height: 100vh;
   padding: clamp(0.5rem, 1.5vw, 1rem);
   display: flex;
   flex-direction: column;
-  overflow: hidden;
+  overflow-x: hidden;
+  box-sizing: border-box;
 }
 
 .Game h1 {

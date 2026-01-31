@@ -1,10 +1,11 @@
 .lb-page {
   display: flex;
   flex-direction: column;
-  height: 90%;
+  min-height: 100vh;
   position: relative;
   background-color: #f7f7f7;
   border-radius: 15px;
+  box-sizing: border-box;
 }
 
 .lb-header {
