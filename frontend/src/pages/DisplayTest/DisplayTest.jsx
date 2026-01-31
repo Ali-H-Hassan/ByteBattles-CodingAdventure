@@ -15,6 +15,8 @@ const DisplayTest = () => {
   const dispatch = useDispatch();
   const { test, loading, error } = useSelector((state) => state.testDetails);
   const { loading: submitting } = useSelector((state) => state.testResults);
+  const user = useSelector((state) => state.auth.user);
+  const isCompanyUser = user?.userType === "company";
   const [currentSection, setCurrentSection] = useState("mcq");
   const [answers, setAnswers] = useState({ mcq: {}, programming: "" });
 
@@ -43,11 +45,16 @@ const DisplayTest = () => {
   };
 
   const handleSubmitTest = async (isAutoSubmit = false) => {
+    // Block submission for company users (view-only mode)
+    if (isCompanyUser) {
+      return;
+    }
+
     if (!testId) return;
 
     try {
       // Convert MCQ answers to the format expected by backend
-      // Backend expects: { questionId: optionId }
+      // Backend expects: { questionId: optionId } where both are integers
       const mcqAnswers = {};
       Object.keys(answers.mcq).forEach((questionId) => {
         const selectedOptionId = answers.mcq[questionId];
@@ -56,7 +63,12 @@ const DisplayTest = () => {
           (q) => (q.id || q._id).toString() === questionId.toString()
         );
         if (question && selectedOptionId) {
-          mcqAnswers[question.id || question._id] = selectedOptionId;
+          // Ensure both IDs are integers
+          const qId = parseInt(question.id || question._id);
+          const optId = parseInt(selectedOptionId);
+          if (!isNaN(qId) && !isNaN(optId)) {
+            mcqAnswers[qId] = optId;
+          }
         }
       });
 
@@ -92,10 +104,12 @@ const DisplayTest = () => {
   return (
     <div className="display-test-container">
       <TestHeader 
-        initialTime={initialTime} 
-        onTimeUp={handleTimeUp}
+        initialTime={isCompanyUser ? null : initialTime} 
+        onTimeUp={isCompanyUser ? null : handleTimeUp}
         testTitle={test.title}
         companyName={test.companyName}
+        isViewOnly={isCompanyUser}
+        onBackClick={isCompanyUser ? () => navigate("/company-dashboard") : null}
       />
       <div className="test-display-flex-container">
         <TestSidebar
@@ -108,18 +122,24 @@ const DisplayTest = () => {
               {test.mcqQuestions && test.mcqQuestions.length > 0 ? (
                 test.mcqQuestions.map((question) => {
                   const questionId = question.id || question._id; // Support both id (SQL) and _id (MongoDB)
+                  const selectedAnswer = answers.mcq[questionId];
                   return (
                     <MCQQuestion
                       key={questionId}
+                      questionId={questionId}
                       question={question.questionText}
                       options={question.options ? question.options.map((option) => ({
                         id: option.id || option._id,
-                        text: option.text
+                        text: option.text,
+                        isCorrect: option.isCorrect
                       })) : []}
-                      onAnswerChange={(e) => {
+                      onAnswerChange={isCompanyUser ? undefined : (e) => {
                         const selectedOptionId = parseInt(e.target.value);
                         handleMCQAnswerChange(questionId, selectedOptionId);
                       }}
+                      disabled={isCompanyUser}
+                      showCorrectAnswer={isCompanyUser}
+                      selectedAnswer={selectedAnswer}
                     />
                   );
                 })
@@ -140,9 +160,11 @@ const DisplayTest = () => {
             <ProgrammingQuestion
               problemStatement={test.programmingQuestion.questionText || ""}
               starterCode={test.programmingQuestion.starterCode || ""}
-              handleCodeChange={handleProgrammingAnswerChange}
-              onSubmitCode={handleSubmitTest}
+              handleCodeChange={isCompanyUser ? undefined : handleProgrammingAnswerChange}
+              onSubmitCode={isCompanyUser ? undefined : handleSubmitTest}
               isSubmitting={submitting}
+              isViewOnly={isCompanyUser}
+              testCases={test.programmingQuestion.testCases || []}
             />
           )}
         </div>
