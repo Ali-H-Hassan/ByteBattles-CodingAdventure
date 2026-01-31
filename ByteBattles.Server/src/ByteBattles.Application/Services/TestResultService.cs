@@ -41,12 +41,15 @@ public class TestResultService : ITestResultService
 
         // Calculate MCQ score
         int mcqCorrect = 0;
-        int mcqTotal = test.McqQuestions.Count;
+        int mcqTotal = test.McqQuestions?.Count ?? 0;
         
-        if (dto.McqAnswers != null && dto.McqAnswers.Any())
+        if (dto.McqAnswers != null && dto.McqAnswers.Any() && test.McqQuestions != null && test.McqQuestions.Any())
         {
             foreach (var question in test.McqQuestions)
             {
+                if (question.Options == null || !question.Options.Any())
+                    continue;
+                    
                 if (dto.McqAnswers.TryGetValue(question.Id, out var selectedOptionId))
                 {
                     var correctOption = question.Options.FirstOrDefault(o => o.IsCorrect);
@@ -60,16 +63,21 @@ public class TestResultService : ITestResultService
 
         // Calculate programming question score
         bool programmingCorrect = false;
-        if (test.ProgrammingQuestion != null && !string.IsNullOrWhiteSpace(dto.ProgrammingAnswer))
+        if (test.ProgrammingQuestion != null)
         {
-            // For now, we'll do a simple string comparison
-            // In production, you'd execute the code and test against test cases
-            programmingCorrect = EvaluateProgrammingSolution(
-                dto.ProgrammingAnswer,
-                test.ProgrammingQuestion.TestCases.ToList()
-            );
+            if (!string.IsNullOrWhiteSpace(dto.ProgrammingAnswer))
+            {
+                // For now, we'll do a simple string comparison
+                // In production, you'd execute the code and test against test cases
+                var testCases = test.ProgrammingQuestion.TestCases?.ToList() ?? new List<ProgrammingTestCase>();
+                programmingCorrect = EvaluateProgrammingSolution(
+                    dto.ProgrammingAnswer,
+                    testCases
+                );
+            }
+            // If programming question exists but answer is null/empty, programmingCorrect stays false
         }
-        else if (test.ProgrammingQuestion == null)
+        else
         {
             // No programming question, so it's considered "correct" for scoring
             programmingCorrect = true;
@@ -100,13 +108,39 @@ public class TestResultService : ITestResultService
         };
 
         var createdResult = await _testResultRepository.CreateAsync(testResult);
+        
+        // Ensure navigation properties are loaded
+        if (createdResult == null)
+        {
+            throw new InvalidOperationException("Failed to create test result.");
+        }
+        
+        if (createdResult.Test == null || createdResult.User == null)
+        {
+            // If navigation properties are still null, reload using the created result's ID
+            var reloadedResult = await _testResultRepository.GetByIdAsync(createdResult.Id);
+            if (reloadedResult == null)
+            {
+                throw new InvalidOperationException("Failed to retrieve created test result.");
+            }
+            createdResult = reloadedResult;
+        }
+        
         return MapToDto(createdResult);
     }
 
     public async Task<IEnumerable<TestResultDto>> GetUserResultsAsync(int userId)
     {
         var results = await _testResultRepository.GetByUserIdAsync(userId);
-        return results.Select(MapToDto);
+        var resultsList = results.ToList();
+        
+        // Return empty list if no results
+        if (!resultsList.Any())
+        {
+            return Enumerable.Empty<TestResultDto>();
+        }
+        
+        return resultsList.Select(MapToDto);
     }
 
     public async Task<TestResultDto?> GetResultByTestIdAndUserIdAsync(int testId, int userId)
@@ -122,23 +156,37 @@ public class TestResultService : ITestResultService
 
     public async Task<UserStatisticsDto> GetUserStatisticsAsync(int userId)
     {
-        var results = await _testResultRepository.GetByUserIdAsync(userId);
-        var resultsList = results.ToList();
-
-        var totalTests = resultsList.Count;
-        var passedTests = resultsList.Count(r => r.Score >= 60); // Consider 60% as passing
-        var failedTests = totalTests - passedTests;
-        var averageScore = totalTests > 0 
-            ? resultsList.Average(r => (double)r.Score) 
-            : 0;
-
-        return new UserStatisticsDto
+        try
         {
-            TotalTestsTaken = totalTests,
-            PassedTests = passedTests,
-            FailedTests = failedTests,
-            AverageScore = (decimal)averageScore
-        };
+            var results = await _testResultRepository.GetByUserIdAsync(userId);
+            var resultsList = results?.ToList() ?? new List<TestResult>();
+
+            var totalTests = resultsList.Count;
+            var passedTests = resultsList.Count(r => r.Score >= 60); // Consider 60% as passing
+            var failedTests = totalTests - passedTests;
+            var averageScore = totalTests > 0 
+                ? resultsList.Average(r => (double)r.Score) 
+                : 0;
+
+            return new UserStatisticsDto
+            {
+                TotalTestsTaken = totalTests,
+                PassedTests = passedTests,
+                FailedTests = failedTests,
+                AverageScore = (decimal)averageScore
+            };
+        }
+        catch (Exception ex)
+        {
+            // Return default statistics if there's an error (e.g., no results yet)
+            return new UserStatisticsDto
+            {
+                TotalTestsTaken = 0,
+                PassedTests = 0,
+                FailedTests = 0,
+                AverageScore = 0
+            };
+        }
     }
 
     public async Task<IEnumerable<LeaderboardEntryDto>> GetTopTestTakersAsync(int topCount = 3)
@@ -176,8 +224,11 @@ public class TestResultService : ITestResultService
         var companyResults = await _testResultRepository.GetByCompanyIdAsync(companyId);
         var resultsList = companyResults.ToList();
 
+        // Filter out company users - only include individual test takers
+        var individualResults = resultsList.Where(r => r.User.UserType != "company");
+
         // Group by user and calculate average score for this company's tests only
-        var userStats = resultsList
+        var userStats = individualResults
             .GroupBy(r => r.UserId)
             .Select(g => new
             {
@@ -221,19 +272,40 @@ public class TestResultService : ITestResultService
         return true;
     }
 
+    public async Task<IEnumerable<TestResultDto>> GetResultsByTestIdAsync(int testId)
+    {
+        var results = await _testResultRepository.GetByTestIdAsync(testId);
+        // Filter out company users - only show individual test takers
+        var individualResults = results.Where(r => r.User != null && r.User.UserType != "company");
+        return individualResults.Select(MapToDto);
+    }
+
+    public async Task<int> DeleteCompanyTestResultsAsync()
+    {
+        return await _testResultRepository.DeleteByUserTypeAsync("company");
+    }
+
     private static TestResultDto MapToDto(TestResult result)
     {
         return new TestResultDto
         {
             Id = result.Id,
             TestId = result.TestId,
-            TestTitle = result.Test.Title,
-            CompanyName = result.Test.CreatedBy?.CompanyName,
+            TestTitle = result.Test?.Title ?? "Unknown Test",
+            CompanyName = result.Test?.CreatedBy?.CompanyName,
             Score = result.Score,
             McqCorrectCount = result.McqCorrectCount,
             McqTotalCount = result.McqTotalCount,
             ProgrammingCorrect = result.ProgrammingCorrect,
-            CompletedAt = result.CompletedAt
+            CompletedAt = result.CompletedAt,
+            UserId = result.UserId,
+            Username = result.User?.Username ?? "Unknown",
+            DisplayName = result.User?.Name,
+            UserEmail = result.User?.Email,
+            UserProfilePictureUrl = result.User?.ProfilePictureUrl,
+            UserType = result.User?.UserType,
+            McqAnswers = result.McqAnswers,
+            ProgrammingAnswer = result.ProgrammingAnswer
         };
     }
 }

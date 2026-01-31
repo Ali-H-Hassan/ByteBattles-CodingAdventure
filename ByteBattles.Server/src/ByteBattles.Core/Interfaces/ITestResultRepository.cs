@@ -22,5 +22,7 @@ public interface ITestResultRepository
     Task<IEnumerable<TestResult>> GetAllAsync();
     
     Task<IEnumerable<TestResult>> GetByCompanyIdAsync(int companyId);
+    
+    Task<int> DeleteByUserTypeAsync(string userType);
 }
 

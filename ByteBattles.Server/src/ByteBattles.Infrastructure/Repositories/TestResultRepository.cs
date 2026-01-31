@@ -48,21 +48,33 @@ public class TestResultRepository : ITestResultRepository
 
     public async Task<IEnumerable<TestResult>> GetByTestIdAsync(int testId)
     {
-        return await _context.TestResults
+        var results = await _context.TestResults
             .Where(tr => tr.TestId == testId)
             .Include(tr => tr.Test)
                 .ThenInclude(t => t.CreatedBy)
             .Include(tr => tr.User)
-            .OrderByDescending(tr => tr.Score)
-            .ThenBy(tr => tr.CompletedAt)
             .ToListAsync();
+
+        // Order in memory since SQLite doesn't support decimal in ORDER BY
+        return results.OrderByDescending(tr => tr.Score).ThenBy(tr => tr.CompletedAt);
     }
 
     public async Task<TestResult> CreateAsync(TestResult testResult)
     {
         _context.TestResults.Add(testResult);
         await _context.SaveChangesAsync();
-        return testResult;
+        
+        // Get the ID after save (it's assigned by EF)
+        var savedId = testResult.Id;
+        
+        // Reload with navigation properties
+        var reloaded = await _context.TestResults
+            .Include(tr => tr.Test)
+                .ThenInclude(t => t.CreatedBy)
+            .Include(tr => tr.User)
+            .FirstOrDefaultAsync(tr => tr.Id == savedId);
+            
+        return reloaded ?? testResult;
     }
 
     public async Task<bool> ExistsAsync(int testId, int userId)
@@ -87,6 +99,18 @@ public class TestResultRepository : ITestResultRepository
                 .ThenInclude(t => t.CreatedBy)
             .Where(tr => tr.Test.CreatedById == companyId)
             .ToListAsync();
+    }
+
+    public async Task<int> DeleteByUserTypeAsync(string userType)
+    {
+        var companyResults = await _context.TestResults
+            .Include(tr => tr.User)
+            .Where(tr => tr.User.UserType == userType)
+            .ToListAsync();
+        
+        _context.TestResults.RemoveRange(companyResults);
+        await _context.SaveChangesAsync();
+        return companyResults.Count;
     }
 }
 

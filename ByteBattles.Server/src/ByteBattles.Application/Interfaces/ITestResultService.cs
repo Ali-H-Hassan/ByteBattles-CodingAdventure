@@ -21,5 +21,9 @@ public interface ITestResultService
     Task<IEnumerable<LeaderboardEntryDto>> GetTopTestTakersAsync(int topCount = 3);
     
     Task<IEnumerable<LeaderboardEntryDto>> GetTopTestTakersByCompanyAsync(int companyId, int topCount = 3);
+    
+    Task<IEnumerable<TestResultDto>> GetResultsByTestIdAsync(int testId);
+    
+    Task<int> DeleteCompanyTestResultsAsync();
 }
 

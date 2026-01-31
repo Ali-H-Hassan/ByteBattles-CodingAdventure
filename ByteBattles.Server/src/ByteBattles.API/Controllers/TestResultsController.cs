@@ -36,11 +36,29 @@ public class TestResultsController : ControllerBase
     {
         try
         {
+            // Validate model state
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage);
+                _logger.LogWarning("Model validation failed for test {TestId}: {Errors}", testId, string.Join(", ", errors));
+                return BadRequest(new { message = "Invalid request data", errors = errors });
+            }
+
             // Get user ID from claims
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userIdClaim) || !int.TryParse(userIdClaim, out var userId))
             {
                 return Unauthorized(new { message = "User ID not found in token" });
+            }
+
+            _logger.LogInformation("Submitting test {TestId} for user {UserId}. MCQ Answers: {McqCount}, Has Programming Answer: {HasProgramming}", 
+                testId, userId, dto.McqAnswers?.Count ?? 0, !string.IsNullOrWhiteSpace(dto.ProgrammingAnswer));
+            
+            // Log the actual MCQ answers for debugging
+            if (dto.McqAnswers != null)
+            {
+                _logger.LogInformation("MCQ Answers details: {Answers}", 
+                    string.Join(", ", dto.McqAnswers.Select(kvp => $"Q{kvp.Key}=A{kvp.Value}")));
             }
 
             var result = await _testResultService.SubmitTestAsync(testId, userId, dto);
@@ -59,8 +77,9 @@ public class TestResultsController : ControllerBase
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error submitting test {TestId}", testId);
-            return StatusCode(500, new { message = "An error occurred while submitting the test" });
+            _logger.LogError(ex, "Error submitting test {TestId}. Exception: {ExceptionMessage}. Stack trace: {StackTrace}", 
+                testId, ex.Message, ex.StackTrace);
+            return StatusCode(500, new { message = $"An error occurred while submitting the test: {ex.Message}" });
         }
     }
 
@@ -194,6 +213,55 @@ public class TestResultsController : ControllerBase
         {
             _logger.LogError(ex, "Error fetching leaderboard");
             return StatusCode(500, new { message = "An error occurred while fetching the leaderboard" });
+        }
+    }
+
+    /// <summary>
+    /// Get all test results for a specific test (for company to see all submissions).
+    /// </summary>
+    [HttpGet("test/{testId}/results")]
+    [Authorize(Roles = "company,admin")]
+    [ProducesResponseType(typeof(IEnumerable<TestResultDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetResultsByTestId(int testId)
+    {
+        try
+        {
+            // Debug logging
+            var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+            var roles = User.Claims.Where(c => c.Type == System.Security.Claims.ClaimTypes.Role).Select(c => c.Value);
+            _logger.LogInformation("GetResultsByTestId called - TestId: {TestId}, UserId: {UserId}, Roles: {Roles}",
+                testId, userIdClaim, string.Join(", ", roles));
+
+            var results = await _testResultService.GetResultsByTestIdAsync(testId);
+            _logger.LogInformation("GetResultsByTestId returning {Count} results for test {TestId}",
+                results.Count(), testId);
+            return Ok(results);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error fetching test results for test {TestId}", testId);
+            return StatusCode(500, new { message = "An error occurred while fetching test results" });
+        }
+    }
+
+    /// <summary>
+    /// Delete all test results from company users (cleanup endpoint).
+    /// </summary>
+    [HttpDelete("cleanup/company-results")]
+    [Authorize(Roles = "admin")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> DeleteCompanyTestResults()
+    {
+        try
+        {
+            var deletedCount = await _testResultService.DeleteCompanyTestResultsAsync();
+            _logger.LogInformation("Deleted {Count} test results from company users", deletedCount);
+            return Ok(new { message = $"Successfully deleted {deletedCount} test results from company users", deletedCount });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error deleting company test results");
+            return StatusCode(500, new { message = "An error occurred while deleting company test results" });
         }
     }
 }
