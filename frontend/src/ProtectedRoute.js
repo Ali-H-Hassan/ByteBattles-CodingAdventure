@@ -8,7 +8,9 @@ const ProtectedRoute = () => {
   const token = useSelector((state) => state.auth.token);
 
   // Show loading state while checking authentication
-  if (loading && token) {
+  // If there's a token, we're likely restoring session, so wait
+  // Also wait if loading is true (session restoration in progress)
+  if (loading || (token && !isAuthenticated)) {
     return (
       <div style={{ 
         display: 'flex', 
