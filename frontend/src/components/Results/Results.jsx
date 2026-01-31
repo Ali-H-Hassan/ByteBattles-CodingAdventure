@@ -49,8 +49,8 @@ function Results() {
     );
   }
 
-  // Show only the 3 most recent results
-  const recentResults = results.slice(0, 3);
+  // Show only the 2 most recent results
+  const recentResults = results.slice(0, 2);
 
   return (
     <section className="results">

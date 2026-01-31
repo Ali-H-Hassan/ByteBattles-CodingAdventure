@@ -2,19 +2,23 @@ import React from "react";
 import MonacoEditor from "react-monaco-editor";
 import "./CodingEditor.css";
 
-const CodingEditor = ({ code, handleCodeChange }) => {
+const CodingEditor = ({ code, handleCodeChange, readOnly = false }) => {
   const editorDidMount = (editor) => {
-    editor.focus();
+    if (!readOnly) {
+      editor.focus();
+    }
   };
 
   const onChange = (newValue, e) => {
-    handleCodeChange(newValue);
+    if (!readOnly && handleCodeChange) {
+      handleCodeChange(newValue);
+    }
   };
 
   const options = {
     selectOnLineNumbers: true,
     roundedSelection: false,
-    readOnly: false,
+    readOnly: readOnly,
     cursorStyle: "line",
     automaticLayout: true,
     fontSize: 18,

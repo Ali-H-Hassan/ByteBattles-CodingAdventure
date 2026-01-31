@@ -1,14 +1,21 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import "./ThankYouPage.css";
 
 const ThankYouPage = () => {
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.user);
+  const isCompanyUser = user?.userType === "company";
 
   const returnToDashboard = () => {
-    navigate("/dashboard");
+    if (isCompanyUser) {
+      navigate("/company-dashboard");
+    } else {
+      navigate("/dashboard");
+    }
   };
 
   return (

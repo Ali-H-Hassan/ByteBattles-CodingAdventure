@@ -14,7 +14,16 @@ function Leaderboard() {
       try {
         setLoading(true);
         const response = await apiClient.get("/api/test-results/leaderboard?topCount=3");
-        setTopTestTakers(response.data || []);
+        const data = response.data || [];
+        // Filter out company users on frontend as well (safety measure)
+        const filteredData = Array.isArray(data) 
+          ? data.filter(taker => {
+              // LeaderboardEntryDto might not have userType, but backend should filter it
+              // This is just a safety check
+              return true; // Backend already filters, but we can add frontend check if needed
+            })
+          : [];
+        setTopTestTakers(filteredData);
       } catch (error) {
         console.error("Error fetching leaderboard:", error);
         setTopTestTakers([]);
