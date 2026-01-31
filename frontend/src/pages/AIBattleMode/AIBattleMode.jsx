@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRobot, faCode, faTrophy, faSpinner, faEye } from "@fortawesome/free-solid-svg-icons";
+import { faRobot, faCode, faTrophy, faSpinner, faEye, faExclamationTriangle, faTimes, faRedo } from "@fortawesome/free-solid-svg-icons";
 import ProblemStatement from "../../components/ProblemStatement/ProblemStatement";
 import CodingEditor from "../../components/CodingEditor/CodingEditor";
 import BattleResultsModal from "../../components/BattleResultsModal/BattleResultsModal";
 import apiClient from "../../services/apiConfig";
 import "./AIBattleMode.css";
 
-const STORAGE_KEY = "aibattle_state";
+const getStorageKey = (userId) => `aibattle_state_${userId}`;
 
 const AIBattleMode = () => {
   const user = useSelector((state) => state.auth.user);
+  const userId = user?.id || user?._id;
   const [userCode, setUserCode] = useState("");
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -19,10 +20,17 @@ const AIBattleMode = () => {
   const [challenge, setChallenge] = useState(null);
   const [error, setError] = useState(null);
   const [showResultsModal, setShowResultsModal] = useState(false);
+  const [showAIErrorModal, setShowAIErrorModal] = useState(false);
 
-  // Load saved state on mount
+  // Load saved state on mount or when user changes
   useEffect(() => {
-    const savedState = localStorage.getItem(STORAGE_KEY);
+    if (!userId) {
+      setFetchingChallenge(false);
+      return;
+    }
+
+    const storageKey = getStorageKey(userId);
+    const savedState = localStorage.getItem(storageKey);
     if (savedState) {
       try {
         const parsed = JSON.parse(savedState);
@@ -39,22 +47,23 @@ const AIBattleMode = () => {
         console.error("Error loading saved state:", e);
       }
     }
-    
+
     // No saved state, fetch new challenge
     fetchRandomChallenge();
-  }, []);
+  }, [userId]);
 
   // Save state whenever challenge, userCode, or results change
   useEffect(() => {
-    if (challenge && userCode) {
+    if (userId && challenge && userCode) {
+      const storageKey = getStorageKey(userId);
       const stateToSave = {
         challenge,
         userCode,
         results: results || null
       };
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(stateToSave));
+      localStorage.setItem(storageKey, JSON.stringify(stateToSave));
     }
-  }, [challenge, userCode, results]);
+  }, [userId, challenge, userCode, results]);
 
   const fetchRandomChallenge = async () => {
     setFetchingChallenge(true);
@@ -118,15 +127,35 @@ const AIBattleMode = () => {
       setShowResultsModal(true);
     } catch (error) {
       console.error("Error submitting code:", error);
-      setError(error.response?.data?.message || "Failed to submit code. Please try again.");
+      const errorMessage = error.response?.data?.message || "Failed to submit code. Please try again.";
+
+      // Check if it's an AI-related error
+      if (errorMessage.toLowerCase().includes("ai") ||
+          errorMessage.toLowerCase().includes("generate") ||
+          errorMessage.toLowerCase().includes("unable")) {
+        setShowAIErrorModal(true);
+      } else {
+        setError(errorMessage);
+      }
     } finally {
       setLoading(false);
     }
   };
 
+  const handleCloseAIErrorModal = () => {
+    setShowAIErrorModal(false);
+  };
+
+  const handleRetryBattle = () => {
+    setShowAIErrorModal(false);
+    handleSubmit();
+  };
+
   const handleNewChallenge = async () => {
-    // Clear saved state
-    localStorage.removeItem(STORAGE_KEY);
+    // Clear saved state for this user
+    if (userId) {
+      localStorage.removeItem(getStorageKey(userId));
+    }
     setResults(null);
     setShowResultsModal(false);
     setUserCode("");
@@ -226,11 +255,53 @@ const AIBattleMode = () => {
       ) : null}
       
       {showResultsModal && results && (
-        <BattleResultsModal 
-          results={results} 
+        <BattleResultsModal
+          results={results}
           userCode={userCode}
-          onClose={handleCloseResults} 
+          onClose={handleCloseResults}
         />
+      )}
+
+      {showAIErrorModal && (
+        <div className="ai-error-modal-overlay" onClick={handleCloseAIErrorModal}>
+          <div className="ai-error-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="ai-error-modal-close" onClick={handleCloseAIErrorModal}>
+              <FontAwesomeIcon icon={faTimes} />
+            </button>
+
+            <div className="ai-error-modal-content">
+              <div className="ai-error-icon-container">
+                <FontAwesomeIcon icon={faRobot} className="ai-error-robot-icon" />
+                <FontAwesomeIcon icon={faExclamationTriangle} className="ai-error-warning-icon" />
+              </div>
+
+              <h2 className="ai-error-title">AI Opponent Unavailable</h2>
+
+              <p className="ai-error-message">
+                Our AI opponent is taking a quick break! This can happen when the AI service is temporarily busy or experiencing issues.
+              </p>
+
+              <div className="ai-error-suggestions">
+                <p className="ai-error-suggestions-title">What you can do:</p>
+                <ul>
+                  <li>Wait a moment and try again</li>
+                  <li>Check your code for any syntax errors</li>
+                  <li>Try a new challenge</li>
+                </ul>
+              </div>
+
+              <div className="ai-error-actions">
+                <button className="ai-error-retry-btn" onClick={handleRetryBattle}>
+                  <FontAwesomeIcon icon={faRedo} style={{ marginRight: "0.5rem" }} />
+                  Try Again
+                </button>
+                <button className="ai-error-new-challenge-btn" onClick={() => { handleCloseAIErrorModal(); handleNewChallenge(); }}>
+                  New Challenge
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
