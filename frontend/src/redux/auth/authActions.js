@@ -19,6 +19,25 @@ import apiClient from "../../services/apiConfig";
 
 export const login = (credentials, navigate) => async (dispatch) => {
   dispatch(profileRequestUpdate());
+  
+  // Client-side validation
+  if (!credentials.email || !credentials.email.trim()) {
+    dispatch(profileRequestFailure("Please enter your email address."));
+    return;
+  }
+
+  if (!credentials.password || !credentials.password.trim()) {
+    dispatch(profileRequestFailure("Please enter your password."));
+    return;
+  }
+
+  // Basic email format validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(credentials.email.trim())) {
+    dispatch(profileRequestFailure("Please enter a valid email address."));
+    return;
+  }
+
   try {
     const response = await apiClient.post(
       "/api/auth/login",
@@ -33,25 +52,92 @@ export const login = (credentials, navigate) => async (dispatch) => {
       navigate("/dashboard");
     }
   } catch (error) {
-    let errorMessage = "Login failed";
-    if (error.response?.data) {
-      // Handle different error response formats
-      if (typeof error.response.data === "string") {
-        errorMessage = error.response.data;
-      } else if (error.response.data.message) {
-        errorMessage = error.response.data.message;
-      } else if (error.response.data.error) {
-        errorMessage = error.response.data.error;
+    let errorMessage = "Unable to connect to the server. Please check your internet connection and try again.";
+    
+    if (error.response) {
+      // Server responded with error status
+      const status = error.response.status;
+      
+      if (status === 400) {
+        // Bad request - validation or business logic error
+        if (error.response.data?.message) {
+          errorMessage = error.response.data.message;
+        } else if (typeof error.response.data === "string") {
+          errorMessage = error.response.data;
+        } else if (error.response.data?.error) {
+          errorMessage = error.response.data.error;
+        } else {
+          errorMessage = "Invalid email or password. Please check your credentials and try again.";
+        }
+      } else if (status === 401) {
+        errorMessage = "Invalid email or password. Please check your credentials and try again.";
+      } else if (status === 404) {
+        errorMessage = "Service not found. Please contact support if this issue persists.";
+      } else if (status === 500) {
+        errorMessage = "Server error occurred. Please try again later.";
+      } else if (status >= 500) {
+        errorMessage = "Server is temporarily unavailable. Please try again in a few moments.";
       }
+    } else if (error.request) {
+      // Request was made but no response received
+      errorMessage = "Unable to connect to the server. Please check your internet connection and try again.";
     } else if (error.message) {
+      // Error setting up the request
       errorMessage = error.message;
     }
+    
     dispatch(profileRequestFailure(errorMessage));
   }
 };
 
 export const registerUser = (userData, navigate) => async (dispatch) => {
   dispatch(registerRequest());
+  
+  // Client-side validation
+  if (!userData.email || !userData.email.trim()) {
+    dispatch(registerFailure("Email address is required."));
+    return;
+  }
+
+  if (!userData.username || !userData.username.trim()) {
+    dispatch(registerFailure("Username is required."));
+    return;
+  }
+
+  if (!userData.password || !userData.password.trim()) {
+    dispatch(registerFailure("Password is required."));
+    return;
+  }
+
+  // Basic email format validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(userData.email.trim())) {
+    dispatch(registerFailure("Please enter a valid email address."));
+    return;
+  }
+
+  // Username validation
+  if (userData.username.trim().length < 3) {
+    dispatch(registerFailure("Username must be at least 3 characters long."));
+    return;
+  }
+
+  if (userData.username.trim().length > 100) {
+    dispatch(registerFailure("Username cannot exceed 100 characters."));
+    return;
+  }
+
+  // Password validation
+  if (userData.password.length < 6) {
+    dispatch(registerFailure("Password must be at least 6 characters long."));
+    return;
+  }
+
+  if (userData.password.length > 100) {
+    dispatch(registerFailure("Password cannot exceed 100 characters."));
+    return;
+  }
+
   try {
     const response = await apiClient.post(
       "/api/auth/register",
@@ -63,19 +149,38 @@ export const registerUser = (userData, navigate) => async (dispatch) => {
     await dispatch(registerSuccess({ user, token }));
     navigate("/dashboard");
   } catch (error) {
-    let errorMessage = "Registration failed";
-    if (error.response?.data) {
-      // Handle different error response formats
-      if (typeof error.response.data === "string") {
-        errorMessage = error.response.data;
-      } else if (error.response.data.message) {
-        errorMessage = error.response.data.message;
-      } else if (error.response.data.error) {
-        errorMessage = error.response.data.error;
+    let errorMessage = "Unable to connect to the server. Please check your internet connection and try again.";
+    
+    if (error.response) {
+      // Server responded with error status
+      const status = error.response.status;
+      
+      if (status === 400) {
+        // Bad request - validation or business logic error
+        if (error.response.data?.message) {
+          errorMessage = error.response.data.message;
+        } else if (typeof error.response.data === "string") {
+          errorMessage = error.response.data;
+        } else if (error.response.data?.error) {
+          errorMessage = error.response.data.error;
+        } else {
+          errorMessage = "Invalid registration data. Please check all fields and try again.";
+        }
+      } else if (status === 409) {
+        errorMessage = "An account with this email or username already exists. Please use different credentials.";
+      } else if (status === 500) {
+        errorMessage = "Server error occurred. Please try again later.";
+      } else if (status >= 500) {
+        errorMessage = "Server is temporarily unavailable. Please try again in a few moments.";
       }
+    } else if (error.request) {
+      // Request was made but no response received
+      errorMessage = "Unable to connect to the server. Please check your internet connection and try again.";
     } else if (error.message) {
+      // Error setting up the request
       errorMessage = error.message;
     }
+    
     dispatch(registerFailure(errorMessage));
   }
 };

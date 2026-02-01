@@ -43,18 +43,54 @@ public class AuthService : IAuthService
 
     public async Task<AuthResult> RegisterAsync(RegisterDto dto)
     {
+        // Validate input
+        if (string.IsNullOrWhiteSpace(dto.Email))
+        {
+            return AuthResult.Fail("Email address is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(dto.Username))
+        {
+            return AuthResult.Fail("Username is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(dto.Password))
+        {
+            return AuthResult.Fail("Password is required.");
+        }
+
+        if (dto.Username.Length < 3)
+        {
+            return AuthResult.Fail("Username must be at least 3 characters long.");
+        }
+
+        if (dto.Username.Length > 100)
+        {
+            return AuthResult.Fail("Username cannot exceed 100 characters.");
+        }
+
+        if (dto.Password.Length < 6)
+        {
+            return AuthResult.Fail("Password must be at least 6 characters long.");
+        }
+
+        if (dto.Password.Length > 100)
+        {
+            return AuthResult.Fail("Password cannot exceed 100 characters.");
+        }
+
         // Check if email already exists
         var existingUser = await _userRepository.GetByEmailAsync(dto.Email);
         if (existingUser != null)
         {
-            return AuthResult.Fail("User already registered with this email.");
+            return AuthResult.Fail("An account with this email address already exists. Please use a different email or try logging in.");
         }
 
         // Check if username already exists
         var existingUsername = await _userRepository.GetByUsernameAsync(dto.Username);
         if (existingUsername != null)
         {
-            return AuthResult.Fail("Username is already taken.");
+            return AuthResult.Fail("This username is already taken. Please choose a different username.");
         }
 
         // Create new user
@@ -89,18 +125,35 @@ public class AuthService : IAuthService
 
     public async Task<AuthResult> LoginAsync(LoginDto dto)
     {
+        // Validate input
+        if (string.IsNullOrWhiteSpace(dto.Email))
+        {
+            return AuthResult.Fail("Email address is required.");
+        }
+
+        if (string.IsNullOrWhiteSpace(dto.Password))
+        {
+            return AuthResult.Fail("Password is required.");
+        }
+
         // Find user by email
         var user = await _userRepository.GetByEmailAsync(dto.Email);
         if (user == null)
         {
-            return AuthResult.Fail("Invalid email or password.");
+            return AuthResult.Fail("No account found with this email address. Please check your email or sign up for a new account.");
+        }
+
+        // Check if user registered via OAuth only (no password set)
+        if (string.IsNullOrEmpty(user.PasswordHash) && !string.IsNullOrEmpty(user.GoogleId))
+        {
+            return AuthResult.Fail("This account was created using Google Sign-In. Please log in with Google instead.");
         }
 
         // Verify password
         if (string.IsNullOrEmpty(user.PasswordHash) || 
             !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
         {
-            return AuthResult.Fail("Invalid email or password.");
+            return AuthResult.Fail("The password you entered is incorrect. Please try again or use 'Forgot Password' to reset it.");
         }
 
         // Update last login

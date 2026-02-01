@@ -1,6 +1,7 @@
 using ByteBattles.Application.Interfaces;
 using ByteBattles.Core.DTOs.Auth;
 using Microsoft.AspNetCore.Mvc;
+using System.Linq;
 
 namespace ByteBattles.API.Controllers;
 
@@ -31,6 +32,22 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register([FromBody] RegisterDto dto)
     {
+        // Check model validation
+        if (!ModelState.IsValid)
+        {
+            var errors = ModelState
+                .Where(x => x.Value?.Errors.Count > 0)
+                .SelectMany(x => x.Value!.Errors.Select(e => 
+                    $"{x.Key}: {e.ErrorMessage}"))
+                .ToList();
+            
+            var errorMessage = errors.Count > 0 
+                ? string.Join(" ", errors)
+                : "Invalid registration data. Please check your input.";
+            
+            return BadRequest(new { message = errorMessage });
+        }
+
         try
         {
             var result = await _authService.RegisterAsync(dto);
@@ -49,7 +66,7 @@ public class AuthController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error during registration for email: {Email}", dto.Email);
-            return StatusCode(500, new { message = "Error during registration: " + ex.Message });
+            return StatusCode(500, new { message = "An unexpected error occurred during registration. Please try again later." });
         }
     }
 
@@ -63,6 +80,22 @@ public class AuthController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Login([FromBody] LoginDto dto)
     {
+        // Check model validation
+        if (!ModelState.IsValid)
+        {
+            var errors = ModelState
+                .Where(x => x.Value?.Errors.Count > 0)
+                .SelectMany(x => x.Value!.Errors.Select(e => 
+                    $"{x.Key}: {e.ErrorMessage}"))
+                .ToList();
+            
+            var errorMessage = errors.Count > 0 
+                ? string.Join(" ", errors)
+                : "Please provide a valid email address and password.";
+            
+            return BadRequest(new { message = errorMessage });
+        }
+
         try
         {
             var result = await _authService.LoginAsync(dto);
@@ -77,7 +110,7 @@ public class AuthController : ControllerBase
         catch (Exception ex)
         {
             _logger.LogError(ex, "Error during login for email: {Email}", dto.Email);
-            return StatusCode(500, new { message = "Error during login: " + ex.Message });
+            return StatusCode(500, new { message = "An unexpected error occurred during login. Please try again later." });
         }
     }
 
