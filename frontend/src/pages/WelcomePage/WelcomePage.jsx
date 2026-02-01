@@ -11,6 +11,12 @@ const WelcomeSectionOne = () => {
   const handleCreateAccountClick = () => {
     navigate("/signup");
   };
+  const handleViewTestsClick = () => {
+    navigate("/signup");
+  };
+  const handleBusinessOpportunitiesClick = () => {
+    navigate("/signup");
+  };
   return (
     <div className="welcome-page">
       <Header />
@@ -51,7 +57,7 @@ const WelcomeSectionOne = () => {
               From sponsoring contests to providing online assessments and
               training, we offer numerous services to businesses.
             </p>
-            <button className="section-two-cta-button">
+            <button className="section-two-cta-button" onClick={handleBusinessOpportunitiesClick}>
               Business Opportunities
             </button>
           </div>
@@ -74,7 +80,7 @@ const WelcomeSectionOne = () => {
               users and participate in our contests to challenge yourself and
               earn rewards.
             </p>
-            <button className="cta-button">View Tests</button>
+            <button className="cta-button" onClick={handleViewTestsClick}>View Tests</button>
           </div>
           <div className="image-content">
             <img src={TestIllustration} alt="Online Test" />
