@@ -7,6 +7,7 @@ import MCQQuestion from "../../components/MCQQuestion/MCQQuestion";
 import ProgrammingQuestion from "../../components/ProgrammingQuestion/ProgrammingQuestion";
 import TestSidebar from "../../components/TestSidebar/TestSidebar";
 import TestHeader from "../../components/TestHeader/TestHeader";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import "./DisplayTest.css";
 
 const DisplayTest = () => {
@@ -94,9 +95,9 @@ const DisplayTest = () => {
     handleSubmitTest(true);
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-  if (!test) return <div>Test not found</div>;
+  if (loading) return <LoadingSpinner message="Loading test..." />;
+  if (error) return <div className="error-container">Error: {error}</div>;
+  if (!test) return <div className="error-container">Test not found</div>;
 
   // Calculate initial time (20 minutes = 1200 seconds)
   const initialTime = 20 * 60; // 20 minutes in seconds

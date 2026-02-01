@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCoursesAsync } from "../../redux/game/gameActions";
 import { useNavigate } from "react-router-dom";
+import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
 import "./CoursesDisplay.css";
 import htmlImage from "../../assets/html_course_image.png";
 import cssImage from "../../assets/css_course_image.png";
@@ -109,7 +110,7 @@ const CoursesDisplay = () => {
   }, [dispatch]);
 
   if (!courses.length) {
-    return <div>Loading courses...</div>;
+    return <LoadingSpinner message="Loading courses..." />;
   }
 
   const frontendCourses = courses.filter(

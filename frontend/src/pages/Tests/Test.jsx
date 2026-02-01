@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTests } from "../../redux/test/testActions";
 import TestCard from "../../components/TestCard/TestCard";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import "./Test.css";
 
 const TestsPage = () => {
@@ -12,10 +13,10 @@ const TestsPage = () => {
     dispatch(fetchTests());
   }, [dispatch]);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <LoadingSpinner message="Loading tests..." />;
+  if (error) return <div className="error-container">Error: {error}</div>;
   if (!tests || tests.length === 0)
-    return <div>No tests found</div>;
+    return <div className="error-container">No tests found</div>;
 
   return (
     <div className="tests-display">

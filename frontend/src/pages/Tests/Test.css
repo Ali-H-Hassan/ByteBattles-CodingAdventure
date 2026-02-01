@@ -9,6 +9,20 @@
   box-sizing: border-box;
 }
 
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  width: 100%;
+  background: var(--bg-light, #f8f9fa);
+  color: #d32f2f;
+  font-size: 1.125rem;
+  font-weight: 500;
+  padding: 2rem;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .tests-display {
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
