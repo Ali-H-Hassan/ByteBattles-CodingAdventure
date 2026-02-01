@@ -8,350 +8,267 @@ class GameScene extends Phaser.Scene {
     this.onGameComplete = onGameComplete;
     this.score = 0;
     this.level = 1;
-    this.matchedPairs = 0;
-    this.totalPairs = 0;
-    this.openingTags = [];
-    this.closingTags = [];
-    this.selectedTag = null;
-    this.timer = 60; // 60 seconds per level
-    this.timerText = null;
+    this.maxLevel = 5;
+    this.currentQuestion = 0;
+    this.correctAnswers = 0;
+    this.timer = 60;
     this.gameOver = false;
+    this.options = [];
   }
 
   preload() {}
 
   create() {
-    const { backgroundColor, titleText } = this.courseData.gameSceneConfig || {};
+    this.cameras.main.setBackgroundColor("#0f0f23");
+    this.createUI();
+    this.initializeLevel();
+  }
 
-    this.cameras.main.setBackgroundColor(backgroundColor || "#1a1a2e");
-    
-    // Create gradient background effect
-    this.createBackground();
-    
-    this.createTitle(titleText || "HTML Tag Matcher");
-    this.createScoreText();
-    this.createTimerText();
-    this.createInstructions();
-    
-    // Initialize game with HTML tags
-    this.initializeGame();
-    
-    // Start timer
+  createUI() {
+    // Header
+    this.add.rectangle(400, 20, 800, 40, 0x1a1a3e);
+
+    // Title
+    this.add.text(15, 20, "<HTML/>", {
+      fontFamily: '"Courier New", monospace',
+      fontSize: "14px",
+      color: "#f48041",
+      fontStyle: "bold"
+    }).setOrigin(0, 0.5);
+
+    this.add.text(75, 20, "Tag Master", {
+      fontFamily: "Arial, sans-serif",
+      fontSize: "13px",
+      color: "#ffffff"
+    }).setOrigin(0, 0.5);
+
+    // Level
+    this.levelText = this.add.text(400, 20, `Level ${this.level}`, {
+      fontFamily: "Arial, sans-serif",
+      fontSize: "12px",
+      color: "#00cc00",
+      fontStyle: "bold"
+    }).setOrigin(0.5);
+
+    // Score
+    this.add.text(600, 13, "Score", { fontFamily: "Arial", fontSize: "9px", color: "#666" });
+    this.scoreText = this.add.text(600, 26, "0", {
+      fontFamily: "Arial, sans-serif",
+      fontSize: "14px",
+      color: "#ffcc00",
+      fontStyle: "bold"
+    });
+
+    // Timer
+    this.add.text(720, 13, "Time", { fontFamily: "Arial", fontSize: "9px", color: "#666" });
+    this.timerText = this.add.text(720, 26, "60", {
+      fontFamily: "Arial, sans-serif",
+      fontSize: "14px",
+      color: "#ff6b6b",
+      fontStyle: "bold"
+    });
+
+    // Question area
+    this.questionBg = this.add.rectangle(400, 100, 760, 80, 0x1e1e3f);
+    this.questionBg.setStrokeStyle(2, 0x3d3d6b);
+
+    this.questionLabel = this.add.text(400, 75, "Which tag is used for:", {
+      fontFamily: "Arial, sans-serif",
+      fontSize: "11px",
+      color: "#888"
+    }).setOrigin(0.5);
+
+    this.questionText = this.add.text(400, 105, "", {
+      fontFamily: "Arial, sans-serif",
+      fontSize: "18px",
+      color: "#ffffff",
+      fontStyle: "bold"
+    }).setOrigin(0.5);
+
+    // Progress
+    this.add.rectangle(400, 560, 760, 6, 0x1a1a3e);
+    this.progressBar = this.add.rectangle(24, 560, 0, 4, 0x00cc00).setOrigin(0, 0.5);
+
+    this.progressText = this.add.text(400, 580, "Question 1/5", {
+      fontFamily: "Arial, sans-serif",
+      fontSize: "11px",
+      color: "#666"
+    }).setOrigin(0.5);
+
     this.startTimer();
   }
 
-  createBackground() {
-    // Create animated background particles
-    this.particles = [];
-    for (let i = 0; i < 20; i++) {
-      const x = Phaser.Math.Between(0, this.scale.width);
-      const y = Phaser.Math.Between(0, this.scale.height);
-      const particle = this.add.circle(x, y, 2, 0x00c354, 0.3);
-      this.particles.push(particle);
-      
-      this.tweens.add({
-        targets: particle,
-        y: y + Phaser.Math.Between(-50, 50),
-        x: x + Phaser.Math.Between(-50, 50),
-        duration: Phaser.Math.Between(2000, 4000),
-        yoyo: true,
-        repeat: -1,
-        ease: "Sine.easeInOut"
-      });
-    }
-  }
-
-  createTitle(titleText) {
-    this.add
-      .text(this.scale.width / 2, 30, titleText, {
-        font: "bold 32px Arial",
-        fill: "#00c354",
-        stroke: "#ffffff",
-        strokeThickness: 3,
-      })
-      .setOrigin(0.5);
-  }
-
-  createInstructions() {
-    this.add
-      .text(this.scale.width / 2, 70, "Match opening tags with their closing tags!", {
-        font: "16px Arial",
-        fill: "#ffffff",
-      })
-      .setOrigin(0.5);
-  }
-
-  createScoreText() {
-    this.scoreText = this.add.text(20, 20, "Score: 0", {
-      font: "bold 24px Arial",
-      fill: "#00c354",
-      stroke: "#ffffff",
-      strokeThickness: 2,
-    });
-  }
-
-  createTimerText() {
-    this.timerText = this.add.text(this.scale.width - 150, 20, "Time: 60", {
-      font: "bold 24px Arial",
-      fill: "#ff6b6b",
-      stroke: "#ffffff",
-      strokeThickness: 2,
-    });
-  }
-
-  initializeGame() {
-    // HTML tag pairs for matching
-    const tagPairs = [
-      { open: "<div>", close: "</div>" },
-      { open: "<p>", close: "</p>" },
-      { open: "<h1>", close: "</h1>" },
-      { open: "<span>", close: "</span>" },
-      { open: "<a>", close: "</a>" },
-      { open: "<button>", close: "</button>" },
-      { open: "<ul>", close: "</ul>" },
-      { open: "<li>", close: "</li>" },
-      { open: "<section>", close: "</section>" },
-      { open: "<article>", close: "</article>" },
+  initializeLevel() {
+    const questionsByLevel = [
+      // Level 1 - Basic Structure
+      [
+        { q: "The root element of an HTML page", a: "<html>", opts: ["<html>", "<body>", "<head>", "<root>"] },
+        { q: "Container for metadata", a: "<head>", opts: ["<head>", "<meta>", "<title>", "<header>"] },
+        { q: "Visible page content", a: "<body>", opts: ["<body>", "<main>", "<content>", "<div>"] },
+        { q: "Page title in browser tab", a: "<title>", opts: ["<title>", "<h1>", "<name>", "<head>"] },
+        { q: "A paragraph of text", a: "<p>", opts: ["<p>", "<text>", "<para>", "<t>"] }
+      ],
+      // Level 2 - Text Elements
+      [
+        { q: "Main heading (largest)", a: "<h1>", opts: ["<h1>", "<heading>", "<title>", "<big>"] },
+        { q: "Bold/strong text", a: "<strong>", opts: ["<strong>", "<bold>", "<b>", "<em>"] },
+        { q: "Italic/emphasized text", a: "<em>", opts: ["<em>", "<italic>", "<i>", "<stress>"] },
+        { q: "Line break", a: "<br>", opts: ["<br>", "<break>", "<lb>", "<nl>"] },
+        { q: "Inline text container", a: "<span>", opts: ["<span>", "<inline>", "<text>", "<s>"] }
+      ],
+      // Level 3 - Links & Media
+      [
+        { q: "Hyperlink to another page", a: "<a>", opts: ["<a>", "<link>", "<href>", "<url>"] },
+        { q: "Display an image", a: "<img>", opts: ["<img>", "<image>", "<pic>", "<photo>"] },
+        { q: "Embed a video", a: "<video>", opts: ["<video>", "<media>", "<movie>", "<vid>"] },
+        { q: "Embed audio content", a: "<audio>", opts: ["<audio>", "<sound>", "<music>", "<mp3>"] },
+        { q: "External resource link (CSS)", a: "<link>", opts: ["<link>", "<style>", "<css>", "<href>"] }
+      ],
+      // Level 4 - Lists & Tables
+      [
+        { q: "Unordered (bullet) list", a: "<ul>", opts: ["<ul>", "<list>", "<ol>", "<bullets>"] },
+        { q: "Ordered (numbered) list", a: "<ol>", opts: ["<ol>", "<ul>", "<numbers>", "<list>"] },
+        { q: "List item", a: "<li>", opts: ["<li>", "<item>", "<list>", "<bullet>"] },
+        { q: "Create a table", a: "<table>", opts: ["<table>", "<grid>", "<data>", "<rows>"] },
+        { q: "Table row", a: "<tr>", opts: ["<tr>", "<row>", "<trow>", "<line>"] }
+      ],
+      // Level 5 - Forms & Semantic
+      [
+        { q: "User input form", a: "<form>", opts: ["<form>", "<input>", "<submit>", "<data>"] },
+        { q: "Text input field", a: "<input>", opts: ["<input>", "<text>", "<field>", "<form>"] },
+        { q: "Clickable button", a: "<button>", opts: ["<button>", "<btn>", "<click>", "<submit>"] },
+        { q: "Page header section", a: "<header>", opts: ["<header>", "<head>", "<top>", "<banner>"] },
+        { q: "Navigation links", a: "<nav>", opts: ["<nav>", "<menu>", "<links>", "<navigation>"] }
+      ]
     ];
 
-    // Fixed number of pairs per level: Level 1 = 3, Level 2 = 4, Level 3 = 5
-    const pairsPerLevel = [3, 4, 5];
-    const numPairs = pairsPerLevel[Math.min(this.level - 1, pairsPerLevel.length - 1)] || 3;
-    const selectedPairs = Phaser.Utils.Array.Shuffle([...tagPairs]).slice(0, numPairs);
-    this.totalPairs = selectedPairs.length;
-    this.matchedPairs = 0;
-
-    // Get actual game dimensions
-    const gameWidth = this.scale.width;
-    const gameHeight = this.scale.height;
-    
-    // Reserve space for UI elements - reduced top margin
-    const topMargin = 80; // Reduced space between header and blocks
-    const bottomMargin = 10;
-    const availableHeight = gameHeight - topMargin - bottomMargin;
-    
-    // Fixed tag dimensions
-    const tagHeight = 50;
-    const tagWidth = 120;
-    
-    // Fixed spacing between blocks - limited to 20px max
-    const spacing = 20;
-    
-    // Calculate starting Y position to center tags vertically
-    const totalTagsHeight = numPairs * tagHeight;
-    const totalSpacingHeight = (numPairs - 1) * spacing;
-    const totalContentHeight = totalTagsHeight + totalSpacingHeight;
-    const leftStartY = topMargin + (availableHeight - totalContentHeight) / 2 + tagHeight / 2;
-
-    // Create opening tags on the left
-    selectedPairs.forEach((pair, index) => {
-      const yPos = leftStartY + index * (tagHeight + spacing);
-      const tag = this.createTag(
-        pair.open,
-        150,
-        yPos,
-        "opening",
-        pair.close,
-        1
-      );
-      this.openingTags.push({ tag, correctClose: pair.close });
-    });
-
-    // Create closing tags on the right (shuffled)
-    const closingTags = selectedPairs.map(pair => pair.close);
-    const shuffledCloses = Phaser.Utils.Array.Shuffle([...closingTags]);
-    
-    shuffledCloses.forEach((closeTag, index) => {
-      const yPos = leftStartY + index * (tagHeight + spacing);
-      const tag = this.createTag(
-        closeTag,
-        gameWidth - 150,
-        yPos,
-        "closing",
-        null,
-        1
-      );
-      this.closingTags.push({ tag, text: closeTag });
-    });
+    this.questions = questionsByLevel[this.level - 1];
+    this.currentQuestion = 0;
+    this.correctAnswers = 0;
+    this.showQuestion();
   }
 
-  createTag(text, x, y, type, correctMatch = null, scaleFactor = 1) {
-    const color = type === "opening" ? "#4ecdc4" : "#ff6b6b";
-    const bgColor = type === "opening" ? 0x4ecdc4 : 0xff6b6b;
-    
-    // Adjust tag size based on scale factor
-    const tagWidth = Math.floor(120 * scaleFactor);
-    const tagHeight = Math.floor(50 * scaleFactor);
-    const fontSize = Math.floor(18 * scaleFactor);
-    
-    const tagContainer = this.add.container(x, y);
-    
-    // Create background rectangle
-    const bg = this.add.rectangle(0, 0, tagWidth, tagHeight, bgColor, 0.8);
-    bg.setStrokeStyle(2, 0xffffff);
-    
-    // Create text
-    const tagText = this.add.text(0, 0, text, {
-      font: `bold ${fontSize}px Arial`,
-            fill: "#ffffff",
-    }).setOrigin(0.5);
-    
-    tagContainer.add([bg, tagText]);
-    tagContainer.setSize(tagWidth, tagHeight);
-    tagContainer.setInteractive();
-    
-    // Store metadata
-    tagContainer.setData("type", type);
-    tagContainer.setData("text", text);
-    tagContainer.setData("correctMatch", correctMatch);
-    tagContainer.setData("matched", false);
-    
-    // Add hover effect
-    tagContainer.on("pointerover", () => {
-      if (!tagContainer.getData("matched")) {
-        bg.setFillStyle(bgColor, 1);
-        bg.setScale(1.1);
-      }
-    });
-    
-    tagContainer.on("pointerout", () => {
-      if (!tagContainer.getData("matched")) {
-        bg.setFillStyle(bgColor, 0.8);
-        bg.setScale(1);
-      }
-    });
-    
-    // Click handler
-    tagContainer.on("pointerdown", () => {
-      if (this.gameOver || tagContainer.getData("matched")) return;
-      
-      this.handleTagClick(tagContainer);
-    });
-    
-    return tagContainer;
-  }
+  showQuestion() {
+    // Clear old options
+    this.options.forEach(o => o.destroy());
+    this.options = [];
 
-  handleTagClick(clickedTag) {
-    const tagType = clickedTag.getData("type");
-    
-    if (tagType === "opening") {
-      // Deselect previous selection
-      if (this.selectedTag) {
-        this.resetTagHighlight(this.selectedTag);
-      }
-      
-      // Select this opening tag
-      this.selectedTag = clickedTag;
-      this.highlightTag(clickedTag, 0xffff00);
-      
-    } else if (tagType === "closing") {
-      if (this.selectedTag) {
-        // Check if match is correct
-        const correctClose = this.selectedTag.getData("correctMatch");
-        const clickedText = clickedTag.getData("text");
-        
-        if (correctClose === clickedText) {
-          // Correct match!
-          this.matchTags(this.selectedTag, clickedTag);
-          this.selectedTag = null;
-        } else {
-          // Wrong match - shake and reset
-          this.shakeTag(clickedTag);
-          this.resetTagHighlight(this.selectedTag);
-          this.selectedTag = null;
-          this.updateScore(-10);
-        }
-      }
-    }
-  }
-
-  highlightTag(tag, color) {
-    const bg = tag.list[0];
-    bg.setStrokeStyle(3, color);
-    bg.setScale(1.05);
-  }
-
-  resetTagHighlight(tag) {
-    if (!tag) return;
-    const bg = tag.list[0];
-    const type = tag.getData("type");
-    const bgColor = type === "opening" ? 0x4ecdc4 : 0xff6b6b;
-    bg.setFillStyle(bgColor, 0.8);
-    bg.setStrokeStyle(2, 0xffffff);
-    bg.setScale(1);
-  }
-
-  shakeTag(tag) {
-    this.tweens.add({
-      targets: tag,
-      x: tag.x - 10,
-      duration: 50,
-      yoyo: true,
-      repeat: 4,
-      onComplete: () => {
-        tag.x = tag.x; // Reset
-      }
-    });
-  }
-
-  matchTags(openingTag, closingTag) {
-    // Mark as matched
-    openingTag.setData("matched", true);
-    closingTag.setData("matched", true);
-    
-    // Visual feedback
-    const successColor = 0x00c354;
-    openingTag.list[0].setFillStyle(successColor, 1);
-    closingTag.list[0].setFillStyle(successColor, 1);
-    openingTag.list[0].setStrokeStyle(3, 0xffffff);
-    closingTag.list[0].setStrokeStyle(3, 0xffffff);
-    
-    // Animate match
-    this.tweens.add({
-      targets: [openingTag, closingTag],
-      scale: 1.2,
-      duration: 200,
-      yoyo: true,
-      ease: "Power2"
-    });
-    
-    // Draw line connecting them
-    const line = this.add.line(
-      0, 0,
-      openingTag.x, openingTag.y,
-      closingTag.x, closingTag.y,
-      0x00c354, 1
-    );
-    line.setLineWidth(3);
-    line.setDepth(-1);
-    
-    this.tweens.add({
-      targets: line,
-      alpha: 0,
-      duration: 1000,
-      onComplete: () => line.destroy()
-    });
-    
-    this.matchedPairs++;
-    this.updateScore(50);
-    
-    // Check level completion
-    if (this.matchedPairs >= this.totalPairs) {
+    if (this.currentQuestion >= this.questions.length) {
       this.completeLevel();
+      return;
     }
+
+    const q = this.questions[this.currentQuestion];
+    this.questionText.setText(q.q);
+    this.progressText.setText(`Question ${this.currentQuestion + 1}/5`);
+
+    // Update progress bar
+    const progress = (this.currentQuestion / 5) * 752;
+    this.tweens.add({ targets: this.progressBar, width: progress, duration: 200 });
+
+    // Create 4 option buttons in 2x2 grid
+    const shuffled = Phaser.Utils.Array.Shuffle([...q.opts]);
+    const positions = [
+      { x: 250, y: 220 }, { x: 550, y: 220 },
+      { x: 250, y: 340 }, { x: 550, y: 340 }
+    ];
+
+    shuffled.forEach((opt, i) => {
+      const btn = this.createOptionButton(positions[i].x, positions[i].y, opt, opt === q.a);
+      this.options.push(btn);
+    });
   }
 
-  updateScore(points) {
-    this.score += points;
-    if (this.score < 0) this.score = 0;
-    this.scoreText.setText(`Score: ${this.score}`);
-    
-    // Animate score change
-    this.tweens.add({
-      targets: this.scoreText,
-      scale: 1.2,
-      duration: 150,
-      yoyo: true
+  createOptionButton(x, y, text, isCorrect) {
+    const container = this.add.container(x, y);
+
+    const bg = this.add.rectangle(0, 0, 260, 90, 0x1e1e3f);
+    bg.setStrokeStyle(2, 0x4d4d8a);
+
+    const tagText = this.add.text(0, 0, text, {
+      fontFamily: '"Courier New", monospace',
+      fontSize: "22px",
+      color: "#f48041",
+      fontStyle: "bold"
+    }).setOrigin(0.5);
+
+    container.add([bg, tagText]);
+    container.setSize(260, 90);
+    container.setInteractive({ cursor: "pointer" });
+
+    container.setData("correct", isCorrect);
+    container.setData("bg", bg);
+
+    container.on("pointerover", () => {
+      bg.setFillStyle(0x2a2a5a);
+      bg.setStrokeStyle(2, 0x6d6daa);
+    });
+
+    container.on("pointerout", () => {
+      bg.setFillStyle(0x1e1e3f);
+      bg.setStrokeStyle(2, 0x4d4d8a);
+    });
+
+    container.on("pointerdown", () => this.selectOption(container, isCorrect));
+
+    return container;
+  }
+
+  selectOption(selected, isCorrect) {
+    // Disable all options
+    this.options.forEach(o => o.disableInteractive());
+
+    if (isCorrect) {
+      // Correct answer
+      const bg = selected.getData("bg");
+      bg.setFillStyle(0x1a4d1a);
+      bg.setStrokeStyle(3, 0x00cc00);
+
+      this.correctAnswers++;
+      const points = 100 + Math.floor(this.timer * 2);
+      this.score += points;
+      this.scoreText.setText(this.score.toString());
+
+      // Flash effect
+      this.tweens.add({
+        targets: selected,
+        scaleX: 1.05,
+        scaleY: 1.05,
+        duration: 100,
+        yoyo: true
+      });
+    } else {
+      // Wrong answer
+      const bg = selected.getData("bg");
+      bg.setFillStyle(0x4d1a1a);
+      bg.setStrokeStyle(3, 0xff4444);
+
+      // Show correct answer
+      this.options.forEach(o => {
+        if (o.getData("correct")) {
+          const correctBg = o.getData("bg");
+          correctBg.setFillStyle(0x1a4d1a);
+          correctBg.setStrokeStyle(3, 0x00cc00);
+        }
+      });
+
+      this.score = Math.max(0, this.score - 25);
+      this.scoreText.setText(this.score.toString());
+
+      // Shake effect
+      this.tweens.add({
+        targets: selected,
+        x: selected.x + 8,
+        duration: 50,
+        yoyo: true,
+        repeat: 2
+      });
+    }
+
+    // Next question
+    this.time.delayedCall(1000, () => {
+      this.currentQuestion++;
+      this.showQuestion();
     });
   }
 
@@ -360,147 +277,121 @@ class GameScene extends Phaser.Scene {
       delay: 1000,
       callback: () => {
         this.timer--;
-        this.timerText.setText(`Time: ${this.timer}`);
-        
-        // Change color as time runs out
-        if (this.timer <= 10) {
-          this.timerText.setFill("#ff0000");
-          this.tweens.add({
-            targets: this.timerText,
-            scale: 1.1,
-            duration: 200,
-            yoyo: true
-          });
-        }
-        
-        if (this.timer <= 0) {
-          this.endGame(false);
-        }
+        this.timerText.setText(this.timer.toString());
+        if (this.timer <= 10) this.timerText.setColor("#ff4444");
+        else if (this.timer <= 20) this.timerText.setColor("#ff8844");
+        if (this.timer <= 0) this.endGame(false);
       },
       loop: true
     });
   }
 
   completeLevel() {
-    this.timerEvent.remove();
-    
-    // Bonus points for remaining time
     const timeBonus = this.timer * 5;
-    this.updateScore(timeBonus);
-    
-    // Show level complete message
-    const message = this.add.text(
-      this.scale.width / 2,
-      this.scale.height / 2,
-      `Level ${this.level} Complete!\n+${timeBonus} Time Bonus`,
-      {
-        font: "bold 36px Arial",
-        fill: "#00c354",
-        stroke: "#ffffff",
-        strokeThickness: 4,
-        align: "center"
-      }
-    ).setOrigin(0.5);
+    const levelBonus = this.level * 50;
+    const accuracy = Math.round((this.correctAnswers / 5) * 100);
+    this.score += timeBonus + levelBonus;
+    this.scoreText.setText(this.score.toString());
 
-    this.tweens.add({
-      targets: message,
-      scale: { from: 0, to: 1 },
-      duration: 500,
-      ease: "Back.easeOut"
-    });
-    
-    // Check if we've reached max level (3 levels)
-    const maxLevel = 3;
-    
-    if (this.level >= maxLevel) {
-      // Game complete - end after showing message
-      this.time.delayedCall(2000, () => {
-        message.destroy();
-        this.endGame(true);
-      });
-    } else {
-      // Next level after 2 seconds
-      this.time.delayedCall(2000, () => {
-        message.destroy();
-        this.level++;
-        this.timer = 60 - (this.level * 5); // Less time per level
-        if (this.timer < 30) this.timer = 30; // Minimum 30 seconds
-        
-        // Clear old tags
-        this.openingTags.forEach(item => item.tag.destroy());
-        this.closingTags.forEach(item => item.tag.destroy());
-        this.openingTags = [];
-        this.closingTags = [];
-        this.selectedTag = null;
-        
-        // Reset timer text color
-        this.timerText.setFill("#ff6b6b");
-        
-        // Initialize next level
-        this.initializeGame();
-        this.startTimer();
-      });
+    if (this.level >= this.maxLevel) {
+      this.time.delayedCall(400, () => this.endGame(true));
+      return;
     }
+
+    // Level complete popup
+    const box = this.add.rectangle(400, 300, 280, 180, 0x0f0f23, 0.98);
+    box.setStrokeStyle(2, 0x00cc00);
+
+    const title = this.add.text(400, 240, `Level ${this.level} Complete!`, {
+      fontFamily: "Arial, sans-serif",
+      fontSize: "18px",
+      color: "#00cc00",
+      fontStyle: "bold"
+    }).setOrigin(0.5);
+
+    const stats = this.add.text(400, 280, `Accuracy: ${accuracy}%\n+${timeBonus + levelBonus} bonus`, {
+      fontFamily: "Arial, sans-serif",
+      fontSize: "12px",
+      color: "#aaa",
+      align: "center"
+    }).setOrigin(0.5);
+
+    const nextBtn = this.add.text(400, 340, "[ Next Level ]", {
+      fontFamily: "Arial, sans-serif",
+      fontSize: "14px",
+      color: "#ffcc00",
+      fontStyle: "bold"
+    }).setOrigin(0.5).setInteractive({ cursor: "pointer" });
+
+    nextBtn.on("pointerover", () => nextBtn.setColor("#ffffff"));
+    nextBtn.on("pointerout", () => nextBtn.setColor("#ffcc00"));
+    nextBtn.on("pointerdown", () => {
+      box.destroy();
+      title.destroy();
+      stats.destroy();
+      nextBtn.destroy();
+      this.level++;
+      this.timer = Math.max(45, 60 - (this.level - 1) * 5);
+      this.timerText.setText(this.timer.toString());
+      this.timerText.setColor("#ff6b6b");
+      this.levelText.setText(`Level ${this.level}`);
+      this.initializeLevel();
+    });
   }
 
-  endGame(victory = false) {
+  endGame(victory) {
     if (this.gameOver) return;
     this.gameOver = true;
-    this.timerEvent.remove();
-    
-    // Stop all tweens
-    this.tweens.killAll();
-    
-    // Create game over overlay
-    const overlay = this.add.rectangle(
-      this.scale.width / 2,
-      this.scale.height / 2,
-      this.scale.width,
-      this.scale.height,
-      0x000000,
-      0.8
-    );
-    
-    const message = victory 
-      ? `Victory!\nFinal Score: ${this.score}`
-      : `Time's Up!\nFinal Score: ${this.score}`;
-    
-    const gameOverText = this.add.text(
-      this.scale.width / 2,
-      this.scale.height / 2 - 50,
-      message,
-      {
-        font: "bold 48px Arial",
-        fill: victory ? "#00c354" : "#ff6b6b",
-        stroke: "#ffffff",
-        strokeThickness: 4,
-        align: "center"
-      }
-    ).setOrigin(0.5);
-    
-    const clickText = this.add.text(
-      this.scale.width / 2,
-      this.scale.height / 2 + 50,
-      "Click anywhere to continue",
-      {
-        font: "24px Arial",
-        fill: "#ffffff"
-      }
-    ).setOrigin(0.5);
-    
+    if (this.timerEvent) this.timerEvent.remove();
+
+    const overlay = this.add.rectangle(400, 300, 800, 600, 0x050510, 0.92);
+
+    const box = this.add.rectangle(400, 300, 280, 200, 0x0f0f23);
+    box.setStrokeStyle(2, victory ? 0x00cc00 : 0xff4444);
+
+    this.add.text(400, 230, victory ? "Victory!" : "Time's Up!", {
+      fontFamily: "Arial, sans-serif",
+      fontSize: "22px",
+      color: victory ? "#00cc00" : "#ff4444",
+      fontStyle: "bold"
+    }).setOrigin(0.5);
+
+    this.add.text(400, 275, "Final Score", {
+      fontFamily: "Arial, sans-serif",
+      fontSize: "10px",
+      color: "#666"
+    }).setOrigin(0.5);
+
+    this.add.text(400, 305, this.score.toString(), {
+      fontFamily: "Arial, sans-serif",
+      fontSize: "28px",
+      color: "#ffcc00",
+      fontStyle: "bold"
+    }).setOrigin(0.5);
+
+    this.add.text(400, 345, `Level ${this.level} reached`, {
+      fontFamily: "Arial, sans-serif",
+      fontSize: "11px",
+      color: "#888"
+    }).setOrigin(0.5);
+
+    const clickText = this.add.text(400, 380, "Click to continue", {
+      fontFamily: "Arial, sans-serif",
+      fontSize: "10px",
+      color: "#555"
+    }).setOrigin(0.5);
+
     this.tweens.add({
       targets: clickText,
-      alpha: { from: 1, to: 0.5 },
-      duration: 800,
+      alpha: 0.3,
+      duration: 500,
       yoyo: true,
       repeat: -1
     });
-    
+
     overlay.setInteractive();
     overlay.once("pointerdown", () => {
-      if (this.onGameComplete) {
-        this.onGameComplete(this.score);
-      }
+      if (this.onGameComplete) this.onGameComplete(this.score);
     });
   }
 }

@@ -96,15 +96,19 @@
   height: 80px;
   background: linear-gradient(135deg, #00c354 0%, #00a844 100%);
   border-radius: 16px;
-  color: #ffffff;
+  color: white !important;
   font-weight: 700;
   flex-shrink: 0;
   box-shadow: 0 2px 8px rgba(0, 195, 84, 0.3);
 }
 
+.results-page-score * {
+  color: white !important;
+}
+
 .results-page-score-value {
   font-size: 1.5rem;
-  color: #ffffff;
+  color: white !important;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 }
 

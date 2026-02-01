@@ -1,387 +1,701 @@
 import Phaser from "phaser";
 
-class NodeMazeScene extends Phaser.Scene {
+class NodeGameScene extends Phaser.Scene {
   constructor(courseId, courseData, onGameComplete) {
-    super({ key: "NodeMazeScene" });
+    super({ key: "NodeGameScene" });
     this.courseId = courseId;
     this.courseData = courseData;
     this.onGameComplete = onGameComplete;
     this.score = 0;
     this.level = 1;
-    this.player = null;
-    this.packages = null;
-    this.cursors = null;
-    this.timer = 60;
+    this.maxLevel = 5;
+    this.currentChallenge = 0;
+    this.correctAnswers = 0;
+    this.timer = 90;
     this.timerText = null;
     this.gameOver = false;
-    this.collectedPackages = 0;
-    this.targetPackages = 5;
+    this.challenges = [];
+    this.codeBlocks = [];
+    this.dropZones = [];
+    this.draggedBlock = null;
   }
 
   preload() {}
 
   create() {
-    const { backgroundColor, titleText } = this.courseData.gameSceneConfig || {};
+    this.cameras.main.setBackgroundColor("#1e1e1e");
 
-    this.cameras.main.setBackgroundColor(backgroundColor || "#1a1a2e");
-    
-    // Initialize cursors early
-    this.cursors = this.input.keyboard.createCursorKeys();
-    
     this.createBackground();
-    this.createTitle(titleText || "Node.js Package Collector");
-    this.createScoreText();
-    this.createTimerText();
-    this.createInstructions();
-    
-    this.createPlayer();
-    this.createPackages();
-    this.setupPhysics();
-    this.startSpawning();
+    this.createUI();
+
+    this.initializeChallenges();
+    this.showChallenge();
     this.startTimer();
   }
 
   createBackground() {
-    // Animated gradient background
     const graphics = this.add.graphics();
-    graphics.fillGradientStyle(0x1a1a2e, 0x1a1a2e, 0x0f3460, 0x0f3460, 1);
-    graphics.fillRect(0, 0, this.scale.width, this.scale.height);
-    
-    // Floating particles
-    for (let i = 0; i < 30; i++) {
-      const x = Phaser.Math.Between(0, this.scale.width);
-      const y = Phaser.Math.Between(0, this.scale.height);
-      const particle = this.add.circle(x, y, 3, 0x00c354, 0.4);
-      
-      this.tweens.add({
-        targets: particle,
-        y: y - 200,
-        x: x + Phaser.Math.Between(-50, 50),
-        duration: Phaser.Math.Between(3000, 6000),
-        repeat: -1,
-        ease: "Linear"
+
+    // VS Code-like background
+    graphics.fillStyle(0x252526, 1);
+    graphics.fillRect(0, 45, this.scale.width, this.scale.height - 75);
+
+    // Subtle grid
+    graphics.lineStyle(1, 0x333333, 0.3);
+    for (let x = 0; x < this.scale.width; x += 40) {
+      graphics.lineBetween(x, 45, x, this.scale.height - 30);
+    }
+  }
+
+  createUI() {
+    // Top bar - dark header
+    const topBar = this.add.rectangle(this.scale.width / 2, 22, this.scale.width, 44, 0x323233);
+
+    // Node.js branding
+    const nodeIcon = this.add.circle(25, 22, 12, 0x68a063);
+    this.add.text(45, 22, "Node.js Pipeline", {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "14px",
+      color: "#68a063",
+      fontStyle: "bold",
+    }).setOrigin(0, 0.5);
+
+    // Level badge
+    this.levelBadge = this.add.container(this.scale.width / 2, 22);
+    const levelBg = this.add.rectangle(0, 0, 80, 24, 0x68a063);
+    levelBg.setStrokeStyle(0);
+    this.levelText = this.add.text(0, 0, `Level ${this.level}`, {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "11px",
+      color: "#ffffff",
+      fontStyle: "bold",
+    }).setOrigin(0.5);
+    this.levelBadge.add([levelBg, this.levelText]);
+
+    // Score
+    this.add.text(this.scale.width - 170, 15, "SCORE", {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "9px",
+      color: "#888888",
+    });
+    this.scoreText = this.add.text(this.scale.width - 170, 28, "0", {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "14px",
+      color: "#68a063",
+      fontStyle: "bold",
+    });
+
+    // Timer
+    this.add.text(this.scale.width - 80, 15, "TIME", {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "9px",
+      color: "#888888",
+    });
+    this.timerText = this.add.text(this.scale.width - 80, 28, "90", {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "14px",
+      color: "#ffd700",
+      fontStyle: "bold",
+    });
+
+    // Bottom bar
+    const bottomBar = this.add.rectangle(this.scale.width / 2, this.scale.height - 15, this.scale.width, 30, 0x007acc);
+
+    // Instructions
+    this.instructionText = this.add.text(this.scale.width / 2, this.scale.height - 15, "Drag code blocks into the correct order!", {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "11px",
+      color: "#ffffff",
+    }).setOrigin(0.5);
+
+    // Progress dots
+    this.progressDots = [];
+    for (let i = 0; i < 5; i++) {
+      const dot = this.add.circle(this.scale.width / 2 - 50 + i * 25, this.scale.height - 15, 4, 0x005a9e);
+      dot.setStrokeStyle(1, 0xffffff, 0.5);
+      this.progressDots.push(dot);
+    }
+    this.progressDots.forEach(d => d.setVisible(false));
+  }
+
+  initializeChallenges() {
+    const allChallenges = [
+      // Level 1: Basic Setup
+      {
+        level: 1,
+        title: "Create an HTTP Server",
+        blocks: [
+          { code: "const http = require('http');", order: 1 },
+          { code: "const server = http.createServer();", order: 2 },
+          { code: "server.listen(3000);", order: 3 },
+        ],
+      },
+      {
+        level: 1,
+        title: "Initialize NPM Project",
+        blocks: [
+          { code: "npm init -y", order: 1 },
+          { code: "npm install express", order: 2 },
+          { code: "node index.js", order: 3 },
+        ],
+      },
+      {
+        level: 1,
+        title: "Read a File",
+        blocks: [
+          { code: "const fs = require('fs');", order: 1 },
+          { code: "const data = fs.readFileSync('file.txt');", order: 2 },
+          { code: "console.log(data.toString());", order: 3 },
+        ],
+      },
+
+      // Level 2: Express Basics
+      {
+        level: 2,
+        title: "Create Express App",
+        blocks: [
+          { code: "const express = require('express');", order: 1 },
+          { code: "const app = express();", order: 2 },
+          { code: "app.use(express.json());", order: 3 },
+          { code: "app.listen(3000);", order: 4 },
+        ],
+      },
+      {
+        level: 2,
+        title: "Add a GET Route",
+        blocks: [
+          { code: "const app = express();", order: 1 },
+          { code: "app.get('/api/users', (req, res) => {", order: 2 },
+          { code: "  res.json({ users: [] });", order: 3 },
+          { code: "});", order: 4 },
+        ],
+      },
+      {
+        level: 2,
+        title: "Handle POST Request",
+        blocks: [
+          { code: "app.use(express.json());", order: 1 },
+          { code: "app.post('/api/data', (req, res) => {", order: 2 },
+          { code: "  const body = req.body;", order: 3 },
+          { code: "  res.status(201).json(body);", order: 4 },
+        ],
+      },
+
+      // Level 3: Async Operations
+      {
+        level: 3,
+        title: "Async File Read",
+        blocks: [
+          { code: "const fs = require('fs').promises;", order: 1 },
+          { code: "async function readFile() {", order: 2 },
+          { code: "  const data = await fs.readFile('data.txt');", order: 3 },
+          { code: "  return data.toString();", order: 4 },
+          { code: "}", order: 5 },
+        ],
+      },
+      {
+        level: 3,
+        title: "Promise Chain",
+        blocks: [
+          { code: "fetch('https://api.example.com')", order: 1 },
+          { code: "  .then(response => response.json())", order: 2 },
+          { code: "  .then(data => console.log(data))", order: 3 },
+          { code: "  .catch(err => console.error(err));", order: 4 },
+        ],
+      },
+      {
+        level: 3,
+        title: "Try-Catch Async",
+        blocks: [
+          { code: "async function fetchData() {", order: 1 },
+          { code: "  try {", order: 2 },
+          { code: "    const data = await getData();", order: 3 },
+          { code: "  } catch (error) {", order: 4 },
+          { code: "    console.error(error);", order: 5 },
+        ],
+      },
+
+      // Level 4: Middleware
+      {
+        level: 4,
+        title: "Create Middleware",
+        blocks: [
+          { code: "const logger = (req, res, next) => {", order: 1 },
+          { code: "  console.log(`${req.method} ${req.url}`);", order: 2 },
+          { code: "  next();", order: 3 },
+          { code: "};", order: 4 },
+          { code: "app.use(logger);", order: 5 },
+        ],
+      },
+      {
+        level: 4,
+        title: "Auth Middleware",
+        blocks: [
+          { code: "const auth = (req, res, next) => {", order: 1 },
+          { code: "  const token = req.headers.authorization;", order: 2 },
+          { code: "  if (!token) return res.status(401).send();", order: 3 },
+          { code: "  req.user = verifyToken(token);", order: 4 },
+          { code: "  next();", order: 5 },
+        ],
+      },
+      {
+        level: 4,
+        title: "Error Handler",
+        blocks: [
+          { code: "app.use((err, req, res, next) => {", order: 1 },
+          { code: "  console.error(err.stack);", order: 2 },
+          { code: "  res.status(500).json({", order: 3 },
+          { code: "    error: err.message", order: 4 },
+          { code: "  });", order: 5 },
+        ],
+      },
+
+      // Level 5: Advanced Patterns
+      {
+        level: 5,
+        title: "Module Export",
+        blocks: [
+          { code: "const db = require('./database');", order: 1 },
+          { code: "class UserService {", order: 2 },
+          { code: "  async getUsers() {", order: 3 },
+          { code: "    return await db.query('SELECT * FROM users');", order: 4 },
+          { code: "  }", order: 5 },
+          { code: "}", order: 6 },
+        ],
+      },
+      {
+        level: 5,
+        title: "Router Setup",
+        blocks: [
+          { code: "const router = express.Router();", order: 1 },
+          { code: "router.get('/', getAll);", order: 2 },
+          { code: "router.post('/', create);", order: 3 },
+          { code: "router.delete('/:id', remove);", order: 4 },
+          { code: "module.exports = router;", order: 5 },
+        ],
+      },
+      {
+        level: 5,
+        title: "Environment Config",
+        blocks: [
+          { code: "require('dotenv').config();", order: 1 },
+          { code: "const config = {", order: 2 },
+          { code: "  port: process.env.PORT || 3000,", order: 3 },
+          { code: "  dbUrl: process.env.DATABASE_URL", order: 4 },
+          { code: "};", order: 5 },
+          { code: "module.exports = config;", order: 6 },
+        ],
+      },
+    ];
+
+    const levelChallenges = allChallenges.filter((c) => c.level === this.level);
+    this.challenges = Phaser.Utils.Array.Shuffle([...levelChallenges]).slice(0, 5);
+    this.currentChallenge = 0;
+  }
+
+  showChallenge() {
+    this.clearChallenge();
+
+    if (this.currentChallenge >= this.challenges.length) {
+      this.completeLevel();
+      return;
+    }
+
+    const challenge = this.challenges[this.currentChallenge];
+
+    // Update progress
+    this.progressDots.forEach((dot, i) => {
+      dot.setVisible(true);
+      if (i < this.currentChallenge) {
+        dot.setFillStyle(0x68a063);
+      } else if (i === this.currentChallenge) {
+        dot.setFillStyle(0xffd700);
+      } else {
+        dot.setFillStyle(0x005a9e);
+      }
+    });
+
+    // Show task title
+    this.taskTitle = this.add.text(this.scale.width / 2, 60, challenge.title, {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "16px",
+      color: "#ffffff",
+      fontStyle: "bold",
+    }).setOrigin(0.5);
+
+    this.taskSubtitle = this.add.text(this.scale.width / 2, 80, "Arrange the code blocks in correct order", {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "11px",
+      color: "#888888",
+    }).setOrigin(0.5);
+
+    // Create drop zones on the left
+    this.createDropZones(challenge.blocks.length);
+
+    // Create draggable blocks on the right (shuffled)
+    this.createCodeBlocks(challenge.blocks);
+  }
+
+  clearChallenge() {
+    if (this.taskTitle) this.taskTitle.destroy();
+    if (this.taskSubtitle) this.taskSubtitle.destroy();
+    if (this.checkButton) this.checkButton.destroy();
+    if (this.feedbackText) this.feedbackText.destroy();
+
+    this.codeBlocks.forEach((block) => {
+      if (block.container) block.container.destroy();
+    });
+    this.codeBlocks = [];
+
+    this.dropZones.forEach((zone) => {
+      if (zone.container) zone.container.destroy();
+    });
+    this.dropZones = [];
+  }
+
+  createDropZones(count) {
+    const startY = 105;
+    const zoneHeight = 36;
+    const gap = 6;
+    const zoneWidth = 340;
+    const startX = 30;
+
+    for (let i = 0; i < count; i++) {
+      const y = startY + i * (zoneHeight + gap);
+      const container = this.add.container(startX + zoneWidth / 2, y);
+
+      // Zone background
+      const bg = this.add.rectangle(0, 0, zoneWidth, zoneHeight, 0x2d2d2d);
+      bg.setStrokeStyle(2, 0x3c3c3c, 1);
+
+      // Line number
+      const lineNum = this.add.text(-zoneWidth / 2 + 10, 0, `${i + 1}`, {
+        fontFamily: '"Courier New", monospace',
+        fontSize: "12px",
+        color: "#858585",
+      }).setOrigin(0, 0.5);
+
+      // Placeholder text
+      const placeholder = this.add.text(0, 0, "Drop code here...", {
+        fontFamily: '"Courier New", monospace',
+        fontSize: "11px",
+        color: "#555555",
+      }).setOrigin(0.5);
+
+      container.add([bg, lineNum, placeholder]);
+
+      // Set up as drop zone
+      const zone = this.add.zone(startX + zoneWidth / 2, y, zoneWidth, zoneHeight);
+      zone.setRectangleDropZone(zoneWidth, zoneHeight);
+
+      this.dropZones.push({
+        container,
+        zone,
+        bg,
+        placeholder,
+        index: i,
+        occupiedBy: null,
+        correctOrder: i + 1,
       });
     }
   }
 
-  createTitle(titleText) {
-    this.add
-      .text(this.scale.width / 2, 25, titleText, {
-        font: "bold 26px Arial",
-        fill: "#00c354",
-        stroke: "#ffffff",
-        strokeThickness: 3,
-      })
-      .setOrigin(0.5);
-  }
+  createCodeBlocks(blocks) {
+    const shuffled = Phaser.Utils.Array.Shuffle([...blocks]);
+    const startY = 105;
+    const blockHeight = 36;
+    const gap = 6;
+    const blockWidth = 380;
+    const startX = 400;
 
-  createInstructions() {
-    this.add
-      .text(this.scale.width / 2, 55, "Use ← → arrows to catch Node.js packages!", {
-        font: "14px Arial",
-        fill: "#ffffff",
-      })
-      .setOrigin(0.5);
-  }
+    shuffled.forEach((block, i) => {
+      const y = startY + i * (blockHeight + gap);
+      const container = this.add.container(startX + blockWidth / 2, y);
 
-  createScoreText() {
-    this.scoreText = this.add.text(15, 15, "Score: 0 | Packages: 0/5", {
-      font: "bold 18px Arial",
-      fill: "#00c354",
-      stroke: "#ffffff",
-      strokeThickness: 2,
+      // Block background
+      const bg = this.add.rectangle(0, 0, blockWidth, blockHeight, 0x1e1e1e);
+      bg.setStrokeStyle(2, 0x68a063);
+
+      // Code text
+      const codeText = this.add.text(0, 0, block.code, {
+        fontFamily: '"Courier New", monospace',
+        fontSize: "11px",
+        color: "#d4d4d4",
+      }).setOrigin(0.5);
+
+      // Drag handle indicator
+      const handle = this.add.text(-blockWidth / 2 + 12, 0, "⋮⋮", {
+        fontFamily: "Arial",
+        fontSize: "12px",
+        color: "#68a063",
+      }).setOrigin(0.5);
+
+      container.add([bg, codeText, handle]);
+      container.setSize(blockWidth, blockHeight);
+      container.setInteractive({ draggable: true, cursor: "grab" });
+
+      container.setData("originalX", startX + blockWidth / 2);
+      container.setData("originalY", y);
+      container.setData("order", block.order);
+      container.setData("code", block.code);
+      container.setData("inZone", null);
+      container.setData("bg", bg);
+
+      // Drag events
+      container.on("dragstart", () => {
+        container.setDepth(100);
+        bg.setFillStyle(0x2a2a2a);
+        bg.setStrokeStyle(2, 0x8bc34a);
+        this.draggedBlock = container;
+
+        // If dragged from a zone, free that zone
+        const currentZone = container.getData("inZone");
+        if (currentZone !== null) {
+          this.dropZones[currentZone].occupiedBy = null;
+          this.dropZones[currentZone].placeholder.setVisible(true);
+        }
+      });
+
+      container.on("drag", (pointer, dragX, dragY) => {
+        container.x = dragX;
+        container.y = dragY;
+
+        // Highlight potential drop zone
+        this.dropZones.forEach((zone) => {
+          if (this.isOverZone(pointer, zone.zone) && zone.occupiedBy === null) {
+            zone.bg.setStrokeStyle(2, 0x68a063);
+          } else {
+            zone.bg.setStrokeStyle(2, 0x3c3c3c);
+          }
+        });
+      });
+
+      container.on("dragend", (pointer) => {
+        container.setDepth(1);
+        bg.setFillStyle(0x1e1e1e);
+        bg.setStrokeStyle(2, 0x68a063);
+
+        let dropped = false;
+
+        // Check if dropped in a zone
+        this.dropZones.forEach((zone) => {
+          zone.bg.setStrokeStyle(2, 0x3c3c3c);
+
+          if (this.isOverZone(pointer, zone.zone) && zone.occupiedBy === null) {
+            // Snap to zone
+            container.x = zone.container.x;
+            container.y = zone.container.y;
+            zone.occupiedBy = container;
+            zone.placeholder.setVisible(false);
+            container.setData("inZone", zone.index);
+            dropped = true;
+          }
+        });
+
+        if (!dropped) {
+          // Return to original position
+          container.x = container.getData("originalX");
+          container.y = container.getData("originalY");
+          container.setData("inZone", null);
+        }
+
+        this.draggedBlock = null;
+        this.checkIfAllPlaced();
+      });
+
+      // Hover effects
+      container.on("pointerover", () => {
+        if (!this.draggedBlock) {
+          bg.setFillStyle(0x2a2a2a);
+        }
+      });
+
+      container.on("pointerout", () => {
+        if (!this.draggedBlock) {
+          bg.setFillStyle(0x1e1e1e);
+        }
+      });
+
+      this.codeBlocks.push({ container, bg, order: block.order });
     });
+
+    this.input.setDraggable(this.codeBlocks.map((b) => b.container));
   }
 
-  createTimerText() {
-    this.timerText = this.add.text(this.scale.width - 120, 15, "Time: 60", {
-      font: "bold 18px Arial",
-      fill: "#ff6b6b",
-      stroke: "#ffffff",
-      strokeThickness: 2,
-    });
-  }
-
-  createPlayer() {
-    // Create player as a container with physics body
-    const playerY = this.scale.height - 100;
-    const playerX = this.scale.width / 2;
-    
-    // Create container for player visuals
-    const playerContainer = this.add.container(playerX, playerY);
-    
-    // Player body (package collector) - rectangle
-    const playerBody = this.add.rectangle(0, 0, 120, 30, 0x00c354, 1);
-    playerBody.setStrokeStyle(4, 0xffffff, 1);
-    
-    // Player collector (basket) - triangle using graphics
-    const basket = this.add.graphics();
-    basket.fillStyle(0x4ecdc4, 1);
-    basket.fillTriangle(0, 15, -50, 35, 50, 35);
-    basket.lineStyle(3, 0xffffff, 1);
-    basket.strokeTriangle(0, 15, -50, 35, 50, 35);
-    basket.setDepth(1);
-    
-    // Player icon
-    const icon = this.add.text(0, 0, "📦", {
-      font: "24px Arial"
-    }).setOrigin(0.5);
-    
-    playerContainer.add([playerBody, basket, icon]);
-    playerContainer.setSize(120, 50);
-    
-    // Create physics body for the container
-    this.physics.world.enable(playerContainer);
-    playerContainer.body.setSize(120, 50);
-    playerContainer.body.setCollideWorldBounds(true);
-    playerContainer.body.setImmovable(true);
-    
-    this.player = playerContainer;
-  }
-
-  createPackages() {
-    this.packages = this.physics.add.group();
-    
-    // Node.js package names
-    this.correctPackages = ["express", "fs", "http", "path", "cors", "dotenv", "nodemon"];
-    this.incorrectPackages = ["react", "vue", "angular", "jquery", "bootstrap", "python", "java"];
-  }
-
-  setupPhysics() {
-    // Collision between player and packages
-    this.physics.add.overlap(
-      this.player,
-      this.packages,
-      this.collectPackage,
-      null,
-      this
+  isOverZone(pointer, zone) {
+    const bounds = zone.getBounds();
+    return (
+      pointer.x >= bounds.x &&
+      pointer.x <= bounds.x + bounds.width &&
+      pointer.y >= bounds.y &&
+      pointer.y <= bounds.y + bounds.height
     );
   }
 
-  startSpawning() {
-    this.spawnEvent = this.time.addEvent({
-      delay: 1500 - (this.level * 100), // Faster spawning as level increases
-      callback: () => {
-        if (!this.gameOver) {
-          this.spawnPackage();
-        }
-      },
-      loop: true
-    });
+  checkIfAllPlaced() {
+    const allPlaced = this.dropZones.every((zone) => zone.occupiedBy !== null);
+
+    if (allPlaced && !this.checkButton) {
+      this.createCheckButton();
+    } else if (!allPlaced && this.checkButton) {
+      this.checkButton.destroy();
+      this.checkButton = null;
+    }
   }
 
-  spawnPackage() {
-    const x = Phaser.Math.Between(60, this.scale.width - 60);
-    const isCorrect = Phaser.Math.Between(0, 100) < 70; // 70% correct packages
-    const packageName = isCorrect
-      ? Phaser.Utils.Array.GetRandom(this.correctPackages)
-      : Phaser.Utils.Array.GetRandom(this.incorrectPackages);
-    
-    // Create package as container with physics
-    const packageContainer = this.add.container(x, -40);
-    
-    // Create visual elements
-    const boxColor = isCorrect ? 0x00c354 : 0xff6b6b;
-    const box = this.add.rectangle(0, 0, 70, 70, boxColor, 1);
-    box.setStrokeStyle(3, 0xffffff);
-    
-    // Package icon
-    const icon = this.add.text(0, -15, "📦", {
-      font: "28px Arial"
+  createCheckButton() {
+    const challenge = this.challenges[this.currentChallenge];
+    const buttonY = 105 + challenge.blocks.length * 42 + 20;
+
+    this.checkButton = this.add.container(200, buttonY);
+
+    const btnBg = this.add.rectangle(0, 0, 160, 36, 0x68a063);
+    btnBg.setStrokeStyle(0);
+
+    const btnText = this.add.text(0, 0, "Check Order", {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "13px",
+      color: "#ffffff",
+      fontStyle: "bold",
     }).setOrigin(0.5);
-    
-    // Package name
-    const nameText = this.add.text(0, 20, packageName, {
-      font: "bold 11px Arial",
-      fill: "#ffffff",
-      wordWrap: { width: 65 },
-      align: "center"
-    }).setOrigin(0.5);
-    
-    packageContainer.add([box, icon, nameText]);
-    packageContainer.setSize(70, 70);
-    
-    // Enable physics for container
-    this.physics.world.enable(packageContainer);
-    packageContainer.body.setSize(70, 70);
-    packageContainer.body.setVelocityY(150 + (this.level * 30));
-    packageContainer.body.setCollideWorldBounds(false);
-    packageContainer.body.setGravityY(0);
-    
-    // Store data
-    packageContainer.setData("isCorrect", isCorrect);
-    packageContainer.setData("name", packageName);
-    
-    // Add to group
-    this.packages.add(packageContainer);
-    
-    // Glow effect for correct packages
-    if (isCorrect) {
-      this.tweens.add({
-        targets: box,
-        alpha: { from: 1, to: 0.7 },
-        duration: 800,
-        yoyo: true,
-        repeat: -1
-      });
-    }
-    
-    // Remove if it goes off screen
-    this.time.delayedCall(8000, () => {
-      if (packageContainer && packageContainer.active) {
-        packageContainer.destroy();
-      }
+
+    this.checkButton.add([btnBg, btnText]);
+    this.checkButton.setSize(160, 36);
+    this.checkButton.setInteractive({ cursor: "pointer" });
+
+    this.checkButton.on("pointerover", () => {
+      btnBg.setFillStyle(0x7cb342);
     });
-  }
 
-  collectPackage(player, packageObj) {
-    const isCorrect = packageObj.getData("isCorrect");
-    
-    if (isCorrect) {
-      this.score += 50;
-      this.collectedPackages++;
-      
-      // Success effect
-      const success = this.add.text(
-        packageObj.x,
-        packageObj.y - 30,
-        "+50",
-        {
-          font: "bold 24px Arial",
-          fill: "#00c354"
-        }
-      );
-      
-      this.tweens.add({
-        targets: success,
-        y: success.y - 50,
-        alpha: 0,
-        duration: 1000,
-        onComplete: () => success.destroy()
-      });
-      
-      // Check level completion
-      if (this.collectedPackages >= this.targetPackages) {
-        this.completeLevel();
-      }
-    } else {
-      this.score -= 25;
-      if (this.score < 0) this.score = 0;
-      
-      // Error effect
-      const error = this.add.text(
-        packageObj.x,
-        packageObj.y - 30,
-        "-25",
-        {
-          font: "bold 24px Arial",
-          fill: "#ff6b6b"
-        }
-      );
-      
-      this.tweens.add({
-        targets: error,
-        y: error.y - 50,
-        alpha: 0,
-        duration: 1000,
-        onComplete: () => error.destroy()
-      });
-      
-      // Shake player
-      this.tweens.add({
-        targets: this.player,
-        x: this.player.x - 10,
-        duration: 50,
-        yoyo: true,
-        repeat: 4
-      });
-    }
-    
-    // Destroy package
-    packageObj.destroy();
-    this.updateScore();
-  }
+    this.checkButton.on("pointerout", () => {
+      btnBg.setFillStyle(0x68a063);
+    });
 
-  update() {
-    // Player movement
-    if (!this.gameOver && this.player && this.player.body) {
-      this.player.body.setVelocityX(0);
-      
-      if (this.cursors && this.cursors.left && this.cursors.left.isDown) {
-        this.player.body.setVelocityX(-400);
-      } else if (this.cursors && this.cursors.right && this.cursors.right.isDown) {
-        this.player.body.setVelocityX(400);
-      }
-    }
-    
-    // Remove packages that went off screen
-    if (this.packages && this.packages.children) {
-      this.packages.children.entries.forEach(pkg => {
-        if (pkg && pkg.active && pkg.y > this.scale.height + 100) {
-          pkg.destroy();
-        }
-      });
-    }
-  }
+    this.checkButton.on("pointerdown", () => {
+      this.verifyOrder();
+    });
 
-  completeLevel() {
-    this.spawnEvent.remove();
-    
-    // Time bonus
-    const timeBonus = this.timer * 3;
-    this.score += timeBonus;
-    
-    // Success message
-    const successText = this.add.text(
-      this.scale.width / 2,
-      this.scale.height / 2,
-      `Level ${this.level} Complete!\n+${timeBonus} Time Bonus`,
-      {
-        font: "bold 32px Arial",
-        fill: "#00c354",
-        stroke: "#ffffff",
-        strokeThickness: 4,
-        align: "center"
-      }
-    ).setOrigin(0.5);
-    
+    // Entrance animation
+    this.checkButton.setAlpha(0);
+    this.checkButton.y = buttonY + 20;
     this.tweens.add({
-      targets: successText,
-      scale: { from: 0, to: 1 },
-      duration: 500,
-      ease: "Back.easeOut"
-    });
-    
-    // Next level
-    this.time.delayedCall(2000, () => {
-      successText.destroy();
-      
-      if (this.level < 3) {
-        this.level++;
-        this.collectedPackages = 0;
-        this.targetPackages = 5 + (this.level * 2);
-        this.timer = 60;
-        this.timerText.setFill("#ff6b6b");
-        
-        // Clear packages
-        this.packages.children.entries.forEach(pkg => pkg.destroy());
-        
-        // Restart spawning
-        this.startSpawning();
-      } else {
-        this.endGame(true);
-      }
+      targets: this.checkButton,
+      alpha: 1,
+      y: buttonY,
+      duration: 200,
+      ease: "Power2",
     });
   }
 
-  updateScore() {
-    this.scoreText.setText(`Score: ${this.score} | Packages: ${this.collectedPackages}/${this.targetPackages}`);
-    
+  verifyOrder() {
+    let allCorrect = true;
+
+    this.dropZones.forEach((zone, index) => {
+      const block = zone.occupiedBy;
+      if (block) {
+        const blockOrder = block.getData("order");
+        const bg = block.getData("bg");
+
+        if (blockOrder === zone.correctOrder) {
+          // Correct position
+          bg.setStrokeStyle(2, 0x4caf50);
+          zone.bg.setFillStyle(0x1b3d1b);
+        } else {
+          // Wrong position
+          bg.setStrokeStyle(2, 0xf44336);
+          zone.bg.setFillStyle(0x3d1b1b);
+          allCorrect = false;
+        }
+      }
+    });
+
+    // Disable further dragging
+    this.codeBlocks.forEach((block) => {
+      block.container.disableInteractive();
+    });
+
+    if (this.checkButton) {
+      this.checkButton.disableInteractive();
+    }
+
+    if (allCorrect) {
+      this.handleCorrect();
+    } else {
+      this.handleIncorrect();
+    }
+  }
+
+  handleCorrect() {
+    this.correctAnswers++;
+    const points = 150 + Math.floor(this.timer * 2);
+    this.updateScore(points);
+
+    // Success feedback
+    this.feedbackText = this.add.text(200, this.checkButton.y + 40, "Correct!", {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "14px",
+      color: "#4caf50",
+      fontStyle: "bold",
+    }).setOrigin(0.5);
+
+    // Success animation
+    this.tweens.add({
+      targets: this.dropZones.map((z) => z.container),
+      scaleX: 1.02,
+      scaleY: 1.02,
+      duration: 150,
+      yoyo: true,
+    });
+
+    this.time.delayedCall(1500, () => {
+      this.currentChallenge++;
+      this.showChallenge();
+    });
+  }
+
+  handleIncorrect() {
+    this.updateScore(-30);
+
+    // Show correct order hint
+    this.feedbackText = this.add.text(200, this.checkButton.y + 40, "Wrong order! Check the sequence.", {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "12px",
+      color: "#f44336",
+    }).setOrigin(0.5);
+
+    // Shake animation
+    this.tweens.add({
+      targets: this.dropZones.map((z) => z.container),
+      x: "+=5",
+      duration: 50,
+      yoyo: true,
+      repeat: 3,
+    });
+
+    this.time.delayedCall(2000, () => {
+      this.currentChallenge++;
+      this.showChallenge();
+    });
+  }
+
+  updateScore(points) {
+    this.score += points;
+    if (this.score < 0) this.score = 0;
+
+    this.scoreText.setText(this.score.toString());
+
+    const color = points > 0 ? "#4caf50" : "#f44336";
+    this.scoreText.setColor(color);
+
     this.tweens.add({
       targets: this.scoreText,
-      scale: 1.2,
+      scaleX: 1.3,
+      scaleY: 1.3,
       duration: 150,
-      yoyo: true
+      yoyo: true,
+      onComplete: () => {
+        this.scoreText.setColor("#68a063");
+      },
     });
   }
 
@@ -390,81 +704,221 @@ class NodeMazeScene extends Phaser.Scene {
       delay: 1000,
       callback: () => {
         this.timer--;
-        this.timerText.setText(`Time: ${this.timer}`);
-        
-        if (this.timer <= 10) {
-          this.timerText.setFill("#ff0000");
-          this.tweens.add({
-            targets: this.timerText,
-            scale: 1.1,
-            duration: 200,
-            yoyo: true
-          });
+        this.timerText.setText(this.timer.toString());
+
+        if (this.timer <= 20) {
+          this.timerText.setColor("#f44336");
+        } else if (this.timer <= 40) {
+          this.timerText.setColor("#ff9800");
         }
-        
+
         if (this.timer <= 0) {
           this.endGame(false);
         }
       },
-      loop: true
+      loop: true,
     });
   }
 
-  endGame(victory = false) {
-    if (this.gameOver) return;
-    this.gameOver = true;
-    this.timerEvent.remove();
-    if (this.spawnEvent) this.spawnEvent.remove();
-    
-    this.tweens.killAll();
-    if (this.player && this.player.body) {
-      this.player.body.setVelocityX(0);
-    }
-    
+  completeLevel() {
+    if (this.timerEvent) this.timerEvent.remove();
+
+    const accuracy = Math.round((this.correctAnswers / this.challenges.length) * 100);
+    const timeBonus = this.timer * 3;
+    const levelBonus = this.level * 100;
+
+    this.updateScore(timeBonus + levelBonus);
+
+    // Level complete overlay
     const overlay = this.add.rectangle(
       this.scale.width / 2,
       this.scale.height / 2,
       this.scale.width,
       this.scale.height,
-      0x000000,
-      0.85
+      0x1e1e1e,
+      0.95
     );
-    
-    const message = victory 
-      ? `Victory!\nFinal Score: ${this.score}`
-      : `Game Over!\nFinal Score: ${this.score}`;
-    
-    const gameOverText = this.add.text(
+
+    const container = this.add.container(this.scale.width / 2, this.scale.height / 2);
+
+    const cardBg = this.add.rectangle(0, 0, 280, 200, 0x252526);
+    cardBg.setStrokeStyle(2, 0x68a063);
+
+    const icon = this.add.circle(0, -60, 25, 0x68a063);
+    const checkMark = this.add.text(0, -60, "✓", {
+      fontSize: "24px",
+      color: "#ffffff",
+    }).setOrigin(0.5);
+
+    const title = this.add.text(0, -15, `Level ${this.level} Complete!`, {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "18px",
+      color: "#68a063",
+      fontStyle: "bold",
+    }).setOrigin(0.5);
+
+    const stats = this.add.text(0, 30, `Accuracy: ${accuracy}%\nTime Bonus: +${timeBonus}\nLevel Bonus: +${levelBonus}`, {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "11px",
+      color: "#888888",
+      align: "center",
+      lineSpacing: 4,
+    }).setOrigin(0.5);
+
+    container.add([cardBg, icon, checkMark, title, stats]);
+
+    container.setScale(0);
+    this.tweens.add({
+      targets: container,
+      scaleX: 1,
+      scaleY: 1,
+      duration: 400,
+      ease: "Back.easeOut",
+    });
+
+    if (this.level >= this.maxLevel) {
+      this.time.delayedCall(2500, () => {
+        container.destroy();
+        overlay.destroy();
+        this.endGame(true);
+      });
+    } else {
+      this.time.delayedCall(1000, () => {
+        const continueBtn = this.add.container(0, 85);
+
+        const btnBg = this.add.rectangle(0, 0, 140, 32, 0x68a063);
+        const btnText = this.add.text(0, 0, "Next Level →", {
+          fontFamily: '"Segoe UI", Arial, sans-serif',
+          fontSize: "12px",
+          color: "#ffffff",
+          fontStyle: "bold",
+        }).setOrigin(0.5);
+
+        continueBtn.add([btnBg, btnText]);
+        continueBtn.setSize(140, 32);
+        continueBtn.setInteractive({ cursor: "pointer" });
+        container.add(continueBtn);
+
+        continueBtn.on("pointerover", () => btnBg.setFillStyle(0x7cb342));
+        continueBtn.on("pointerout", () => btnBg.setFillStyle(0x68a063));
+        continueBtn.on("pointerdown", () => {
+          container.destroy();
+          overlay.destroy();
+          this.startNextLevel();
+        });
+
+        continueBtn.setAlpha(0);
+        this.tweens.add({
+          targets: continueBtn,
+          alpha: 1,
+          duration: 300,
+        });
+      });
+    }
+  }
+
+  startNextLevel() {
+    this.level++;
+    this.timer = Math.max(60, 90 - (this.level - 1) * 10);
+    this.currentChallenge = 0;
+    this.correctAnswers = 0;
+
+    this.levelText.setText(`Level ${this.level}`);
+    this.timerText.setText(this.timer.toString());
+    this.timerText.setColor("#ffd700");
+
+    this.progressDots.forEach((dot) => {
+      dot.setFillStyle(0x005a9e);
+      dot.setVisible(false);
+    });
+
+    this.initializeChallenges();
+    this.showChallenge();
+    this.startTimer();
+  }
+
+  endGame(victory) {
+    if (this.gameOver) return;
+    this.gameOver = true;
+
+    if (this.timerEvent) this.timerEvent.remove();
+    this.tweens.killAll();
+
+    const overlay = this.add.rectangle(
       this.scale.width / 2,
-      this.scale.height / 2 - 50,
-      message,
-      {
-        font: "bold 36px Arial",
-        fill: victory ? "#00c354" : "#ff6b6b",
-        stroke: "#ffffff",
-        strokeThickness: 4,
-        align: "center"
-      }
-    ).setOrigin(0.5);
-    
-    const clickText = this.add.text(
-      this.scale.width / 2,
-      this.scale.height / 2 + 50,
-      "Click anywhere to continue",
-      {
-        font: "24px Arial",
-        fill: "#ffffff"
-      }
-    ).setOrigin(0.5);
-    
+      this.scale.height / 2,
+      this.scale.width,
+      this.scale.height,
+      0x1e1e1e,
+      0.95
+    );
+
+    const container = this.add.container(this.scale.width / 2, this.scale.height / 2);
+
+    const cardBg = this.add.rectangle(0, 0, 300, 240, 0x252526);
+    cardBg.setStrokeStyle(2, victory ? 0x68a063 : 0xf44336);
+
+    const icon = this.add.text(0, -80, victory ? "🎉" : "⏰", {
+      fontSize: "40px",
+    }).setOrigin(0.5);
+
+    const title = this.add.text(0, -30, victory ? "Pipeline Complete!" : "Time's Up!", {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "20px",
+      color: victory ? "#68a063" : "#f44336",
+      fontStyle: "bold",
+    }).setOrigin(0.5);
+
+    const subtitle = this.add.text(0, 5, victory ? "All levels completed!" : "Keep practicing!", {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "12px",
+      color: "#888888",
+    }).setOrigin(0.5);
+
+    const scoreLabel = this.add.text(0, 40, "Final Score", {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "10px",
+      color: "#666666",
+    }).setOrigin(0.5);
+
+    const finalScore = this.add.text(0, 70, this.score.toString(), {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "32px",
+      color: "#68a063",
+      fontStyle: "bold",
+    }).setOrigin(0.5);
+
+    const levelInfo = this.add.text(0, 105, `Level ${this.level} reached`, {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "11px",
+      color: "#666666",
+    }).setOrigin(0.5);
+
+    container.add([cardBg, icon, title, subtitle, scoreLabel, finalScore, levelInfo]);
+
+    container.setScale(0);
+    this.tweens.add({
+      targets: container,
+      scaleX: 1,
+      scaleY: 1,
+      duration: 500,
+      ease: "Back.easeOut",
+    });
+
+    const clickText = this.add.text(this.scale.width / 2, this.scale.height - 40, "Click anywhere to continue", {
+      fontFamily: '"Segoe UI", Arial, sans-serif',
+      fontSize: "11px",
+      color: "#666666",
+    }).setOrigin(0.5);
+
     this.tweens.add({
       targets: clickText,
-      alpha: { from: 1, to: 0.5 },
-      duration: 800,
+      alpha: 0.4,
+      duration: 600,
       yoyo: true,
-      repeat: -1
+      repeat: -1,
     });
-    
+
     overlay.setInteractive();
     overlay.once("pointerdown", () => {
       if (this.onGameComplete) {
@@ -474,4 +928,4 @@ class NodeMazeScene extends Phaser.Scene {
   }
 }
 
-export default NodeMazeScene;
+export default NodeGameScene;
