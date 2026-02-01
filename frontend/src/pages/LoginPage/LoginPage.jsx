@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { login } from "../../redux/auth/authActions";
 import Header from "../../components/Header/Header";
@@ -41,10 +41,6 @@ const LoginPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     dispatch(login(credentials, navigate, dispatch));
-  };
-
-  const handleSignUpClick = () => {
-    navigate("/signup");
   };
 
   return (
@@ -110,12 +106,12 @@ const LoginPage = () => {
               {loading ? "Logging in..." : "Login"}
             </button>
             <div className="login-options">
-              <a href="#" className="forgot-password">
+              <Link to="/forgot-password" className="forgot-password">
                 Forgot Password?
-              </a>
-              <a href="#" className="signup-link" onClick={handleSignUpClick}>
+              </Link>
+              <Link to="/signup" className="signup-link">
                 Sign Up
-              </a>
+              </Link>
             </div>
             <div className="social-signup">
               <p>Or you can Signup with</p>

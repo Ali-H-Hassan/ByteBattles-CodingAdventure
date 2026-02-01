@@ -31,6 +31,16 @@ public interface IAuthService
     /// Validates a JWT token and returns the user ID if valid.
     /// </summary>
     int? ValidateToken(string token);
+
+    /// <summary>
+    /// Initiates the forgot password process by generating a reset token.
+    /// </summary>
+    Task<PasswordResetResult> ForgotPasswordAsync(ForgotPasswordDto dto);
+
+    /// <summary>
+    /// Resets the user's password using a valid reset token.
+    /// </summary>
+    Task<PasswordResetResult> ResetPasswordAsync(ResetPasswordDto dto);
 }
 
 /// <summary>
@@ -47,6 +57,23 @@ public class AuthResult
         => new() { IsSuccess = true, User = user, Token = token };
 
     public static AuthResult Fail(string error)
+        => new() { IsSuccess = false, Error = error };
+}
+
+/// <summary>
+/// Result of a password reset operation.
+/// </summary>
+public class PasswordResetResult
+{
+    public bool IsSuccess { get; private set; }
+    public string? Message { get; private set; }
+    public string? Error { get; private set; }
+    public string? ResetToken { get; private set; }
+
+    public static PasswordResetResult Success(string message, string? resetToken = null)
+        => new() { IsSuccess = true, Message = message, ResetToken = resetToken };
+
+    public static PasswordResetResult Fail(string error)
         => new() { IsSuccess = false, Error = error };
 }
 

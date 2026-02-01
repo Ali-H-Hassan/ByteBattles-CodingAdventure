@@ -18,6 +18,7 @@ public class ByteBattlesDbContext : DbContext
     public DbSet<UserRole> UserRoles => Set<UserRole>();
     public DbSet<UserCourseProgress> UserCourseProgress => Set<UserCourseProgress>();
     public DbSet<UserCompletedChallenge> UserCompletedChallenges => Set<UserCompletedChallenge>();
+    public DbSet<PasswordResetToken> PasswordResetTokens => Set<PasswordResetToken>();
 
     // Course-related entities
     public DbSet<Course> Courses => Set<Course>();

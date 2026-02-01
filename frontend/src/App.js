@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Login from "./pages/LoginPage/LoginPage";
 import Signup from "./pages/SignupPage/signupPage";
+import ForgotPassword from "./pages/ForgotPasswordPage/ForgotPasswordPage";
+import ResetPassword from "./pages/ResetPasswordPage/ResetPasswordPage";
 import WelcomePage from "./pages/WelcomePage/WelcomePage";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import CompanyDashboard from "./pages/CompanyDashboard/CompanyDashboard";
@@ -39,6 +41,8 @@ function App() {
                 <Route path="/" element={<WelcomePage />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/reset-password" element={<ResetPassword />} />
                 <Route element={<ProtectedRoute />}>
                   <Route path="/dashboard" element={<Dashboard />} />
                   <Route

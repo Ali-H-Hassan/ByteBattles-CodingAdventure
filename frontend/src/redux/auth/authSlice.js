@@ -11,6 +11,11 @@ const getInitialState = () => {
     error: null,
     // If token exists, we need to restore session, so set loading to true initially
     loading: !!token,
+    // Password reset state
+    passwordResetLoading: false,
+    passwordResetSuccess: false,
+    passwordResetError: null,
+    passwordResetToken: null,
   };
 };
 
@@ -130,6 +135,68 @@ export const authSlice = createSlice({
         loading: false,
       };
     },
+    // Password reset reducers
+    forgotPasswordRequest: (state) => {
+      return {
+        ...state,
+        passwordResetLoading: true,
+        passwordResetSuccess: false,
+        passwordResetError: null,
+        passwordResetToken: null,
+      };
+    },
+    forgotPasswordSuccess: (state, action) => {
+      return {
+        ...state,
+        passwordResetLoading: false,
+        passwordResetSuccess: true,
+        passwordResetError: null,
+        passwordResetToken: action.payload.resetToken || null,
+      };
+    },
+    forgotPasswordFailure: (state, action) => {
+      return {
+        ...state,
+        passwordResetLoading: false,
+        passwordResetSuccess: false,
+        passwordResetError: action.payload,
+        passwordResetToken: null,
+      };
+    },
+    resetPasswordRequest: (state) => {
+      return {
+        ...state,
+        passwordResetLoading: true,
+        passwordResetSuccess: false,
+        passwordResetError: null,
+      };
+    },
+    resetPasswordSuccess: (state) => {
+      return {
+        ...state,
+        passwordResetLoading: false,
+        passwordResetSuccess: true,
+        passwordResetError: null,
+        passwordResetToken: null,
+      };
+    },
+    resetPasswordFailure: (state, action) => {
+      return {
+        ...state,
+        passwordResetLoading: false,
+        passwordResetSuccess: false,
+        passwordResetError: action.payload,
+      };
+    },
+    clearPasswordResetState: (state) => {
+      return {
+        ...state,
+        passwordResetLoading: false,
+        passwordResetSuccess: false,
+        passwordResetError: null,
+        passwordResetToken: null,
+      };
+    },
   },
 });
 export const {
@@ -147,5 +214,12 @@ export const {
   restoreSession,
   clearSession,
   setLoading,
+  forgotPasswordRequest,
+  forgotPasswordSuccess,
+  forgotPasswordFailure,
+  resetPasswordRequest,
+  resetPasswordSuccess,
+  resetPasswordFailure,
+  clearPasswordResetState,
 } = authSlice.actions;
 export default authSlice.reducer;

@@ -49,6 +49,7 @@ public static class DependencyInjection
 
         // Register SQL Server Repositories
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<IPasswordResetTokenRepository, PasswordResetTokenRepository>();
         services.AddScoped<ITestRepository, TestRepository>();
         services.AddScoped<ITestResultRepository, TestResultRepository>();
         services.AddScoped<IChallengeRepository, ChallengeRepository>();

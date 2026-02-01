@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using ByteBattles.Application.Interfaces;
 using ByteBattles.Core.DTOs.Auth;
@@ -17,18 +18,23 @@ namespace ByteBattles.Application.Services;
 public class AuthService : IAuthService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IPasswordResetTokenRepository _passwordResetTokenRepository;
     private readonly IConfiguration _configuration;
     private readonly string _jwtSecret;
     private readonly string _jwtIssuer;
     private readonly string _jwtAudience;
     private readonly int _jwtExpirationHours;
 
-    public AuthService(IUserRepository userRepository, IConfiguration configuration)
+    public AuthService(
+        IUserRepository userRepository,
+        IPasswordResetTokenRepository passwordResetTokenRepository,
+        IConfiguration configuration)
     {
         _userRepository = userRepository;
+        _passwordResetTokenRepository = passwordResetTokenRepository;
         _configuration = configuration;
-        
-        _jwtSecret = _configuration["Jwt:Secret"] 
+
+        _jwtSecret = _configuration["Jwt:Secret"]
             ?? throw new InvalidOperationException("JWT Secret not configured");
         _jwtIssuer = _configuration["Jwt:Issuer"] ?? "ByteBattles";
         _jwtAudience = _configuration["Jwt:Audience"] ?? "ByteBattlesUsers";
@@ -255,6 +261,102 @@ public class AuthService : IAuthService
         var baseUsername = email.Split('@')[0];
         var random = new Random();
         return $"{baseUsername}{random.Next(1000, 9999)}";
+    }
+
+    public async Task<PasswordResetResult> ForgotPasswordAsync(ForgotPasswordDto dto)
+    {
+        // Find user by email
+        var user = await _userRepository.GetByEmailAsync(dto.Email);
+        if (user == null)
+        {
+            // Don't reveal if email exists - return success message anyway
+            return PasswordResetResult.Success("If an account with that email exists, a password reset link has been sent.");
+        }
+
+        // Check if user registered via OAuth (no password)
+        if (string.IsNullOrEmpty(user.PasswordHash) && !string.IsNullOrEmpty(user.GoogleId))
+        {
+            return PasswordResetResult.Fail("This account uses Google Sign-In. Please log in with Google.");
+        }
+
+        // Invalidate any existing tokens for this user
+        await _passwordResetTokenRepository.InvalidateUserTokensAsync(user.Id);
+
+        // Generate a secure reset token
+        var resetToken = GenerateSecureToken();
+        var hashedToken = HashToken(resetToken);
+
+        // Create password reset token record
+        var passwordResetToken = new PasswordResetToken
+        {
+            UserId = user.Id,
+            Token = hashedToken,
+            ExpiresAt = DateTime.UtcNow.AddHours(1), // Token valid for 1 hour
+            CreatedAt = DateTime.UtcNow
+        };
+
+        await _passwordResetTokenRepository.CreateAsync(passwordResetToken);
+
+        // In a production environment, you would send this token via email
+        // For development, we return the token in the response
+        return PasswordResetResult.Success(
+            "Password reset link has been generated.",
+            resetToken // Return unhashed token for the user to use
+        );
+    }
+
+    public async Task<PasswordResetResult> ResetPasswordAsync(ResetPasswordDto dto)
+    {
+        // Find user by email
+        var user = await _userRepository.GetByEmailAsync(dto.Email);
+        if (user == null)
+        {
+            return PasswordResetResult.Fail("Invalid email or reset token.");
+        }
+
+        // Hash the provided token and look it up
+        var hashedToken = HashToken(dto.Token);
+        var resetToken = await _passwordResetTokenRepository.GetByTokenAsync(hashedToken);
+
+        if (resetToken == null)
+        {
+            return PasswordResetResult.Fail("Invalid or expired reset token.");
+        }
+
+        // Verify the token belongs to the correct user
+        if (resetToken.UserId != user.Id)
+        {
+            return PasswordResetResult.Fail("Invalid email or reset token.");
+        }
+
+        // Update the user's password
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+        await _userRepository.UpdateAsync(user);
+
+        // Mark the token as used
+        resetToken.IsUsed = true;
+        await _passwordResetTokenRepository.UpdateAsync(resetToken);
+
+        return PasswordResetResult.Success("Password has been reset successfully.");
+    }
+
+    private static string GenerateSecureToken()
+    {
+        var randomBytes = new byte[32];
+        using var rng = RandomNumberGenerator.Create();
+        rng.GetBytes(randomBytes);
+        return Convert.ToBase64String(randomBytes)
+            .Replace("+", "-")
+            .Replace("/", "_")
+            .Replace("=", "");
+    }
+
+    private static string HashToken(string token)
+    {
+        using var sha256 = SHA256.Create();
+        var bytes = Encoding.UTF8.GetBytes(token);
+        var hash = sha256.ComputeHash(bytes);
+        return Convert.ToBase64String(hash);
     }
 }
 

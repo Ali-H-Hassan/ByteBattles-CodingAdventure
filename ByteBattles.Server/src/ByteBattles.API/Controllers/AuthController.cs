@@ -80,5 +80,67 @@ public class AuthController : ControllerBase
             return StatusCode(500, new { message = "Error during login: " + ex.Message });
         }
     }
+
+    /// <summary>
+    /// Request a password reset link.
+    /// </summary>
+    /// <param name="dto">Email address</param>
+    /// <returns>Success message</returns>
+    [HttpPost("forgot-password")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDto dto)
+    {
+        try
+        {
+            var result = await _authService.ForgotPasswordAsync(dto);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { message = result.Error });
+            }
+
+            // In development, return the token for testing
+            // In production, remove resetToken from response and send via email
+            return Ok(new
+            {
+                message = result.Message,
+                resetToken = result.ResetToken // Remove in production
+            });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error during forgot password for email: {Email}", dto.Email);
+            return StatusCode(500, new { message = "Error processing request: " + ex.Message });
+        }
+    }
+
+    /// <summary>
+    /// Reset password using a valid reset token.
+    /// </summary>
+    /// <param name="dto">Reset password details</param>
+    /// <returns>Success message</returns>
+    [HttpPost("reset-password")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordDto dto)
+    {
+        try
+        {
+            var result = await _authService.ResetPasswordAsync(dto);
+
+            if (!result.IsSuccess)
+            {
+                return BadRequest(new { message = result.Error });
+            }
+
+            return Ok(new { message = result.Message });
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error during password reset for email: {Email}", dto.Email);
+            return StatusCode(500, new { message = "Error processing request: " + ex.Message });
+        }
+    }
 }
 

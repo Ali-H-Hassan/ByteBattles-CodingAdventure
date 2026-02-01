@@ -8,6 +8,12 @@ import {
   restoreSession,
   clearSession,
   setLoading,
+  forgotPasswordRequest,
+  forgotPasswordSuccess,
+  forgotPasswordFailure,
+  resetPasswordRequest,
+  resetPasswordSuccess,
+  resetPasswordFailure,
 } from "./authSlice";
 import apiClient from "../../services/apiConfig";
 
@@ -194,5 +200,68 @@ export const restoreUserSession = () => async (dispatch) => {
     }
   } finally {
     dispatch(setLoading(false));
+  }
+};
+
+/**
+ * Request a password reset email
+ */
+export const forgotPassword = (email) => async (dispatch) => {
+  dispatch(forgotPasswordRequest());
+
+  try {
+    const response = await apiClient.post("/api/auth/forgot-password", { email });
+
+    dispatch(forgotPasswordSuccess({
+      message: response.data.message,
+      resetToken: response.data.resetToken // Available in development mode
+    }));
+
+    return { success: true, resetToken: response.data.resetToken };
+  } catch (error) {
+    let errorMessage = "Failed to process request";
+
+    if (error.response?.data) {
+      if (typeof error.response.data === "string") {
+        errorMessage = error.response.data;
+      } else if (error.response.data.message) {
+        errorMessage = error.response.data.message;
+      }
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+
+    dispatch(forgotPasswordFailure(errorMessage));
+    return { success: false, error: errorMessage };
+  }
+};
+
+/**
+ * Reset password using token
+ */
+export const resetPassword = (data) => async (dispatch) => {
+  dispatch(resetPasswordRequest());
+
+  try {
+    const response = await apiClient.post("/api/auth/reset-password", data);
+
+    dispatch(resetPasswordSuccess());
+
+    return { success: true, message: response.data.message };
+  } catch (error) {
+    let errorMessage = "Failed to reset password";
+
+    if (error.response?.data) {
+      if (typeof error.response.data === "string") {
+        errorMessage = error.response.data;
+      } else if (error.response.data.message) {
+        errorMessage = error.response.data.message;
+      }
+    } else if (error.message) {
+      errorMessage = error.message;
+    }
+
+    dispatch(resetPasswordFailure(errorMessage));
+    return { success: false, error: errorMessage };
   }
 };

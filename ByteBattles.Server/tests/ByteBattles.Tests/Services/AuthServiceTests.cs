@@ -13,12 +13,14 @@ namespace ByteBattles.Tests.Services;
 public class AuthServiceTests
 {
     private readonly Mock<IUserRepository> _userRepositoryMock;
+    private readonly Mock<IPasswordResetTokenRepository> _passwordResetTokenRepositoryMock;
     private readonly Mock<IConfiguration> _configurationMock;
     private readonly AuthService _authService;
 
     public AuthServiceTests()
     {
         _userRepositoryMock = new Mock<IUserRepository>();
+        _passwordResetTokenRepositoryMock = new Mock<IPasswordResetTokenRepository>();
         _configurationMock = new Mock<IConfiguration>();
 
         // Setup configuration
@@ -27,7 +29,10 @@ public class AuthServiceTests
         _configurationMock.Setup(c => c["Jwt:Audience"]).Returns("ByteBattlesUsers");
         _configurationMock.Setup(c => c["Jwt:ExpirationInHours"]).Returns("24");
 
-        _authService = new AuthService(_userRepositoryMock.Object, _configurationMock.Object);
+        _authService = new AuthService(
+            _userRepositoryMock.Object,
+            _passwordResetTokenRepositoryMock.Object,
+            _configurationMock.Object);
     }
 
     [Fact]
