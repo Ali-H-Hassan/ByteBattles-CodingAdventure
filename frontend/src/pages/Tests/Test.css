@@ -1,12 +1,150 @@
+.tests-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 0;
+}
+
+/* Header Section */
+.tests-header {
+  background: linear-gradient(135deg, #00c354 0%, #00a344 100%);
+  padding: 2rem 2.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.tests-header-content {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tests-header-icon {
+  width: 56px;
+  height: 56px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.tests-header-text {
+  color: white;
+}
+
+.tests-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem 0;
+}
+
+.tests-subtitle {
+  font-size: 0.9375rem;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.tests-stats {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.tests-stat {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  min-width: 100px;
+}
+
+.tests-stat-value {
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: white;
+  line-height: 1;
+}
+
+.tests-stat-label {
+  display: block;
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin-top: 0.25rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Tests Grid */
+.tests-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Error State */
+.tests-error {
+  background: #ffebee;
+  border: 1px solid #ffcdd2;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin: 2rem 2.5rem;
+  text-align: center;
+}
+
+.tests-error p {
+  color: #c62828;
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Empty State */
+.tests-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #666;
+}
+
+.tests-empty-icon {
+  font-size: 3rem;
+  color: #ccc;
+  margin-bottom: 1.5rem;
+}
+
+.tests-empty h3 {
+  font-size: 1.25rem;
+  color: #2c3e50;
+  margin: 0 0 0.5rem 0;
+}
+
+.tests-empty p {
+  font-size: 0.9375rem;
+  margin: 0;
+  color: #666;
+}
+
+/* Legacy class for backwards compatibility */
 .tests-display {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: clamp(1rem, 3vw, 1.5rem);
-  padding: clamp(1rem, 3vw, 1.5rem);
-  margin-top: clamp(1.5rem, 4vw, 2.5rem);
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem 2.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
   min-height: 100vh;
   background: var(--bg-light, #f8f9fa);
-  box-sizing: border-box;
 }
 
 .error-container {
@@ -23,13 +161,74 @@
   text-align: center;
 }
 
-@media (max-width: 768px) {
+/* Responsive */
+@media (max-width: 1024px) {
+  .tests-header {
+    padding: 1.5rem 1.5rem;
+  }
+
+  .tests-grid,
   .tests-display {
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    padding: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .tests-header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1.25rem;
+  }
+
+  .tests-header-icon {
+    width: 48px;
+    height: 48px;
+    font-size: 1.25rem;
+  }
+
+  .tests-title {
+    font-size: 1.5rem;
+  }
+
+  .tests-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .tests-stats {
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  .tests-stat {
+    padding: 0.75rem 1rem;
+    min-width: 80px;
+  }
+
+  .tests-stat-value {
+    font-size: 1.5rem;
+  }
+
+  .tests-grid,
+  .tests-display {
+    padding: 1rem;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+
+  .tests-error {
+    margin: 1rem;
   }
 }
 
 @media (max-width: 480px) {
+  .tests-header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .tests-grid,
   .tests-display {
     grid-template-columns: 1fr;
     padding: 0.75rem;

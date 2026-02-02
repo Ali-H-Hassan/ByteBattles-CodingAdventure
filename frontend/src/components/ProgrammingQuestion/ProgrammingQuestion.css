@@ -6,6 +6,94 @@
   gap: 1rem;
 }
 
+/* Review Mode Status Banner */
+.programming-review-status {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+  flex-shrink: 0;
+}
+
+.programming-review-status.status-passed {
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border: 1px solid #81c784;
+}
+
+.programming-review-status.status-failed {
+  background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+  border: 1px solid #e57373;
+}
+
+.review-status-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.status-passed .review-status-icon {
+  color: #2e7d32;
+}
+
+.status-failed .review-status-icon {
+  color: #c62828;
+}
+
+.review-status-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.review-status-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.status-passed .review-status-title {
+  color: #2e7d32;
+}
+
+.status-failed .review-status-title {
+  color: #c62828;
+}
+
+.review-status-subtitle {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+/* Code Section */
+.code-section {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.code-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #f8f9fa;
+  border: 1px solid #e5e5e5;
+  border-bottom: none;
+  border-radius: 10px 10px 0 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+.code-section-icon {
+  color: #6c757d;
+}
+
+.code-section-header + div {
+  border-radius: 0 0 10px 10px;
+  overflow: hidden;
+}
+
 .test-problem-statement {
   padding: 1.25rem;
   background: var(--bg-white, #fff);
@@ -111,5 +199,27 @@
   .test-submit-button {
     width: 100%;
     align-self: stretch;
+  }
+
+  .programming-review-status {
+    padding: 0.875rem 1rem;
+    gap: 0.75rem;
+  }
+
+  .review-status-icon {
+    font-size: 1.5rem;
+  }
+
+  .review-status-title {
+    font-size: 0.9375rem;
+  }
+
+  .review-status-subtitle {
+    font-size: 0.8125rem;
+  }
+
+  .code-section-header {
+    padding: 0.625rem 0.875rem;
+    font-size: 0.8125rem;
   }
 }

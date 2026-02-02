@@ -4,11 +4,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchTestById } from "../../redux/testDetails/testDetailsActions";
 import { checkIfTestTaken } from "../../redux/testResults/testResultsActions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBuilding, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBuilding,
+  faCheckCircle,
+  faEye,
+  faPlay,
+  faTrophy,
+  faQuestionCircle,
+  faCode
+} from "@fortawesome/free-solid-svg-icons";
 import "./TestCard.css";
 import defaultLogo from "../../assets/DefaultLogo.jpeg";
 
-const TestCard = ({ test }) => {
+const TestCard = ({ test, testResult }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [isTaken, setIsTaken] = useState(false);
@@ -18,6 +26,13 @@ const TestCard = ({ test }) => {
   useEffect(() => {
     const checkTestStatus = async () => {
       if (!test || !userId) {
+        setChecking(false);
+        return;
+      }
+
+      // If we already have the result passed in, use it
+      if (testResult) {
+        setIsTaken(true);
         setChecking(false);
         return;
       }
@@ -39,7 +54,7 @@ const TestCard = ({ test }) => {
     };
 
     checkTestStatus();
-  }, [test, userId, dispatch]);
+  }, [test, userId, dispatch, testResult]);
 
   if (!test) {
     return null;
@@ -52,7 +67,7 @@ const TestCard = ({ test }) => {
     title = "No Title",
     companyName,
   } = test;
-  const id = testId || mongoId; // Support both id (SQL) and _id (MongoDB)
+  const id = testId || mongoId;
 
   const handleTakeTest = (e) => {
     e.stopPropagation();
@@ -62,12 +77,50 @@ const TestCard = ({ test }) => {
     }
   };
 
+  const handleReviewTest = (e) => {
+    e.stopPropagation();
+    if (id) {
+      dispatch(fetchTestById(id));
+      navigate(`/tests/${id}?mode=review`);
+    }
+  };
+
+  // Calculate score display
+  const score = testResult?.score ?? null;
+  const mcqCorrect = testResult?.mcqCorrectCount ?? 0;
+  const mcqTotal = testResult?.mcqTotalCount ?? 0;
+  const programmingCorrect = testResult?.programmingCorrect ?? false;
+
+  // Determine score color based on percentage
+  const getScoreColor = (score) => {
+    if (score >= 80) return "score-excellent";
+    if (score >= 60) return "score-good";
+    if (score >= 40) return "score-average";
+    return "score-low";
+  };
+
   return (
-    <div className="test-card-main">
+    <div className={`test-card-main ${isTaken ? "test-card-completed" : ""}`}>
+      {isTaken && score !== null && (
+        <div className={`test-card-score-badge ${getScoreColor(score)}`}>
+          <FontAwesomeIcon icon={faTrophy} />
+          <span>{Math.round(score)}%</span>
+        </div>
+      )}
+
       <div className="test-card-body">
-        <img src={logo} alt={`${title} logo`} className="test-logo" />
+        <div className="test-card-header-row">
+          <img src={logo} alt={`${title} logo`} className="test-logo" />
+          {isTaken && (
+            <div className="test-completed-badge">
+              <FontAwesomeIcon icon={faCheckCircle} />
+              <span>Completed</span>
+            </div>
+          )}
+        </div>
+
         <div className="test-card-content">
-        <h3 className="test-title">{title}</h3>
+          <h3 className="test-title">{title}</h3>
           {companyName && (
             <div className="test-company">
               <FontAwesomeIcon icon={faBuilding} className="test-company-icon" />
@@ -75,22 +128,52 @@ const TestCard = ({ test }) => {
             </div>
           )}
         </div>
-        <button 
-          className={`test-take-button ${isTaken ? "test-taken-button" : ""}`}
-          onClick={handleTakeTest}
-          disabled={isTaken || checking}
-        >
-          {checking ? (
-            "Checking..."
-          ) : isTaken ? (
-            <>
-              <FontAwesomeIcon icon={faCheckCircle} style={{ marginRight: "0.5rem" }} />
-              Already Taken
-            </>
-          ) : (
-            "Take Test"
-          )}
-        </button>
+
+        {isTaken && testResult && (
+          <div className="test-result-summary">
+            <div className="test-result-item">
+              <FontAwesomeIcon icon={faQuestionCircle} className="result-icon" />
+              <span className="result-label">MCQ:</span>
+              <span className={`result-value ${mcqCorrect === mcqTotal ? "result-perfect" : ""}`}>
+                {mcqCorrect}/{mcqTotal}
+              </span>
+            </div>
+            {testResult.programmingAnswer !== null && testResult.programmingAnswer !== undefined && (
+              <div className="test-result-item">
+                <FontAwesomeIcon icon={faCode} className="result-icon" />
+                <span className="result-label">Code:</span>
+                <span className={`result-value ${programmingCorrect ? "result-perfect" : "result-failed"}`}>
+                  {programmingCorrect ? "Passed" : "Failed"}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+
+        {isTaken ? (
+          <button
+            className="test-review-button"
+            onClick={handleReviewTest}
+          >
+            <FontAwesomeIcon icon={faEye} />
+            <span>Review Test</span>
+          </button>
+        ) : (
+          <button
+            className="test-take-button"
+            onClick={handleTakeTest}
+            disabled={checking}
+          >
+            {checking ? (
+              "Loading..."
+            ) : (
+              <>
+                <FontAwesomeIcon icon={faPlay} />
+                <span>Take Test</span>
+              </>
+            )}
+          </button>
+        )}
       </div>
     </div>
   );

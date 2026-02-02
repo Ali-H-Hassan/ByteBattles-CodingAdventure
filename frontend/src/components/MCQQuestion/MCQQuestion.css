@@ -14,12 +14,53 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-.test-mcq-question {
+.test-mcq-container.review-mode {
+  border-color: #e0e0e0;
+}
+
+.test-mcq-container.review-mode:hover {
+  border-color: #d0d0d0;
+}
+
+/* Question Header with Status */
+.test-mcq-question-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
   margin-bottom: 1rem;
+}
+
+.test-mcq-question {
+  flex: 1;
   font-weight: 600;
   font-size: 0.9375rem;
   color: var(--text-dark, #2c3e50);
   line-height: 1.5;
+  margin: 0;
+}
+
+/* Answer Status Badge */
+.mcq-answer-status {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.mcq-answer-status.status-correct {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.mcq-answer-status.status-incorrect {
+  background: #ffebee;
+  color: #c62828;
 }
 
 .test-mcq-options-form {
@@ -112,6 +153,7 @@ input[type="radio"]:disabled + span::before {
   background-color: #f5f5f5;
 }
 
+/* Correct Answer Styling */
 .test-mcq-option-label.correct-answer {
   border-color: #28a745;
   background: rgba(40, 167, 69, 0.1);
@@ -122,29 +164,106 @@ input[type="radio"]:disabled + span::before {
   background: rgba(40, 167, 69, 0.15);
 }
 
-.correct-answer-badge {
-  margin-left: 0.5rem;
-  padding: 0.25rem 0.5rem;
-  background: #28a745;
-  color: white;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-.test-mcq-option-label.correct-answer input[type="radio"]:checked + span::before {
+.test-mcq-option-label.correct-answer input[type="radio"]:checked + span::before,
+.test-mcq-option-label.correct-answer input[type="radio"] + span::before {
   border-color: #28a745;
   background-color: #28a745;
 }
 
-.test-mcq-option-label.correct-answer input[type="radio"]:checked + span::after {
+.test-mcq-option-label.correct-answer input[type="radio"]:checked + span::after,
+.test-mcq-option-label.correct-answer input[type="radio"] + span::after {
   background-color: #fff;
+}
+
+/* Wrong Answer Styling */
+.test-mcq-option-label.wrong-answer {
+  border-color: #dc3545;
+  background: rgba(220, 53, 69, 0.1);
+}
+
+.test-mcq-option-label.wrong-answer:hover {
+  border-color: #dc3545;
+  background: rgba(220, 53, 69, 0.15);
+}
+
+.test-mcq-option-label.wrong-answer input[type="radio"]:checked + span::before,
+.test-mcq-option-label.wrong-answer input[type="radio"] + span::before {
+  border-color: #dc3545;
+  background-color: #dc3545;
+}
+
+.test-mcq-option-label.wrong-answer input[type="radio"]:checked + span::after,
+.test-mcq-option-label.wrong-answer input[type="radio"] + span::after {
+  background-color: #fff;
+}
+
+/* Option Content Layout */
+.option-content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.option-text {
+  flex: 1;
+  min-width: 0;
+}
+
+/* Answer Badges */
+.correct-answer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background: #28a745;
+  color: white;
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.your-answer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background: #dc3545;
+  color: white;
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.your-correct-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.5rem;
+  background: #28a745;
+  color: white;
+  border-radius: 4px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
   .test-mcq-container {
     padding: 1rem;
+  }
+
+  .test-mcq-question-header {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .mcq-answer-status {
+    align-self: flex-start;
   }
 
   .test-mcq-question {
@@ -158,5 +277,18 @@ input[type="radio"]:disabled + span::before {
   .test-mcq-option-label {
     padding: 0.625rem 0.875rem;
     font-size: 0.8125rem;
+  }
+
+  .option-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.375rem;
+  }
+
+  .correct-answer-badge,
+  .your-answer-badge,
+  .your-correct-badge {
+    font-size: 0.625rem;
+    padding: 0.1875rem 0.375rem;
   }
 }

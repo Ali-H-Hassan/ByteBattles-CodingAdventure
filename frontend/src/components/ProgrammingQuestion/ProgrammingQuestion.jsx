@@ -2,6 +2,8 @@ import React from "react";
 import CodingEditor from "../CodingEditor/CodingEditor";
 import "./ProgrammingQuestion.css";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheckCircle, faTimesCircle, faCode } from "@fortawesome/free-solid-svg-icons";
 
 const ProgrammingQuestion = ({
   problemStatement,
@@ -12,6 +14,9 @@ const ProgrammingQuestion = ({
   isSubmitting = false,
   isViewOnly = false,
   testCases = [],
+  isReviewMode = false,
+  userCode = null,
+  programmingCorrect = null,
 }) => {
   const navigate = useNavigate();
 
@@ -32,15 +37,45 @@ const ProgrammingQuestion = ({
   };
 
   return (
-    <div className="test-programming-container">
+    <div className={`test-programming-container ${isReviewMode ? 'review-mode' : ''}`}>
+      {/* Review Mode Status Banner */}
+      {isReviewMode && programmingCorrect !== null && (
+        <div className={`programming-review-status ${programmingCorrect ? 'status-passed' : 'status-failed'}`}>
+          <div className="review-status-icon">
+            <FontAwesomeIcon icon={programmingCorrect ? faCheckCircle : faTimesCircle} />
+          </div>
+          <div className="review-status-content">
+            <span className="review-status-title">
+              {programmingCorrect ? 'All Test Cases Passed' : 'Test Cases Failed'}
+            </span>
+            <span className="review-status-subtitle">
+              {programmingCorrect
+                ? 'Your solution passed all the test cases successfully.'
+                : 'Your solution did not pass all the test cases.'}
+            </span>
+          </div>
+        </div>
+      )}
+
       <div className="test-problem-statement">{problemStatement}</div>
-      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
-        <CodingEditor 
-          code={starterCode} 
-          handleCodeChange={handleCodeChange}
-          readOnly={isViewOnly}
-        />
+
+      {/* Code Section with Label in Review Mode */}
+      <div className="code-section">
+        {isReviewMode && userCode && (
+          <div className="code-section-header">
+            <FontAwesomeIcon icon={faCode} className="code-section-icon" />
+            <span>Your Submitted Code</span>
+          </div>
+        )}
+        <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
+          <CodingEditor
+            code={starterCode}
+            handleCodeChange={handleCodeChange}
+            readOnly={isViewOnly}
+          />
+        </div>
       </div>
+
       {isViewOnly && testCases.length > 0 && (
         <div className="test-cases-container">
           <h3 className="test-cases-title">Test Cases (Expected Outputs):</h3>
