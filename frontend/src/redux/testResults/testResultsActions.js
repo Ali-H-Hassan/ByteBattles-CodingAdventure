@@ -94,4 +94,3 @@ export const fetchTestResultsByTestId = (testId) => async (dispatch) => {
     throw error;
   }
 };
-

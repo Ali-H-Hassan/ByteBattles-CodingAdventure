@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFileAlt,
-  faCheckCircle,
-  faTimesCircle,
-  faPercent,
-  faChartLine,
-} from "@fortawesome/free-solid-svg-icons";
+import { faChartLine } from "@fortawesome/free-solid-svg-icons";
 import apiClient from "../../services/apiConfig";
 import "./Statistics.css";
 
@@ -26,7 +20,6 @@ function Statistics() {
         setStatistics(response.data);
       } catch (error) {
         console.error("Error fetching statistics:", error);
-        // Keep default values (0) on error
       } finally {
         setLoading(false);
       }
@@ -35,44 +28,105 @@ function Statistics() {
     fetchStatistics();
   }, []);
 
+  const total = statistics.passedTests + statistics.failedTests;
+  const passedPercentage = total > 0 ? (statistics.passedTests / total) * 100 : 0;
+  const failedPercentage = total > 0 ? (statistics.failedTests / total) * 100 : 0;
+
+  // SVG donut chart calculations
+  const radius = 70;
+  const strokeWidth = 14;
+  const circumference = 2 * Math.PI * radius;
+  const passedDash = (passedPercentage / 100) * circumference;
+  const failedDash = (failedPercentage / 100) * circumference;
+
   return (
     <section className="statistics">
       <div className="section-header">
         <FontAwesomeIcon icon={faChartLine} className="section-icon" />
         <h2 className="section-title">Statistics</h2>
       </div>
+
       {loading ? (
         <div className="statistics-loading">Loading statistics...</div>
       ) : (
-        <div className="statistics-grid">
-          <div className="statistic-card">
-            <FontAwesomeIcon icon={faFileAlt} className="statistic-icon" />
-            <div className="statistic-info">
-              <span className="statistic-number">{statistics.totalTestsTaken}</span>
-              <span className="statistic-text">Tests Taken</span>
+        <div className="statistics-content">
+          <div className="chart-container">
+            <svg className="donut-chart" viewBox="0 0 180 180">
+              <circle
+                cx="90"
+                cy="90"
+                r={radius}
+                fill="none"
+                stroke="#e8e8e8"
+                strokeWidth={strokeWidth}
+              />
+              {total > 0 && (
+                <>
+                  <circle
+                    cx="90"
+                    cy="90"
+                    r={radius}
+                    fill="none"
+                    stroke="#ff6b6b"
+                    strokeWidth={strokeWidth}
+                    strokeDasharray={`${failedDash} ${circumference}`}
+                    strokeDashoffset={0}
+                    transform="rotate(-90 90 90)"
+                    className="chart-segment"
+                  />
+                  <circle
+                    cx="90"
+                    cy="90"
+                    r={radius}
+                    fill="none"
+                    stroke="#00c354"
+                    strokeWidth={strokeWidth}
+                    strokeDasharray={`${passedDash} ${circumference}`}
+                    strokeDashoffset={-failedDash}
+                    transform="rotate(-90 90 90)"
+                    className="chart-segment"
+                  />
+                </>
+              )}
+            </svg>
+            <div className="chart-center">
+              <span className="chart-total">{total}</span>
+              <span className="chart-label">Total Tests</span>
             </div>
           </div>
-          <div className="statistic-card">
-            <FontAwesomeIcon icon={faCheckCircle} className="statistic-icon statistic-icon-success" />
-            <div className="statistic-info">
-              <span className="statistic-number">{statistics.passedTests}</span>
-              <span className="statistic-text">Passed</span>
+
+          <div className="stats-grid">
+            <div className="stat-item passed">
+              <div className="stat-indicator"></div>
+              <div className="stat-details">
+                <span className="stat-value">{statistics.passedTests}</span>
+                <span className="stat-label">Passed</span>
+              </div>
             </div>
-          </div>
-          <div className="statistic-card">
-            <FontAwesomeIcon icon={faTimesCircle} className="statistic-icon statistic-icon-error" />
-            <div className="statistic-info">
-              <span className="statistic-number">{statistics.failedTests}</span>
-              <span className="statistic-text">Failed</span>
+
+            <div className="stat-item failed">
+              <div className="stat-indicator"></div>
+              <div className="stat-details">
+                <span className="stat-value">{statistics.failedTests}</span>
+                <span className="stat-label">Failed</span>
+              </div>
             </div>
-          </div>
-          <div className="statistic-card">
-            <FontAwesomeIcon icon={faPercent} className="statistic-icon statistic-icon-primary" />
-            <div className="statistic-info">
-              <span className="statistic-number">
-                {statistics.averageScore > 0 ? statistics.averageScore.toFixed(1) : "0"}%
-              </span>
-              <span className="statistic-text">Overall Average</span>
+
+            <div className="stat-item average">
+              <div className="average-section">
+                <div className="average-header">
+                  <span className="stat-label">Overall Average</span>
+                  <span className="stat-value">
+                    {statistics.averageScore > 0 ? statistics.averageScore.toFixed(1) : "0"}%
+                  </span>
+                </div>
+                <div className="progress-bar">
+                  <div
+                    className="progress-fill"
+                    style={{ width: `${statistics.averageScore}%` }}
+                  ></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
