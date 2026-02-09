@@ -114,8 +114,6 @@ https://github.com/Ali-H-Hassan/ByteBattles-CodingAdventure/assets/64877225/b4b5
 | ![Google Register](./Readme/GoogleRegister.gif)    | ![Company Dashboard](./Readme/CompanyDashboard.png) |
 | Test Landing Page                                  | User Dashboard                                      |
 | ![Test Landing Page](./Readme/TestLandingPage.png) | ![User Dashboard ](./Readme/UserDashboard.png)      |
-| Thank You Page                                     | Test Creation                                       |
-| ![Thank You Page](./Readme/ThankyouPage.png)       | ![Test Creation](./Readme/CreateTest.png)           |
 
 <br><br>
 
