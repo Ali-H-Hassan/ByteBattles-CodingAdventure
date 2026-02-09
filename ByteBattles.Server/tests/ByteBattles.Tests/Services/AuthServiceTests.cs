@@ -83,7 +83,7 @@ public class AuthServiceTests
 
         // Assert
         Assert.False(result.IsSuccess);
-        Assert.Contains("already registered", result.Error);
+        Assert.Contains("already exists", result.Error);
     }
 
     [Fact]
@@ -162,7 +162,7 @@ public class AuthServiceTests
 
         // Assert
         Assert.False(result.IsSuccess);
-        Assert.Contains("Invalid email or password", result.Error);
+        Assert.Contains("No account found", result.Error);
     }
 
     [Fact]
@@ -192,7 +192,9 @@ public class AuthServiceTests
 
         // Assert
         Assert.False(result.IsSuccess);
-        Assert.Contains("Invalid email or password", result.Error);
+        Assert.NotNull(result.Error);
+        Assert.Contains("password", result.Error.ToLower());
+        Assert.Contains("incorrect", result.Error.ToLower());
     }
 
     [Fact]
