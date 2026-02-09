@@ -107,7 +107,7 @@ https://github.com/Ali-H-Hassan/ByteBattles-CodingAdventure/assets/64877225/b4b5
 
 | AI Battle                                          | Course Selection                                    |
 | -------------------------------------------------- | --------------------------------------------------- |
-| ![AI Battle](./Readme/AIBattle.gif)                | ![Course Selection](./Readme/CourseDisplay.gif)     |
+| ![AI Battle](./Readme/AIBattle.png)                | ![Course Selection](./Readme/CourseDisplay.gif)     |
 | Backend Game Screen                                | Frontend Game Screen                                |
 | ![Backend Game Screen](./Readme/GameScene1.gif)    | ![Frontend Game Screen](./Readme//GameScene2.gif)   |
 | Google Register                                    | Company Dashboard                                   |
