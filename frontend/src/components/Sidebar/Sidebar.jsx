@@ -11,6 +11,7 @@ import {
   faSignOutAlt,
   faChevronLeft,
   faChevronRight,
+  faUsers,
 } from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -99,6 +100,17 @@ function Sidebar({ onOptionSelect, userType, selectedOption, onCollapseChange })
           <FontAwesomeIcon icon={faUser} className="menu-icon" />
           {!isCollapsed && <div className="menu-text">Profile</div>}
         </div>
+
+        {userType === "company" && (
+          <div
+            className={`menu-item ${selected === "talent" ? "selected" : ""}`}
+            onClick={() => handleOptionSelect("talent")}
+            title={isCollapsed ? "Talent Pool" : ""}
+          >
+            <FontAwesomeIcon icon={faUsers} className="menu-icon" />
+            {!isCollapsed && <div className="menu-text">Talent Pool</div>}
+          </div>
+        )}
 
         {userType !== "company" && (
           <>

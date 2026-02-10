@@ -127,6 +127,21 @@ const CompanyTestsDisplay = () => {
     }
   }, [dispatch, companyId]);
 
+  // Load test results count for all tests on mount
+  useEffect(() => {
+    const loadAllTestResults = async () => {
+      if (companyTests && companyTests.length > 0) {
+        for (const test of companyTests) {
+          const testId = test.id || test._id;
+          if (!testResultsMap[testId] && !loadingResults[testId]) {
+            await loadTestResults(testId);
+          }
+        }
+      }
+    };
+    loadAllTestResults();
+  }, [companyTests]);
+
   const loadTestResults = async (testId) => {
     if (loadingResults[testId]) {
       return testResultsMap[testId] || [];

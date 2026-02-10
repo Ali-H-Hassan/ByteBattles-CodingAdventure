@@ -7,6 +7,7 @@ import Header from "../../components/DashHeader/DashHeader";
 import CompanyTestsDisplay from "../CompanyTestsDisplay/CompanyTestsDisplay";
 import Profile from "../../components/Profile/Profile";
 import DashboardHome from "../../components/DashboardHome/DashboardHome";
+import TalentPool from "../TalentPool/TalentPool";
 import "./CompanyDashboard.css";
 
 function CompanyDashboard() {
@@ -47,18 +48,17 @@ function CompanyDashboard() {
       <Sidebar onOptionSelect={handleOptionSelect} userType="company" />
 
       <div className="main-content">
-        {selectedOption !== "profile" && selectedOption !== "tests" && (
-          <Header 
-            username={username} 
+        {selectedOption !== "profile" && selectedOption !== "tests" && selectedOption !== "talent" && (
+          <Header
+            username={username}
             profilePic={profilePic}
             onProfileClick={() => setSelectedOption("profile")}
           />
         )}
-        {selectedOption !== "profile" && selectedOption === "tests" && (
-          <CompanyTestsDisplay />
-        )}
+        {selectedOption === "tests" && <CompanyTestsDisplay />}
         {selectedOption === "profile" && <Profile />}
         {selectedOption === "dashboard" && <DashboardHome />}
+        {selectedOption === "talent" && <TalentPool />}
       </div>
     </div>
   );
