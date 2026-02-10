@@ -2,10 +2,16 @@ import React, { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTests } from "../../redux/test/testActions";
 import { checkIfTestTaken } from "../../redux/testResults/testResultsActions";
-import TestCardImage from "../../assets/Test1.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileAlt, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import {
+  faClipboardList,
+  faCheckCircle,
+  faPlay,
+  faBuilding,
+  faSearch
+} from "@fortawesome/free-solid-svg-icons";
 import { useNavigate } from "react-router-dom";
+import defaultLogo from "../../assets/DefaultLogo.jpeg";
 import "./RecentTests.css";
 
 function RecentTests() {
@@ -71,64 +77,109 @@ function RecentTests() {
     };
 
     checkTestStatuses();
-  }, [recentTests, userId, dispatch]); // Include dispatch but recentTests is memoized
+  }, [recentTests, userId, dispatch]);
 
-  const handleResumeClick = (testId, isTaken) => {
+  const handleTestClick = (testId, isTaken) => {
     if (!isTaken) {
       navigate(`/tests/${testId}`);
+    } else {
+      navigate(`/tests/${testId}?mode=review`);
     }
   };
 
+  const completedCount = Object.values(testStatuses).filter(Boolean).length;
+
   return (
     <section className="recent-tests">
-      <div className="section-header">
-        <FontAwesomeIcon icon={faFileAlt} className="section-icon" />
-        <h2 className="section-title">Recent Tests</h2>
+      {/* Header matching Tests page theme */}
+      <div className="recent-tests-header">
+        <div className="recent-tests-header-content">
+          <div className="recent-tests-header-icon">
+            <FontAwesomeIcon icon={faClipboardList} />
+          </div>
+          <div className="recent-tests-header-text">
+            <h2 className="recent-tests-title">Recent Tests</h2>
+            <p className="recent-tests-subtitle">Latest available assessments</p>
+          </div>
+        </div>
+        <div className="recent-tests-stats">
+          <div className="recent-tests-stat">
+            <span className="recent-tests-stat-value">{recentTests.length}</span>
+            <span className="recent-tests-stat-label">Available</span>
+          </div>
+          <div className="recent-tests-stat">
+            <span className="recent-tests-stat-value">{completedCount}</span>
+            <span className="recent-tests-stat-label">Completed</span>
+          </div>
+        </div>
       </div>
-      <div className="test-cards-container">
-        {recentTests.length > 0 ? (
-          recentTests.map((test) => {
-            const testId = test.id || test._id;
-            const isTaken = testStatuses[testId] || false;
-            const checking = checkingStatuses[testId] || false;
 
-            return (
-              <div className="test-card" key={testId}>
-                <div className="test-card-image-wrapper">
-                  <img
-                    src={TestCardImage}
-                    alt={test.title}
-                    className="test-card-image"
-                  />
-                </div>
-                <div className="test-card-content">
-                  <h3 className="test-title">{test.title}</h3>
-                  <div className="test-details">
-                    <button
-                      className={`resume-button ${isTaken ? "test-taken-button" : ""}`}
-                      onClick={() => handleResumeClick(testId, isTaken)}
-                      disabled={isTaken || checking}
-                    >
-                      {checking ? (
-                        "Checking..."
-                      ) : isTaken ? (
-                        <>
-                          <FontAwesomeIcon icon={faCheckCircle} style={{ marginRight: "0.5rem" }} />
-                          Already Taken
-                        </>
-                      ) : (
-                        "Start Test"
-                      )}
-                    </button>
+      {/* Test Cards */}
+      <div className="recent-tests-content">
+        {recentTests.length > 0 ? (
+          <div className="recent-tests-grid">
+            {recentTests.map((test) => {
+              const testId = test.id || test._id;
+              const isTaken = testStatuses[testId] || false;
+              const checking = checkingStatuses[testId] || false;
+
+              return (
+                <div
+                  className={`recent-test-card ${isTaken ? "recent-test-card-completed" : ""}`}
+                  key={testId}
+                >
+                  <div className="recent-test-card-header">
+                    <img
+                      src={test.logo || defaultLogo}
+                      alt={test.title}
+                      className="recent-test-logo"
+                    />
+                    {isTaken && (
+                      <div className="recent-test-completed-badge">
+                        <FontAwesomeIcon icon={faCheckCircle} />
+                        <span>Done</span>
+                      </div>
+                    )}
                   </div>
+
+                  <div className="recent-test-card-body">
+                    <h3 className="recent-test-title">{test.title}</h3>
+                    {test.companyName && (
+                      <div className="recent-test-company">
+                        <FontAwesomeIcon icon={faBuilding} />
+                        <span>{test.companyName}</span>
+                      </div>
+                    )}
+                  </div>
+
+                  <button
+                    className={`recent-test-button ${isTaken ? "recent-test-review-btn" : "recent-test-start-btn"}`}
+                    onClick={() => handleTestClick(testId, isTaken)}
+                    disabled={checking}
+                  >
+                    {checking ? (
+                      "Loading..."
+                    ) : isTaken ? (
+                      <>
+                        <FontAwesomeIcon icon={faCheckCircle} />
+                        <span>Review</span>
+                      </>
+                    ) : (
+                      <>
+                        <FontAwesomeIcon icon={faPlay} />
+                        <span>Start Test</span>
+                      </>
+                    )}
+                  </button>
                 </div>
-              </div>
-            );
-          })
+              );
+            })}
+          </div>
         ) : (
-          <div className="no-tests-message">
-            <FontAwesomeIcon icon={faFileAlt} className="no-tests-icon" />
-            <p>No tests available</p>
+          <div className="recent-tests-empty">
+            <FontAwesomeIcon icon={faSearch} className="recent-tests-empty-icon" />
+            <h3>No Tests Available</h3>
+            <p>Check back later for new assessments</p>
           </div>
         )}
       </div>

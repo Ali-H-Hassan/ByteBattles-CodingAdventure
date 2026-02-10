@@ -3,6 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCoursesAsync } from "../../redux/game/gameActions";
 import { useNavigate } from "react-router-dom";
 import LoadingSpinner from "../LoadingSpinner/LoadingSpinner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faGraduationCap,
+  faLaptopCode,
+  faServer,
+  faRocket,
+  faTrophy,
+  faGamepad
+} from "@fortawesome/free-solid-svg-icons";
 import "./CoursesDisplay.css";
 import htmlImage from "../../assets/html_course_image.png";
 import cssImage from "../../assets/css_course_image.png";
@@ -30,7 +39,7 @@ const GamepadSVG = () => (
   </svg>
 );
 
-const CourseSection = ({ title, courses }) => {
+const CourseSection = ({ title, courses, icon }) => {
   const [activeCourse, setActiveCourse] = useState(null);
   const navigate = useNavigate();
 
@@ -41,6 +50,7 @@ const CourseSection = ({ title, courses }) => {
   const startGame = (courseId) => {
     navigate("/game", { state: { courseId: courseId } });
   };
+
   const updatedCourses = courses.map((course) => {
     switch (course.title) {
       case "HTML Basics":
@@ -57,54 +67,63 @@ const CourseSection = ({ title, courses }) => {
   });
 
   return (
-    <>
-      <h2>{title}</h2>
+    <div className="course-section">
+      <div className="course-section-header">
+        <div className="course-section-icon">
+          <FontAwesomeIcon icon={icon} />
+        </div>
+        <div className="course-section-info">
+          <h2 className="course-section-title">{title}</h2>
+          <span className="course-section-count">{courses.length} courses available</span>
+        </div>
+      </div>
       <div className="courses-display-container">
         {updatedCourses.map((course) => {
-          const courseId = course.id || course._id; // Support both id and _id
+          const courseId = course.id || course._id;
           return (
-          <div
-            key={courseId}
-            className={`courses-display-card ${
-              activeCourse === courseId ? "courses-display-card-active" : ""
-            }`}
-            onClick={() => handleCardClick(courseId)}
-          >
-            <img
-              className="courses-display-background"
-              src={course.imageUrl}
-              alt={course.title}
-            />
-            <div className="courses-display-card-content">
-              <div className="courses-display-profile-image">
-                <GamepadSVG />
+            <div
+              key={courseId}
+              className={`courses-display-card ${
+                activeCourse === courseId ? "courses-display-card-active" : ""
+              }`}
+              onClick={() => handleCardClick(courseId)}
+            >
+              <img
+                className="courses-display-background"
+                src={course.imageUrl}
+                alt={course.title}
+              />
+              <div className="courses-display-card-content">
+                <div className="courses-display-profile-image">
+                  <GamepadSVG />
+                </div>
+                <h3 className="courses-display-title">{course.title}</h3>
+                {activeCourse === courseId && (
+                  <button
+                    className="new-neon-button"
+                    onClick={() => startGame(courseId)}
+                  >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Start Adventure
+                  </button>
+                )}
               </div>
-              <h3 className="courses-display-title">{course.title}</h3>
-              {activeCourse === courseId && (
-                <button
-                  className="new-neon-button"
-                  onClick={() => startGame(courseId)}
-                >
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                  Start Adventure
-                </button>
-              )}
+              <div className="courses-display-backdrop"></div>
             </div>
-            <div className="courses-display-backdrop"></div>
-          </div>
           );
         })}
       </div>
-    </>
+    </div>
   );
 };
 
 const CoursesDisplay = () => {
   const dispatch = useDispatch();
   const courses = useSelector((state) => state.game.courses);
+
   useEffect(() => {
     dispatch(fetchCoursesAsync());
   }, [dispatch]);
@@ -122,12 +141,52 @@ const CoursesDisplay = () => {
   );
 
   return (
-    <div className="courses-grid-container">
-      <div className="courses-header">
-        <h1>Select a course to embark on your gamified learning adventure!</h1>
+    <div className="courses-page">
+      {/* Hero Header */}
+      <div className="courses-hero">
+        <div className="courses-hero-content">
+          <div className="courses-hero-icon">
+            <FontAwesomeIcon icon={faGraduationCap} />
+          </div>
+          <div className="courses-hero-text">
+            <h1 className="courses-hero-title">Learning Adventures</h1>
+            <p className="courses-hero-subtitle">
+              Embark on your gamified coding journey
+            </p>
+          </div>
+        </div>
+        <div className="courses-hero-stats">
+          <div className="courses-hero-stat">
+            <FontAwesomeIcon icon={faGamepad} className="stat-icon" />
+            <span className="stat-value">{courses.length}</span>
+            <span className="stat-label">Courses</span>
+          </div>
+          <div className="courses-hero-stat">
+            <FontAwesomeIcon icon={faTrophy} className="stat-icon" />
+            <span className="stat-value">XP</span>
+            <span className="stat-label">Rewards</span>
+          </div>
+          <div className="courses-hero-stat">
+            <FontAwesomeIcon icon={faRocket} className="stat-icon" />
+            <span className="stat-value">Fun</span>
+            <span className="stat-label">Learning</span>
+          </div>
+        </div>
       </div>
-      <CourseSection title="Frontend" courses={frontendCourses} />
-      <CourseSection title="Backend" courses={backendCourses} />
+
+      {/* Course Sections */}
+      <div className="courses-content">
+        <CourseSection
+          title="Frontend Development"
+          courses={frontendCourses}
+          icon={faLaptopCode}
+        />
+        <CourseSection
+          title="Backend Development"
+          courses={backendCourses}
+          icon={faServer}
+        />
+      </div>
     </div>
   );
 };
